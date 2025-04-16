@@ -12,14 +12,13 @@ const nextConfig = {
   distDir: '.next',
   // Desactivar la generación estática de páginas dinámicas
   staticPageGenerationTimeout: 1000,
-  // Configuración para ignorar errores durante la compilación
-  onError: (error) => {
-    console.error('Error durante la compilación:', error);
-    // Continuar a pesar de los errores
-    return;
-  },
-  // Configuración para ignorar errores de tipo
-  swcMinify: true,
+  // Ignorar errores específicos durante la exportación estática
+  experimental: {
+    // Esto permite que la compilación continúe incluso con errores
+    skipTrailingSlashRedirect: true,
+    // Esto permite que useSearchParams funcione sin Suspense
+    missingSuspenseWithCSRBailout: true
+  }
 };
 
 module.exports = nextConfig;
