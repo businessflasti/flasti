@@ -7,8 +7,9 @@ import { Card } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Suspense } from "react";
 
-export default function PayPalWithdrawalSuccessPage() {
+function PayPalWithdrawalSuccessContent() {
   const searchParams = useSearchParams();
   const { t } = useLanguage();
   const amount = searchParams.get("amount") || "0";
@@ -128,5 +129,13 @@ export default function PayPalWithdrawalSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PayPalWithdrawalSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
+      <PayPalWithdrawalSuccessContent />
+    </Suspense>
   );
 }

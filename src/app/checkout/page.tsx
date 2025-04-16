@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Declaración de tipos para Hotmart
@@ -24,7 +24,7 @@ import PayPalLogo from "@/components/icons/PayPalLogo";
 import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
 
-const CheckoutPage = () => {
+const CheckoutContent = () => {
   const { t } = useLanguage();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
   const [isHotmartLoaded, setIsHotmartLoaded] = useState(false);
@@ -557,6 +557,14 @@ const CheckoutPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CheckoutPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
+      <CheckoutContent />
+    </Suspense>
   );
 };
 
