@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 /**
  * Componente minimalista para registrar clics de afiliados
  * Usa un enfoque "fire and forget" para evitar bloquear la interfaz
  */
-export default function AffiliateClickRecorder() {
+function AffiliateClickRecorderContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -29,4 +29,12 @@ export default function AffiliateClickRecorder() {
 
   // Este componente no renderiza nada
   return null;
+}
+
+export default function AffiliateClickRecorder() {
+  return (
+    <Suspense fallback={null}>
+      <AffiliateClickRecorderContent />
+    </Suspense>
+  );
 }

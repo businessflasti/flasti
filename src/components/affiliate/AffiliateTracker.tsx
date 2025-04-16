@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase';
  * Componente para rastrear y gestionar códigos de afiliados
  * Se debe incluir en el layout principal para que se ejecute en todas las páginas
  */
-export default function AffiliateTracker() {
+function AffiliateTrackerContent() {
   const searchParams = useSearchParams();
   // Usar una referencia para rastrear si ya procesamos este código
   const processedRef = useRef(false);
@@ -102,4 +102,12 @@ export default function AffiliateTracker() {
 
   // Este componente no renderiza nada visible
   return null;
+}
+
+export default function AffiliateTracker() {
+  return (
+    <Suspense fallback={null}>
+      <AffiliateTrackerContent />
+    </Suspense>
+  );
 }
