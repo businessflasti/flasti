@@ -14,7 +14,7 @@ import { UserLevelProvider } from "@/contexts/UserLevelContext";
 import Logo from "@/components/ui/logo";
 import { useBalanceVisibility } from "@/contexts/BalanceVisibilityContext";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
 
 // Nuevos componentes para el dashboard mejorado
@@ -27,7 +27,7 @@ import LocationBadge from "@/components/dashboard/LocationBadge";
 // Importar estilos de animaciones
 import "./animations.css";
 
-export default function DashboardPage() {
+function DashboardPageContent() {
   const { t } = useLanguage();
   const { isBalanceVisible, toggleBalanceVisibility } = useBalanceVisibility();
   const { theme, setTheme } = useTheme();
@@ -351,5 +351,17 @@ export default function DashboardPage() {
       <OnboardingTour />
     </div>
     </UserLevelProvider>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <DashboardPageContent />
+    </Suspense>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading, updateBalance } = useAuth();
@@ -49,6 +49,14 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     );
   }
 
-  // Si hay usuario autenticado, renderizar los hijos
-  return <>{children}</>;
+  // Si hay usuario autenticado, renderizar los hijos envueltos en Suspense
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    }>
+      {children}
+    </Suspense>
+  );
 }
