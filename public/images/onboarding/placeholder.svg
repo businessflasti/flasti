@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Placeholder</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle fill="#9333EA" opacity="0.2" cx="100" cy="100" r="100"></circle>
+        <path d="M100,50 C77.9086,50 60,67.9086 60,90 C60,112.091 77.9086,130 100,130 C122.091,130 140,112.091 140,90 C140,67.9086 122.091,50 100,50 Z M100,120 C83.4315,120 70,106.569 70,90 C70,73.4315 83.4315,60 100,60 C116.569,60 130,73.4315 130,90 C130,106.569 116.569,120 100,120 Z" fill="#9333EA" fill-rule="nonzero"></path>
+        <path d="M100,140 C77.9086,140 60,142.239 60,145 C60,147.761 77.9086,150 100,150 C122.091,150 140,147.761 140,145 C140,142.239 122.091,140 100,140 Z" fill="#9333EA" opacity="0.5"></path>
+    </g>
+</svg>

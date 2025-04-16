@@ -1,0 +1,393 @@
+/* Estilos para la página de checkout */
+body {
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.checkout-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #13111C 0%, #1E1B2E 100%);
+    padding: 2rem;
+}
+
+.checkout-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(147, 51, 234, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.checkout-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.checkout-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.checkout-header h1 {
+    font-size: 2rem;
+    color: #fff;
+    margin: 0;
+}
+
+.checkout-content {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.checkout-info {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 0 2px rgba(168, 85, 247, 0.4);
+    background-image: linear-gradient(45deg, rgba(168, 85, 247, 0.1), rgba(255, 107, 107, 0.1));
+}
+
+.checkout-info h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    text-align: center;
+}
+
+.premium-features {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 10px;
+    color: #fff;
+}
+
+.feature-text h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: #fff;
+}
+
+.feature-text p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+.price-info {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.price-tag {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.price-currency {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-right: 0.2rem;
+}
+
+.price-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(90deg, #a855f7, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.price-period {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 0.5rem;
+}
+
+.price-guarantee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.guarantee-icon {
+    color: #4ade80;
+    font-size: 1.2rem;
+}
+
+.price-guarantee p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.checkout-form {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 0 2px rgba(168, 85, 247, 0.4);
+}
+
+.checkout-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    text-align: center;
+}
+
+.hotmart-placeholder {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px dashed rgba(168, 85, 247, 0.3);
+}
+
+/* Estilos para el formulario de Hotmart */
+.hotmart-form-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    max-height: 500px; /* Altura máxima del formulario */
+    overflow-y: auto; /* Añadir barra de desplazamiento vertical */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Indicador de desplazamiento */
+.hotmart-form-wrapper::after {
+    content: '\2193'; /* Flecha hacia abajo */
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(168, 85, 247, 0.8);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    animation: bounce 1.5s infinite;
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Ocultar el indicador cuando se ha desplazado hasta el final */
+.hotmart-form-wrapper.scrolled-to-bottom::after {
+    opacity: 0;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Estilo para la barra de desplazamiento */
+.hotmart-form-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.hotmart-form-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.hotmart-form-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.5);
+    border-radius: 10px;
+}
+
+.hotmart-form-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.7);
+}
+
+#inline_checkout {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#inline_checkout iframe {
+    border-radius: 12px !important;
+    width: 100% !important;
+}
+
+.hotmart-form-container {
+    margin-bottom: 2rem;
+}
+
+.user-message {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: white;
+}
+
+.success-message {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 10px;
+    color: white;
+}
+
+.success-message h3 {
+    color: #4ade80;
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    color: white;
+}
+
+.error-message h3 {
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.dashboard-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #a855f7, #ff6b6b);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.dashboard-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+    text-decoration: none;
+}
+
+.checkout-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.checkout-footer a {
+    color: #a855f7;
+    text-decoration: none;
+}
+
+.checkout-footer a:hover {
+    text-decoration: underline;
+}
+
+.copyright {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 992px) {
+    .checkout-content {
+        flex-direction: column;
+    }
+
+    .checkout-info, .checkout-form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 1rem;
+    }
+
+    .checkout-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .checkout-info h2, .checkout-form h3 {
+        font-size: 1.5rem;
+    }
+
+    .feature-item {
+        gap: 0.75rem;
+    }
+
+    .feature-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
+
+    .feature-text h3 {
+        font-size: 1rem;
+    }
+
+    .feature-text p {
+        font-size: 0.8rem;
+    }
+
+    .price-amount {
+        font-size: 2.5rem;
+    }
+}

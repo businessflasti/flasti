@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200px" height="675px" viewBox="0 0 1200 675" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Flasti Imágenes Twitter Post</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#9333ea" offset="0%"></stop>
+            <stop stop-color="#ec4899" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Twitter-Post" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Background" fill="#1e1e2e" x="0" y="0" width="1200" height="675"></rect>
+        
+        <!-- Decorative elements -->
+        <circle id="Decoration-1" fill="url(#linearGradient-1)" opacity="0.2" cx="200" cy="100" r="100"></circle>
+        <circle id="Decoration-2" fill="url(#linearGradient-1)" opacity="0.2" cx="1000" cy="575" r="100"></circle>
+        
+        <!-- Logo -->
+        <g id="Logo" transform="translate(150, 237.5)">
+            <circle id="Logo-Background" fill="url(#linearGradient-1)" cx="100" cy="100" r="100"></circle>
+            <path d="M60,60 L140,60 C147.732,60 154,66.268 154,74 L154,126 C154,133.732 147.732,140 140,140 L60,140 C52.268,140 46,133.732 46,126 L46,74 C46,66.268 52.268,60 60,60 Z" id="Frame" stroke="#FFFFFF" stroke-width="4"></path>
+            <circle id="Sun" fill="#FFFFFF" cx="125" cy="80" r="10"></circle>
+            <path d="M55,125 L85,85 L105,105 L145,55" id="Mountains" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+        </g>
+        
+        <!-- Text -->
+        <text id="Title" font-family="Arial-BoldMT, Arial" font-size="60" font-weight="bold" fill="#FFFFFF">
+            <tspan x="400" y="280">Flasti Imágenes</tspan>
+        </text>
+        <text id="Subtitle" font-family="ArialMT, Arial" font-size="30" font-weight="normal" fill="#FFFFFF">
+            <tspan x="400" y="340">Transforma tus ideas en imágenes</tspan>
+            <tspan x="400" y="380">impresionantes con IA</tspan>
+        </text>
+        
+        <!-- CTA -->
+        <rect id="CTA-Background" fill="url(#linearGradient-1)" x="400" y="450" width="250" height="50" rx="25"></rect>
+        <text id="CTA-Text" font-family="Arial-BoldMT, Arial" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+            <tspan x="525" y="482">¡Descúbrelo ahora!</tspan>
+        </text>
+    </g>
+</svg>

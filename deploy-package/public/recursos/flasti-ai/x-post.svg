@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200px" height="675px" viewBox="0 0 1200 675" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Flasti AI Twitter Post</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#9333ea" offset="0%"></stop>
+            <stop stop-color="#ec4899" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Twitter-Post" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Background" fill="#1e1e2e" x="0" y="0" width="1200" height="675"></rect>
+        
+        <!-- Decorative elements -->
+        <circle id="Decoration-1" fill="url(#linearGradient-1)" opacity="0.2" cx="200" cy="100" r="100"></circle>
+        <circle id="Decoration-2" fill="url(#linearGradient-1)" opacity="0.2" cx="1000" cy="575" r="100"></circle>
+        
+        <!-- Split design -->
+        <rect id="Left-Panel" fill="url(#linearGradient-1)" opacity="0.1" x="0" y="0" width="400" height="675"></rect>
+        
+        <!-- Logo -->
+        <g id="Logo" transform="translate(150, 237.5)">
+            <circle id="Logo-Background" fill="url(#linearGradient-1)" cx="100" cy="100" r="100"></circle>
+            
+            <!-- Brain icon representing AI -->
+            <path d="M100,50 C130,50 150,70 150,100 C150,130 130,150 100,150 C70,150 50,130 50,100 C50,70 70,50 100,50 Z" id="Brain-Outline" stroke="#FFFFFF" stroke-width="4" fill="none"></path>
+            
+            <!-- Neural network connections -->
+            <circle id="Node-1" fill="#FFFFFF" cx="80" cy="80" r="5"></circle>
+            <circle id="Node-2" fill="#FFFFFF" cx="120" cy="80" r="5"></circle>
+            <circle id="Node-3" fill="#FFFFFF" cx="100" cy="70" r="5"></circle>
+            <circle id="Node-4" fill="#FFFFFF" cx="100" cy="130" r="5"></circle>
+            <circle id="Node-5" fill="#FFFFFF" cx="80" cy="120" r="5"></circle>
+            <circle id="Node-6" fill="#FFFFFF" cx="120" cy="120" r="5"></circle>
+            
+            <!-- Connection lines -->
+            <line x1="80" y1="80" x2="120" y2="80" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="80" y1="80" x2="100" y2="70" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="120" y1="80" x2="100" y2="70" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="80" y1="80" x2="80" y2="120" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="120" y1="80" x2="120" y2="120" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="80" y1="120" x2="120" y2="120" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="80" y1="120" x2="100" y2="130" stroke="#FFFFFF" stroke-width="2"></line>
+            <line x1="120" y1="120" x2="100" y2="130" stroke="#FFFFFF" stroke-width="2"></line>
+            
+            <!-- Sparkles -->
+            <path d="M150,60 L155,65 M145,65 L155,55" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M50,140 L55,145 M45,145 L55,135" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path>
+        </g>
+        
+        <!-- Text -->
+        <text id="Title" font-family="Arial-BoldMT, Arial" font-size="60" font-weight="bold" fill="#FFFFFF">
+            <tspan x="450" y="200">Flasti AI</tspan>
+        </text>
+        <text id="Subtitle" font-family="ArialMT, Arial" font-size="30" font-weight="normal" fill="#FFFFFF">
+            <tspan x="450" y="250">La IA que revoluciona tu productividad</tspan>
+        </text>
+        
+        <!-- Features -->
+        <g id="Features" transform="translate(450, 300)">
+            <g id="Feature-1" transform="translate(0, 0)">
+                <circle id="Feature-Icon-1" fill="url(#linearGradient-1)" opacity="0.8" cx="25" cy="25" r="25"></circle>
+                <text id="Feature-Number-1" font-family="Arial-BoldMT, Arial" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+                    <tspan x="25" y="33">1</tspan>
+                </text>
+                <text id="Feature-Text-1" font-family="ArialMT, Arial" font-size="20" font-weight="normal" fill="#FFFFFF">
+                    <tspan x="60" y="30">Respuestas inteligentes a tus preguntas</tspan>
+                </text>
+            </g>
+            
+            <g id="Feature-2" transform="translate(0, 70)">
+                <circle id="Feature-Icon-2" fill="url(#linearGradient-1)" opacity="0.8" cx="25" cy="25" r="25"></circle>
+                <text id="Feature-Number-2" font-family="Arial-BoldMT, Arial" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+                    <tspan x="25" y="33">2</tspan>
+                </text>
+                <text id="Feature-Text-2" font-family="ArialMT, Arial" font-size="20" font-weight="normal" fill="#FFFFFF">
+                    <tspan x="60" y="30">Generación de contenido de alta calidad</tspan>
+                </text>
+            </g>
+            
+            <g id="Feature-3" transform="translate(0, 140)">
+                <circle id="Feature-Icon-3" fill="url(#linearGradient-1)" opacity="0.8" cx="25" cy="25" r="25"></circle>
+                <text id="Feature-Number-3" font-family="Arial-BoldMT, Arial" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+                    <tspan x="25" y="33">3</tspan>
+                </text>
+                <text id="Feature-Text-3" font-family="ArialMT, Arial" font-size="20" font-weight="normal" fill="#FFFFFF">
+                    <tspan x="60" y="30">Automatización de tareas repetitivas</tspan>
+                </text>
+            </g>
+        </g>
+        
+        <!-- CTA -->
+        <rect id="CTA-Background" fill="url(#linearGradient-1)" x="450" y="500" width="250" height="50" rx="25"></rect>
+        <text id="CTA-Text" font-family="Arial-BoldMT, Arial" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+            <tspan x="575" y="532">¡Descúbrelo ahora!</tspan>
+        </text>
+        
+        <!-- Hashtags -->
+        <text id="Hashtags" font-family="ArialMT, Arial" font-size="18" font-weight="normal" fill="#FFFFFF" opacity="0.7">
+            <tspan x="450" y="580">#FlastiAI #InteligenciaArtificial #Productividad</tspan>
+        </text>
+    </g>
+</svg>

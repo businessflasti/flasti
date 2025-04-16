@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Usuario - Flasti AI</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-container">
+                <img src="images/logo.svg" alt="Flasti AI Logo" class="dashboard-logo">
+                <h1>Flasti <span class="ai-text">AI</span></h1>
+            </div>
+            <div class="user-menu">
+                <span id="user-name">Usuario</span>
+                <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <nav class="dashboard-nav">
+                <a href="#generator-section" class="nav-item active">
+                    <span class="nav-icon">🎨</span>
+                    <span class="nav-text">Generador</span>
+                </a>
+                <a href="#history-section" class="nav-item">
+                    <span class="nav-icon">📂</span>
+                    <span class="nav-text">Historial</span>
+                </a>
+                <a href="#profile-section" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Perfil</span>
+                </a>
+            </nav>
+
+            <main class="dashboard-main">
+                <!-- Sección del Generador -->
+                <section id="generator-section" class="dashboard-section active">
+                    <h2 class="section-title">Generador de Imágenes</h2>
+
+                    <div class="generator-container">
+                        <div class="prompt-container">
+                            <label for="prompt-input">Describe la imagen que deseas crear:</label>
+                            <textarea id="prompt-input" placeholder="Ej: Un gato astronauta flotando en el espacio con un fondo de galaxia colorida" rows="4"></textarea>
+                            <button id="generate-btn" class="generate-btn">Generar Imagen</button>
+                        </div>
+
+                        <div id="result-container" class="result-container"></div>
+
+                        <div id="loading-indicator" class="loading-indicator" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Generando imagen... Esto puede tomar unos segundos.</p>
+                        </div>
+
+                        <div class="result-actions" style="display: flex; justify-content: center; margin-top: 20px;">
+                            <button id="save-btn" class="action-btn" style="display: none;">
+                                <span class="action-icon">💾</span>
+                                <span class="action-text">Guardar</span>
+                            </button>
+                            <button id="download-btn" class="action-btn" style="display: none;">
+                                <span class="action-icon">↓</span>
+                                <span class="action-text">Descargar</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección del Historial -->
+                <section id="history-section" class="dashboard-section">
+                    <h2 class="section-title">Historial de Imágenes</h2>
+
+                    <div id="history-gallery" class="history-gallery">
+                        <!-- Las imágenes se cargarán dinámicamente aquí -->
+                    </div>
+                </section>
+
+                <!-- Sección del Perfil -->
+                <section id="profile-section" class="dashboard-section">
+                    <h2 class="section-title">Mi Perfil</h2>
+
+                    <div class="profile-container">
+                        <div class="profile-info">
+                            <div class="profile-field">
+                                <label>Nombre:</label>
+                                <span id="profile-name">Usuario</span>
+                            </div>
+                            <div class="profile-field">
+                                <label>Email:</label>
+                                <span id="profile-email">usuario@ejemplo.com</span>
+                            </div>
+                            <div class="profile-field">
+                                <label>Plan:</label>
+                                <span id="profile-plan" class="plan-badge">Gratuito</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Popup de Premium -->
+        <div id="premium-popup" class="premium-popup">
+            <div class="premium-content">
+                <h2>¡Desbloquea Todo el Potencial!</h2>
+                <p class="premium-subtitle">Has alcanzado el límite de imágenes gratuitas</p>
+
+                <div class="premium-features">
+                    <div class="premium-feature">
+                        <span class="premium-icon">∞</span>
+                        <p><strong>Generación Ilimitada</strong><br>Crea todas las imágenes que desees sin restricciones</p>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="premium-icon">🎨</span>
+                        <p><strong>Alta Calidad</strong><br>Accede a la máxima calidad de generación de imágenes</p>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="premium-icon">💾</span>
+                        <p><strong>Almacenamiento</strong><br>Guarda todas tus creaciones en la nube</p>
+                    </div>
+                </div>
+
+                <div class="premium-price">
+                    <span class="price-value">$5</span>
+                    <span class="price-period">pago único</span>
+                </div>
+
+                <button id="get-premium-btn" class="premium-btn">Obtener Premium</button>
+                <button id="close-popup" class="close-popup">Continuar con Plan Gratuito</button>
+            </div>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p class="copyright">© Flasti | Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

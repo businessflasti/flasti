@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Usuario - Flasti AI</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-container">
+                <img src="images/logo.svg" alt="Flasti AI Logo" class="dashboard-logo">
+                <h1>Flasti <span class="ai-text">AI</span></h1>
+            </div>
+            <div class="user-menu">
+                <span id="user-name">Usuario</span>
+                <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="dashboard-sidebar">
+                <nav class="dashboard-nav">
+                    <ul>
+                        <li class="active"><a href="#generator">Generador de Imágenes</a></li>
+                        <li><a href="#history">Historial</a></li>
+                        <li><a href="#profile">Perfil</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="dashboard-content">
+                <section id="generator" class="dashboard-section active">
+                    <h2>Generador de Imágenes</h2>
+                    <div class="input-container">
+                        <input type="text" id="prompt-input" placeholder="Describe la imagen que imaginas...">
+                        <button id="generate-btn">Generar</button>
+                    </div>
+
+                    <div class="generated-image-container" id="generated-image-container" style="display: none;">
+                        <img id="generated-image" src="" alt="Imagen generada">
+                        <button id="download-btn" class="download-btn">
+                            <span class="download-icon">↓</span>
+                        </button>
+                        <button id="save-btn" class="save-btn">Guardar</button>
+                    </div>
+                </section>
+
+                <section id="history" class="dashboard-section">
+                    <h2>Historial de Imágenes</h2>
+                    <div class="history-gallery" id="history-gallery">
+                        <!-- Las imágenes guardadas se mostrarán aquí -->
+                        <p class="empty-state">No hay imágenes guardadas aún.</p>
+                    </div>
+                </section>
+
+                <section id="profile" class="dashboard-section">
+                    <h2>Perfil de Usuario</h2>
+                    <div class="profile-info">
+                        <div class="profile-field">
+                            <label>Nombre:</label>
+                            <span id="profile-name">-</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Correo:</label>
+                            <span id="profile-email">-</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Plan:</label>
+                            <span id="profile-plan" class="premium-badge">Premium</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="dashboard-footer">
+            <p class="copyright">© Flasti | Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth_functions.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
