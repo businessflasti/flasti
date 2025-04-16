@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Suspense } from 'react';
 
-export default function NotFound() {
+function NotFoundContent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="text-center">
@@ -17,5 +18,13 @@ export default function NotFound() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function NotFound() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
+      <NotFoundContent />
+    </Suspense>
   );
 }
