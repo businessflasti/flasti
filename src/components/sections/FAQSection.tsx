@@ -91,8 +91,9 @@ const FAQSection = () => {
               className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5 hardware-accelerated"
             >
               <button
-                className="w-full p-6 flex items-center justify-between text-left group hardware-accelerated mobile-touch-friendly"
+                className="w-full p-6 flex items-center justify-between text-left group hardware-accelerated mobile-touch-friendly interactive"
                 onClick={() => toggleFAQ(index)}
+                style={{ touchAction: 'manipulation' }}
               >
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10 hardware-accelerated" style={{ willChange: openIndex === index ? 'transform' : 'auto', transform: openIndex === index ? 'scale(1.05)' : 'scale(1)' }}>
