@@ -197,21 +197,31 @@
   /* Igualar ancho de bloques de contadores en móviles */
   @media (max-width: 640px) {
     .hero-stats-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
       width: 100%;
       max-width: 100%;
-      padding: 0 16px;
       margin: 0 auto;
       gap: 8px;
+      padding: 0 8px;
     }
 
     .hero-stats-container > div {
-      width: 100%;
-      max-width: none;
-      flex: none;
-      padding-left: 8px;
-      padding-right: 8px;
+      width: 48%;
+      min-width: 0;
+      max-width: 48%;
+      flex: 0 0 48%;
+      padding-left: 4px;
+      padding-right: 4px;
+      font-size: 0.9rem;
+    }
+
+    /* Asegurar que el texto no se desborde */
+    .hero-stats-container p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
     }
   }
 
