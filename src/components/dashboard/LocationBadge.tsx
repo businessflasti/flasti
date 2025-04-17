@@ -26,18 +26,15 @@ const LocationBadge = () => {
           error: false
         });
 
-        // Variable para almacenar los datos de ubicación
-        let locationInfo = null;
-
         // Intentar obtener la ubicación real
         try {
           const response = await fetch('https://ipapi.co/json/');
           if (!response.ok) throw new Error('Error al obtener la ubicación');
 
-          locationInfo = await response.json();
+          const data = await response.json();
 
           // Obtener la zona horaria del país detectado
-          const timezone = locationInfo.timezone;
+          const timezone = data.timezone;
 
           // Formatear la hora local usando la zona horaria del país detectado
           let timeString;
@@ -64,9 +61,9 @@ const LocationBadge = () => {
           }
 
           setLocationData({
-            country: locationInfo.country_name || 'Global',
-            countryCode: locationInfo.country_code ? locationInfo.country_code.toLowerCase() : 'global',
-            city: locationInfo.city || '',
+            country: data.country_name || 'Global',
+            countryCode: data.country_code ? data.country_code.toLowerCase() : 'global',
+            city: data.city || '',
             time: timeString,
             loading: false,
             error: false
@@ -79,13 +76,13 @@ const LocationBadge = () => {
         // Actualizar la hora cada minuto usando la zona horaria correcta
         const interval = setInterval(() => {
           // Usar la zona horaria guardada en el estado
-          if (locationInfo && locationInfo.timezone) {
+          if (locationData.countryCode !== 'global' && data && data.timezone) {
             try {
               const options = {
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: false,
-                timeZone: locationInfo.timezone
+                timeZone: data.timezone
               };
 
               const formatter = new Intl.DateTimeFormat('es-ES', options);

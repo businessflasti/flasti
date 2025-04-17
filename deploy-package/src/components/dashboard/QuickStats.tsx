@@ -28,45 +28,105 @@ export default function QuickStats() {
 
   // Cargar datos reales del usuario
   useEffect(() => {
-    // Si no hay usuario, no intentar cargar datos
-    if (!user) {
-      setLoading(false);
-      return;
-    }
+    if (!user) return;
 
     const loadStats = async () => {
       setLoading(true);
 
       try {
-        // Establecer valores predeterminados en cero para evitar errores
+        // Verificar si las tablas existen antes de consultar
+        const { data: tableInfo, error: tableError } = await supabase
+          .from('information_schema.tables')
+          .select('table_name')
+          .in('table_name', ['affiliate_visits', 'sales'])
+          .limit(2);
+
+        // Si hay un error o no existen las tablas, usar valores en cero
+        if (tableError || !tableInfo || tableInfo.length < 2) {
+          console.warn('Las tablas de estadísticas no existen o no están disponibles');
+          setStats({
+            totalClicks: 0,
+            totalSales: 0,
+            conversionRate: 0,
+            lastActivity: '---'
+          });
+          setLastUpdate(new Date());
+          return;
+        }
+
+        // Obtener datos de clics
+        const { data: clicksData, error: clicksError } = await supabase
+          .from('affiliate_visits')
+          .select('count')
+          .eq('affiliate_id', user.id);
+
+        // Si hay error, usar valores en cero para clics
+        if (clicksError) {
+          console.error('Error al obtener datos de clics:', clicksError);
+        }
+
+        // Obtener datos de ventas
+        const { data: salesData, error: salesError } = await supabase
+          .from('sales')
+          .select('*')
+          .eq('affiliate_id', user.id);
+
+        // Si hay error, usar valores en cero para ventas
+        if (salesError) {
+          console.error('Error al obtener datos de ventas:', salesError);
+        }
+
+        // Obtener última actividad
+        const { data: activityData, error: activityError } = await supabase
+          .from('affiliate_visits')
+          .select('created_at')
+          .eq('affiliate_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        // Si hay error, usar valor por defecto para actividad
+        if (activityError) {
+          console.error('Error al obtener datos de actividad:', activityError);
+        }
+
+        // Calcular estadísticas
+        const totalClicks = clicksData && Array.isArray(clicksData) ? clicksData.length : 0;
+        const totalSales = salesData && Array.isArray(salesData) ? salesData.length : 0;
+        const conversionRate = totalClicks > 0 ? (totalSales / totalClicks) * 100 : 0;
+        const lastActivity = activityData && Array.isArray(activityData) && activityData.length > 0
+          ? new Date(activityData[0].created_at).toLocaleTimeString()
+          : '---';
+
+        setStats({
+          totalClicks,
+          totalSales,
+          conversionRate,
+          lastActivity
+        });
+
+        setLastUpdate(new Date());
+      } catch (error) {
+        console.error('Error al cargar estadísticas:', error);
+        toast.error('Error al cargar estadísticas');
+        // En caso de error, establecer valores en cero
         setStats({
           totalClicks: 0,
           totalSales: 0,
           conversionRate: 0,
           lastActivity: '---'
         });
-
-        // Actualizar la hora de última actualización
-        setLastUpdate(new Date());
-
-        // Finalizar la carga
-        setLoading(false);
-      } catch (error) {
-        console.error('Error al cargar estadísticas:', error);
-        // No mostrar toast para evitar spam de errores al usuario
-        // En caso de error, mantener valores en cero
+      } finally {
         setLoading(false);
       }
     };
 
     loadStats();
 
-    // No configuramos actualización periódica para evitar errores
-    // const interval = setInterval(loadStats, 300000); // Actualizar cada 5 minutos
-    // return () => clearInterval(interval);
+    // Configurar actualización periódica de datos reales
+    // Usar un intervalo más largo para reducir el consumo de recursos
+    const interval = setInterval(loadStats, 300000); // Actualizar cada 5 minutos
 
-    // No hay nada que limpiar
-    return () => {};
+    return () => clearInterval(interval);
   }, [user]);
 
   return (
