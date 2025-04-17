@@ -1,17 +1,19 @@
 "use client";
 
 import { Users, Briefcase, TrendingUp } from "lucide-react";
-
-const stats = [
-  // 1. +$250,000 generados por usuarios
-  { value: "+$250,000", label: "Generados por usuarios", icon: <TrendingUp className="h-5 w-5" /> },
-  // 2. +5,000 usuarios activos
-  { value: "+5,000", label: "Usuarios activos", icon: <Users className="h-5 w-5" /> },
-  // 3. +1,200 microtrabajos completados
-  { value: "+1,200", label: "Microtrabajos completados", icon: <Briefcase className="h-5 w-5" /> }
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TrustedBySection = () => {
+  const { t } = useLanguage();
+
+  const stats = [
+    // 1. +$250,000 generados por usuarios
+    { value: "+$250,000", label: t('generadosPorUsuarios'), icon: <TrendingUp className="h-5 w-5" /> },
+    // 2. +5,000 usuarios activos
+    { value: "+5,000", label: "Usuarios activos", icon: <Users className="h-5 w-5" /> },
+    // 3. +1,200 microtrabajos completados
+    { value: "+1,200", label: t('microtrabajosCompletados'), icon: <Briefcase className="h-5 w-5" /> }
+  ];
   return (
     <section className="py-16 relative overflow-hidden">
       <div className="absolute inset-0 z-0">
