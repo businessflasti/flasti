@@ -258,8 +258,12 @@ const PricingSection = () => {
                   </div>
                   <div className="h-2 w-full bg-[#ef4444]/30 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-[#ef4444] to-[#22c55e] rounded-full transition-all duration-1000 ease-out"
-                      style={{ width: `87%` }}
+                      className="h-full bg-gradient-to-r from-[#ef4444] to-[#22c55e] rounded-full"
+                      style={{
+                        width: '87%',
+                        maxWidth: '87%',
+                        transition: 'none'
+                      }}
                     ></div>
                   </div>
                 </div>
