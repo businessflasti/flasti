@@ -12,6 +12,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "sonner";
 import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
+import PerformanceOptimizer from "@/components/performance/PerformanceOptimizer";
+import ScrollOptimizer from "@/components/performance/ScrollOptimizer";
+import ImageOptimizer from "@/components/performance/ImageOptimizer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,6 +53,9 @@ export default function RootLayout({
                     <Toaster position="top-right" richColors />
                     <CopyProtection />
                     <AffiliateClickRecorder />
+                    <PerformanceOptimizer />
+                    <ScrollOptimizer />
+                    <ImageOptimizer />
                     {children}
                   </EnhancedNotificationProvider>
                 </OnboardingProvider>

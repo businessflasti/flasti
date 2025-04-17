@@ -7,6 +7,7 @@ import {
   optimizeDecorativeElements
 } from '@/utils/performance-optimizations';
 import { preloadCriticalResources } from '@/utils/preload-resources';
+import { applyMobileOptimizations } from '@/utils/mobile-performance';
 import { usePathname } from 'next/navigation';
 
 /**
@@ -31,6 +32,9 @@ const PerformanceOptimizer = () => {
 
       // Optimizar el renderizado
       optimizeRendering();
+
+      // Aplicar optimizaciones para dispositivos móviles sin afectar la apariencia visual
+      applyMobileOptimizations();
 
       // Marcar como optimizado
       setIsOptimized(true);
