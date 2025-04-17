@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacidadPage() {
   return (
-    <MainLayout showHeader={true}>
+    <MainLayout showHeader={true} disableChat={true}>
       <div className="container-custom py-16 md:py-24">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gradient">

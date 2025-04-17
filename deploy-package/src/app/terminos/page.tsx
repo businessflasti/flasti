@@ -7,7 +7,7 @@ import { Suspense } from "react";
 
 export default function TerminosPage() {
   return (
-    <MainLayout showHeader={true}>
+    <MainLayout showHeader={true} disableChat={true}>
       <Suspense fallback={<div className="container-custom py-16 md:py-24">Cargando...</div>}>
         <div className="container-custom py-16 md:py-24">
         <div className="max-w-3xl mx-auto">

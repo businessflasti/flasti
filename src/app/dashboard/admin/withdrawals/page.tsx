@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { WithdrawalRequest } from "@/lib/withdrawal-service";
 
-function AdminWithdrawalsContent() {
+export default function AdminWithdrawalsPage() {
   const { t } = useLanguage();
   const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -126,7 +126,7 @@ function AdminWithdrawalsContent() {
       // Aplicar filtro de búsqueda por término
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
-        const matchesSearch =
+        const matchesSearch = 
           withdrawal.username.toLowerCase().includes(searchLower) ||
           withdrawal.email.toLowerCase().includes(searchLower) ||
           withdrawal.id.toLowerCase().includes(searchLower);
@@ -243,8 +243,8 @@ function AdminWithdrawalsContent() {
                 ) : (
                   <div className="divide-y divide-border/10 max-h-[600px] overflow-y-auto pr-2">
                     {filteredWithdrawals.map((withdrawal) => (
-                      <div
-                        key={withdrawal.id}
+                      <div 
+                        key={withdrawal.id} 
                         className={`py-4 first:pt-0 cursor-pointer transition-colors ${selectedRequest?.id === withdrawal.id ? 'bg-primary/5 -mx-4 px-4' : 'hover:bg-primary/5 -mx-4 px-4'}`}
                         onClick={() => setSelectedRequest(withdrawal)}
                       >
@@ -278,7 +278,7 @@ function AdminWithdrawalsContent() {
                 {selectedRequest ? (
                   <div>
                     <h2 className="text-xl font-medium mb-4">{t('detallesSolicitud') as string}</h2>
-
+                    
                     <div className="space-y-4 mb-6">
                       <div className="flex justify-between">
                         <span className="text-foreground/60">{t('id') as string}</span>
@@ -320,24 +320,24 @@ function AdminWithdrawalsContent() {
                       <div className="space-y-4">
                         <div className="pt-4 border-t border-border/10">
                           <h3 className="font-medium mb-2">{t('accionesSolicitud') as string}</h3>
-
+                          
                           <div className="flex flex-col gap-3">
-                            <Button
+                            <Button 
                               onClick={() => handleApprove(selectedRequest)}
                               className="bg-green-600 hover:bg-green-700 text-white"
                             >
                               <CheckCircle className="mr-2 h-4 w-4" />
                               {t('aprobarSolicitud') as string}
                             </Button>
-
+                            
                             <div className="space-y-2">
-                              <Textarea
+                              <Textarea 
                                 placeholder={t('razonRechazo') as string}
                                 value={rejectionReason}
                                 onChange={(e) => setRejectionReason(e.target.value)}
                                 className="min-h-[80px]"
                               />
-                              <Button
+                              <Button 
                                 onClick={() => handleReject(selectedRequest)}
                                 variant="destructive"
                                 className="w-full"
@@ -362,13 +362,5 @@ function AdminWithdrawalsContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function AdminWithdrawalsPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
-      <AdminWithdrawalsContent />
-    </Suspense>
   );
 }

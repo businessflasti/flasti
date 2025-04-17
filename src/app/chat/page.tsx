@@ -46,16 +46,16 @@ export default function ChatPage() {
         "Hemos recibido tu mensaje. Nuestro equipo está trabajando para ayudarte lo antes posible.",
         "Gracias por contactarnos. Tu consulta es importante para nosotros y será atendida en breve.",
       ];
-      
+
       const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
-      
+
       const botMessage = {
         id: messages.length + 2,
         text: randomResponse,
         isUser: false,
         timestamp: new Date(),
       };
-      
+
       setMessages((prev) => [...prev, botMessage]);
     }, 1000);
   };
@@ -71,9 +71,9 @@ export default function ChatPage() {
       alert("Por favor, completa todos los campos");
       return;
     }
-    
+
     setIsRegistered(true);
-    
+
     // Mensaje de bienvenida personalizado
     const welcomeMessage = {
       id: messages.length + 1,
@@ -81,7 +81,7 @@ export default function ChatPage() {
       isUser: false,
       timestamp: new Date(),
     };
-    
+
     setMessages((prev) => [...prev, welcomeMessage]);
   };
 
@@ -90,7 +90,7 @@ export default function ChatPage() {
   };
 
   return (
-    <MainLayout showHeader={true}>
+    <MainLayout showHeader={true} disableChat={true}>
       <div className="container-custom py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
@@ -153,7 +153,7 @@ export default function ChatPage() {
                   <p className="text-xs text-foreground/60">En línea</p>
                 </div>
               </div>
-              
+
               {/* Área de mensajes */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((message) => (
@@ -189,7 +189,7 @@ export default function ChatPage() {
                 ))}
                 <div ref={messagesEndRef} />
               </div>
-              
+
               {/* Área de entrada de texto */}
               <div className="p-4 border-t border-white/10 bg-card/50">
                 <div className="flex">

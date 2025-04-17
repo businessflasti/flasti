@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AyudaPage() {
   return (
-    <MainLayout showHeader={true}>
+    <MainLayout showHeader={true} disableChat={true}>
       <div className="container-custom py-16 md:py-24">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -27,7 +27,7 @@ export default function AyudaPage() {
           <div className="bg-card/30 backdrop-blur-sm p-8 rounded-2xl border border-white/5 mb-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-60 h-60 bg-primary/5 rounded-full blur-3xl -z-10"></div>
             <div className="absolute bottom-0 left-0 w-60 h-60 bg-accent/5 rounded-full blur-3xl -z-10"></div>
-            
+
             <h2 className="text-2xl font-bold mb-4 text-center font-outfit">¿Cómo podemos ayudarte?</h2>
             <div className="flex max-w-xl mx-auto">
               <div className="relative flex-1">
@@ -47,7 +47,7 @@ export default function AyudaPage() {
           {/* Categorías */}
           <div className="mb-16">
             <h2 className="text-2xl font-bold mb-8 text-center font-outfit">Categorías Populares</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-card/20 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 hover-lift">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
@@ -93,7 +93,7 @@ export default function AyudaPage() {
           {/* Preguntas frecuentes */}
           <div className="mb-16">
             <h2 className="text-2xl font-bold mb-8 text-center font-outfit">Preguntas Frecuentes</h2>
-            
+
             <div className="space-y-4">
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300">
                 <h3 className="text-xl font-semibold mb-2 font-outfit">¿Cómo funciona el sistema de niveles?</h3>
@@ -101,21 +101,21 @@ export default function AyudaPage() {
                   El sistema de niveles de Flasti se basa en tu actividad y rendimiento en la plataforma. A medida que generas más ingresos, avanzas automáticamente a niveles superiores que ofrecen mayores comisiones y beneficios. Hay tres niveles: Nivel 1 (50% de comisión), Nivel 2 (60% de comisión) y Nivel 3 (70% de comisión).
                 </p>
               </div>
-              
+
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300">
                 <h3 className="text-xl font-semibold mb-2 font-outfit">¿Cuándo recibo mis pagos?</h3>
                 <p className="text-foreground/70">
                   Los pagos se procesan dentro de las 48 horas posteriores a tu solicitud de retiro. El tiempo exacto de acreditación depende del método de pago seleccionado. Para PayPal, generalmente toma 1-2 días hábiles, mientras que las transferencias bancarias pueden demorar entre 3-5 días hábiles.
                 </p>
               </div>
-              
+
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300">
                 <h3 className="text-xl font-semibold mb-2 font-outfit">¿Cómo genero mi enlace de afiliado?</h3>
                 <p className="text-foreground/70">
                   Para generar tu enlace de afiliado, inicia sesión en tu cuenta de Flasti y ve a la sección "Programa de Afiliados" en tu panel de control. Allí encontrarás la opción para generar enlaces personalizados para cada aplicación disponible. Puedes compartir estos enlaces en redes sociales, correos electrónicos o cualquier otro canal para comenzar a ganar comisiones.
                 </p>
               </div>
-              
+
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300">
                 <h3 className="text-xl font-semibold mb-2 font-outfit">¿Qué hago si olvidé mi contraseña?</h3>
                 <p className="text-foreground/70">

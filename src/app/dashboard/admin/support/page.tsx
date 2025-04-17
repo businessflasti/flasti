@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChatTablesError } from '@/components/ui/chat-tables-error';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-function SupportPageContent() {
+export default function Page() {
   const { user } = useAuth();
   const router = useRouter();
   const [message, setMessage] = useState('');
@@ -733,13 +733,5 @@ function SupportPageContent() {
       </div>
       )}
     </div>
-  );
-}
-
-export default function Page() {
-  return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
-      <SupportPageContent />
-    </Suspense>
   );
 }

@@ -74,6 +74,21 @@ export default function LiveNotifications() {
 
     const loadNotifications = async () => {
       try {
+        // Verificar si la tabla existe antes de consultar
+        const { data: tableInfo, error: tableError } = await supabase
+          .from('information_schema.tables')
+          .select('table_name')
+          .eq('table_name', 'notifications')
+          .limit(1);
+
+        // Si hay un error o no existe la tabla, usar un array vacío
+        if (tableError || !tableInfo || tableInfo.length === 0) {
+          console.warn('La tabla de notificaciones no existe o no está disponible');
+          setNotifications([]);
+          setUnreadCount(0);
+          return;
+        }
+
         // Obtener notificaciones de la base de datos
         const { data: notificationsData, error } = await supabase
           .from('notifications')
@@ -82,23 +97,29 @@ export default function LiveNotifications() {
           .order('created_at', { ascending: false })
           .limit(20);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error al obtener notificaciones:', error);
+          return;
+        }
 
         // Convertir a formato de notificaciones
         const formattedNotifications: Notification[] = (notificationsData || []).map(notification => ({
-          id: notification.id,
-          type: notification.type,
-          title: notification.title,
-          message: notification.message,
+          id: notification.id || `temp-${Date.now()}`,
+          type: notification.type || 'system',
+          title: notification.title || 'Notificación',
+          message: notification.message || '',
           amount: notification.amount,
-          timestamp: new Date(notification.created_at),
-          read: notification.read
+          timestamp: notification.created_at ? new Date(notification.created_at) : new Date(),
+          read: !!notification.read
         }));
 
         setNotifications(formattedNotifications);
         updateUnreadCount(formattedNotifications);
       } catch (error) {
         console.error('Error al cargar notificaciones:', error);
+        // En caso de error, mantener un array vacío
+        setNotifications([]);
+        setUnreadCount(0);
       }
     };
 
@@ -108,33 +129,50 @@ export default function LiveNotifications() {
     // Usar un intervalo más largo para reducir el consumo de recursos
     const interval = setInterval(loadNotifications, 300000); // Actualizar cada 5 minutos
 
-    // Suscribirse a cambios en tiempo real en la tabla de notificaciones
-    const subscription = supabase
-      .channel('notifications-channel')
-      .on('postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
-        (payload) => {
-          const newNotif = payload.new as any;
-          const notification: Notification = {
-            id: newNotif.id,
-            type: newNotif.type,
-            title: newNotif.title,
-            message: newNotif.message,
-            amount: newNotif.amount,
-            timestamp: new Date(newNotif.created_at),
-            read: false
-          };
+    // Intentar suscribirse a cambios en tiempo real solo si la tabla existe
+    let subscription;
+    try {
+      subscription = supabase
+        .channel('notifications-channel')
+        .on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            try {
+              const newNotif = payload.new as any;
+              if (!newNotif) return;
 
-          // Actualizar lista de notificaciones
-          setNotifications(prev => [notification, ...prev]);
-          updateUnreadCount([notification, ...notifications]);
-        }
-      )
-      .subscribe();
+              const notification: Notification = {
+                id: newNotif.id || `temp-${Date.now()}`,
+                type: newNotif.type || 'system',
+                title: newNotif.title || 'Notificación',
+                message: newNotif.message || '',
+                amount: newNotif.amount,
+                timestamp: newNotif.created_at ? new Date(newNotif.created_at) : new Date(),
+                read: false
+              };
+
+              // Actualizar lista de notificaciones
+              setNotifications(prev => [notification, ...prev]);
+              updateUnreadCount([notification, ...notifications]);
+            } catch (error) {
+              console.error('Error al procesar notificación en tiempo real:', error);
+            }
+          }
+        )
+        .subscribe();
+    } catch (error) {
+      console.error('Error al suscribirse a notificaciones en tiempo real:', error);
+    }
 
     return () => {
       clearInterval(interval);
-      subscription.unsubscribe();
+      if (subscription) {
+        try {
+          subscription.unsubscribe();
+        } catch (error) {
+          console.error('Error al cancelar suscripción:', error);
+        }
+      }
     };
   }, [user]);
 

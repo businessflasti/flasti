@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
-function AddBalanceContent() {
+export default function AddBalancePage() {
   const [email, setEmail] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -136,13 +136,5 @@ function AddBalanceContent() {
         </form>
       </Card>
     </div>
-  );
-}
-
-export default function AddBalancePage() {
-  return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
-      <AddBalanceContent />
-    </Suspense>
   );
 }

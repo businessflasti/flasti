@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AppWindow, Link2, Copy, Check, ExternalLink } from 'lucide-react';
 import { affiliateServiceEnhanced } from '@/lib/affiliate-service-enhanced';
 import { App } from '@/lib/supabase';
 
-function AppsPageContent() {
+export default function AppsPage() {
   const [apps, setApps] = useState<App[]>([]);
   const [userLinks, setUserLinks] = useState<Record<number, string>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -21,16 +21,16 @@ function AppsPageContent() {
         // Obtener todas las aplicaciones disponibles
         const availableApps = await affiliateServiceEnhanced.getAvailableApps();
         setApps(availableApps);
-
+        
         // Obtener enlaces del usuario
         const { links } = await affiliateServiceEnhanced.getUserAffiliateLinks('user123'); // En un caso real, obtendríamos el ID del usuario autenticado
-
+        
         // Crear un mapa de appId -> url
         const linkMap: Record<number, string> = {};
         links.forEach(link => {
           linkMap[link.app_id] = link.url;
         });
-
+        
         setUserLinks(linkMap);
       } catch (error) {
         console.error('Error al cargar aplicaciones:', error);
@@ -38,7 +38,7 @@ function AppsPageContent() {
         setIsLoading(false);
       }
     };
-
+    
     fetchData();
   }, []);
 
@@ -47,7 +47,7 @@ function AppsPageContent() {
       setGeneratingLink(appId);
       // En un caso real, obtendríamos el ID del usuario autenticado
       const result = await affiliateServiceEnhanced.generateAffiliateLink('user123', appId);
-
+      
       if (result.success && result.link) {
         setUserLinks(prev => ({
           ...prev,
@@ -77,7 +77,7 @@ function AppsPageContent() {
 
       <div className="relative z-10">
         <h1 className="text-3xl font-bold mb-8">Aplicaciones Disponibles</h1>
-
+        
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -89,7 +89,7 @@ function AppsPageContent() {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
-                      <div
+                      <div 
                         className="w-12 h-12 rounded-xl flex items-center justify-center mr-3"
                         style={{
                           backgroundColor: app.icon_bg || '#9333ea20',
@@ -104,9 +104,9 @@ function AppsPageContent() {
                       </div>
                     </div>
                   </div>
-
+                  
                   <p className="text-sm mb-6 line-clamp-2">{app.description}</p>
-
+                  
                   {userLinks[app.id] ? (
                     <div className="space-y-3">
                       <div className="flex items-center">
@@ -114,26 +114,26 @@ function AppsPageContent() {
                         <span className="text-sm font-medium">Tu enlace de afiliado:</span>
                       </div>
                       <div className="flex items-center bg-muted/30 rounded-md p-2 text-sm">
-                        <input
-                          type="text"
-                          value={userLinks[app.id]}
-                          readOnly
+                        <input 
+                          type="text" 
+                          value={userLinks[app.id]} 
+                          readOnly 
                           className="bg-transparent flex-1 outline-none overflow-hidden text-ellipsis"
                         />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="ml-2 h-8 w-8 p-0"
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="ml-2 h-8 w-8 p-0" 
                           onClick={() => copyToClipboard(app.id, userLinks[app.id])}
                         >
                           {copiedLink === app.id ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
                         </Button>
                       </div>
                       <div className="flex justify-between">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-xs"
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs" 
                           onClick={() => window.open(userLinks[app.id], '_blank')}
                         >
                           <ExternalLink size={14} className="mr-1" />
@@ -145,8 +145,8 @@ function AppsPageContent() {
                       </div>
                     </div>
                   ) : (
-                    <Button
-                      className="w-full"
+                    <Button 
+                      className="w-full" 
                       onClick={() => generateLink(app.id)}
                       disabled={generatingLink === app.id}
                     >
@@ -170,13 +170,5 @@ function AppsPageContent() {
         )}
       </div>
     </div>
-  );
-}
-
-export default function AppsPage() {
-  return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
-      <AppsPageContent />
-    </Suspense>
   );
 }

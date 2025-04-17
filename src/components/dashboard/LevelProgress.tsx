@@ -13,36 +13,43 @@ export default function LevelProgress() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!profile) {
+    try {
       setLoading(true);
-      return;
-    }
 
-    setLoading(true);
+      // Si no hay perfil, mantener el estado de carga
+      if (!profile) {
+        return;
+      }
 
-    // Calcular progreso usando datos reales del usuario
-    const currentLevel = profile.level || 1;
-    const currentBalance = profile.balance || 0;
-    const nextThreshold = getNextLevelThreshold();
+      // Calcular progreso usando datos reales del usuario
+      const currentLevel = profile.level || 1;
+      const currentBalance = profile.balance || 0;
+      const nextThreshold = getNextLevelThreshold();
 
-    // Si ya está en el nivel máximo o no hay siguiente umbral
-    if (currentLevel >= 3 || nextThreshold === null) {
-      setProgress(100);
+      // Si ya está en el nivel máximo o no hay siguiente umbral
+      if (currentLevel >= 3 || nextThreshold === null) {
+        setProgress(100);
+        setLoading(false);
+        return;
+      }
+
+      // Calcular el umbral anterior basado en el nivel actual
+      const prevThreshold = currentLevel === 1 ? 0 : currentLevel === 2 ? 20 : 30;
+
+      // Calcular el progreso como porcentaje entre el umbral anterior y el siguiente
+      const levelProgress = Math.min(100, Math.max(0,
+        ((currentBalance - prevThreshold) / (nextThreshold - prevThreshold)) * 100
+      ));
+
+      // Establecer el progreso directamente sin animación
+      setProgress(levelProgress);
+    } catch (error) {
+      console.error('Error al calcular el progreso de nivel:', error);
+      // En caso de error, establecer un valor predeterminado
+      setProgress(0);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Calcular el umbral anterior basado en el nivel actual
-    const prevThreshold = currentLevel === 1 ? 0 : currentLevel === 2 ? 20 : 30;
-
-    // Calcular el progreso como porcentaje entre el umbral anterior y el siguiente
-    const levelProgress = Math.min(100, Math.max(0,
-      ((currentBalance - prevThreshold) / (nextThreshold - prevThreshold)) * 100
-    ));
-
-    // Establecer el progreso directamente sin animación
-    setProgress(levelProgress);
-    setLoading(false);
   }, [profile, getNextLevelThreshold]);
 
   // Datos de niveles
