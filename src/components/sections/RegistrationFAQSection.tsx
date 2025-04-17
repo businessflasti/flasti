@@ -51,8 +51,6 @@ const RegistrationFAQSection = () => {
       <div className="absolute inset-0 z-0">
         <div className="absolute top-20 right-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
         <div className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-[#ec4899]/10 blur-3xl"></div>
-        <div className="absolute top-40 left-[20%] w-3 h-3 rounded-full bg-[#ec4899] animate-pulse"></div>
-        <div className="absolute bottom-40 right-[15%] w-2 h-2 rounded-full bg-[#f97316] animate-ping"></div>
       </div>
 
       <div className="container-custom relative z-10">
