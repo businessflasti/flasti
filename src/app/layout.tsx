@@ -12,8 +12,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "sonner";
 import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
-import MobileExperience from "@/components/ui/mobile-experience";
-import PerformanceOptimizer from "@/components/performance/PerformanceOptimizer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -41,9 +39,7 @@ export default function RootLayout({
           });
         ` }} />
       </head>
-      <body className={`${inter.className} mobile-smooth-scroll`}>
-        <MobileExperience />
-        <PerformanceOptimizer />
+      <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
             <LanguageProvider>

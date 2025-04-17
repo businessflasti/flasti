@@ -32,60 +32,6 @@ const PerformanceOptimizer = () => {
       // Optimizar el renderizado
       optimizeRendering();
 
-      // Optimizaciones para todos los dispositivos
-      const globalOptimizations = () => {
-        // Aplicar aceleración por hardware a elementos clave
-        document.querySelectorAll('.glass-card, .card, .glass-effect, .blur-3xl, .blur-2xl, .blur-xl, .animate-gradient-shift, .animate-float, .animate-pulse').forEach((element) => {
-          element.classList.add('hardware-accelerated');
-        });
-
-        // Optimizar imágenes
-        document.querySelectorAll('img').forEach((img) => {
-          if (!img.hasAttribute('loading')) {
-            img.setAttribute('loading', 'lazy');
-          }
-          if (!img.hasAttribute('decoding')) {
-            img.setAttribute('decoding', 'async');
-          }
-        });
-
-        // Optimizar interacciones
-        document.querySelectorAll('button, a, [role="button"]').forEach((element) => {
-          element.classList.add('hardware-accelerated');
-        });
-      };
-
-      // Optimizaciones específicas para dispositivos móviles
-      const mobileOptimizations = () => {
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-          // Optimizar FAQs para dispositivos móviles
-          document.querySelectorAll('.faq-content').forEach((element) => {
-            element.classList.add('hardware-accelerated');
-          });
-        }
-      };
-
-      // Optimizaciones específicas para escritorio
-      const desktopOptimizations = () => {
-        if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-          // Optimizar efectos visuales en escritorio
-          const style = document.createElement('style');
-          style.textContent = `
-            .hardware-accelerated {
-              transform: translateZ(0);
-              will-change: transform;
-              backface-visibility: hidden;
-            }
-          `;
-          document.head.appendChild(style);
-        }
-      };
-
-      // Ejecutar optimizaciones
-      globalOptimizations();
-      mobileOptimizations();
-      desktopOptimizations();
-
       // Marcar como optimizado
       setIsOptimized(true);
     }
