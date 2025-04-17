@@ -480,7 +480,10 @@ const CheckoutContent = () => {
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="font-medium mb-1 text-white">Pago con PayPal</h3>
-                        <p className="text-sm text-white/70">Activa tu acceso al instante con PayPal de forma rápida y segura.</p>
+                        <p className="text-sm text-white/70">
+                          <span className="sm:inline block">Activa tu acceso al instante con PayPal</span>
+                          <span className="sm:inline block"> de forma rápida y segura.</span>
+                        </p>
                       </div>
                       <div className="text-white">
                         <PayPalIcon className="h-8 w-8" />
