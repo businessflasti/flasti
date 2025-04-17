@@ -172,7 +172,7 @@ export const translations = {
     pagoSeguro: 'Pago seguro con',
     monedaLocal: 'Moneda local',
     descuento: '80% OFF',
-    ofertaTermina: '¡La oferta con 80% OFF termina en:',
+    ofertaTermina: '¡La oferta termina en:',
 
     // CTA Section
     conoceFlasti: 'Conoce a Flasti',
@@ -411,7 +411,7 @@ export const translations = {
     pagoSeguro: 'Secure payment with',
     monedaLocal: 'Local currency',
     descuento: '80% OFF',
-    ofertaTermina: 'The 80% OFF offer ends in:',
+    ofertaTermina: 'The offer ends in:',
 
     // CTA Section
     conoceFlasti: 'Get to know Flasti',
@@ -607,7 +607,7 @@ export const translations = {
     pagoSeguro: 'Pagamento seguro com',
     monedaLocal: 'Moeda local',
     descuento: '80% OFF',
-    ofertaTermina: 'A oferta com 80% OFF termina em:',
+    ofertaTermina: 'A oferta termina em:',
 
     // CTA Section
     conoceFlasti: 'Conheça a Flasti',
