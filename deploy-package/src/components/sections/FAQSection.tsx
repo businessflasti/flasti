@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
-import FAQOptimizer from "@/components/performance/FAQOptimizer";
+import { optimizeFAQs } from "@/utils/faq-optimizer";
 
 const faqs = [
   {
@@ -69,14 +69,18 @@ const pulseAnimation = `
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  // Optimización: Usar función de actualización para evitar cierres sobre valores obsoletos
-  const toggleFAQ = useCallback((index: number) => {
-    setOpenIndex(prevIndex => prevIndex === index ? null : index);
+  // Optimizar las FAQs para que abran/cierren más rápido
+  useEffect(() => {
+    // Aplicar optimización después de que el componente se monte
+    optimizeFAQs();
   }, []);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <section className="py-24 relative overflow-hidden">
-      <FAQOptimizer />
       <style jsx global>{pulseAnimation}</style>
       {/* Elementos decorativos del fondo */}
       <div className="absolute inset-0 z-0">
