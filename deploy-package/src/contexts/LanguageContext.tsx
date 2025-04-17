@@ -81,6 +81,7 @@ export const translations = {
 
     // Testimonials Section
     experienciasUsuarios: 'Conoce las experiencias de aquellos que ya están<br />generando ingresos con Flasti',
+    experienciasUsuariosMobile: 'Conoce las experiencias<br />de aquellos que ya están<br />generando ingresos con Flasti',
 
     // Dashboard Preview Section
     metodosRetiroDisponibles: 'Métodos de retiro disponibles',
@@ -320,6 +321,7 @@ export const translations = {
 
     // Testimonials Section
     experienciasUsuarios: 'Discover the experiences of those who are already<br />generating income with Flasti',
+    experienciasUsuariosMobile: 'Discover the experiences<br />of those who are already<br />generating income with Flasti',
 
     // Dashboard Preview Section
     metodosRetiroDisponibles: 'Available withdrawal methods',
@@ -581,6 +583,7 @@ export const translations = {
 
     // Testimonials Section
     experienciasUsuarios: 'Conheça as experiências daqueles que já estão<br />gerando renda com a Flasti',
+    experienciasUsuariosMobile: 'Conheça as experiências<br />daqueles que já estão<br />gerando renda com a Flasti',
     loQueSiempre: 'O que você sempre sonhou, agora é possível',
     testimonial1Name: 'Juan Rodríguez',
     testimonial1Content: 'Excelente serviço, já consegui meu primeiro saque em quase 3 horas!! É difícil esconder a emoção, estou muito feliz! Foi fácil e rápido se registrar e as tarefas são fáceis de completar, muito obrigado!',

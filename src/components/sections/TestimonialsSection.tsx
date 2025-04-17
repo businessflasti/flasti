@@ -174,7 +174,7 @@ const TestimonialsSection = () => {
             <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black">
               {t('loQueSiempre')}
             </h2>
-            <p className="text-foreground/70 max-w-2xl mx-auto" dangerouslySetInnerHTML={{ __html: t('experienciasUsuarios') }}>
+            <p className="text-foreground/70 max-w-2xl mx-auto" dangerouslySetInnerHTML={{ __html: t('experienciasUsuariosMobile') }}>
             </p>
             <div className="flex gap-2 mt-4 justify-center">
               {/* First 4 full stars */}
