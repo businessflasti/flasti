@@ -121,7 +121,7 @@ const FAQSection = () => {
               </button>
 
               <div
-                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm transition-all duration-300 ${
+                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm transition-all ${
                   openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
                 }`}
                 data-faq-content="true"

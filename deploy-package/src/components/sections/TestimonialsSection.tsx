@@ -216,7 +216,7 @@ const TestimonialsSection = () => {
 
             <button
               onClick={prevTestimonial}
-              className="absolute top-1/2 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
+              className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="h-6 w-6" />
@@ -224,7 +224,7 @@ const TestimonialsSection = () => {
 
             <button
               onClick={nextTestimonial}
-              className="absolute top-1/2 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
+              className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
               aria-label="Next testimonial"
             >
               <ChevronRight className="h-6 w-6" />
