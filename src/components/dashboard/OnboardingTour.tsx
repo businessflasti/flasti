@@ -118,23 +118,40 @@ export default function OnboardingTour() {
 
   // Verificar si es la primera visita del usuario - OBLIGATORIO para nuevos usuarios
   useEffect(() => {
-    if (!user) return;
-
-    // Verificar si el usuario ya ha visto el tour
-    const hasSeenTour = localStorage.getItem(`flasti_hasSeenTour_${user.id}`);
-
-    // SIEMPRE mostrar el tour para nuevos usuarios (sin opción de omitirlo)
-    if (!hasSeenTour) {
-      console.log('Mostrando tour de onboarding obligatorio para nuevo usuario');
-      // Esperar a que la página se cargue completamente
-      setTimeout(() => {
-        // Asegurarse de que el usuario esté en la parte superior de la página
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setIsVisible(true);
-        updateTooltipPosition();
-      }, 1500);
+    // Si no hay usuario, no mostrar el tour
+    if (!user) {
+      setIsVisible(false);
+      return;
     }
-  }, [user]);
+
+    try {
+      // Verificar si el usuario ya ha visto el tour
+      const hasSeenTour = localStorage.getItem(`flasti_hasSeenTour_${user.id}`);
+
+      // SIEMPRE mostrar el tour para nuevos usuarios (sin opción de omitirlo)
+      if (!hasSeenTour) {
+        console.log('Mostrando tour de onboarding obligatorio para nuevo usuario');
+        // Esperar a que la página se cargue completamente
+        const timer = setTimeout(() => {
+          try {
+            // Asegurarse de que el usuario esté en la parte superior de la página
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setIsVisible(true);
+            // Solo actualizar la posición del tooltip si el componente sigue montado
+            updateTooltipPosition();
+          } catch (error) {
+            console.error('Error al iniciar el tour:', error);
+            setIsVisible(false);
+          }
+        }, 2000);
+
+        return () => clearTimeout(timer);
+      }
+    } catch (error) {
+      console.error('Error al verificar el estado del tour:', error);
+      setIsVisible(false);
+    }
+  }, [user, updateTooltipPosition]);
 
   // Prevenir que el usuario cierre el tour con la tecla ESC
   useEffect(() => {
