@@ -309,19 +309,19 @@ const PricingSection = () => {
                     </div>
                   </div>
 
-                  {/* Versión móvil más elegante */}
-                  <div className="flex sm:hidden flex-col items-center gap-3 mb-2">
-                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                      <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-3.5 h-3.5" fill="#0070BA">
+                  {/* Versión móvil más elegante con iconos arriba y texto abajo */}
+                  <div className="flex sm:hidden flex-col items-center gap-4 mb-2">
+                    <div className="flex flex-col items-center gap-1 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl">
+                      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="#0070BA">
                           <path d="M7.266 29.154l.523-3.322-1.165-.027H1.061L4.927 1.292a.316.316 0 0 1 .314-.268h9.38c3.114 0 5.263.648 6.385 1.927.526.6.861 1.227 1.023 1.917.17.724.173 1.589.007 2.644l-.012.077v.676l.526.298a3.69 3.69 0 0 1 1.065.812c.45.513.741 1.165.864 1.938.127.795.085 1.741-.123 2.812-.24 1.232-.628 2.305-1.152 3.183a6.547 6.547 0 0 1-1.825 2c-.696.494-1.523.869-2.458 1.109-.906.236-1.939.355-3.072.355h-.73c-.522 0-1.029.188-1.427.525a2.21 2.21 0 0 0-.744 1.328l-.055.299-.924 5.855-.042.215c-.011.068-.03.102-.058.125a.155.155 0 0 1-.096.035H7.266z" />
                         </svg>
                       </div>
                       <span className="text-sm font-medium">PayPal</span>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                      <div className="flex space-x-1">
+                    <div className="flex flex-col items-center gap-1 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl">
+                      <div className="flex justify-center space-x-1 mb-1">
                         {[
                           "🇦🇷", // Argentina
                           "🇨🇴", // Colombia
@@ -329,8 +329,8 @@ const PricingSection = () => {
                           "🇪🇸", // España
                           "🇨🇱", // Chile
                         ].map((flag, index) => (
-                            <span key={index} className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-sm">
-                              <span className="text-[10px] font-bold">{flag}</span>
+                            <span key={index} className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-sm">
+                              <span className="text-[11px] font-bold">{flag}</span>
                             </span>
                           ))
                         }
