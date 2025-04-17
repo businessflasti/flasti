@@ -73,7 +73,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-0 relative overflow-hidden">
       <style jsx global>{pulseAnimation}</style>
       {/* Elementos decorativos del fondo */}
       <div className="absolute inset-0 z-0">
@@ -81,7 +81,7 @@ const FAQSection = () => {
         <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#facc15]/10 blur-3xl"></div>
       </div>
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom py-16 relative z-10">
         <div className="text-center mb-16">
           <span className="text-xs text-primary uppercase tracking-wider font-medium mb-2 inline-block">FAQ</span>
           <h2 className="text-3xl font-bold text-gradient mb-4">{t('todoLoQueNecesitasSaber')}</h2>

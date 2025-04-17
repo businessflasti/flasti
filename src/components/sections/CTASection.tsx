@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const CTASection = () => {
   const { language, t } = useLanguage();
   return (
-    <section className="py-12 relative overflow-hidden">
+    <section className="py-0 relative overflow-hidden">
       {/* Fondo con efecto de gradiente */}
       <div className="absolute inset-0 gradient-background z-0">
         <div className="absolute inset-0 opacity-30">
@@ -18,7 +18,7 @@ const CTASection = () => {
       <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl hardware-accelerated -z-10"></div>
       <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10"></div>
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom py-16 relative z-10">
         <div className="glass-card border border-white/10 rounded-2xl p-6 max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-5 text-white dark:text-white light:text-black">
             Conoce a <span className="text-gradient">Flasti</span>
