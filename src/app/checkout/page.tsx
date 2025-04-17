@@ -267,7 +267,7 @@ const CheckoutContent = () => {
                     <span className="text-sm text-white/70">USD</span>
                     <div className="flex items-center gap-1">
                       <span className="text-sm line-through text-red-500">$50</span>
-                      <span className="text-xs font-bold bg-green-500 text-black px-1.5 py-0.5 rounded">90% OFF</span>
+                      <span className="text-xs font-bold bg-green-500 text-black px-1.5 py-0.5 rounded">80% OFF</span>
                     </div>
                   </div>
                 </div>
@@ -492,7 +492,7 @@ const CheckoutContent = () => {
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-3">
                           <span className="text-sm line-through text-red-500">$50 USD</span>
-                          <span className="text-xs font-bold bg-green-500 text-black px-1.5 py-0.5 rounded">90% OFF</span>
+                          <span className="text-xs font-bold bg-green-500 text-black px-1.5 py-0.5 rounded">80% OFF</span>
                         </div>
                         <span className="font-bold text-white mt-1">$ 10 USD</span>
                       </div>

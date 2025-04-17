@@ -113,7 +113,7 @@ const LimitedOfferSection = () => {
             <div>
               <div className="glass-card border border-white/10 rounded-xl p-6 bg-gradient-to-br from-[#f97316]/20 to-[#eab308]/20 backdrop-blur-md">
                 <div className="bg-[#ef4444] text-white text-sm px-3 py-1 rounded-full inline-block mb-3">
-                  -90% casi acaba
+                  -80% casi acaba
                 </div>
 
                 <div className="flex items-center mb-4">
