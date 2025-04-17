@@ -252,10 +252,7 @@ const PricingSection = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
                       <AlertTriangle className="h-4 w-4 text-[#ef4444] mr-2" />
-                      {/* Texto para escritorio */}
-                      <span className="text-white text-sm hidden md:inline">{t('terminandoseRapidoDisponibles')}</span>
-                      {/* Texto para móvil */}
-                      <span className="text-white text-sm md:hidden">{t('ultimosCupos')}</span>
+                      <span className="text-white text-sm">{t('terminandoseRapidoDisponibles')}</span>
                     </div>
                     <span className="text-white text-sm font-bold">87%</span>
                   </div>
