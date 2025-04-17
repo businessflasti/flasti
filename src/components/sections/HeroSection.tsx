@@ -206,21 +206,26 @@ const HeroSection = () => {
 
           {/* Estadísticas */}
           <div className="flex flex-row justify-center gap-4 sm:gap-8 mb-10 mt-8 animate-entry animate-entry-delay-3 hardware-accelerated">
-            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
-              <p className="text-2xl sm:text-3xl font-bold mb-2 text-[#4CAF50] flex justify-center">
-                <AnimatedCounter value={stats.generatedAmount} prefix="$" />
-              </p>
-              <p className="text-xs sm:text-sm text-foreground/60 whitespace-normal">
-                <span className="sm:inline block">{t('generadosPor')}</span>{' '}
-                <span className="sm:inline block">{t('usuarios')}</span>
-              </p>
-            </div>
+            {/* Contenedor principal con ancho fijo en móviles y flexible en escritorio */}
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 w-full max-w-[360px] sm:max-w-none">
+              {/* Primer contador - Generados por usuarios */}
+              <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-center sm:flex-1 sm:max-w-[220px] md:max-w-[240px]">
+                <p className="text-2xl sm:text-3xl font-bold mb-2 text-[#4CAF50] flex justify-center">
+                  <AnimatedCounter value={stats.generatedAmount} prefix="$" />
+                </p>
+                <p className="text-xs sm:text-sm text-foreground/60 whitespace-normal">
+                  <span className="sm:inline block">{t('generadosPor')}</span>{' '}
+                  <span className="sm:inline block">{t('usuarios')}</span>
+                </p>
+              </div>
 
-            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
-              <p className="text-2xl sm:text-3xl font-bold mb-2 text-[#facc15] flex justify-center">
-                <AnimatedCounter value={stats.microtasksCompleted} />
-              </p>
-              <p className="text-xs sm:text-sm text-foreground/60 whitespace-normal">{t('microtrabajosCompletados')}</p>
+              {/* Segundo contador - Microtrabajos completados */}
+              <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-center sm:flex-1 sm:max-w-[220px] md:max-w-[240px]">
+                <p className="text-2xl sm:text-3xl font-bold mb-2 text-[#facc15] flex justify-center">
+                  <AnimatedCounter value={stats.microtasksCompleted} />
+                </p>
+                <p className="text-xs sm:text-sm text-foreground/60 whitespace-normal">{t('microtrabajosCompletados')}</p>
+              </div>
             </div>
           </div>
 
