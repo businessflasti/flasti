@@ -225,8 +225,9 @@ const RotatingText = () => {
           exit={{ y: -40, opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full text-center hardware-accelerated"
+          style={{ willChange: 'transform, opacity' }}
         >
-          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
+          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`} style={{ willChange: 'background-position' }}>
             {words[index].text}
           </span>
         </motion.div>
@@ -286,7 +287,7 @@ const HeroSection = () => {
       </div>
 
       {/* Efectos de luz de fondo - posicionados detrás del título */}
-      <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10"></div>
+      <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10" style={{ willChange: 'filter, transform' }}></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -300,7 +301,7 @@ const HeroSection = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               <span className="block">{t('genera')}</span>
               <RotatingText />
-              <span className="block mt-2">{t('con')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] animate-gradient-shift">Flasti</span></span>
+              <span className="block mt-2">{t('con')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] animate-gradient-shift hardware-accelerated" style={{ willChange: 'background-position' }}>Flasti</span></span>
             </h1>
 
             <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">

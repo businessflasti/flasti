@@ -32,13 +32,41 @@ const PerformanceOptimizer = () => {
       // Optimizar el renderizado
       optimizeRendering();
 
+      // Optimizaciones para todos los dispositivos (incluyendo escritorio)
+      // Aplicar aceleración por hardware a elementos clave para mejorar rendimiento
+      document.querySelectorAll('.glass-card, .card, .glass-effect, .blur-3xl, .blur-2xl, .blur-xl, .animate-gradient-shift, .animate-float, .animate-pulse').forEach((element) => {
+        element.classList.add('hardware-accelerated');
+      });
+
+      // Optimizar animaciones con requestAnimationFrame
+      const optimizeScrollAnimations = () => {
+        const scrollElements = document.querySelectorAll('.animate-on-visible');
+        let ticking = false;
+
+        const onScroll = () => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              scrollElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                  element.classList.add('animate-visible');
+                }
+              });
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll(); // Verificar elementos visibles al cargar
+      };
+
+      // Ejecutar optimizaciones de animaciones de scroll
+      optimizeScrollAnimations();
+
       // Optimizaciones adicionales para dispositivos Android de gama media
       if (window.navigator.userAgent.includes('Android')) {
-        // Aplicar aceleración por hardware a elementos clave
-        document.querySelectorAll('.glass-card, .card, .glass-effect, .blur-3xl, .blur-2xl, .blur-xl').forEach((element) => {
-          element.classList.add('hardware-accelerated');
-        });
-
         // Optimizar scrolling en toda la página
         document.body.style.cssText += '-webkit-overflow-scrolling: touch; overscroll-behavior-y: none;';
 
@@ -53,6 +81,30 @@ const PerformanceOptimizer = () => {
           }
         `;
         document.head.appendChild(style);
+      }
+      // Optimizaciones específicas para escritorio
+      else if (!window.navigator.userAgent.includes('Mobile')) {
+        // Mejorar rendimiento de efectos de blur en escritorio
+        const desktopStyle = document.createElement('style');
+        desktopStyle.textContent = `
+          /* Optimizar efectos de blur para mejor rendimiento */
+          .blur-3xl, .blur-2xl, .blur-xl {
+            will-change: filter;
+            transform: translateZ(0);
+          }
+
+          /* Optimizar gradientes animados */
+          .animate-gradient-shift, .bg-gradient-to-r, .bg-gradient-to-br {
+            will-change: background-position;
+            transform: translateZ(0);
+          }
+
+          /* Optimizar animaciones de hover */
+          .hover-lift, .group-hover\\:scale-110 {
+            will-change: transform;
+          }
+        `;
+        document.head.appendChild(desktopStyle);
       }
 
       // Marcar como optimizado
