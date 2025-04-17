@@ -56,19 +56,25 @@ const faqs = [
   }
 ];
 
-// Eliminamos la animación de pulso para mejorar el rendimiento
+// Add a pulse animation
+const pulseAnimation = `
+  @keyframes gentle-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+`;
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  // Optimización de la función toggle para evitar re-renders innecesarios
   const toggleFAQ = (index: number) => {
-    // Usar una función de actualización para evitar cierres sobre valores obsoletos
-    setOpenIndex(prevIndex => prevIndex === index ? null : index);
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
     <section className="py-24 relative overflow-hidden">
+      <style jsx global>{pulseAnimation}</style>
       {/* Elementos decorativos del fondo */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
@@ -88,16 +94,15 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5 hardware-accelerated"
+              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
             >
               <button
-                className="w-full p-6 flex items-center justify-between text-left group hardware-accelerated mobile-touch-friendly interactive"
+                className="w-full p-6 flex items-center justify-between text-left group"
                 onClick={() => toggleFAQ(index)}
-                style={{ touchAction: 'manipulation' }}
               >
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10 hardware-accelerated" style={{ willChange: openIndex === index ? 'transform' : 'auto', transform: openIndex === index ? 'scale(1.05)' : 'scale(1)' }}>
-                    <div className="text-[#ec4899] hardware-accelerated" style={{ color: openIndex === index ? '#f97316' : '#ec4899' }}>{faq.icon}</div>
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
+                    <div className="text-[#ec4899] transition-all duration-300 group-hover:scale-110 group-hover:text-[#f97316]">{faq.icon}</div>
                   </div>
                   <span className="font-medium">{faq.question}</span>
                 </div>
@@ -107,10 +112,9 @@ const FAQSection = () => {
               </button>
 
               <div
-                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm faq-content hardware-accelerated ${
+                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm transition-all duration-300 ${
                   openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
                 }`}
-                style={{ willChange: 'max-height, opacity', transition: 'max-height 0.2s ease-out, opacity 0.2s ease-out' }}
               >
                 <div className="pt-2 border-t border-white/10">
                   {faq.answer}

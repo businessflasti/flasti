@@ -225,9 +225,8 @@ const RotatingText = () => {
           exit={{ y: -40, opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full text-center hardware-accelerated"
-          style={{ willChange: 'transform, opacity' }}
         >
-          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-shift`}>
+          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
             {words[index].text}
           </span>
         </motion.div>
@@ -287,7 +286,7 @@ const HeroSection = () => {
       </div>
 
       {/* Efectos de luz de fondo - posicionados detrás del título */}
-      <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10" style={{ willChange: 'filter, transform' }}></div>
+      <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -301,7 +300,7 @@ const HeroSection = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               <span className="block">{t('genera')}</span>
               <RotatingText />
-              <span className="block mt-2">{t('con')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] animate-gradient-shift hardware-accelerated" style={{ willChange: 'background-position' }}>Flasti</span></span>
+              <span className="block mt-2">{t('con')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] animate-gradient-shift">Flasti</span></span>
             </h1>
 
             <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">
@@ -315,10 +314,7 @@ const HeroSection = () => {
               <p className="text-2xl sm:text-3xl font-bold mb-2 text-[#4CAF50] flex justify-center">
                 <AnimatedCounter value={stats.generatedAmount} prefix="$" />
               </p>
-              <p className="text-xs sm:text-sm text-foreground/60 whitespace-normal">
-                <span className="sm:inline block">{t('generadosPor')}</span>
-                <span className="sm:inline block">{t('usuarios')}</span>
-              </p>
+              <p className="text-xs sm:text-sm text-foreground/60 whitespace-normal">{t('generadosPorUsuarios')}</p>
             </div>
 
             <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
