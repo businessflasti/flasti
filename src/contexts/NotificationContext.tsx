@@ -69,10 +69,14 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         {notifications.map((notification, index) => (
           <div
             key={notification.id}
-            style={{ marginBottom: index > 0 && isMobile ? '60px' : '0' }}
+            style={{
+              transform: isMobile && index > 0 ? `translateY(-${index * 20}px) rotate(${index % 2 === 0 ? -3 : 3}deg)` : 'none',
+              zIndex: 100 - index,
+              opacity: isMobile ? Math.max(0.95 - (index * 0.15), 0.6) : 1
+            }}
             className={`
               min-w-[300px] max-w-md p-4 rounded-lg shadow-lg
-              animate-slide-in-right
+              animate-slide-in-right transition-all duration-300
               ${notification.type === 'success' ? 'bg-[#10b981]/90 text-white' :
                 notification.type === 'error' ? 'bg-red-500/90 text-white' :
                 notification.type === 'warning' ? 'bg-amber-500/90 text-white' :
