@@ -170,7 +170,7 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <section className="pt-20 pb-0 relative overflow-hidden">
+    <section className="pt-20 pb-24 relative overflow-hidden">
       {/* Estilos personalizados */}
       <style jsx global>{customStyles}</style>
 
@@ -184,7 +184,7 @@ const HeroSection = () => {
       {/* Efectos de luz de fondo - posicionados detrás del título */}
       <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10"></div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Insignia de localización */}
           <div className="flex justify-center mb-6 animate-entry animate-entry-delay-1 hardware-accelerated">
