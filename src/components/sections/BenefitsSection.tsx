@@ -19,13 +19,7 @@ const BenefitsSection = () => {
   ];
   return (
     <section className="py-16 relative overflow-hidden">
-      {/* Elementos decorativos del fondo */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl decorative-element hardware-accelerated"></div>
-        <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#facc15]/10 blur-3xl decorative-element hardware-accelerated"></div>
-        <div className="absolute top-40 right-[20%] w-3 h-3 rounded-full bg-[#ec4899] animate-pulse-optimized decorative-element hardware-accelerated"></div>
-        <div className="absolute bottom-40 left-[15%] w-2 h-2 rounded-full bg-[#f97316] animate-ping-optimized decorative-element hardware-accelerated"></div>
-      </div>
+      {/* Elementos decorativos del fondo eliminados */}
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
