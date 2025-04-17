@@ -194,6 +194,23 @@
     scroll-behavior: smooth;
   }
 
+  /* Igualar ancho de bloques de contadores en móviles */
+  @media (max-width: 640px) {
+    .hero-stats-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .hero-stats-container > div {
+      width: 100%;
+      max-width: none;
+      flex: none;
+    }
+  }
+
   /* Feedback táctil para móviles */
   .mobile-touch-friendly {
     touch-action: manipulation;
