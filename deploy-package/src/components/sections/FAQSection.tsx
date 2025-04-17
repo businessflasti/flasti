@@ -78,7 +78,32 @@ const FAQSection = () => {
   }, []);
 
   const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+    // Si estamos en móvil y estamos abriendo una pregunta (no cerrando)
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && openIndex !== index) {
+      // Esperar a que se actualice el estado y luego hacer scroll
+      setOpenIndex(index);
+
+      // Esperar a que se complete la transición de apertura
+      setTimeout(() => {
+        // Obtener el elemento de la pregunta
+        const faqElement = document.querySelectorAll('.glass-card')[index];
+        if (faqElement) {
+          // Calcular la posición para centrar el elemento en la pantalla
+          const elementRect = faqElement.getBoundingClientRect();
+          const absoluteElementTop = elementRect.top + window.pageYOffset;
+          const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+          // Hacer scroll suave hacia la posición calculada
+          window.scrollTo({
+            top: middle,
+            behavior: 'smooth'
+          });
+        }
+      }, 50); // Pequeño retraso para permitir que el DOM se actualice
+    } else {
+      // En escritorio o al cerrar, simplemente alternar
+      setOpenIndex(openIndex === index ? null : index);
+    }
   };
 
   return (
