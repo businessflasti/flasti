@@ -227,7 +227,7 @@ const RotatingText = () => {
           className="absolute w-full text-center hardware-accelerated"
           style={{ willChange: 'transform, opacity' }}
         >
-          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`} style={{ willChange: 'background-position' }}>
+          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-shift`}>
             {words[index].text}
           </span>
         </motion.div>

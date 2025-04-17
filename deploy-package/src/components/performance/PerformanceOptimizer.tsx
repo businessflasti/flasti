@@ -93,8 +93,8 @@ const PerformanceOptimizer = () => {
             transform: translateZ(0);
           }
 
-          /* Optimizar gradientes animados */
-          .animate-gradient-shift, .bg-gradient-to-r, .bg-gradient-to-br {
+          /* Optimizar gradientes animados - solo aceleración por hardware sin cambiar apariencia */
+          .animate-gradient-shift {
             will-change: background-position;
             transform: translateZ(0);
           }
