@@ -392,7 +392,7 @@ const SimplePricingSection = () => {
                         <span className="inline text-foreground/40 mx-1">|</span>
                         <div className="flex flex-row items-center gap-2">
                           <span className="text-xs font-medium whitespace-nowrap">{t('monedaLocal')}</span>
-                          <div className="grid grid-cols-10 grid-rows-2 gap-x-0.5 gap-y-0.5 w-[120px] md:flex md:flex-row md:flex-nowrap md:gap-1 md:w-auto">
+                          <div className="grid grid-cols-10 grid-rows-2 gap-x-1 gap-y-1 w-[140px] md:flex md:flex-row md:flex-nowrap md:gap-1 md:w-auto">
                             {[
                               "🇺🇸", // Estados Unidos
                               "🇦🇷", // Argentina
@@ -415,8 +415,8 @@ const SimplePricingSection = () => {
                               "🇻🇪", // Venezuela
                               "🇧🇷" // Brasil
                             ].map((flag, index) => (
-                              <span key={index} className="w-2.5 h-2.5 md:w-4 md:h-4 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-sm">
-                                <span className="text-[6px] md:text-[8px] font-bold">{flag}</span>
+                              <span key={index} className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-sm">
+                                <span className="text-[8px] md:text-[9px] font-bold">{flag}</span>
                               </span>
                             ))}
                           </div>
