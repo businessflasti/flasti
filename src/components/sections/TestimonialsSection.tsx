@@ -128,7 +128,8 @@ const TestimonialsSection = () => {
                     <Star className="h-5 w-5 text-[#facc15] opacity-30" />
                   </div>
                 </div>
-                <span className="text-foreground/80 ml-2">{t('calificacionPromedio')}</span>
+                <span className="text-foreground/80 ml-2 hidden sm:inline">{t('calificacionPromedio')}</span>
+              <span className="text-foreground/80 ml-2 sm:hidden">{t('calificacion')}</span>
               </div>
             </div>
 
@@ -192,7 +193,8 @@ const TestimonialsSection = () => {
                   <Star className="h-5 w-5 text-[#facc15] opacity-30" />
                 </div>
               </div>
-              <span className="text-foreground/80 ml-2">{t('calificacionPromedio')}</span>
+              <span className="text-foreground/80 ml-2 hidden sm:inline">{t('calificacionPromedio')}</span>
+              <span className="text-foreground/80 ml-2 sm:hidden">{t('calificacion')}</span>
             </div>
           </div>
 

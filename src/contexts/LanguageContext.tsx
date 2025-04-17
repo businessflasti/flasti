@@ -158,6 +158,7 @@ export const translations = {
     testimonial4Name: 'Santiago Hernández',
     testimonial4Content: 'Acabo de empezar y ya entré a mi cuenta, me encanta, pasé meses buscando algo así.',
     calificacionPromedio: '4.9 de calificación promedio',
+    calificacion: '4.9 de calificación',
 
     // Pricing Section
     registrateAhoraBtn: 'Registrate ahora',
@@ -396,6 +397,7 @@ export const translations = {
     testimonial4Name: 'Santiago Hernández',
     testimonial4Content: 'I just started and already logged into my account, I love it, I spent months looking for something like this.',
     calificacionPromedio: '4.9 average rating',
+    calificacion: '4.9 rating',
 
     // Pricing Section
     registrateAhoraBtn: 'Register now',
@@ -589,6 +591,7 @@ export const translations = {
     testimonial4Name: 'Santiago Hernández',
     testimonial4Content: 'Acabei de começar e já entrei na minha conta, eu amo, passei meses procurando algo assim.',
     calificacionPromedio: 'Classificação média de 4.9',
+    calificacion: '4.9 de classificação',
 
     // Pricing Section
     registrateAhoraBtn: 'Registre-se agora',
