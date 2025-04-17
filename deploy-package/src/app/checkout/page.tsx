@@ -483,7 +483,7 @@ const CheckoutPage = () => {
                         <p className="text-sm text-white/70">Activa tu acceso al instante con PayPal de forma rápida y segura.</p>
                       </div>
                       <div className="text-white">
-                        <PayPalLogo className="h-6 w-auto" />
+                        <PayPalIcon className="h-8 w-8" />
                       </div>
                     </div>
 
