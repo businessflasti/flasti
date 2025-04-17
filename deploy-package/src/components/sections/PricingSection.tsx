@@ -252,7 +252,8 @@ const PricingSection = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
                       <AlertTriangle className="h-4 w-4 text-[#ef4444] mr-2" />
-                      <span className="text-white text-sm">{t('terminandoseRapidoDisponibles')}</span>
+                      <span className="text-white text-sm hidden sm:inline">{t('terminandoseRapidoDisponibles')}</span>
+                      <span className="text-white text-sm sm:hidden">{t('ultimosCupos')}</span>
                     </div>
                     <span className="text-white text-sm font-bold">87%</span>
                   </div>
