@@ -33,13 +33,32 @@ const LocationBadge = () => {
 
           const data = await response.json();
 
-          // Formatear la hora local
-          const now = new Date();
-          const timeString = now.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-          }) + ' hs';
+          // Obtener la zona horaria del país detectado
+          const timezone = data.timezone;
+
+          // Formatear la hora local usando la zona horaria del país detectado
+          let timeString;
+          try {
+            // Usar la API de Intl.DateTimeFormat para formatear la hora en la zona horaria correcta
+            const options = {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+              timeZone: timezone
+            };
+
+            const formatter = new Intl.DateTimeFormat('es-ES', options);
+            timeString = formatter.format(new Date()) + ' hs';
+          } catch (error) {
+            // Si hay un error con la zona horaria, usar la hora local del navegador como respaldo
+            console.error('Error al formatear la hora con zona horaria:', error);
+            const now = new Date();
+            timeString = now.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }) + ' hs';
+          }
 
           setLocationData({
             country: data.country_name || 'Global',
@@ -54,19 +73,53 @@ const LocationBadge = () => {
           // Ya tenemos una ubicación predeterminada, así que no necesitamos hacer nada más
         }
 
-        // Actualizar la hora cada minuto
+        // Actualizar la hora cada minuto usando la zona horaria correcta
         const interval = setInterval(() => {
-          const now = new Date();
-          const timeString = now.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-          }) + ' hs';
+          // Usar la zona horaria guardada en el estado
+          if (locationData.countryCode !== 'global' && data && data.timezone) {
+            try {
+              const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+                timeZone: data.timezone
+              };
 
-          setLocationData(prev => ({
-            ...prev,
-            time: timeString
-          }));
+              const formatter = new Intl.DateTimeFormat('es-ES', options);
+              const timeString = formatter.format(new Date()) + ' hs';
+
+              setLocationData(prev => ({
+                ...prev,
+                time: timeString
+              }));
+            } catch (error) {
+              // Si hay un error, usar la hora local como respaldo
+              const now = new Date();
+              const timeString = now.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+              }) + ' hs';
+
+              setLocationData(prev => ({
+                ...prev,
+                time: timeString
+              }));
+            }
+          } else {
+            // Si no hay zona horaria, usar la hora local
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }) + ' hs';
+
+            setLocationData(prev => ({
+              ...prev,
+              time: timeString
+            }));
+          }
         }, 60000);
 
         return () => clearInterval(interval);
