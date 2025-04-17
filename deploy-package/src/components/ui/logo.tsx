@@ -2,6 +2,7 @@
 
 import { useTheme } from "@/contexts/ThemeContext";
 import Link from "next/link";
+import Image from "next/image";
 
 interface LogoProps {
   className?: string;
@@ -14,9 +15,18 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
 
   // Tamaños basados en el prop size
   const sizes = {
-    sm: "text-xl",
-    md: "text-2xl",
-    lg: "text-3xl",
+    sm: {
+      logo: 24,
+      text: "text-xl",
+    },
+    md: {
+      logo: 28,
+      text: "text-2xl",
+    },
+    lg: {
+      logo: 32,
+      text: "text-3xl",
+    },
   };
 
   // Determinar el color basado en el tema
@@ -24,10 +34,21 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
 
   return (
     <Link href="/" className={`${className}`}>
-      <div className="flex items-center">
-        {/* Logo de texto usando fuente similar a OpenAI */}
+      <div className="flex items-center gap-2">
+        {/* Logo SVG */}
+        <div className="relative">
+          <img
+            src="/favicon.svg"
+            alt="Flasti Logo"
+            width={sizes[size].logo}
+            height={sizes[size].logo}
+            className="object-contain"
+          />
+        </div>
+
+        {/* Logo de texto con gradiente */}
         <span
-          className={`${textColor} text-xl sm:text-2xl md:text-3xl`}
+          className={`${sizes[size].text} font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] to-[#ec4899]`}
           style={{
             fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
             fontWeight: 600,

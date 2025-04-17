@@ -1,9 +1,26 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Platzi: Cursos Online de programación, AI, data science y más",
-  description: "Únete hoy a Platzi, la plataforma líder de educación en línea. Aprende las habilidades más demandadas de la industria digital.",
+  title: "Flasti",
+  description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Flasti",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Flasti",
+    title: "Flasti",
+    description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Flasti",
+    description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
   },
 };
