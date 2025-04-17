@@ -68,8 +68,9 @@ const pulseAnimation = `
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  // Optimización: Usar función de actualización para evitar cierres sobre valores obsoletos
   const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+    setOpenIndex(prevIndex => prevIndex === index ? null : index);
   };
 
   return (
@@ -97,8 +98,9 @@ const FAQSection = () => {
               className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
             >
               <button
-                className="w-full p-6 flex items-center justify-between text-left group"
+                className="w-full p-6 flex items-center justify-between text-left group hardware-accelerated mobile-touch-friendly"
                 onClick={() => toggleFAQ(index)}
+                style={{ touchAction: 'manipulation' }}
               >
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
@@ -112,9 +114,10 @@ const FAQSection = () => {
               </button>
 
               <div
-                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm transition-all duration-300 ${
+                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm hardware-accelerated ${
                   openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
                 }`}
+                style={{ transition: 'max-height 0.2s ease-out, opacity 0.2s ease-out' }}
               >
                 <div className="pt-2 border-t border-white/10">
                   {faq.answer}

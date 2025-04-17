@@ -184,6 +184,20 @@
     backface-visibility: hidden;
     perspective: 1000px;
     will-change: transform;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Optimizaciones para elementos con efectos de blur */
+  .blur-3xl.hardware-accelerated,
+  .blur-2xl.hardware-accelerated,
+  .blur-xl.hardware-accelerated {
+    will-change: filter, transform;
+  }
+
+  /* Optimizaciones para gradientes animados */
+  .animate-gradient-shift.hardware-accelerated {
+    will-change: background-position;
   }
 
   /* Optimizaciones para móviles */

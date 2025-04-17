@@ -50,6 +50,32 @@ export function MobileExperience() {
       // Aplicar desplazamiento suave a toda la página
       document.documentElement.style.scrollBehavior = 'smooth';
 
+      // Optimizaciones para Android
+      if (/Android/.test(navigator.userAgent)) {
+        // Optimizar scrolling en toda la página
+        document.body.style.cssText += '-webkit-overflow-scrolling: touch; overscroll-behavior-y: none;';
+
+        // Optimizar el rendimiento durante el scroll
+        let scrollTimeout: number;
+        window.addEventListener('scroll', () => {
+          document.body.classList.add('scrolling');
+          clearTimeout(scrollTimeout);
+          scrollTimeout = window.setTimeout(() => {
+            document.body.classList.remove('scrolling');
+          }, 100) as unknown as number;
+        }, { passive: true });
+
+        // Agregar estilos para optimizar el rendimiento durante el scroll
+        const style = document.createElement('style');
+        style.textContent = `
+          body.scrolling * {
+            transition-duration: 0.0001ms !important;
+            animation-duration: 0.0001ms !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
       // Prevenir el rebote de desplazamiento en iOS
       if (isIOS) {
         document.body.style.overscrollBehavior = 'none';
@@ -65,10 +91,27 @@ export function MobileExperience() {
       document.documentElement.style.setProperty('--safe-area-inset-left', 'env(safe-area-inset-left, 0px)');
     };
 
-    // Función para mejorar la experiencia táctil (desactivada para evitar cambios no deseados)
+    // Función para mejorar la experiencia táctil
     const improveTouchExperience = () => {
-      // No hacer nada para evitar cambios no deseados
-      return;
+      // Optimizaciones para dispositivos móviles
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Aplicar estilos para mejorar la respuesta táctil sin cambiar la apariencia visual
+        const touchOptimizationStyle = document.createElement('style');
+        touchOptimizationStyle.textContent = `
+          /* Optimizaciones para respuesta táctil */
+          button, a, [role="button"], input[type="button"], input[type="submit"] {
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+        `;
+        document.head.appendChild(touchOptimizationStyle);
+
+        // Agregar eventos de touch con passive: true para mejor rendimiento
+        document.querySelectorAll('button, a, [role="button"], input[type="button"], input[type="submit"]').forEach(element => {
+          element.addEventListener('touchstart', () => {}, { passive: true });
+          element.addEventListener('touchend', () => {}, { passive: true });
+        });
+      }
     };
 
     // Aplicar todas las mejoras
