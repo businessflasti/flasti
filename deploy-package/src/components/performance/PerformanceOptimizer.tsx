@@ -32,6 +32,29 @@ const PerformanceOptimizer = () => {
       // Optimizar el renderizado
       optimizeRendering();
 
+      // Optimizaciones adicionales para dispositivos Android de gama media
+      if (window.navigator.userAgent.includes('Android')) {
+        // Aplicar aceleración por hardware a elementos clave
+        document.querySelectorAll('.glass-card, .card, .glass-effect, .blur-3xl, .blur-2xl, .blur-xl').forEach((element) => {
+          element.classList.add('hardware-accelerated');
+        });
+
+        // Optimizar scrolling en toda la página
+        document.body.style.cssText += '-webkit-overflow-scrolling: touch; overscroll-behavior-y: none;';
+
+        // Reducir la calidad de los efectos de blur en Android
+        const style = document.createElement('style');
+        style.textContent = `
+          .blur-3xl, .blur-2xl, .blur-xl {
+            filter: blur(8px) !important;
+          }
+          .faq-content {
+            transition: none !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
       // Marcar como optimizado
       setIsOptimized(true);
     }

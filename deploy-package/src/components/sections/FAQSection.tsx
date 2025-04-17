@@ -94,10 +94,10 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
+              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5 hardware-accelerated"
             >
               <button
-                className="w-full p-6 flex items-center justify-between text-left group"
+                className="w-full p-6 flex items-center justify-between text-left group hardware-accelerated mobile-touch-friendly"
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex items-center">
@@ -112,7 +112,7 @@ const FAQSection = () => {
               </button>
 
               <div
-                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm transition-all duration-300 ${
+                className={`px-6 pb-6 pt-0 text-foreground/70 text-sm faq-content ${
                   openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
                 }`}
               >

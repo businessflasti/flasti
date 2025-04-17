@@ -57,8 +57,10 @@ const preloadResource = (url: string): Promise<void> => {
 // Función para optimizar la carga de CSS
 const optimizeCSSLoading = (): void => {
   // Detectar dispositivos de bajo rendimiento
-  const isLowPerfDevice = window.navigator.hardwareConcurrency <= 4 ||
-                         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // Ampliamos la detección para incluir más dispositivos Android de gama media
+  const isLowPerfDevice = window.navigator.hardwareConcurrency <= 6 ||
+                         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                         (window.navigator.userAgent.includes('Android') && window.navigator.hardwareConcurrency <= 8);
 
   // Crear un estilo optimizado para dispositivos de bajo rendimiento
   if (isLowPerfDevice) {
@@ -76,11 +78,34 @@ const optimizeCSSLoading = (): void => {
       .card, .glass-card, .glass-effect {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
       }
 
       /* Simplificar gradientes */
       .bg-gradient-to-r, .bg-gradient-to-br, .bg-gradient-to-bl, .bg-gradient-to-tr, .bg-gradient-to-tl {
         background: rgba(147, 51, 234, 0.1) !important;
+      }
+
+      /* Optimizar efectos de blur */
+      .blur-3xl, .blur-2xl, .blur-xl {
+        filter: blur(8px) !important;
+      }
+
+      /* Optimizar scrolling */
+      body, .overflow-auto, .overflow-y-auto, .overflow-x-auto {
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      /* Reducir complejidad visual */
+      .animate-pulse, .animate-ping, .animate-spin {
+        display: none !important;
+      }
+
+      /* Optimizar rendimiento de FAQ */
+      .faq-content {
+        transition: none !important;
       }
     `;
     document.head.appendChild(style);
