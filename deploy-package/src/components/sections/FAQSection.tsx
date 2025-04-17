@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
 import { optimizeFAQs } from "@/utils/faq-optimizer";
+import { useTranslations } from "@/contexts/LanguageContext";
 
 const faqs = [
   {
@@ -68,6 +69,7 @@ const pulseAnimation = `
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { t } = useTranslations();
 
   // Optimizar las FAQs para que abran/cierren más rápido
   useEffect(() => {
