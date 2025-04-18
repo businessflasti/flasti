@@ -70,7 +70,7 @@ export const translations = {
     gananciaColectiva: 'Ganancia colectiva',
     empresa: 'Empresa',
     sobreNosotros: 'Sobre nosotros',
-    contacto: 'Contacto',
+    contacto: 'Soporte',
     legal: 'Legal',
     informacionLegal: 'Información legal',
     terminosCondiciones: 'Términos y condiciones',
@@ -78,8 +78,8 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidad',
     derechosReservados: 'Todos los derechos reservados.',
     volverArriba: 'Volver arriba',
-    contactanos: 'Soporte',
-    ayudaInmediata: '¿Necesitas ayuda? Estamos aquí para ti.',
+    contactanos: 'Contáctanos',
+    ayudaInmediata: '¿Necesitas ayuda? Estamos aquí para ti',
     iniciarChat: 'Iniciar chat',
 
     // Testimonials Section
@@ -313,7 +313,7 @@ export const translations = {
     gananciaColectiva: 'Collective earnings',
     empresa: 'Company',
     sobreNosotros: 'About us',
-    contacto: 'Contact',
+    contacto: 'Support',
     legal: 'Legal',
     informacionLegal: 'Legal information',
     terminosCondiciones: 'Terms and conditions',
@@ -321,8 +321,8 @@ export const translations = {
     politicaPrivacidad: 'Privacy policy',
     derechosReservados: 'All rights reserved.',
     volverArriba: 'Back to top',
-    contactanos: 'Support',
-    ayudaInmediata: 'Need help? We are here for you.',
+    contactanos: 'Contact Us',
+    ayudaInmediata: 'Need help? We are here for you',
     iniciarChat: 'Start chat',
 
     // Testimonials Section
@@ -578,7 +578,7 @@ export const translations = {
     gananciaColectiva: 'Ganho coletivo',
     empresa: 'Empresa',
     sobreNosotros: 'Sobre nós',
-    contacto: 'Contato',
+    contacto: 'Suporte',
     legal: 'Legal',
     informacionLegal: 'Informação legal',
     terminosCondiciones: 'Termos e condições',
@@ -586,8 +586,8 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidade',
     derechosReservados: 'Todos os direitos reservados.',
     volverArriba: 'Voltar ao topo',
-    contactanos: 'Suporte',
-    ayudaInmediata: 'Precisa de ajuda? Estamos aqui para você.',
+    contactanos: 'Contate-nos',
+    ayudaInmediata: 'Precisa de ajuda? Estamos aqui para você',
     iniciarChat: 'Iniciar chat',
 
     // Testimonials Section
