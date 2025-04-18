@@ -61,6 +61,22 @@ export const EnhancedNotificationProvider = ({ children }: { children: ReactNode
     if (!user) return;
 
     try {
+      // Primero verificamos si la tabla existe
+      const { error: tableError } = await supabase
+        .from('notifications')
+        .select('count')
+        .limit(1);
+
+      // Si hay un error con la tabla, manejamos el caso graciosamente
+      if (tableError) {
+        console.warn('La tabla de notificaciones puede no existir:', tableError);
+        // Inicializamos con un array vacío en lugar de fallar
+        setNotifications([]);
+        setUnreadCount(0);
+        return;
+      }
+
+      // Si la tabla existe, procedemos a cargar las notificaciones
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -68,25 +84,39 @@ export const EnhancedNotificationProvider = ({ children }: { children: ReactNode
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error al consultar notificaciones:', error);
+        // No lanzamos el error, simplemente inicializamos con un array vacío
+        setNotifications([]);
+        setUnreadCount(0);
+        return;
+      }
 
-      if (data) {
+      // Procesamos los datos si existen
+      if (data && Array.isArray(data)) {
         const formattedNotifications = data.map(notification => ({
-          id: notification.id,
-          type: notification.type as NotificationType,
-          category: notification.category as NotificationCategory,
-          message: notification.message,
+          id: notification.id || `temp-${Date.now()}`,
+          type: (notification.type as NotificationType) || 'info',
+          category: (notification.category as NotificationCategory) || 'system',
+          message: notification.message || 'Notificación del sistema',
           title: notification.title,
           data: notification.data,
-          read: notification.read,
-          createdAt: new Date(notification.created_at)
+          read: !!notification.read,
+          createdAt: notification.created_at ? new Date(notification.created_at) : new Date()
         }));
 
         setNotifications(formattedNotifications);
         setUnreadCount(formattedNotifications.filter(n => !n.read).length);
+      } else {
+        // Si no hay datos, inicializamos con un array vacío
+        setNotifications([]);
+        setUnreadCount(0);
       }
     } catch (error) {
       console.error('Error loading notifications:', error);
+      // En caso de error, inicializamos con un array vacío
+      setNotifications([]);
+      setUnreadCount(0);
     }
   };
 
@@ -94,62 +124,93 @@ export const EnhancedNotificationProvider = ({ children }: { children: ReactNode
   const subscribeToRealTimeNotifications = () => {
     if (!user) return;
 
-    // Suscribirse a nuevas notificaciones
-    const channel = supabase
-      .channel(`user-notifications-${user.id}`)
-      .on('postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
-        (payload) => {
-          const newNotification = {
-            id: payload.new.id,
-            type: payload.new.type as NotificationType,
-            category: payload.new.category as NotificationCategory,
-            message: payload.new.message,
-            title: payload.new.title,
-            data: payload.new.data,
-            read: payload.new.read,
-            createdAt: new Date(payload.new.created_at)
-          };
-
-          setNotifications(prev => [newNotification, ...prev]);
-          setUnreadCount(prev => prev + 1);
-
-          // Mostrar notificación en pantalla
-          showToastNotification(newNotification);
+    try {
+      // Cancelar suscripción anterior si existe
+      if (supabaseChannelRef.current) {
+        try {
+          supabaseChannelRef.current.unsubscribe();
+        } catch (e) {
+          console.warn('Error al cancelar suscripción anterior:', e);
         }
-      )
-      .subscribe();
+      }
 
-    supabaseChannelRef.current = channel;
+      // Suscribirse a nuevas notificaciones
+      const channel = supabase
+        .channel(`user-notifications-${user.id}`)
+        .on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            try {
+              if (!payload.new) {
+                console.warn('Payload de notificación vacío');
+                return;
+              }
+
+              const newNotification = {
+                id: payload.new.id || `temp-${Date.now()}`,
+                type: (payload.new.type as NotificationType) || 'info',
+                category: (payload.new.category as NotificationCategory) || 'system',
+                message: payload.new.message || 'Nueva notificación',
+                title: payload.new.title,
+                data: payload.new.data,
+                read: !!payload.new.read,
+                createdAt: payload.new.created_at ? new Date(payload.new.created_at) : new Date()
+              };
+
+              setNotifications(prev => [newNotification, ...prev]);
+              setUnreadCount(prev => prev + 1);
+
+              // Mostrar notificación en pantalla
+              showToastNotification(newNotification);
+            } catch (error) {
+              console.error('Error al procesar notificación en tiempo real:', error);
+            }
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('Suscripción a notificaciones activa');
+          } else if (status === 'CHANNEL_ERROR') {
+            console.error('Error en el canal de notificaciones');
+          }
+        });
+
+      supabaseChannelRef.current = channel;
+    } catch (error) {
+      console.error('Error al suscribirse a notificaciones en tiempo real:', error);
+    }
   };
 
   // Mostrar notificación en pantalla (toast)
   const showToastNotification = (notification: Notification) => {
-    // Mostrar toast según el tipo de notificación
-    switch (notification.type) {
-      case 'success':
-        toast.success(notification.message, {
-          id: notification.id,
-          description: notification.title
-        });
-        break;
-      case 'error':
-        toast.error(notification.message, {
-          id: notification.id,
-          description: notification.title
-        });
-        break;
-      case 'warning':
-        toast.warning(notification.message, {
-          id: notification.id,
-          description: notification.title
-        });
-        break;
-      default:
-        toast.info(notification.message, {
-          id: notification.id,
-          description: notification.title
-        });
+    try {
+      if (!notification || !notification.message) {
+        console.warn('Intento de mostrar notificación inválida');
+        return;
+      }
+
+      const toastOptions = {
+        id: notification.id,
+        description: notification.title || '',
+        duration: notification.duration || 5000
+      };
+
+      // Mostrar toast según el tipo de notificación
+      switch (notification.type) {
+        case 'success':
+          toast.success(notification.message, toastOptions);
+          break;
+        case 'error':
+          toast.error(notification.message, toastOptions);
+          break;
+        case 'warning':
+          toast.warning(notification.message, toastOptions);
+          break;
+        default:
+          toast.info(notification.message, toastOptions);
+      }
+    } catch (error) {
+      console.error('Error al mostrar notificación toast:', error);
     }
   };
 

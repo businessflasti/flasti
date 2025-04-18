@@ -12,6 +12,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "sonner";
 import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
+import HydrationFix from "@/components/utils/HydrationFix";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,6 +39,24 @@ export default function RootLayout({
             }
           });
         ` }} />
+
+        {/* Script para solucionar problemas de hidratación */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          // Eliminar atributos problemáticos antes de la hidratación
+          (function() {
+            function cleanupAttributes() {
+              if (document.body) {
+                if (document.body.hasAttribute('cz-shortcut-listen')) {
+                  document.body.removeAttribute('cz-shortcut-listen');
+                }
+              }
+            }
+            // Ejecutar inmediatamente
+            cleanupAttributes();
+            // Ejecutar cuando el DOM esté listo
+            document.addEventListener('DOMContentLoaded', cleanupAttributes);
+          })();
+        ` }} />
       </head>
       <body className={inter.className}>
         <ThemeProvider>
@@ -50,6 +69,7 @@ export default function RootLayout({
                     <Toaster position="top-right" richColors />
                     <CopyProtection />
                     <AffiliateClickRecorder />
+                    <HydrationFix />
                     {children}
                   </EnhancedNotificationProvider>
                 </OnboardingProvider>
