@@ -10,16 +10,20 @@ export default function RegistrationBanner() {
 
   return (
     <div className="bg-primary text-primary-foreground py-2 px-4 text-center relative">
-      <button 
+      <button
         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary-foreground"
         onClick={() => setIsVisible(false)}
       >
         ✕
       </button>
       <p>
-        ¿Problemas con el registro? Prueba nuestra{' '}
-        <Link href="/register-direct" className="underline font-bold">
-          página de registro alternativa
+        ¿Problemas con el registro? Prueba nuestras páginas alternativas:{' '}
+        <Link href="/register-direct" className="underline font-bold mr-2">
+          Registro Directo
+        </Link>
+        o{' '}
+        <Link href="/register-simple" className="underline font-bold">
+          Registro Simple
         </Link>
       </p>
     </div>
