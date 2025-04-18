@@ -193,94 +193,109 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Registrar un nuevo usuario - Solución ultra simple
+  // Registrar un nuevo usuario - Solución con API personalizada
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);
-    console.log('Iniciando proceso de registro ultra simple para:', email);
+    console.log('Iniciando proceso de registro con API personalizada para:', email);
 
     try {
-      // 1. Verificar si el usuario ya existe
-      try {
-        const { data: signInData } = await supabase.auth.signInWithPassword({ email, password });
-        if (signInData?.user) {
-          console.log('Usuario ya existe, iniciando sesión directamente');
-          setUser(signInData.user);
-          setProfile({
-            id: signInData.user.id,
-            email: email,
-            phone: phone || '',
-            level: 1,
-            balance: 0,
-            avatar_url: null,
-            created_at: new Date().toISOString()
-          });
-          setLoading(false);
-          return { error: { message: 'User already registered' } };
-        }
-      } catch (e) {
-        // Ignorar errores aquí, significa que el usuario no existe o la contraseña es incorrecta
-        console.log('Usuario no existe o contraseña incorrecta, continuando con registro');
-      }
-
-      // 2. Registrar al usuario con el método más simple posible
-      console.log('Registrando usuario con método simple');
-
-      // Usar el cliente de Supabase con opciones mínimas
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin + '/dashboard'
-        }
+      // Usar nuestra API personalizada para el registro
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          phone
+        })
       });
 
+      const result = await response.json();
+      console.log('Respuesta de API de registro:', result);
+
       // Manejar errores
-      if (error) {
-        console.error('Error durante el registro simple:', error);
+      if (!response.ok || result.error) {
+        console.error('Error durante el registro con API personalizada:', result.error);
+
+        // Si el error indica que el usuario ya existe, intentar iniciar sesión
+        if (result.error && (result.error.includes('already') || result.error.includes('exists'))) {
+          console.log('El usuario ya existe, intentando iniciar sesión...');
+
+          // Intentar iniciar sesión
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (!signInError && signInData?.user) {
+            console.log('Inicio de sesión exitoso para usuario existente');
+            setUser(signInData.user);
+
+            // Cargar o crear perfil básico
+            const basicProfile = {
+              id: signInData.user.id,
+              email: email,
+              phone: phone || '',
+              level: 1,
+              balance: 0,
+              avatar_url: null,
+              created_at: new Date().toISOString()
+            };
+
+            setProfile(basicProfile);
+            setLoading(false);
+            return { error: { message: 'User already registered' } };
+          }
+        }
+
         setLoading(false);
-        return { error };
+        return { error: new Error(result.error || 'Error desconocido en el registro') };
       }
 
-      // Verificar datos
-      if (!data?.user) {
-        console.error('No se pudo crear el usuario - datos inválidos');
+      // Si el registro fue exitoso
+      if (result.success && result.user) {
+        console.log('Usuario registrado correctamente con API personalizada');
+
+        // Establecer sesión en Supabase si tenemos tokens
+        if (result.session?.access_token) {
+          await supabase.auth.setSession({
+            access_token: result.session.access_token,
+            refresh_token: result.session.refresh_token || ''
+          });
+        }
+
+        // Establecer usuario en el estado
+        setUser(result.user);
+
+        // Establecer perfil básico en el estado
+        const profileData = {
+          id: result.user.id,
+          email: email,
+          phone: phone || '',
+          level: 1,
+          balance: 0,
+          avatar_url: null,
+          created_at: new Date().toISOString()
+        };
+
+        setProfile(profileData);
+
+        // Finalizar proceso
+        console.log('Registro completado con éxito usando API personalizada');
         setLoading(false);
-        return { error: new Error('No se pudo crear el usuario') };
+        return { error: null };
       }
 
-      console.log('Usuario creado correctamente:', data.user.id);
-      setUser(data.user);
-
-      // 3. Crear perfil básico
-      const profileData = {
-        id: data.user.id,
-        email: email,
-        phone: phone || '',
-        level: 1,
-        balance: 0,
-        avatar_url: null,
-        created_at: new Date().toISOString()
-      };
-
-      // Intentar crear perfil, pero no fallar si hay error
-      try {
-        await supabase.from('profiles').insert(profileData)
-          .catch(err => console.log('Error al crear perfil, pero continuando:', err));
-      } catch (e) {
-        console.log('Error al crear perfil, pero continuando');
-      }
-
-      // Establecer perfil en el estado
-      setProfile(profileData);
-
-      // 4. Finalizar proceso
-      console.log('Registro completado con éxito');
+      // Si llegamos aquí, algo salió mal pero no tenemos un error específico
+      console.error('Respuesta inesperada de la API de registro');
       setLoading(false);
-      return { error: null };
+      return { error: new Error('Respuesta inesperada del servidor') };
 
     } catch (err) {
       // Capturar cualquier error inesperado
-      console.error('Error inesperado durante el registro:', err);
+      console.error('Error inesperado durante el registro con API personalizada:', err);
       setLoading(false);
       return { error: err as Error };
     }

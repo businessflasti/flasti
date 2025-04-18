@@ -36,7 +36,7 @@ export default function RegisterPage() {
 
     // Mostrar mensaje de carga
     const toastId = toast.loading('Procesando registro...');
-    console.log('Iniciando registro ultra simple para:', { email, phone: phone.substring(0, 3) + '***' });
+    console.log('Iniciando registro con API personalizada para:', { email, phone: phone.substring(0, 3) + '***' });
 
     try {
       // Intentar iniciar sesión primero por si el usuario ya existe
@@ -52,7 +52,7 @@ export default function RegisterPage() {
         // Ignorar errores aquí, significa que el usuario no existe
       }
 
-      // Intentar registro con la nueva solución ultra simple
+      // Intentar registro con la nueva API personalizada
       const { error } = await signUp(email, password, phone);
 
       if (error) {
@@ -89,6 +89,7 @@ export default function RegisterPage() {
         } else if (error.message && (error.message.includes('timeout') || error.message.includes('network') || error.message.includes('connect'))) {
           toast.error('Error de conexión. Por favor, verifica tu conexión a internet');
         } else {
+          // Mostrar un mensaje genérico para no confundir al usuario
           toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
           console.error('Error detallado:', error);
         }
@@ -110,6 +111,28 @@ export default function RegisterPage() {
     } catch (error: any) {
       console.error('Error inesperado durante el registro:', error);
       toast.dismiss(toastId);
+
+      // Intentar hacer una llamada directa a la API para depurar
+      try {
+        const debugResponse = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            phone,
+            debug: true
+          })
+        });
+
+        const debugResult = await debugResponse.json();
+        console.log('Respuesta de depuración:', debugResult);
+      } catch (e) {
+        console.error('Error en depuración:', e);
+      }
+
       toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
 
       // Último intento: probar inicio de sesión directo
