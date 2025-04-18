@@ -193,219 +193,198 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Registrar un nuevo usuario - Versión simplificada y robusta
+  // Registrar un nuevo usuario - Versión ultra simplificada
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);
-    console.log('Iniciando proceso de registro simplificado para:', email);
+    console.log('Iniciando proceso de registro ultra simplificado para:', email);
 
     try {
-      // 1. Verificar si el usuario ya existe en profiles
-      try {
-        const { data: existingUser } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('email', email)
-          .maybeSingle();
-
-        if (existingUser) {
-          console.log('El usuario ya existe en profiles, intentando iniciar sesión directamente');
-          setLoading(false);
-          return { error: { message: 'User already registered' } };
-        }
-      } catch (checkErr) {
-        console.error('Error al verificar si el usuario existe:', checkErr);
-        // Continuamos con el registro aunque no podamos verificar
-      }
-
-      // 2. Intentar registrar al usuario
-      console.log('Registrando nuevo usuario...');
+      // Paso 1: Registrar directamente sin verificaciones previas
       const { data, error } = await supabase.auth.signUp({
         email,
-        password,
-        options: {
-          data: { phone }
-        }
+        password
       });
 
+      // Manejar errores de registro
       if (error) {
         console.error('Error durante el registro:', error);
+
+        // Si el error indica que el usuario ya existe, intentar iniciar sesión
+        if (error.message && (error.message.includes('already') || error.message.includes('exists'))) {
+          console.log('El usuario parece existir, intentando iniciar sesión...');
+          return { error: { message: 'User already registered' } };
+        }
+
         setLoading(false);
         return { error };
       }
 
+      // Verificar que tenemos datos válidos
       if (!data || !data.user) {
         console.error('No se pudo crear el usuario - datos inválidos');
         setLoading(false);
         return { error: new Error('No se pudo crear el usuario') };
       }
 
-      // 3. Crear perfil para el usuario
-      console.log('Usuario creado correctamente, creando perfil...');
-      const userId = data.user.id;
+      console.log('Usuario creado correctamente:', data.user.id);
 
-      // Intentar crear perfil en ambas tablas para asegurar compatibilidad
+      // Establecer el usuario en el estado
+      setUser(data.user);
+
+      // Crear un perfil básico
       try {
-        await supabase.from('profiles').insert({
-          id: userId,
+        const profileData = {
+          id: data.user.id,
           email: email,
-          phone: phone,
+          phone: phone || '',
           level: 1,
           balance: 0,
           avatar_url: null,
           created_at: new Date().toISOString()
-        }).catch(err => console.error('Error al crear perfil en profiles:', err));
+        };
 
+        // Intentar crear el perfil, pero no fallar si hay error
+        await supabase.from('profiles').insert(profileData)
+          .catch(err => console.log('Nota: Error al crear perfil, pero continuando:', err));
+
+        // También intentar crear en user_profiles
         await supabase.from('user_profiles').insert({
-          user_id: userId,
-          email: email,
-          phone: phone,
-          level: 1,
-          balance: 0,
-          avatar_url: null,
-          created_at: new Date().toISOString()
-        }).catch(err => console.error('Error al crear perfil en user_profiles:', err));
+          ...profileData,
+          user_id: data.user.id
+        }).catch(err => console.log('Nota: Error al crear user_profile, pero continuando:', err));
+
+        // Establecer el perfil en el estado
+        setProfile(profileData);
       } catch (profileErr) {
-        console.error('Error al crear perfiles:', profileErr);
-        // Continuamos a pesar del error en la creación del perfil
+        console.log('Error al crear perfil, pero continuando:', profileErr);
+        // No fallamos por errores de perfil
       }
 
-      // 4. Iniciar sesión automáticamente
-      console.log('Perfil creado, iniciando sesión automáticamente...');
-      try {
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (signInError) {
-          console.error('Error al iniciar sesión automática:', signInError);
-        } else if (signInData && signInData.user) {
-          console.log('Inicio de sesión automático exitoso');
-          setUser(signInData.user);
-        }
-      } catch (signInErr) {
-        console.error('Error inesperado al iniciar sesión automática:', signInErr);
-      }
-
-      // 5. Finalizar proceso
-      console.log('Proceso de registro completado exitosamente');
+      // Finalizar proceso
+      console.log('Registro completado con éxito');
       setLoading(false);
       return { error: null };
 
     } catch (err) {
       // Capturar cualquier error inesperado
-      console.error('Error inesperado durante todo el proceso de registro:', err);
+      console.error('Error inesperado durante el registro:', err);
       setLoading(false);
       return { error: err as Error };
     }
   };
 
-  // Iniciar sesión
+  // Iniciar sesión - Versión simplificada
   const signIn = async (email: string, password: string) => {
     setLoading(true);
+    console.log('Iniciando proceso de login simplificado para:', email);
 
-    // Implementar sistema de reintentos
-    let attempts = 0;
-    const maxAttempts = 3;
-    let lastError = null;
+    try {
+      // Intentar iniciar sesión directamente
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    while (attempts < maxAttempts) {
+      // Manejar errores de inicio de sesión
+      if (error) {
+        console.error('Error durante el inicio de sesión:', error);
+        setLoading(false);
+        return { error };
+      }
+
+      // Verificar que tenemos datos válidos
+      if (!data || !data.user) {
+        console.error('No se pudo iniciar sesión - datos inválidos');
+        setLoading(false);
+        return { error: new Error('No se pudo iniciar sesión') };
+      }
+
+      console.log('Inicio de sesión exitoso:', data.user.id);
+
+      // Establecer el usuario en el estado
+      setUser(data.user);
+
+      // Intentar cargar el perfil del usuario
       try {
-        console.log(`Intento de inicio de sesión ${attempts + 1} de ${maxAttempts}`);
+        // Primero intentar cargar desde profiles
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .single()
+          .catch(() => ({ data: null }));
 
-        // Usar Promise.race para implementar un timeout más largo
-        const loginPromise = supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        if (profileData) {
+          console.log('Perfil cargado desde profiles');
+          setProfile(profileData);
+        } else {
+          // Si no existe en profiles, intentar en user_profiles
+          const { data: userProfileData } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('user_id', data.user.id)
+            .single()
+            .catch(() => ({ data: null }));
 
-        // Timeout de 15 segundos
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Timeout al conectar con el servidor')), 15000);
-        });
+          if (userProfileData) {
+            console.log('Perfil cargado desde user_profiles');
+            // Convertir formato de user_profiles a profiles
+            setProfile({
+              id: data.user.id,
+              email: data.user.email,
+              level: userProfileData.level || 1,
+              balance: userProfileData.balance || 0,
+              avatar_url: userProfileData.avatar_url || null,
+              created_at: userProfileData.created_at || new Date().toISOString()
+            });
+          } else {
+            // Si no existe perfil, crear uno básico
+            console.log('Creando perfil básico para usuario existente');
+            const basicProfile = {
+              id: data.user.id,
+              email: data.user.email,
+              level: 1,
+              balance: 0,
+              avatar_url: null,
+              created_at: new Date().toISOString()
+            };
 
-        // @ts-ignore - Ignorar error de tipo para Promise.race
-        const { data, error } = await Promise.race([loginPromise, timeoutPromise]);
+            // Intentar crear el perfil en ambas tablas
+            await supabase.from('profiles').insert(basicProfile)
+              .catch(err => console.log('Nota: Error al crear perfil en login, pero continuando:', err));
 
-        console.log('Respuesta de signIn:', { data, error });
+            await supabase.from('user_profiles').insert({
+              ...basicProfile,
+              user_id: data.user.id
+            }).catch(err => console.log('Nota: Error al crear user_profile en login, pero continuando:', err));
 
-        if (error) {
-          console.error(`Error al iniciar sesión (intento ${attempts + 1}):`, error);
-          lastError = error;
-          attempts++;
-          // Esperar antes de reintentar (backoff exponencial)
-          await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
-          continue;
-        }
-
-        // Asegurarse de que el usuario se establezca correctamente
-        if (data && data.user) {
-          setUser(data.user);
-
-          try {
-            // Cargar el perfil del usuario
-            const { data: profileData, error: profileError } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', data.user.id)
-              .single();
-
-            if (profileError) {
-              console.error('Error al cargar perfil:', profileError);
-              // Intentar crear el perfil si no existe
-              if (profileError.code === 'PGRST116') {
-                console.log('Perfil no encontrado, intentando crear uno nuevo');
-                const { error: insertError } = await supabase
-                  .from('profiles')
-                  .insert({
-                    id: data.user.id,
-                    email: data.user.email,
-                    level: 1,
-                    balance: 0,
-                    avatar_url: null,
-                    created_at: new Date().toISOString()
-                  });
-
-                if (insertError) {
-                  console.error('Error al crear perfil:', insertError);
-                } else {
-                  // Cargar el perfil recién creado
-                  const { data: newProfileData } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', data.user.id)
-                    .single();
-
-                  if (newProfileData) {
-                    setProfile(newProfileData);
-                  }
-                }
-              }
-            } else if (profileData) {
-              setProfile(profileData);
-            }
-          } catch (profileError) {
-            console.error('Error al cargar perfil:', profileError);
-            // No fallamos el inicio de sesión si no se puede cargar el perfil
+            setProfile(basicProfile);
           }
         }
-
-        // Si llegamos aquí, el inicio de sesión fue exitoso
-        setLoading(false);
-        return { error: null };
-      } catch (err) {
-        console.error(`Error inesperado durante el inicio de sesión (intento ${attempts + 1}):`, err);
-        lastError = err as Error;
-        attempts++;
-        // Esperar antes de reintentar
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      } catch (profileErr) {
+        console.log('Error al cargar/crear perfil, pero continuando:', profileErr);
+        // Establecer un perfil básico en el estado para que la aplicación funcione
+        setProfile({
+          id: data.user.id,
+          email: data.user.email,
+          level: 1,
+          balance: 0,
+          avatar_url: null,
+          created_at: new Date().toISOString()
+        });
       }
-    }
 
-    // Si llegamos aquí, todos los intentos fallaron
-    console.error('Todos los intentos de inicio de sesión fallaron');
-    setLoading(false);
-    return { error: lastError || new Error('No se pudo conectar al servidor') };
+      // Finalizar proceso
+      console.log('Inicio de sesión completado con éxito');
+      setLoading(false);
+      return { error: null };
+
+    } catch (err) {
+      // Capturar cualquier error inesperado
+      console.error('Error inesperado durante el inicio de sesión:', err);
+      setLoading(false);
+      return { error: err as Error };
+    }
   };
 
   // Cerrar sesión

@@ -21,105 +21,91 @@ export default function RegisterPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Establecer un timeout para evitar que se quede colgado indefinidamente
-    const registerTimeout = setTimeout(() => {
-      console.log('Timeout de registro alcanzado');
+    // Validaciones básicas
+    if (!email || !password || !phone) {
+      toast.error('Por favor, completa todos los campos');
       setIsLoading(false);
-      toast.error('La conexión está tardando demasiado. Por favor, intenta de nuevo.');
-    }, 20000); // 20 segundos de timeout
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('La contraseña debe tener al menos 6 caracteres');
+      setIsLoading(false);
+      return;
+    }
+
+    // Mostrar mensaje de carga
+    toast.info('Procesando registro...');
+    console.log('Iniciando registro con:', { email, phone: phone.substring(0, 3) + '***' });
 
     try {
-      // Validaciones básicas
-      if (!email || !password || !phone) {
-        toast.error('Por favor, completa todos los campos');
-        setIsLoading(false);
-        clearTimeout(registerTimeout);
-        return;
-      }
+      // Intentar registro
+      const { error } = await signUp(email, password, phone);
 
-      if (password.length < 6) {
-        toast.error('La contraseña debe tener al menos 6 caracteres');
-        setIsLoading(false);
-        clearTimeout(registerTimeout);
-        return;
-      }
+      if (error) {
+        console.log('Registro falló con error:', error.message);
 
-      console.log('Intentando registrar usuario:', { email, phone });
+        // Manejar caso de usuario ya existente
+        if (error.message && (error.message.includes('already') || error.message.includes('exists'))) {
+          toast.info('Este correo ya está registrado. Intentando iniciar sesión...');
 
-      try {
-        // Limpiar el timeout ya que vamos a procesar la respuesta
-        clearTimeout(registerTimeout);
+          try {
+            const { error: loginError } = await signIn(email, password);
 
-        console.log('Enviando solicitud de registro con:', { email, phone });
-        toast.info('Procesando registro...');
-
-        const { error } = await signUp(email, password, phone);
-
-        if (error) {
-          console.error('Error detallado:', error);
-          let errorMessage = 'Error al registrarse';
-
-          if (error.message) {
-            if (error.message.includes('already registered') || error.message.includes('already exists')) {
-              // Si el usuario ya está registrado, intentamos iniciar sesión directamente
-              toast.info('Este correo ya está registrado. Iniciando sesión...');
-
-              try {
-                const { error: signInError } = await signIn(email, password);
-                if (!signInError) {
-                  toast.success('Inicio de sesión exitoso');
-                  router.push("/dashboard");
-                  return;
-                } else {
-                  errorMessage = 'Este correo ya está registrado. Por favor, inicia sesión';
-                }
-              } catch (signInErr) {
-                errorMessage = 'Este correo ya está registrado. Por favor, inicia sesión';
-              }
-            } else if (error.message.includes('password')) {
-              errorMessage = 'La contraseña debe tener al menos 6 caracteres';
-            } else if (error.message.includes('timeout') || error.message.includes('network') || error.message.includes('connect')) {
-              errorMessage = 'Error de conexión. Por favor, verifica tu conexión a internet e inténtalo de nuevo';
+            if (!loginError) {
+              toast.success('Inicio de sesión exitoso');
+              router.push('/dashboard');
+              return;
             } else {
-              // Para cualquier otro error, simplemente mostramos un mensaje genérico
-              errorMessage = 'Error al registrarse. Por favor, inténtalo de nuevo';
+              toast.error('Este correo ya está registrado. Por favor, inicia sesión');
             }
+          } catch (e) {
+            toast.error('Este correo ya está registrado. Por favor, inicia sesión');
           }
 
-          toast.error(errorMessage);
-        } else {
-          toast.success('Registro exitoso. ¡Bienvenido a Flasti!');
-          router.push("/dashboard");
+          setIsLoading(false);
+          return;
         }
-      } catch (signUpError: any) {
-        // Limpiar el timeout ya que vamos a procesar la respuesta
-        clearTimeout(registerTimeout);
 
-        // Capturamos cualquier error inesperado durante el registro
-        console.error('Error inesperado durante el registro:', signUpError);
-
-        // Intentamos iniciar sesión de todos modos, por si el usuario ya existe
-        try {
-          toast.info('Verificando si la cuenta ya existe...');
-          const { error: signInError } = await signIn(email, password);
-          if (!signInError) {
-            toast.success('Inicio de sesión exitoso');
-            router.push("/dashboard");
-            return;
-          }
-        } catch (signInErr) {
-          // Si falla el inicio de sesión, mostramos el error original
+        // Manejar otros errores
+        if (error.message && error.message.includes('password')) {
+          toast.error('La contraseña debe tener al menos 6 caracteres');
+        } else if (error.message && (error.message.includes('timeout') || error.message.includes('network') || error.message.includes('connect'))) {
+          toast.error('Error de conexión. Por favor, verifica tu conexión a internet');
+        } else {
           toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
         }
+
+        setIsLoading(false);
+        return;
       }
-    } catch (error: any) {
-      console.error('Error inesperado general:', error);
+
+      // Registro exitoso
+      console.log('Registro completado con éxito');
+      toast.success('Registro exitoso. ¡Bienvenido a Flasti!');
+
+      // Redirigir al dashboard
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1000);
+
+    } catch (error) {
+      console.error('Error inesperado durante el registro:', error);
       toast.error('Error inesperado. Por favor, inténtalo de nuevo');
-      clearTimeout(registerTimeout);
+
+      // Último intento: probar inicio de sesión directo
+      try {
+        const { error: loginError } = await signIn(email, password);
+        if (!loginError) {
+          toast.success('Inicio de sesión exitoso');
+          router.push('/dashboard');
+          return;
+        }
+      } catch (e) {
+        // Ignorar errores aquí
+      }
     } finally {
       setIsLoading(false);
-      // Asegurarse de que el timeout se limpie en todos los casos
-      clearTimeout(registerTimeout);
     }
   };
 
