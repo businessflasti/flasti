@@ -5,12 +5,9 @@ import { UserLevelProvider } from '@/contexts/UserLevelContext';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import OnboardingModal from '@/components/dashboard/OnboardingModal';
-import { Metadata } from 'next';
 
-export const metadata = {
-  title: "Flasti | Panel personal",
-  description: "Accede a tu panel personal de Flasti para gestionar tus ganancias y actividades.",
-};
+// No se puede exportar metadata desde un componente 'use client'
+// Los metadatos se manejarán a nivel de configuración global
 
 export default function DashboardLayout({
   children,
