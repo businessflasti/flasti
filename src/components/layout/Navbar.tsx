@@ -33,6 +33,11 @@ const Navbar = () => {
                 {t('iniciarSesion')}
               </Button>
             </Link>
+            <Link href="/register-simple">
+              <Button variant="outline" size="sm" className="whitespace-nowrap bg-gradient-to-r from-[#facc15] via-[#ec4899] to-[#9333ea] text-white border-0 hover:opacity-90">
+                {t('registrarse')}
+              </Button>
+            </Link>
             <Link href="/dashboard-new">
               <Button variant="outline" size="sm" className="whitespace-nowrap">
                 Dashboard
