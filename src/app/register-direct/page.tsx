@@ -40,25 +40,29 @@ export default function RegisterDirect() {
     console.log('Iniciando registro directo para:', email);
 
     try {
-      // Intentar registro directo con Supabase
+      // Intentar registro directo con Supabase con opciones mejoradas
       const { data, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          data: { phone }, // Guardar el teléfono en los metadatos del usuario
+          emailRedirectTo: window.location.origin + '/dashboard' // Redirección después de verificar email
+        }
       });
 
       if (error) {
         console.error('Error en registro:', error);
         toast.dismiss(toastId);
-        
+
         // Si el error indica que el usuario ya existe, intentar iniciar sesión
         if (error.message && (error.message.includes('already') || error.message.includes('exists'))) {
           toast.info('Este correo ya está registrado. Intentando iniciar sesión...');
-          
+
           const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
             email,
             password
           });
-          
+
           if (signInError) {
             toast.error('Este correo ya está registrado. Por favor, inicia sesión con tu contraseña');
             setTimeout(() => router.push('/login'), 2000);
@@ -69,7 +73,7 @@ export default function RegisterDirect() {
         } else {
           toast.error(`Error al registrarse: ${error.message}`);
         }
-        
+
         setIsLoading(false);
         return;
       }
@@ -83,12 +87,27 @@ export default function RegisterDirect() {
       }
 
       console.log('Usuario creado correctamente:', data.user.id);
-      
-      // Intentar crear perfil
+
+      // Intentar crear perfil con manejo mejorado de errores
       try {
-        const { error: profileError } = await supabase
+        console.log('Intentando crear perfil para usuario:', data.user.id);
+
+        // Primero, verificar si el perfil ya existe
+        const { data: existingProfile, error: checkError } = await supabase
           .from('profiles')
-          .insert({
+          .select('id')
+          .eq('id', data.user.id)
+          .maybeSingle();
+
+        if (checkError) {
+          console.error('Error al verificar si el perfil existe:', checkError);
+        }
+
+        if (existingProfile) {
+          console.log('El perfil ya existe, no es necesario crearlo');
+        } else {
+          // Crear el perfil con manejo detallado de errores
+          const profileData = {
             id: data.user.id,
             email,
             phone,
@@ -96,26 +115,74 @@ export default function RegisterDirect() {
             balance: 0,
             avatar_url: null,
             created_at: new Date().toISOString()
-          });
+          };
 
-        if (profileError) {
-          console.error('Error al crear perfil, pero continuando:', profileError);
-        } else {
-          console.log('Perfil creado correctamente');
+          console.log('Datos del perfil a insertar:', profileData);
+
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert(profileData);
+
+          if (profileError) {
+            console.error('Error al crear perfil:', profileError);
+            toast.error(`Error al guardar datos de usuario: ${profileError.message}`);
+
+            // Intentar crear en user_profiles como alternativa
+            console.log('Intentando crear en user_profiles como alternativa');
+            const { error: userProfileError } = await supabase
+              .from('user_profiles')
+              .insert({
+                user_id: data.user.id,
+                email,
+                phone,
+                level: 1,
+                balance: 0,
+                avatar_url: null,
+                created_at: new Date().toISOString()
+              });
+
+            if (userProfileError) {
+              console.error('Error al crear en user_profiles:', userProfileError);
+            } else {
+              console.log('Perfil creado correctamente en user_profiles');
+            }
+          } else {
+            console.log('Perfil creado correctamente en profiles');
+          }
         }
       } catch (profileErr) {
-        console.error('Error al crear perfil, pero continuando:', profileErr);
+        console.error('Error inesperado al crear perfil:', profileErr);
+        toast.error('Error al guardar datos de usuario. Por favor, contacta a soporte.');
       }
 
-      // Registro exitoso
+      // Registro exitoso - Iniciar sesión automáticamente
+      try {
+        console.log('Intentando iniciar sesión automáticamente');
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (signInError) {
+          console.error('Error al iniciar sesión automática:', signInError);
+          // Continuamos a pesar del error, ya que el usuario se creó correctamente
+        } else if (signInData?.user) {
+          console.log('Inicio de sesión automático exitoso');
+        }
+      } catch (signInErr) {
+        console.error('Error inesperado al iniciar sesión automática:', signInErr);
+        // Continuamos a pesar del error, ya que el usuario se creó correctamente
+      }
+
+      // Mostrar mensaje de éxito y redirigir
       toast.dismiss(toastId);
       toast.success('Registro exitoso. ¡Bienvenido a Flasti!');
-      
-      // Redirigir al dashboard
+
+      // Redirigir al dashboard con un pequeño delay para asegurar que todo esté listo
       setTimeout(() => {
         router.push('/dashboard');
       }, 1500);
-      
+
     } catch (error: any) {
       console.error('Error inesperado durante el registro:', error);
       toast.dismiss(toastId);
