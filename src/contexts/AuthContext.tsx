@@ -237,45 +237,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return { error: new Error('No se pudo crear el usuario') };
         }
 
-      // Intentar crear el perfil manualmente para incluir el teléfono
-      try {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            email: data.user.email,
-            phone: phone, // Guardar el teléfono en el perfil
-            level: 1,
-            balance: 0,
-            avatar_url: null,
-            created_at: new Date().toISOString()
+        // Intentar crear el perfil manualmente para incluir el teléfono
+        try {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+              id: data.user.id,
+              email: data.user.email,
+              phone: phone, // Guardar el teléfono en el perfil
+              level: 1,
+              balance: 0,
+              avatar_url: null,
+              created_at: new Date().toISOString()
+            });
+
+          if (profileError) {
+            console.error('Error al crear perfil durante registro:', profileError);
+            // No fallamos el registro si no se puede crear el perfil
+          } else {
+            console.log('Perfil creado correctamente durante registro');
+          }
+        } catch (profileErr) {
+          console.error('Error al crear perfil durante registro:', profileErr);
+        }
+
+        // Iniciar sesión inmediatamente después del registro
+        try {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
           });
 
-        if (profileError) {
-          console.error('Error al crear perfil durante registro:', profileError);
-          // No fallamos el registro si no se puede crear el perfil
-        } else {
-          console.log('Perfil creado correctamente durante registro');
-        }
-      } catch (profileErr) {
-        console.error('Error al crear perfil durante registro:', profileErr);
-      }
-
-      // Iniciar sesión inmediatamente después del registro
-      try {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (signInError) {
-          console.error('Error al iniciar sesión después del registro:', signInError);
+          if (signInError) {
+            console.error('Error al iniciar sesión después del registro:', signInError);
+            // Continuamos a pesar del error, ya que el usuario se creó correctamente
+          }
+        } catch (err) {
+          console.error('Error al iniciar sesión después del registro:', err);
           // Continuamos a pesar del error, ya que el usuario se creó correctamente
         }
-      } catch (err) {
-        console.error('Error al iniciar sesión después del registro:', err);
-        // Continuamos a pesar del error, ya que el usuario se creó correctamente
-      }
 
         // Si llegamos aquí, el registro fue exitoso
         setLoading(false);
@@ -293,7 +293,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.error('Todos los intentos de registro fallaron');
     setLoading(false);
     return { error: lastError || new Error('No se pudo conectar al servidor') };
-  }
   };
 
   // Iniciar sesión
@@ -402,7 +401,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.error('Todos los intentos de inicio de sesión fallaron');
     setLoading(false);
     return { error: lastError || new Error('No se pudo conectar al servidor') };
-  }
+  };
 
   // Cerrar sesión
   const signOut = async () => {
