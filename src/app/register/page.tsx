@@ -11,7 +11,7 @@ import Logo from "@/components/ui/logo";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { signUp, loading } = useAuth();
+  const { signUp, signIn, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
