@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AffiliateTracker from "@/components/affiliate/AffiliateTracker";
 import { usePathname } from 'next/navigation';
+import RegistrationBanner from "@/components/ui/RegistrationBanner";
 
 // Cargar el chat widget de forma diferida para mejorar el rendimiento inicial
 const DashboardChatWidget = dynamic(
@@ -30,6 +31,9 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
 
   return (
     <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden">
+      {/* Banner de registro alternativo */}
+      {!isInternalPage && <RegistrationBanner />}
+
       {/* Elementos decorativos futuristas */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl animate-float decorative-element hardware-accelerated"></div>
