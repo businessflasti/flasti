@@ -3,18 +3,20 @@
 import { Button, ButtonProps } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChatButtonProps extends ButtonProps {
   text?: string;
   showIcon?: boolean;
 }
 
-export default function ChatButton({ 
-  text = "Iniciar chat", 
-  showIcon = true, 
-  className = "", 
-  ...props 
+export default function ChatButton({
+  text,
+  showIcon = true,
+  className = "",
+  ...props
 }: ChatButtonProps) {
+  const { t } = useLanguage();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function ChatButton({
       if (typeof window.Tawk_API.showWidget === 'function') {
         window.Tawk_API.showWidget();
       }
-      
+
       setTimeout(() => {
         if (typeof window.Tawk_API.maximize === 'function') {
           window.Tawk_API.maximize();
@@ -47,7 +49,7 @@ export default function ChatButton({
       {...props}
     >
       {showIcon && <MessageCircle size={16} className="mr-2" />}
-      {text}
+      {text || t('iniciarChat')}
     </Button>
   );
 }

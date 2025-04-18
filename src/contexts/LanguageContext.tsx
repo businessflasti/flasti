@@ -7,6 +7,7 @@ export const translations = {
     iniciarSesion: 'Iniciar sesión',
     modoClaro: 'Claro',
     modoOscuro: 'Oscuro',
+    iniciarChat: 'Iniciar chat',
 
     // Hero Section
     genera: 'Genera',
@@ -249,6 +250,7 @@ export const translations = {
     iniciarSesion: 'Log in',
     modoClaro: 'Light',
     modoOscuro: 'Dark',
+    iniciarChat: 'Start chat',
 
     // Hero Section
     genera: 'Generate',
@@ -491,6 +493,7 @@ export const translations = {
     iniciarSesion: 'Iniciar sessão',
     modoClaro: 'Claro',
     modoOscuro: 'Escuro',
+    iniciarChat: 'Iniciar bate-papo',
 
     // Hero Section
     genera: 'Gere',
