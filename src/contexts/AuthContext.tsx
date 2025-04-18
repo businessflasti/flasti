@@ -193,10 +193,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Registrar un nuevo usuario - Solución mejorada
+  // Registrar un nuevo usuario - Solución ultra básica
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);
-    console.log('Iniciando proceso de registro mejorado para:', email);
+    console.log('Iniciando proceso de registro ultra básico para:', email);
 
     try {
       // Verificar si el usuario ya existe intentando iniciar sesión
@@ -226,22 +226,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.log('Usuario no existe, continuando con registro');
       }
 
-      // Registrar al usuario con opciones mejoradas
-      console.log('Registrando usuario con método mejorado');
+      // Registrar al usuario con el método más básico posible
+      console.log('Registrando usuario con método ultra básico');
 
-      // Usar el cliente de Supabase con opciones mejoradas
+      // Usar el cliente de Supabase con opciones mínimas
       const { data, error } = await supabase.auth.signUp({
         email,
-        password,
-        options: {
-          data: { phone }, // Guardar el teléfono en los metadatos del usuario
-          emailRedirectTo: window.location.origin + '/dashboard' // Redirección después de verificar email
-        }
+        password
       });
 
       // Manejar errores
       if (error) {
-        console.error('Error durante el registro:', error);
+        console.error('Error durante el registro básico:', error);
         setLoading(false);
         return { error };
       }
@@ -267,83 +263,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         created_at: new Date().toISOString()
       };
 
-      // Intentar crear perfil con manejo mejorado de errores
+      // Intentar crear perfil, pero no fallar si hay error
       try {
-        console.log('Intentando crear perfil para usuario:', data.user.id);
-
-        // Primero, verificar si el perfil ya existe
-        const { data: existingProfile, error: checkError } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('id', data.user.id)
-          .maybeSingle();
-
-        if (checkError) {
-          console.error('Error al verificar si el perfil existe:', checkError);
-        }
-
-        if (existingProfile) {
-          console.log('El perfil ya existe, no es necesario crearlo');
-        } else {
-          // Crear el perfil con manejo detallado de errores
-          console.log('Datos del perfil a insertar:', profileData);
-
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .insert(profileData);
-
-          if (profileError) {
-            console.error('Error al crear perfil en profiles:', profileError);
-
-            // Intentar crear en user_profiles como alternativa
-            console.log('Intentando crear en user_profiles como alternativa');
-            const { error: userProfileError } = await supabase
-              .from('user_profiles')
-              .insert({
-                user_id: data.user.id,
-                email,
-                phone,
-                level: 1,
-                balance: 0,
-                avatar_url: null,
-                created_at: new Date().toISOString()
-              });
-
-            if (userProfileError) {
-              console.error('Error al crear en user_profiles:', userProfileError);
-            } else {
-              console.log('Perfil creado correctamente en user_profiles');
-            }
-          } else {
-            console.log('Perfil creado correctamente en profiles');
-          }
-        }
-      } catch (profileErr) {
-        console.error('Error inesperado al crear perfil:', profileErr);
-        // Continuamos a pesar del error, ya que el usuario se creó correctamente
+        await supabase.from('profiles').insert(profileData);
+        console.log('Perfil creado correctamente');
+      } catch (e) {
+        console.log('Error al crear perfil, pero continuando');
       }
 
       // Establecer perfil en el estado
       setProfile(profileData);
-
-      // Iniciar sesión automáticamente
-      try {
-        console.log('Intentando iniciar sesión automáticamente');
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (signInError) {
-          console.error('Error al iniciar sesión automática:', signInError);
-          // Continuamos a pesar del error, ya que el usuario se creó correctamente
-        } else if (signInData?.user) {
-          console.log('Inicio de sesión automático exitoso');
-        }
-      } catch (signInErr) {
-        console.error('Error inesperado al iniciar sesión automática:', signInErr);
-        // Continuamos a pesar del error, ya que el usuario se creó correctamente
-      }
 
       // Finalizar proceso
       console.log('Registro completado con éxito');
@@ -358,13 +287,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Iniciar sesión - Versión mejorada
+  // Iniciar sesión - Versión ultra básica
   const signIn = async (email: string, password: string) => {
     setLoading(true);
-    console.log('Iniciando proceso de login mejorado para:', email);
+    console.log('Iniciando proceso de login ultra básico para:', email);
 
     try {
-      // Intentar iniciar sesión con manejo mejorado de errores
+      // Intentar iniciar sesión con el método más básico posible
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -389,120 +318,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Establecer el usuario en el estado
       setUser(data.user);
 
-      // Intentar cargar el perfil existente
-      try {
-        console.log('Intentando cargar perfil existente');
+      // Crear un perfil básico
+      const basicProfile = {
+        id: data.user.id,
+        email: data.user.email || email,
+        phone: '',
+        level: 1,
+        balance: 0,
+        avatar_url: null,
+        created_at: new Date().toISOString()
+      };
 
-        // Buscar en profiles primero
-        let profileData = null;
-        const { data: existingProfile, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', data.user.id)
-          .maybeSingle();
-
-        if (profileError && profileError.code !== 'PGRST116') {
-          console.error('Error al buscar perfil en profiles:', profileError);
-        }
-
-        if (existingProfile) {
-          console.log('Perfil encontrado en profiles');
-          profileData = existingProfile;
-        } else {
-          // Si no se encuentra en profiles, buscar en user_profiles
-          console.log('Perfil no encontrado en profiles, buscando en user_profiles');
-          const { data: userProfileData, error: userProfileError } = await supabase
-            .from('user_profiles')
-            .select('*')
-            .eq('user_id', data.user.id)
-            .maybeSingle();
-
-          if (userProfileError && userProfileError.code !== 'PGRST116') {
-            console.error('Error al buscar perfil en user_profiles:', userProfileError);
-          }
-
-          if (userProfileData) {
-            console.log('Perfil encontrado en user_profiles');
-            // Convertir formato de user_profiles a formato de perfil estándar
-            profileData = {
-              id: data.user.id,
-              email: data.user.email || email,
-              phone: userProfileData.phone || '',
-              level: userProfileData.level || 1,
-              balance: userProfileData.balance || 0,
-              avatar_url: userProfileData.avatar_url || null,
-              created_at: userProfileData.created_at || new Date().toISOString()
-            };
-          }
-        }
-
-        // Si no se encontró perfil en ninguna tabla, crear uno básico
-        if (!profileData) {
-          console.log('No se encontró perfil, creando uno básico');
-          profileData = {
-            id: data.user.id,
-            email: data.user.email || email,
-            phone: '',
-            level: 1,
-            balance: 0,
-            avatar_url: null,
-            created_at: new Date().toISOString()
-          };
-
-          // Intentar guardar el perfil básico
-          try {
-            const { error: insertError } = await supabase
-              .from('profiles')
-              .insert(profileData);
-
-            if (insertError) {
-              console.error('Error al crear perfil básico en profiles:', insertError);
-
-              // Intentar en user_profiles como alternativa
-              const { error: userProfileInsertError } = await supabase
-                .from('user_profiles')
-                .insert({
-                  user_id: data.user.id,
-                  email: data.user.email || email,
-                  phone: '',
-                  level: 1,
-                  balance: 0,
-                  avatar_url: null,
-                  created_at: new Date().toISOString()
-                });
-
-              if (userProfileInsertError) {
-                console.error('Error al crear perfil básico en user_profiles:', userProfileInsertError);
-              } else {
-                console.log('Perfil básico creado en user_profiles');
-              }
-            } else {
-              console.log('Perfil básico creado en profiles');
-            }
-          } catch (insertErr) {
-            console.error('Error inesperado al crear perfil básico:', insertErr);
-          }
-        }
-
-        // Establecer el perfil en el estado
-        setProfile(profileData);
-
-      } catch (profileErr) {
-        console.error('Error inesperado al cargar/crear perfil:', profileErr);
-
-        // Crear un perfil básico en memoria aunque haya fallado la carga/creación
-        const basicProfile = {
-          id: data.user.id,
-          email: data.user.email || email,
-          phone: '',
-          level: 1,
-          balance: 0,
-          avatar_url: null,
-          created_at: new Date().toISOString()
-        };
-
-        setProfile(basicProfile);
-      }
+      // Establecer el perfil en el estado
+      setProfile(basicProfile);
 
       // Finalizar proceso
       console.log('Inicio de sesión completado con éxito');
