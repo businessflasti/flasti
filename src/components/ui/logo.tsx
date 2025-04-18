@@ -34,7 +34,7 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
             letterSpacing: '-0.01em'
           }}
         >
-          Flasti
+          flasti
         </span>
       </div>
     </Link>
