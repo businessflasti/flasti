@@ -193,48 +193,115 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Registrar un nuevo usuario - Versión ultra simplificada
+  // Registrar un nuevo usuario - Solución radical
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);
-    console.log('Iniciando proceso de registro ultra simplificado para:', email);
+    console.log('Iniciando proceso de registro con solución radical para:', email);
 
     try {
-      // Paso 1: Registrar directamente sin verificaciones previas
-      const { data, error } = await supabase.auth.signUp({
+      // 1. Verificar si el usuario ya existe intentando iniciar sesión
+      const loginResult = await supabase.auth.signInWithPassword({
         email,
         password
+      }).catch(() => ({ data: null, error: null }));
+
+      // Si el inicio de sesión es exitoso, el usuario ya existe
+      if (loginResult.data?.user) {
+        console.log('El usuario ya existe y la contraseña es correcta');
+        setUser(loginResult.data.user);
+
+        // Cargar o crear perfil
+        try {
+          const basicProfile = {
+            id: loginResult.data.user.id,
+            email: email,
+            phone: phone || '',
+            level: 1,
+            balance: 0,
+            avatar_url: null,
+            created_at: new Date().toISOString()
+          };
+
+          setProfile(basicProfile);
+        } catch (e) {
+          console.log('Error al establecer perfil para usuario existente, pero continuando');
+        }
+
+        setLoading(false);
+        return { error: { message: 'User already registered' } };
+      }
+
+      // 2. Intentar registro con opciones máximas de compatibilidad
+      console.log('Intentando registro con opciones de compatibilidad máxima');
+
+      // Usar fetch directamente para evitar problemas con el cliente de Supabase
+      const response = await fetch(`${supabase.supabaseUrl}/auth/v1/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabase.supabaseKey,
+          'X-Client-Info': 'supabase-js/2.x'
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          data: { phone }
+        })
       });
 
-      // Manejar errores de registro
-      if (error) {
-        console.error('Error durante el registro:', error);
+      const result = await response.json();
+      console.log('Respuesta directa de registro:', result);
+
+      // Verificar si hubo error
+      if (!response.ok || result.error) {
+        const errorMsg = result.error?.message || 'Error desconocido en el registro';
+        console.error('Error en registro directo:', errorMsg);
 
         // Si el error indica que el usuario ya existe, intentar iniciar sesión
-        if (error.message && (error.message.includes('already') || error.message.includes('exists'))) {
+        if (errorMsg.includes('already') || errorMsg.includes('exists')) {
           console.log('El usuario parece existir, intentando iniciar sesión...');
+
+          // Intentar iniciar sesión
+          const { data: signInData } = await supabase.auth.signInWithPassword({ email, password })
+            .catch(() => ({ data: null }));
+
+          if (signInData?.user) {
+            setUser(signInData.user);
+            setProfile({
+              id: signInData.user.id,
+              email: email,
+              phone: phone || '',
+              level: 1,
+              balance: 0,
+              avatar_url: null,
+              created_at: new Date().toISOString()
+            });
+          }
+
+          setLoading(false);
           return { error: { message: 'User already registered' } };
         }
 
         setLoading(false);
-        return { error };
+        return { error: new Error(errorMsg) };
       }
 
-      // Verificar que tenemos datos válidos
-      if (!data || !data.user) {
+      // 3. Verificar que tenemos datos válidos
+      if (!result.user || !result.user.id) {
         console.error('No se pudo crear el usuario - datos inválidos');
         setLoading(false);
-        return { error: new Error('No se pudo crear el usuario') };
+        return { error: new Error('No se pudo crear el usuario - respuesta inválida') };
       }
 
-      console.log('Usuario creado correctamente:', data.user.id);
+      console.log('Usuario creado correctamente:', result.user.id);
 
-      // Establecer el usuario en el estado
-      setUser(data.user);
+      // 4. Establecer el usuario en el estado
+      setUser(result.user);
 
-      // Crear un perfil básico
+      // 5. Crear un perfil básico
       try {
         const profileData = {
-          id: data.user.id,
+          id: result.user.id,
           email: email,
           phone: phone || '',
           level: 1,
@@ -243,15 +310,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           created_at: new Date().toISOString()
         };
 
-        // Intentar crear el perfil, pero no fallar si hay error
-        await supabase.from('profiles').insert(profileData)
-          .catch(err => console.log('Nota: Error al crear perfil, pero continuando:', err));
-
-        // También intentar crear en user_profiles
-        await supabase.from('user_profiles').insert({
-          ...profileData,
-          user_id: data.user.id
-        }).catch(err => console.log('Nota: Error al crear user_profile, pero continuando:', err));
+        // Intentar crear el perfil en ambas tablas
+        await Promise.allSettled([
+          // Intentar en profiles
+          fetch(`${supabase.supabaseUrl}/rest/v1/profiles`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': supabase.supabaseKey,
+              'Authorization': `Bearer ${supabase.supabaseKey}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(profileData)
+          }),
+          // Intentar en user_profiles
+          fetch(`${supabase.supabaseUrl}/rest/v1/user_profiles`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': supabase.supabaseKey,
+              'Authorization': `Bearer ${supabase.supabaseKey}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              ...profileData,
+              user_id: result.user.id
+            })
+          })
+        ]);
 
         // Establecer el perfil en el estado
         setProfile(profileData);
@@ -260,7 +346,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // No fallamos por errores de perfil
       }
 
-      // Finalizar proceso
+      // 6. Iniciar sesión automáticamente
+      try {
+        await supabase.auth.signInWithPassword({ email, password })
+          .catch(e => console.log('Error al iniciar sesión automática, pero continuando:', e));
+      } catch (e) {
+        console.log('Error al iniciar sesión automática, pero continuando');
+      }
+
+      // 7. Finalizar proceso
       console.log('Registro completado con éxito');
       setLoading(false);
       return { error: null };

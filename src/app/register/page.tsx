@@ -35,15 +35,16 @@ export default function RegisterPage() {
     }
 
     // Mostrar mensaje de carga
-    toast.info('Procesando registro...');
-    console.log('Iniciando registro con:', { email, phone: phone.substring(0, 3) + '***' });
+    const toastId = toast.loading('Procesando registro...');
+    console.log('Iniciando registro con solución radical para:', { email, phone: phone.substring(0, 3) + '***' });
 
     try {
-      // Intentar registro
+      // Intentar registro con la nueva solución radical
       const { error } = await signUp(email, password, phone);
 
       if (error) {
         console.log('Registro falló con error:', error.message);
+        toast.dismiss(toastId);
 
         // Manejar caso de usuario ya existente
         if (error.message && (error.message.includes('already') || error.message.includes('exists'))) {
@@ -58,9 +59,11 @@ export default function RegisterPage() {
               return;
             } else {
               toast.error('Este correo ya está registrado. Por favor, inicia sesión');
+              setTimeout(() => router.push('/login'), 2000);
             }
           } catch (e) {
             toast.error('Este correo ya está registrado. Por favor, inicia sesión');
+            setTimeout(() => router.push('/login'), 2000);
           }
 
           setIsLoading(false);
@@ -73,7 +76,7 @@ export default function RegisterPage() {
         } else if (error.message && (error.message.includes('timeout') || error.message.includes('network') || error.message.includes('connect'))) {
           toast.error('Error de conexión. Por favor, verifica tu conexión a internet');
         } else {
-          toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
+          toast.error(`Error al registrarse: ${error.message}. Por favor, inténtalo de nuevo`);
         }
 
         setIsLoading(false);
@@ -82,19 +85,22 @@ export default function RegisterPage() {
 
       // Registro exitoso
       console.log('Registro completado con éxito');
+      toast.dismiss(toastId);
       toast.success('Registro exitoso. ¡Bienvenido a Flasti!');
 
-      // Redirigir al dashboard
+      // Redirigir al dashboard con un pequeño delay para asegurar que todo esté listo
       setTimeout(() => {
         router.push('/dashboard');
-      }, 1000);
+      }, 1500);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error inesperado durante el registro:', error);
-      toast.error('Error inesperado. Por favor, inténtalo de nuevo');
+      toast.dismiss(toastId);
+      toast.error(`Error inesperado: ${error?.message || 'Desconocido'}. Inténtalo de nuevo`);
 
       // Último intento: probar inicio de sesión directo
       try {
+        toast.info('Intentando recuperar la sesión...');
         const { error: loginError } = await signIn(email, password);
         if (!loginError) {
           toast.success('Inicio de sesión exitoso');
