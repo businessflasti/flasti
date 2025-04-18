@@ -36,10 +36,23 @@ export default function RegisterPage() {
 
     // Mostrar mensaje de carga
     const toastId = toast.loading('Procesando registro...');
-    console.log('Iniciando registro con solución radical para:', { email, phone: phone.substring(0, 3) + '***' });
+    console.log('Iniciando registro ultra simple para:', { email, phone: phone.substring(0, 3) + '***' });
 
     try {
-      // Intentar registro con la nueva solución radical
+      // Intentar iniciar sesión primero por si el usuario ya existe
+      try {
+        const { error: loginError } = await signIn(email, password);
+        if (!loginError) {
+          toast.dismiss(toastId);
+          toast.success('Inicio de sesión exitoso');
+          router.push('/dashboard');
+          return;
+        }
+      } catch (e) {
+        // Ignorar errores aquí, significa que el usuario no existe
+      }
+
+      // Intentar registro con la nueva solución ultra simple
       const { error } = await signUp(email, password, phone);
 
       if (error) {
@@ -76,7 +89,8 @@ export default function RegisterPage() {
         } else if (error.message && (error.message.includes('timeout') || error.message.includes('network') || error.message.includes('connect'))) {
           toast.error('Error de conexión. Por favor, verifica tu conexión a internet');
         } else {
-          toast.error(`Error al registrarse: ${error.message}. Por favor, inténtalo de nuevo`);
+          toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
+          console.error('Error detallado:', error);
         }
 
         setIsLoading(false);
@@ -96,7 +110,7 @@ export default function RegisterPage() {
     } catch (error: any) {
       console.error('Error inesperado durante el registro:', error);
       toast.dismiss(toastId);
-      toast.error(`Error inesperado: ${error?.message || 'Desconocido'}. Inténtalo de nuevo`);
+      toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
 
       // Último intento: probar inicio de sesión directo
       try {
