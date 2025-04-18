@@ -11,11 +11,11 @@ import {
   MessageCircle,
   Phone
 } from "lucide-react";
-import useTawkTo from "@/hooks/useTawkTo";
+import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 
 export default function ContactoPage() {
   // Inicializar el chat de Tawk.to con la burbuja visible
-  const { openChat } = useTawkTo(true);
+  const { openChat } = DirectTawkToScript({ showBubble: true });
 
   const [formState, setFormState] = useState({
     name: "",

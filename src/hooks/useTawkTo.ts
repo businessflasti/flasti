@@ -10,7 +10,7 @@ declare global {
 }
 
 // ID de tu cuenta de Tawk.to
-const TAWK_TO_ID = '65fef9c0cc1c1d5e8b2a9e9e'; // ID de Tawk.to para Flasti
+const TAWK_TO_ID = '6281726e7b967b11798f79e1/1g34qe1tb'; // ID correcto de Tawk.to para Flasti
 
 export const useTawkTo = (showBubble = true) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -31,7 +31,7 @@ export const useTawkTo = (showBubble = true) => {
     const script = document.createElement('script');
     script.id = 'tawkto-script';
     script.async = true;
-    script.src = `https://embed.tawk.to/${TAWK_TO_ID}/default`;
+    script.src = `https://embed.tawk.to/${TAWK_TO_ID}`;
     script.charset = 'UTF-8';
     script.setAttribute('crossorigin', '*');
 
@@ -73,8 +73,44 @@ export const useTawkTo = (showBubble = true) => {
   // Método para abrir el chat manualmente
   const openChat = () => {
     if (window.Tawk_API) {
-      window.Tawk_API.showWidget();
-      window.Tawk_API.maximize();
+      // Asegurarse de que el widget esté visible
+      if (typeof window.Tawk_API.showWidget === 'function') {
+        window.Tawk_API.showWidget();
+      }
+
+      // Esperar un momento para asegurarse de que el widget esté visible
+      setTimeout(() => {
+        if (typeof window.Tawk_API.maximize === 'function') {
+          window.Tawk_API.maximize();
+        } else if (typeof window.Tawk_API.popup === 'function') {
+          // Alternativa si maximize no está disponible
+          window.Tawk_API.popup();
+        }
+      }, 300);
+    } else {
+      // Si Tawk_API no está disponible, intentar cargar el script y abrir el chat
+      const script = document.createElement('script');
+      script.id = 'tawkto-script';
+      script.async = true;
+      script.src = `https://embed.tawk.to/${TAWK_TO_ID}`;
+      script.charset = 'UTF-8';
+      script.setAttribute('crossorigin', '*');
+
+      script.onload = () => {
+        // Intentar abrir el chat después de que el script se cargue
+        setTimeout(() => {
+          if (window.Tawk_API) {
+            if (typeof window.Tawk_API.showWidget === 'function') {
+              window.Tawk_API.showWidget();
+            }
+            if (typeof window.Tawk_API.maximize === 'function') {
+              window.Tawk_API.maximize();
+            }
+          }
+        }, 1000);
+      };
+
+      document.head.appendChild(script);
     }
   };
 

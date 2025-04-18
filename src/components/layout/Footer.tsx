@@ -6,14 +6,14 @@ import Logo from "@/components/ui/logo";
 import { Shield, Lock, CheckCircle, ArrowUp, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import useTawkTo from "@/hooks/useTawkTo";
+import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 
 const Footer = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { t } = useLanguage();
 
   // Inicializar el chat de Tawk.to con la burbuja oculta
-  const { openChat } = useTawkTo(false);
+  const { openChat } = DirectTawkToScript({ showBubble: false });
 
   useEffect(() => {
     const handleScroll = () => {
