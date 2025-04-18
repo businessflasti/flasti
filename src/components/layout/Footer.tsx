@@ -6,14 +6,12 @@ import Logo from "@/components/ui/logo";
 import { Shield, Lock, CheckCircle, ArrowUp, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
+import ChatButton from "@/components/chat/ChatButton";
+import HomepageChatWidget from "@/components/chat/HomepageChatWidget";
 
 const Footer = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { t } = useLanguage();
-
-  // Inicializar el chat de Tawk.to con la burbuja oculta
-  const { openChat } = DirectTawkToScript({ showBubble: false });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +33,9 @@ const Footer = () => {
     });
   };
   return (
+    <>
+      {/* Widget de chat para la página de inicio (oculto por defecto) */}
+      <HomepageChatWidget />
     <footer className="relative overflow-hidden pt-12 pb-8">
       {/* Fondo futurista */}
       <div className="absolute inset-0 bg-card/70 backdrop-blur-md -z-10"></div>
@@ -165,14 +166,11 @@ const Footer = () => {
             <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('contactanos')}</h4>
             <div className="space-y-4">
               <p className="text-foreground/60 text-sm">{t('ayudaInmediata')}</p>
-              <Button
-                onClick={openChat}
+              <ChatButton
                 className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2"
                 size="sm"
-              >
-                <MessageCircle size={16} />
-                {t('iniciarChat')}
-              </Button>
+                text={t('iniciarChat')}
+              />
             </div>
           </div>
         </div>
@@ -257,14 +255,12 @@ const Footer = () => {
               <p className="dark:text-foreground/70 text-foreground/80 text-xs mb-3 text-center">
                 {t('ayudaInmediata')}
               </p>
-              <Button
-                onClick={openChat}
+              <ChatButton
                 className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2 w-full justify-center"
                 size="sm"
-              >
-                <MessageCircle size={14} />
-                {t('iniciarChat')}
-              </Button>
+                text={t('iniciarChat')}
+                showIcon={true}
+              />
             </div>
           </div>
         </div>
@@ -294,6 +290,7 @@ const Footer = () => {
         </button>
       )}
     </footer>
+    </>
   );
 };
 

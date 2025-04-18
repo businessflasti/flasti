@@ -11,11 +11,10 @@ import {
   MessageCircle,
   Phone
 } from "lucide-react";
-import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
+import TawkToWidget from "@/components/chat/TawkToWidget";
+import ChatButton from "@/components/chat/ChatButton";
 
 export default function ContactoPage() {
-  // Inicializar el chat de Tawk.to con la burbuja visible
-  const { openChat } = DirectTawkToScript({ showBubble: true });
 
   const [formState, setFormState] = useState({
     name: "",
@@ -94,6 +93,8 @@ export default function ContactoPage() {
 
   return (
     <MainLayout showHeader={true} disableChat={true}>
+      {/* Widget de chat para la página de contacto (visible) */}
+      <TawkToWidget showBubble={true} />
       <div className="container-custom py-16 md:py-24">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -126,14 +127,12 @@ export default function ContactoPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Chat en vivo</h3>
               <p className="text-foreground/70 mb-4">Habla con nuestro equipo en tiempo real</p>
-              <Button
+              <ChatButton
                 variant="default"
                 size="sm"
                 className="bg-gradient-to-r from-[#ec4899] to-[#9333ea] text-white hover:opacity-90 transition-all"
-                onClick={openChat}
-              >
-                Iniciar chat
-              </Button>
+                text="Iniciar chat"
+              />
             </div>
 
             <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 flex flex-col items-center text-center">
