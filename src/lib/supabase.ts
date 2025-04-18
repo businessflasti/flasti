@@ -2,11 +2,29 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Estas variables deberían estar en variables de entorno en un entorno de producción
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'TU_URL_DE_SUPABASE';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'TU_CLAVE_ANONIMA_DE_SUPABASE';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ewfvfvkhqftbvldvjnrk.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3ZnZmdmtocWZ0YnZsZHZqbnJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MTczMDgsImV4cCI6MjA1ODk5MzMwOH0.6AuPXHtii0dCrVrZg2whHa5ZyO_4VVN9dDNKIjN7pMo';
 
-// Crear cliente de Supabase
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Opciones de configuración para mejorar la estabilidad
+const supabaseOptions = {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  },
+  global: {
+    fetch: fetch.bind(globalThis),
+    headers: {
+      'X-Client-Info': 'supabase-js/2.x'
+    }
+  },
+  realtime: {
+    timeout: 30000 // Aumentar timeout para conexiones en tiempo real
+  }
+};
+
+// Crear cliente de Supabase con opciones mejoradas
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, supabaseOptions);
 
 // Tipos para las tablas de Supabase
 export type User = {

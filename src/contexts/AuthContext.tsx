@@ -197,20 +197,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);
 
-    try {
-      // Registrar el usuario en Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+    // Implementar sistema de reintentos
+    let attempts = 0;
+    const maxAttempts = 3;
+    let lastError = null;
 
-      console.log('Respuesta de signUp:', { data, error });
+    while (attempts < maxAttempts) {
+      try {
+        console.log(`Intento de registro ${attempts + 1} de ${maxAttempts}`);
 
-      if (error) {
-        console.error('Error al registrar el usuario:', error);
-        setLoading(false);
-        return { error };
-      }
+        // Usar Promise.race para implementar un timeout más largo
+        const signUpPromise = supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        // Timeout de 15 segundos
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Timeout al conectar con el servidor')), 15000);
+        });
+
+        // @ts-ignore - Ignorar error de tipo para Promise.race
+        const { data, error } = await Promise.race([signUpPromise, timeoutPromise]);
+
+        console.log('Respuesta de signUp:', { data, error });
+
+        if (error) {
+          console.error(`Error al registrar el usuario (intento ${attempts + 1}):`, error);
+          lastError = error;
+          attempts++;
+          // Esperar antes de reintentar (backoff exponencial)
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+          continue;
+        }
 
       if (!data.user) {
         console.error('No se pudo crear el usuario');
@@ -258,32 +277,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Continuamos a pesar del error, ya que el usuario se creó correctamente
       }
 
-      setLoading(false);
-      return { error: null };
-    } catch (err) {
-      console.error('Error inesperado durante el registro:', err);
-      setLoading(false);
-      return { error: err as Error };
+        // Si llegamos aquí, el registro fue exitoso
+        setLoading(false);
+        return { error: null };
+      } catch (err) {
+        console.error(`Error inesperado durante el registro (intento ${attempts + 1}):`, err);
+        lastError = err as Error;
+        attempts++;
+        // Esperar antes de reintentar
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      }
     }
+
+    // Si llegamos aquí, todos los intentos fallaron
+    console.error('Todos los intentos de registro fallaron');
+    setLoading(false);
+    return { error: lastError || new Error('No se pudo conectar al servidor') };
+  }
   };
 
   // Iniciar sesión
   const signIn = async (email: string, password: string) => {
     setLoading(true);
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    // Implementar sistema de reintentos
+    let attempts = 0;
+    const maxAttempts = 3;
+    let lastError = null;
 
-      console.log('Respuesta de signIn:', { data, error });
+    while (attempts < maxAttempts) {
+      try {
+        console.log(`Intento de inicio de sesión ${attempts + 1} de ${maxAttempts}`);
 
-      if (error) {
-        console.error('Error al iniciar sesión:', error);
-        setLoading(false);
-        return { error };
-      }
+        // Usar Promise.race para implementar un timeout más largo
+        const loginPromise = supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        // Timeout de 15 segundos
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Timeout al conectar con el servidor')), 15000);
+        });
+
+        // @ts-ignore - Ignorar error de tipo para Promise.race
+        const { data, error } = await Promise.race([loginPromise, timeoutPromise]);
+
+        console.log('Respuesta de signIn:', { data, error });
+
+        if (error) {
+          console.error(`Error al iniciar sesión (intento ${attempts + 1}):`, error);
+          lastError = error;
+          attempts++;
+          // Esperar antes de reintentar (backoff exponencial)
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+          continue;
+        }
 
       // Asegurarse de que el usuario se establezca correctamente
       if (data && data.user) {
@@ -337,13 +386,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      setLoading(false);
-      return { error: null };
-    } catch (err) {
-      console.error('Error inesperado durante el inicio de sesión:', err);
-      setLoading(false);
-      return { error: err as Error };
+        // Si llegamos aquí, el inicio de sesión fue exitoso
+        setLoading(false);
+        return { error: null };
+      } catch (err) {
+        console.error(`Error inesperado durante el inicio de sesión (intento ${attempts + 1}):`, err);
+        lastError = err as Error;
+        attempts++;
+        // Esperar antes de reintentar
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      }
     }
+
+    // Si llegamos aquí, todos los intentos fallaron
+    console.error('Todos los intentos de inicio de sesión fallaron');
+    setLoading(false);
+    return { error: lastError || new Error('No se pudo conectar al servidor') };
+  }
   };
 
   // Cerrar sesión
