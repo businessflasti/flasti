@@ -256,10 +256,12 @@ const LocationBadge = () => {
                 <span className="text-foreground/60 ml-1">{locationData.country}</span>
               </>
             ) : (
-              <span className="text-foreground/80">{locationData.country || 'Global'}</span>
+              <span className="text-foreground/80">
+                {locationData.country === 'Global' ? 'Acceso global' : locationData.country}
+              </span>
             )}
           </div>
-          {locationData.time && (
+          {locationData.time && locationData.country !== 'Global' && (
             <span className="text-foreground/60 border-l border-foreground/20 pl-2">{locationData.time}</span>
           )}
         </>

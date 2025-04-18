@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, TouchEvent } from "react";
 import { Card } from "@/components/ui/card";
 import { Star, User, ChevronLeft, ChevronRight, Landmark } from "lucide-react";
 import PayPalIcon from "@/components/icons/PayPalIcon";
@@ -85,12 +85,46 @@ const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const testimonials = getTestimonials(t);
 
+  // Referencias para el manejo de swipe
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const isSwiping = useRef(false);
+
   const nextTestimonial = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
   const prevTestimonial = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+  };
+
+  // Funciones para manejar eventos táctiles
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = e.touches[0].clientX;
+    isSwiping.current = true;
+  };
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (!isSwiping.current) return;
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!isSwiping.current) return;
+
+    const swipeDistance = touchEndX.current - touchStartX.current;
+    const minSwipeDistance = 50; // Distancia mínima para considerar un swipe válido
+
+    if (swipeDistance > minSwipeDistance) {
+      // Swipe hacia la derecha - testimonio anterior
+      prevTestimonial();
+    } else if (swipeDistance < -minSwipeDistance) {
+      // Swipe hacia la izquierda - siguiente testimonio
+      nextTestimonial();
+    }
+
+    // Reiniciar valores
+    isSwiping.current = false;
   };
 
   return (
@@ -134,7 +168,12 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="relative">
-              <div className="min-h-[250px]">
+              <div
+                className="min-h-[250px] cursor-pointer"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
                 <TestimonialCard testimonial={testimonials[currentIndex]} />
               </div>
 
@@ -199,7 +238,12 @@ const TestimonialsSection = () => {
           </div>
 
           <div className="relative">
-            <div className="min-h-[350px]">
+            <div
+              className="min-h-[350px] cursor-pointer"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <TestimonialCard testimonial={testimonials[currentIndex]} />
             </div>
 
