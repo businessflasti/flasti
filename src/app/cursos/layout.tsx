@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Flasti | Cursos",
-  description: "Explora nuestra selección de cursos y aplicaciones disponibles en Flasti.",
+  title: "Flasti | Aplicaciones",
+  description: "Explora nuestra selección de aplicaciones disponibles en Flasti.",
 };
 
 export default function CursosLayout({
