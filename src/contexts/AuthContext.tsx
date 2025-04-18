@@ -231,11 +231,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           continue;
         }
 
-      if (!data.user) {
-        console.error('No se pudo crear el usuario');
-        setLoading(false);
-        return { error: new Error('No se pudo crear el usuario') };
-      }
+        if (!data.user) {
+          console.error('No se pudo crear el usuario');
+          setLoading(false);
+          return { error: new Error('No se pudo crear el usuario') };
+        }
 
       // Intentar crear el perfil manualmente para incluir el teléfono
       try {
@@ -334,57 +334,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           continue;
         }
 
-      // Asegurarse de que el usuario se establezca correctamente
-      if (data && data.user) {
-        setUser(data.user);
+        // Asegurarse de que el usuario se establezca correctamente
+        if (data && data.user) {
+          setUser(data.user);
 
-        try {
-          // Cargar el perfil del usuario
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', data.user.id)
-            .single();
+          try {
+            // Cargar el perfil del usuario
+            const { data: profileData, error: profileError } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', data.user.id)
+              .single();
 
-          if (profileError) {
-            console.error('Error al cargar perfil:', profileError);
-            // Intentar crear el perfil si no existe
-            if (profileError.code === 'PGRST116') {
-              console.log('Perfil no encontrado, intentando crear uno nuevo');
-              const { error: insertError } = await supabase
-                .from('profiles')
-                .insert({
-                  id: data.user.id,
-                  email: data.user.email,
-                  level: 1,
-                  balance: 0,
-                  avatar_url: null,
-                  created_at: new Date().toISOString()
-                });
-
-              if (insertError) {
-                console.error('Error al crear perfil:', insertError);
-              } else {
-                // Cargar el perfil recién creado
-                const { data: newProfileData } = await supabase
+            if (profileError) {
+              console.error('Error al cargar perfil:', profileError);
+              // Intentar crear el perfil si no existe
+              if (profileError.code === 'PGRST116') {
+                console.log('Perfil no encontrado, intentando crear uno nuevo');
+                const { error: insertError } = await supabase
                   .from('profiles')
-                  .select('*')
-                  .eq('id', data.user.id)
-                  .single();
+                  .insert({
+                    id: data.user.id,
+                    email: data.user.email,
+                    level: 1,
+                    balance: 0,
+                    avatar_url: null,
+                    created_at: new Date().toISOString()
+                  });
 
-                if (newProfileData) {
-                  setProfile(newProfileData);
+                if (insertError) {
+                  console.error('Error al crear perfil:', insertError);
+                } else {
+                  // Cargar el perfil recién creado
+                  const { data: newProfileData } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single();
+
+                  if (newProfileData) {
+                    setProfile(newProfileData);
+                  }
                 }
               }
+            } else if (profileData) {
+              setProfile(profileData);
             }
-          } else if (profileData) {
-            setProfile(profileData);
+          } catch (profileError) {
+            console.error('Error al cargar perfil:', profileError);
+            // No fallamos el inicio de sesión si no se puede cargar el perfil
           }
-        } catch (profileError) {
-          console.error('Error al cargar perfil:', profileError);
-          // No fallamos el inicio de sesión si no se puede cargar el perfil
         }
-      }
 
         // Si llegamos aquí, el inicio de sesión fue exitoso
         setLoading(false);
