@@ -3,12 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Logo from "@/components/ui/logo";
-import { Shield, Lock, CheckCircle, ArrowUp } from "lucide-react";
+import { Shield, Lock, CheckCircle, ArrowUp, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import useTawkTo from "@/hooks/useTawkTo";
 
 const Footer = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { t } = useLanguage();
+
+  // Inicializar el chat de Tawk.to con la burbuja oculta
+  const { openChat } = useTawkTo(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,7 +97,7 @@ const Footer = () => {
         </div>
 
         {/* Enlaces de escritorio */}
-        <div className="hidden md:grid grid-cols-4 gap-8">
+        <div className="hidden md:grid grid-cols-5 gap-8">
           <div>
             <Logo size="md" />
             <div className="mt-4">
@@ -154,6 +159,21 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('contactanos')}</h4>
+            <div className="space-y-4">
+              <p className="text-foreground/60 text-sm">{t('ayudaInmediata')}</p>
+              <Button
+                onClick={openChat}
+                className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2"
+                size="sm"
+              >
+                <MessageCircle size={16} />
+                {t('iniciarChat')}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -226,6 +246,26 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
+          </div>
+
+          <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10 mb-6">
+            <h4 className="font-bold mb-3 text-sm font-outfit dark:text-white text-black inline-flex items-center">
+              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
+              {t('contactanos')}
+            </h4>
+            <div className="flex flex-col items-center">
+              <p className="dark:text-foreground/70 text-foreground/80 text-xs mb-3 text-center">
+                {t('ayudaInmediata')}
+              </p>
+              <Button
+                onClick={openChat}
+                className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2 w-full justify-center"
+                size="sm"
+              >
+                <MessageCircle size={14} />
+                {t('iniciarChat')}
+              </Button>
+            </div>
           </div>
         </div>
 

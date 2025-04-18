@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +11,12 @@ import {
   MessageCircle,
   Phone
 } from "lucide-react";
+import useTawkTo from "@/hooks/useTawkTo";
 
 export default function ContactoPage() {
+  // Inicializar el chat de Tawk.to con la burbuja visible
+  const { openChat } = useTawkTo(true);
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -122,11 +126,14 @@ export default function ContactoPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Chat en vivo</h3>
               <p className="text-foreground/70 mb-4">Habla con nuestro equipo en tiempo real</p>
-              <Link href="/chat">
-                <Button variant="outline" size="sm" className="border-primary/20 hover:border-primary/50">
-                  Iniciar chat
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-primary/20 hover:border-primary/50"
+                onClick={openChat}
+              >
+                Iniciar chat
+              </Button>
             </div>
 
             <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 flex flex-col items-center text-center">

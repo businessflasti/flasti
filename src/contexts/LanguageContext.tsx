@@ -78,6 +78,9 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidad',
     derechosReservados: 'Todos los derechos reservados.',
     volverArriba: 'Volver arriba',
+    contactanos: 'Contáctanos',
+    ayudaInmediata: '¿Necesitas ayuda inmediata? Estamos aquí para ti.',
+    iniciarChat: 'Iniciar chat',
 
     // Testimonials Section
     experienciasUsuarios: 'Conoce las experiencias de aquellos que ya están<br />generando ingresos con Flasti',
@@ -318,6 +321,9 @@ export const translations = {
     politicaPrivacidad: 'Privacy policy',
     derechosReservados: 'All rights reserved.',
     volverArriba: 'Back to top',
+    contactanos: 'Contact Us',
+    ayudaInmediata: 'Need immediate help? We are here for you.',
+    iniciarChat: 'Start chat',
 
     // Testimonials Section
     experienciasUsuarios: 'Discover the experiences of those who are already<br />generating income with Flasti',
@@ -580,6 +586,9 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidade',
     derechosReservados: 'Todos os direitos reservados.',
     volverArriba: 'Voltar ao topo',
+    contactanos: 'Contate-nos',
+    ayudaInmediata: 'Precisa de ajuda imediata? Estamos aqui para você.',
+    iniciarChat: 'Iniciar chat',
 
     // Testimonials Section
     experienciasUsuarios: 'Conheça as experiências daqueles que já estão<br />gerando renda com a Flasti',
