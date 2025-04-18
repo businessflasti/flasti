@@ -23,36 +23,22 @@ export default function LiveNotifications() {
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // Verificar si es la primera vez que el usuario ingresa
+  // Crear notificación de bienvenida estática
   useEffect(() => {
-    if (!user) return;
+    // Crear notificación de bienvenida
+    const welcomeNotification: Notification = {
+      id: `welcome-${Date.now()}`,
+      type: 'system',
+      title: t('bienvenidoFlasti'),
+      message: t('emocionadosTenerte'),
+      timestamp: new Date(),
+      read: false
+    };
 
-    // Verificar si es la primera visita usando localStorage
-    const isFirstVisit = localStorage.getItem(`flasti-first-visit-${user.id}`) === null;
-
-    if (isFirstVisit) {
-      // Marcar que ya no es primera visita
-      localStorage.setItem(`flasti-first-visit-${user.id}`, 'visited');
-
-      // Crear notificación de bienvenida
-      const welcomeNotification: Notification = {
-        id: `welcome-${Date.now()}`,
-        type: 'system',
-        title: t('bienvenidoFlasti'),
-        message: t('emocionadosTenerte'),
-        timestamp: new Date(),
-        read: false
-      };
-
-      // Añadir a las notificaciones y actualizar contador
-      setNotifications(prev => [welcomeNotification, ...prev]);
-      setUnreadCount(prev => prev + 1);
-
-      // Mostrar onboarding completo para nuevos usuarios
-      const event = new CustomEvent('showOnboarding', { detail: { userId: user.id } });
-      window.dispatchEvent(event);
-    }
-  }, [user, t]);
+    // Añadir a las notificaciones y actualizar contador
+    setNotifications([welcomeNotification]);
+    setUnreadCount(1);
+  }, [t]);
 
   // Actualizar contador de no leídas
   const updateUnreadCount = (notifs: Notification[]) => {

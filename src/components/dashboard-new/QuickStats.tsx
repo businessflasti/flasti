@@ -23,17 +23,15 @@ export default function QuickStats() {
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
-  // Cargar datos del usuario
+  // Cargar datos del usuario - Versión simplificada sin dependencia de autenticación
   useEffect(() => {
-    if (!user) return;
-
     const loadStats = async () => {
       setLoading(true);
 
       try {
         // Simular carga de datos (en producción, esto se conectaría a Supabase)
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         // Usar valores predeterminados en cero para nuevos usuarios
         setStats({
           totalClicks: 0,
@@ -56,7 +54,7 @@ export default function QuickStats() {
     const interval = setInterval(loadStats, 300000); // Actualizar cada 5 minutos
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, []);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 hardware-accelerated">

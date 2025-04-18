@@ -24,33 +24,21 @@ export default function DashboardNew() {
   const router = useRouter();
   const [isPageLoaded, setIsPageLoaded] = useState(false);
 
-  // Verificar autenticación
+  // No verificamos autenticación para evitar bloqueos
+  // Simplemente permitimos que la página se cargue
+
+  // Efecto para animación de carga de página - Siempre carga después de un breve retraso
   useEffect(() => {
-    // Dar tiempo para que se cargue la autenticación
-    const authCheckTimeout = setTimeout(() => {
-      if (!loading && !user) {
-        toast.error(t('debesIniciarSesion'));
-        router.push('/login');
-      }
-    }, 1000);
+    // Pequeño retraso para asegurar que los componentes estén listos
+    const loadTimeout = setTimeout(() => {
+      setIsPageLoaded(true);
+    }, 1000); // 1 segundo de retraso para simular carga
 
-    return () => clearTimeout(authCheckTimeout);
-  }, [user, loading, router, t]);
-
-  // Efecto para animación de carga de página
-  useEffect(() => {
-    if (!loading && user) {
-      // Pequeño retraso para asegurar que los componentes estén listos
-      const loadTimeout = setTimeout(() => {
-        setIsPageLoaded(true);
-      }, 100);
-
-      return () => clearTimeout(loadTimeout);
-    }
-  }, [loading, user]);
+    return () => clearTimeout(loadTimeout);
+  }, []);
 
   // Si está cargando, mostrar pantalla de carga
-  if (loading || !isPageLoaded) {
+  if (!isPageLoaded) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 particles-bg">
         <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>

@@ -47,32 +47,11 @@ export default function OnboardingTour() {
     }
   ];
 
-  // Verificar si el usuario ya ha visto el onboarding
+  // Verificar si el usuario ya ha visto el onboarding - Versión simplificada
   useEffect(() => {
-    if (!user) return;
-
-    const onboardingKey = `flasti-onboarding-completed-${user.id}`;
-    const hasCompleted = localStorage.getItem(onboardingKey) === 'true';
-    setHasSeenOnboarding(hasCompleted);
-
-    // Escuchar evento para mostrar onboarding
-    const handleShowOnboarding = (event: CustomEvent) => {
-      if (event.detail?.userId === user.id) {
-        setIsVisible(true);
-      }
-    };
-
-    window.addEventListener('showOnboarding', handleShowOnboarding as EventListener);
-
-    // Si es la primera vez, mostrar onboarding automáticamente
-    if (!hasCompleted) {
-      setIsVisible(true);
-    }
-
-    return () => {
-      window.removeEventListener('showOnboarding', handleShowOnboarding as EventListener);
-    };
-  }, [user]);
+    // No mostrar el onboarding por defecto para evitar problemas
+    setIsVisible(false);
+  }, []);
 
   // Manejar cambio de idioma
   useEffect(() => {
@@ -97,10 +76,6 @@ export default function OnboardingTour() {
 
   // Completar onboarding
   const completeOnboarding = () => {
-    if (user) {
-      localStorage.setItem(`flasti-onboarding-completed-${user.id}`, 'true');
-      setHasSeenOnboarding(true);
-    }
     setIsVisible(false);
     setCurrentStep(0);
   };

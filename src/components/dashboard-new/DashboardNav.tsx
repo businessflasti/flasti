@@ -5,14 +5,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { 
-  Home, 
-  Apps, 
-  Link as LinkIcon, 
-  BarChart2, 
-  Settings, 
-  LogOut, 
-  Menu, 
+import {
+  Home,
+  Apps,
+  Link as LinkIcon,
+  BarChart2,
+  Settings,
+  LogOut,
+  Menu,
   X,
   Bell
 } from 'lucide-react';
@@ -56,7 +56,7 @@ export default function DashboardNav() {
 
   // Manejar cierre de sesión
   const handleLogout = async () => {
-    await logout();
+    // Simular cierre de sesión
     window.location.href = '/';
   };
 
@@ -71,7 +71,7 @@ export default function DashboardNav() {
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          
+
           <Link href="/dashboard-new">
             <Logo />
           </Link>

@@ -14,15 +14,10 @@ export default function LevelProgress() {
     try {
       setLoading(true);
 
-      // Si no hay perfil, mantener el estado de carga
-      if (!profile) {
-        return;
-      }
+      // Usar datos de ejemplo para mostrar la interfaz
+      const currentLevel = 1;
+      const currentBalance = 5;
 
-      // Calcular progreso usando datos reales del usuario
-      const currentLevel = profile.level || 1;
-      const currentBalance = profile.balance || 0;
-      
       // Determinar el siguiente umbral basado en el nivel actual
       let nextThreshold = 0;
       if (currentLevel === 1) {
@@ -53,7 +48,7 @@ export default function LevelProgress() {
     } finally {
       setLoading(false);
     }
-  }, [profile]);
+  }, []);
 
   // Datos de niveles
   const levels = [
@@ -86,9 +81,9 @@ export default function LevelProgress() {
     }
   ];
 
-  // Obtener nivel actual
-  const currentLevel = levels.find(l => l.level === (profile?.level || 1)) || levels[0];
-  const nextLevel = levels.find(l => l.level === (profile?.level || 1) + 1);
+  // Obtener nivel actual - Usando nivel 1 como predeterminado
+  const currentLevel = levels[0];
+  const nextLevel = levels[1];
 
   return (
     <Card className="glass-effect p-6 relative overflow-hidden hardware-accelerated">
@@ -96,7 +91,7 @@ export default function LevelProgress() {
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold">Tu Progreso de Nivel</h3>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm hardware-accelerated">
-            <span>Nivel {profile?.level || 1}</span>
+            <span>Nivel 1</span>
             {currentLevel.icon}
           </div>
         </div>
@@ -134,7 +129,7 @@ export default function LevelProgress() {
             </div>
 
             {/* Barra de progreso */}
-            {profile?.level !== 3 && nextLevel && (
+            {nextLevel && (
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-foreground/70">Progreso hacia Nivel {nextLevel.level}</span>
@@ -147,14 +142,14 @@ export default function LevelProgress() {
                   ></div>
                 </div>
                 <div className="flex items-center justify-between mt-2 text-xs text-foreground/60">
-                  <span>Balance actual: ${profile?.balance || '0.00'} USD</span>
+                  <span>Balance actual: $5.00 USD</span>
                   <span>Objetivo: {nextLevel.threshold}</span>
                 </div>
               </div>
             )}
 
             {/* Próximo nivel */}
-            {profile?.level !== 3 && nextLevel && (
+            {nextLevel && (
               <div className="bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 hover-lift hardware-accelerated">
                 <div className="flex items-center gap-4 mb-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center bg-[${nextLevel.color}]/10 hardware-accelerated`}>
@@ -178,8 +173,8 @@ export default function LevelProgress() {
               </div>
             )}
 
-            {/* Mensaje para nivel máximo */}
-            {profile?.level === 3 && (
+            {/* Mensaje para nivel máximo - Oculto por defecto */}
+            {false && (
               <div className="bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-white/5 text-center hardware-accelerated">
                 <Crown size={40} className="text-[#ec4899] mx-auto mb-3" />
                 <h3 className="text-xl font-bold mb-2">¡Nivel Máximo Alcanzado!</h3>
