@@ -19,8 +19,6 @@ const nextConfig = {
     // Esto permite que la compilación continúe incluso con errores
     // Mejorar la hidratación para evitar errores
     optimizeServerReact: true,
-    // Mejorar la compatibilidad con extensiones de navegador
-    adjustFontFallbacks: true,
     // Mejorar la estabilidad de la hidratación
     ppr: false
   }

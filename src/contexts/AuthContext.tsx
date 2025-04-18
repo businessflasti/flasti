@@ -403,7 +403,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
     return { error: lastError || new Error('No se pudo conectar al servidor') };
   }
-  };
 
   // Cerrar sesión
   const signOut = async () => {
