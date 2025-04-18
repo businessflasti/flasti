@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Información Legal | Flasti",
+  title: "Flasti | Información Legal",
   description: "Información legal y marco normativo de la plataforma Flasti.",
 };
 

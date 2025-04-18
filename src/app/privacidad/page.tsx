@@ -2,7 +2,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad | Flasti",
+  title: "Flasti | Política de Privacidad",
   description: "Política de privacidad y uso de datos de la plataforma Flasti.",
 };
 

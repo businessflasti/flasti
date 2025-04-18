@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones | Flasti",
+  title: "Flasti | Términos y Condiciones",
   description: "Términos y condiciones de uso de la plataforma Flasti.",
 };
 

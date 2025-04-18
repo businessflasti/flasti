@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Search, ChevronRight, HelpCircle, CreditCard, Users, Settings, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Centro de Ayuda | Flasti",
+  title: "Flasti | Centro de Ayuda",
   description: "Encuentra respuestas a tus preguntas y obtén soporte para la plataforma Flasti.",
 };
 

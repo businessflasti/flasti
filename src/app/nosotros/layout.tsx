@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sobre Nosotros | Flasti",
+  title: "Flasti | Sobre Nosotros",
   description: "Conoce más sobre Flasti, nuestra misión, visión y el equipo detrás de la plataforma.",
 };
 
