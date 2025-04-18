@@ -78,8 +78,8 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidad',
     derechosReservados: 'Todos los derechos reservados.',
     volverArriba: 'Volver arriba',
-    contactanos: 'Contáctanos',
-    ayudaInmediata: '¿Necesitas ayuda inmediata? Estamos aquí para ti.',
+    contactanos: 'Soporte',
+    ayudaInmediata: '¿Necesitas ayuda? Estamos aquí para ti.',
     iniciarChat: 'Iniciar chat',
 
     // Testimonials Section
@@ -321,8 +321,8 @@ export const translations = {
     politicaPrivacidad: 'Privacy policy',
     derechosReservados: 'All rights reserved.',
     volverArriba: 'Back to top',
-    contactanos: 'Contact Us',
-    ayudaInmediata: 'Need immediate help? We are here for you.',
+    contactanos: 'Support',
+    ayudaInmediata: 'Need help? We are here for you.',
     iniciarChat: 'Start chat',
 
     // Testimonials Section
@@ -586,8 +586,8 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidade',
     derechosReservados: 'Todos os direitos reservados.',
     volverArriba: 'Voltar ao topo',
-    contactanos: 'Contate-nos',
-    ayudaInmediata: 'Precisa de ajuda imediata? Estamos aqui para você.',
+    contactanos: 'Suporte',
+    ayudaInmediata: 'Precisa de ajuda? Estamos aqui para você.',
     iniciarChat: 'Iniciar chat',
 
     // Testimonials Section
