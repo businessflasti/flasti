@@ -193,157 +193,111 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Registrar un nuevo usuario
+  // Registrar un nuevo usuario - Versión simplificada y robusta
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);
-    console.log('Iniciando proceso de registro para:', email);
+    console.log('Iniciando proceso de registro simplificado para:', email);
 
-    // Implementar sistema de reintentos
-    let attempts = 0;
-    const maxAttempts = 3;
-    let lastError = null;
-
-    while (attempts < maxAttempts) {
+    try {
+      // 1. Verificar si el usuario ya existe en profiles
       try {
-        console.log(`Intento de registro ${attempts + 1} de ${maxAttempts}`);
+        const { data: existingUser } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', email)
+          .maybeSingle();
 
-        // Verificar primero si el usuario ya existe
-        try {
-          const { data: existingUser, error: checkError } = await supabase
-            .from('profiles')
-            .select('id')
-            .eq('email', email)
-            .maybeSingle();
-
-          if (existingUser) {
-            console.log('El usuario ya existe, intentando iniciar sesión directamente');
-            // Si el usuario ya existe, intentamos iniciar sesión directamente
-            return { error: { message: 'User already registered' } };
-          }
-        } catch (checkErr) {
-          console.error('Error al verificar si el usuario existe:', checkErr);
-          // Continuamos con el registro aunque no podamos verificar
-        }
-
-        // Usar Promise.race para implementar un timeout más largo
-        const signUpPromise = supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              phone: phone
-            }
-          }
-        });
-
-        // Timeout de 30 segundos (aumentado para dar más tiempo)
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Timeout al conectar con el servidor')), 30000);
-        });
-
-        // @ts-ignore - Ignorar error de tipo para Promise.race
-        const { data, error } = await Promise.race([signUpPromise, timeoutPromise]);
-
-        console.log('Respuesta de signUp:', { data, error });
-
-        if (error) {
-          console.error(`Error al registrar el usuario (intento ${attempts + 1}):`, error);
-          lastError = error;
-          attempts++;
-          // Esperar antes de reintentar (backoff exponencial)
-          await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
-          continue;
-        }
-
-        if (!data || !data.user) {
-          console.error('No se pudo crear el usuario - datos inválidos');
+        if (existingUser) {
+          console.log('El usuario ya existe en profiles, intentando iniciar sesión directamente');
           setLoading(false);
-          return { error: new Error('No se pudo crear el usuario - respuesta inválida del servidor') };
+          return { error: { message: 'User already registered' } };
         }
-
-        // Intentar crear el perfil manualmente para incluir el teléfono
-        try {
-          console.log('Creando perfil para el usuario:', data.user.id);
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .insert({
-              id: data.user.id,
-              email: data.user.email,
-              phone: phone, // Guardar el teléfono en el perfil
-              level: 1,
-              balance: 0,
-              avatar_url: null,
-              created_at: new Date().toISOString()
-            });
-
-          if (profileError) {
-            console.error('Error al crear perfil durante registro:', profileError);
-            // Intentar crear en user_profiles como alternativa
-            try {
-              const { error: userProfileError } = await supabase
-                .from('user_profiles')
-                .insert({
-                  user_id: data.user.id,
-                  email: data.user.email,
-                  phone: phone,
-                  level: 1,
-                  balance: 0,
-                  avatar_url: null,
-                  created_at: new Date().toISOString()
-                });
-
-              if (userProfileError) {
-                console.error('Error al crear perfil en user_profiles:', userProfileError);
-              } else {
-                console.log('Perfil creado correctamente en user_profiles');
-              }
-            } catch (userProfileErr) {
-              console.error('Error al crear perfil en user_profiles:', userProfileErr);
-            }
-          } else {
-            console.log('Perfil creado correctamente en profiles');
-          }
-        } catch (profileErr) {
-          console.error('Error al crear perfil durante registro:', profileErr);
-        }
-
-        // Iniciar sesión inmediatamente después del registro
-        try {
-          console.log('Intentando iniciar sesión automáticamente después del registro');
-          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-
-          if (signInError) {
-            console.error('Error al iniciar sesión después del registro:', signInError);
-            // Continuamos a pesar del error, ya que el usuario se creó correctamente
-          } else if (signInData && signInData.user) {
-            console.log('Inicio de sesión automático exitoso');
-            setUser(signInData.user);
-          }
-        } catch (err) {
-          console.error('Error al iniciar sesión después del registro:', err);
-          // Continuamos a pesar del error, ya que el usuario se creó correctamente
-        }
-
-        // Si llegamos aquí, el registro fue exitoso
-        console.log('Registro completado exitosamente');
-        setLoading(false);
-        return { error: null };
-      } catch (err) {
-        console.error(`Error inesperado durante el registro (intento ${attempts + 1}):`, err);
-        lastError = err as Error;
-        attempts++;
-        // Esperar antes de reintentar
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      } catch (checkErr) {
+        console.error('Error al verificar si el usuario existe:', checkErr);
+        // Continuamos con el registro aunque no podamos verificar
       }
-    }
 
-    // Si llegamos aquí, todos los intentos fallaron
-    console.error('Todos los intentos de registro fallaron');
-    setLoading(false);
-    return { error: lastError || new Error('No se pudo conectar al servidor') };
+      // 2. Intentar registrar al usuario
+      console.log('Registrando nuevo usuario...');
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { phone }
+        }
+      });
+
+      if (error) {
+        console.error('Error durante el registro:', error);
+        setLoading(false);
+        return { error };
+      }
+
+      if (!data || !data.user) {
+        console.error('No se pudo crear el usuario - datos inválidos');
+        setLoading(false);
+        return { error: new Error('No se pudo crear el usuario') };
+      }
+
+      // 3. Crear perfil para el usuario
+      console.log('Usuario creado correctamente, creando perfil...');
+      const userId = data.user.id;
+
+      // Intentar crear perfil en ambas tablas para asegurar compatibilidad
+      try {
+        await supabase.from('profiles').insert({
+          id: userId,
+          email: email,
+          phone: phone,
+          level: 1,
+          balance: 0,
+          avatar_url: null,
+          created_at: new Date().toISOString()
+        }).catch(err => console.error('Error al crear perfil en profiles:', err));
+
+        await supabase.from('user_profiles').insert({
+          user_id: userId,
+          email: email,
+          phone: phone,
+          level: 1,
+          balance: 0,
+          avatar_url: null,
+          created_at: new Date().toISOString()
+        }).catch(err => console.error('Error al crear perfil en user_profiles:', err));
+      } catch (profileErr) {
+        console.error('Error al crear perfiles:', profileErr);
+        // Continuamos a pesar del error en la creación del perfil
+      }
+
+      // 4. Iniciar sesión automáticamente
+      console.log('Perfil creado, iniciando sesión automáticamente...');
+      try {
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (signInError) {
+          console.error('Error al iniciar sesión automática:', signInError);
+        } else if (signInData && signInData.user) {
+          console.log('Inicio de sesión automático exitoso');
+          setUser(signInData.user);
+        }
+      } catch (signInErr) {
+        console.error('Error inesperado al iniciar sesión automática:', signInErr);
+      }
+
+      // 5. Finalizar proceso
+      console.log('Proceso de registro completado exitosamente');
+      setLoading(false);
+      return { error: null };
+
+    } catch (err) {
+      // Capturar cualquier error inesperado
+      console.error('Error inesperado durante todo el proceso de registro:', err);
+      setLoading(false);
+      return { error: err as Error };
+    }
   };
 
   // Iniciar sesión

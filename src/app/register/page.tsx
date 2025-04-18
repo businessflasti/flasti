@@ -50,6 +50,9 @@ export default function RegisterPage() {
         // Limpiar el timeout ya que vamos a procesar la respuesta
         clearTimeout(registerTimeout);
 
+        console.log('Enviando solicitud de registro con:', { email, phone });
+        toast.info('Procesando registro...');
+
         const { error } = await signUp(email, password, phone);
 
         if (error) {
