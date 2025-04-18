@@ -24,8 +24,11 @@ export default function RegistrationBanner() {
         <Link href="/register-simple" className="underline font-bold mr-2">
           Simple
         </Link>
-        <Link href="/register-api" className="underline font-bold">
+        <Link href="/register-api" className="underline font-bold mr-2">
           API
+        </Link>
+        <Link href="/register-emergency" className="underline font-bold bg-red-500/20 px-2 py-1 rounded">
+          Emergencia
         </Link>
       </p>
     </div>
