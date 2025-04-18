@@ -1,11 +1,12 @@
 "use client";
 
-import { memo, Suspense } from 'react';
+import { memo, Suspense, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AffiliateTracker from "@/components/affiliate/AffiliateTracker";
 import { usePathname } from 'next/navigation';
+import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 
 // Cargar el chat widget de forma diferida para mejorar el rendimiento inicial
 const DashboardChatWidget = dynamic(
@@ -25,8 +26,14 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
   // Determinar si estamos en una página interna (dashboard) o externa
   const isInternalPage = pathname?.startsWith('/dashboard');
 
+  // Determinar si estamos en la página de contacto
+  const isContactPage = pathname === '/contacto';
+
   // Solo mostrar el chat en páginas internas (dashboard)
   const shouldShowChat = !disableChat && isInternalPage;
+
+  // Ocultar la burbuja de chat en todas las páginas excepto en la de contacto
+  DirectTawkToScript({ showBubble: isContactPage });
 
   return (
     <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden">

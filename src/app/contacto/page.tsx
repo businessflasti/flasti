@@ -127,9 +127,9 @@ export default function ContactoPage() {
               <h3 className="text-xl font-semibold mb-2">Chat en vivo</h3>
               <p className="text-foreground/70 mb-4">Habla con nuestro equipo en tiempo real</p>
               <Button
-                variant="outline"
+                variant="default"
                 size="sm"
-                className="border-primary/20 hover:border-primary/50"
+                className="bg-gradient-to-r from-[#ec4899] to-[#9333ea] text-white hover:opacity-90 transition-all"
                 onClick={openChat}
               >
                 Iniciar chat
