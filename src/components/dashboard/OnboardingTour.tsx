@@ -66,7 +66,7 @@ export default function OnboardingTour() {
       forceVisible: true
     },
     {
-      target: '[data-tour="apps"], a[href="/dashboard/cursos"]',
+      target: '[data-tour="apps"], a[href="/dashboard/aplicaciones"]',
       title: 'Nuestras Aplicaciones',
       content: 'Explora las aplicaciones que puedes probar y recomendar. Haz clic para conocer cada producto y generar tu enlace de afiliado personalizado.',
       position: 'top',

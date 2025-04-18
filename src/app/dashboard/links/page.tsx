@@ -348,7 +348,7 @@ export default function MyLinksPage() {
               <p className="text-foreground/70 mt-1">
                 Ve a la sección de Apps y genera enlaces para empezar a ganar comisiones
               </p>
-              <Button className="mt-4" onClick={() => window.location.href = '/dashboard/cursos'}>
+              <Button className="mt-4" onClick={() => window.location.href = '/dashboard/aplicaciones'}>
                 Ir a Apps
               </Button>
             </Card>

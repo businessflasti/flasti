@@ -122,7 +122,7 @@ export default function DashboardPage() {
                   </div>
                   <nav className="space-y-1 p-2">
                     <Link
-                      href="/dashboard/cursos"
+                      href="/dashboard/aplicaciones"
                       className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
@@ -293,7 +293,7 @@ export default function DashboardPage() {
                 </Card>
               </Link>
 
-              <Link href="/dashboard/cursos">
+              <Link href="/dashboard/aplicaciones">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center animate-fadeInUp delay-300 hover-lift mobile-card mobile-touch-feedback">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
                     <AppWindow className="text-primary" size={22} />

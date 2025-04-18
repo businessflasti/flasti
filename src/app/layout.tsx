@@ -1,25 +1,38 @@
-'use client';
-
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { NotificationProvider } from "@/contexts/NotificationContext";
-import { EnhancedNotificationProvider } from "@/contexts/EnhancedNotificationContext";
-import { OnboardingProvider } from "@/contexts/OnboardingContext";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { BalanceVisibilityProvider } from "@/contexts/BalanceVisibilityContext";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { Toaster } from "sonner";
-import { Toaster as HotToaster } from "@/components/ui/Toaster";
-import CopyProtection from "@/components/security/CopyProtection";
-import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
-import HydrationFix from "@/components/utils/HydrationFix";
+import { Metadata } from "next";
+import ClientLayout from "@/components/layout/ClientLayout";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
+
+export const metadata: Metadata = {
+  title: "Flasti | Ganancia colectiva",
+  description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Flasti",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Flasti",
+    title: "Flasti | Ganancia colectiva",
+    description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Flasti | Ganancia colectiva",
+    description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -60,25 +73,7 @@ export default function RootLayout({
         ` }} />
       </head>
       <body className={inter.className}>
-        <ThemeProvider>
-          <AuthProvider>
-            <LanguageProvider>
-              <BalanceVisibilityProvider>
-                {/* Activado el onboarding para nuevos usuarios */}
-                <OnboardingProvider>
-                  <EnhancedNotificationProvider>
-                    <Toaster position="top-right" richColors />
-                    <HotToaster />
-                    <CopyProtection />
-                    <AffiliateClickRecorder />
-                    <HydrationFix />
-                    {children}
-                  </EnhancedNotificationProvider>
-                </OnboardingProvider>
-              </BalanceVisibilityProvider>
-            </LanguageProvider>
-          </AuthProvider>
-        </ThemeProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
