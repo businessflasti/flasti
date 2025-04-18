@@ -35,15 +35,14 @@ export default function RegisterPage() {
     }
 
     // Mostrar mensaje de carga
-    const toastId = toast.loading('Procesando registro...');
-    console.log('Iniciando registro con API personalizada para:', { email, phone: phone.substring(0, 3) + '***' });
+    toast.info('Procesando registro...');
+    console.log('Iniciando registro ultra básico para:', { email, phone: phone.substring(0, 3) + '***' });
 
     try {
       // Intentar iniciar sesión primero por si el usuario ya existe
       try {
         const { error: loginError } = await signIn(email, password);
         if (!loginError) {
-          toast.dismiss(toastId);
           toast.success('Inicio de sesión exitoso');
           router.push('/dashboard');
           return;
@@ -52,12 +51,11 @@ export default function RegisterPage() {
         // Ignorar errores aquí, significa que el usuario no existe
       }
 
-      // Intentar registro con la nueva API personalizada
+      // Intentar registro con la solución ultra básica
       const { error } = await signUp(email, password, phone);
 
       if (error) {
         console.log('Registro falló con error:', error.message);
-        toast.dismiss(toastId);
 
         // Manejar caso de usuario ya existente
         if (error.message && (error.message.includes('already') || error.message.includes('exists'))) {
@@ -100,7 +98,6 @@ export default function RegisterPage() {
 
       // Registro exitoso
       console.log('Registro completado con éxito');
-      toast.dismiss(toastId);
       toast.success('Registro exitoso. ¡Bienvenido a Flasti!');
 
       // Redirigir al dashboard con un pequeño delay para asegurar que todo esté listo
@@ -110,29 +107,6 @@ export default function RegisterPage() {
 
     } catch (error: any) {
       console.error('Error inesperado durante el registro:', error);
-      toast.dismiss(toastId);
-
-      // Intentar hacer una llamada directa a la API para depurar
-      try {
-        const debugResponse = await fetch('/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            phone,
-            debug: true
-          })
-        });
-
-        const debugResult = await debugResponse.json();
-        console.log('Respuesta de depuración:', debugResult);
-      } catch (e) {
-        console.error('Error en depuración:', e);
-      }
-
       toast.error('Error al registrarse. Por favor, inténtalo de nuevo');
 
       // Último intento: probar inicio de sesión directo

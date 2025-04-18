@@ -5,26 +5,17 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ewfvfvkhqftbvldvjnrk.supabase.co';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3ZnZmdmtocWZ0YnZsZHZqbnJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MTczMDgsImV4cCI6MjA1ODk5MzMwOH0.6AuPXHtii0dCrVrZg2whHa5ZyO_4VVN9dDNKIjN7pMo';
 
-// Opciones de configuración para mejorar la estabilidad
-const supabaseOptions = {
+// Crear cliente de Supabase con opciones mínimas para mayor compatibilidad
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
-  },
-  global: {
-    fetch: fetch.bind(globalThis),
-    headers: {
-      'X-Client-Info': 'supabase-js/2.x'
-    }
-  },
-  realtime: {
-    timeout: 30000 // Aumentar timeout para conexiones en tiempo real
+    persistSession: true
   }
-};
+});
 
-// Crear cliente de Supabase con opciones mejoradas
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, supabaseOptions);
+// Exportar URL y clave para uso directo en API
+export const SUPABASE_URL = supabaseUrl;
+export const SUPABASE_ANON_KEY = supabaseAnonKey;
 
 // Tipos para las tablas de Supabase
 export type User = {
