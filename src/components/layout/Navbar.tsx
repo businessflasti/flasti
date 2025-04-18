@@ -33,6 +33,11 @@ const Navbar = () => {
                 {t('iniciarSesion')}
               </Button>
             </Link>
+            <Link href="/dashboard-new">
+              <Button variant="outline" size="sm" className="whitespace-nowrap">
+                Dashboard
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
