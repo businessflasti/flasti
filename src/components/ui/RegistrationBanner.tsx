@@ -19,11 +19,13 @@ export default function RegistrationBanner() {
       <p>
         ¿Problemas con el registro? Prueba nuestras páginas alternativas:{' '}
         <Link href="/register-direct" className="underline font-bold mr-2">
-          Registro Directo
+          Directo
         </Link>
-        o{' '}
-        <Link href="/register-simple" className="underline font-bold">
-          Registro Simple
+        <Link href="/register-simple" className="underline font-bold mr-2">
+          Simple
+        </Link>
+        <Link href="/register-api" className="underline font-bold">
+          API
         </Link>
       </p>
     </div>

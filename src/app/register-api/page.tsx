@@ -1,0 +1,341 @@
+'use client';
+
+import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { toast } from 'react-hot-toast';
+
+// Constantes de Supabase
+const SUPABASE_URL = 'https://ewfvfvkhqftbvldvjnrk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3ZnZmdmtocWZ0YnZsZHZqbnJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MTczMDgsImV4cCI6MjA1ODk5MzMwOH0.6AuPXHtii0dCrVrZg2whHa5ZyO_4VVN9dDNKIjN7pMo';
+
+export default function RegisterAPI() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  const addLog = (message: string) => {
+    setLogs(prev => [...prev, `${new Date().toISOString().split('T')[1].split('.')[0]} - ${message}`]);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setLogs([]);
+
+    // Validaciones básicas
+    if (!email || !password || !phone) {
+      toast.error('Por favor, completa todos los campos');
+      setIsLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('La contraseña debe tener al menos 6 caracteres');
+      setIsLoading(false);
+      return;
+    }
+
+    // Mostrar mensaje de carga
+    const toastId = toast.loading('Procesando registro...');
+    addLog(`Iniciando registro para: ${email}`);
+
+    try {
+      // Paso 1: Registrar al usuario usando la API REST directamente
+      addLog('Paso 1: Registrando usuario usando API REST');
+      
+      const signUpResponse = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          data: { phone }
+        })
+      });
+      
+      const signUpData = await signUpResponse.json();
+      
+      if (!signUpResponse.ok) {
+        addLog(`Error en registro: ${JSON.stringify(signUpData.error || signUpData.msg || 'Error desconocido')}`);
+        
+        // Si el usuario ya existe, intentar iniciar sesión
+        if (signUpData.error?.message?.includes('already') || signUpData.msg?.includes('already')) {
+          addLog('Usuario ya existe, intentando iniciar sesión');
+          toast.dismiss(toastId);
+          toast.info('Este correo ya está registrado. Intentando iniciar sesión...');
+          
+          const signInResponse = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_KEY,
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            })
+          });
+          
+          const signInData = await signInResponse.json();
+          
+          if (!signInResponse.ok) {
+            addLog(`Error en inicio de sesión: ${JSON.stringify(signInData.error || signInData.msg || 'Error desconocido')}`);
+            toast.error('Este correo ya está registrado. Por favor, inicia sesión con tu contraseña');
+            setTimeout(() => router.push('/login'), 2000);
+          } else {
+            addLog('Inicio de sesión exitoso');
+            
+            // Guardar token en localStorage
+            localStorage.setItem('supabase.auth.token', JSON.stringify({
+              access_token: signInData.access_token,
+              refresh_token: signInData.refresh_token,
+              expires_at: Date.now() + signInData.expires_in * 1000
+            }));
+            
+            toast.success('Inicio de sesión exitoso');
+            router.push('/dashboard');
+          }
+          
+          setIsLoading(false);
+          return;
+        }
+        
+        toast.dismiss(toastId);
+        toast.error(`Error al registrarse: ${signUpData.error?.message || signUpData.msg || 'Error desconocido'}`);
+        setIsLoading(false);
+        return;
+      }
+      
+      if (!signUpData.user || !signUpData.user.id) {
+        addLog('No se pudo crear el usuario - datos inválidos');
+        toast.dismiss(toastId);
+        toast.error('No se pudo crear el usuario');
+        setIsLoading(false);
+        return;
+      }
+      
+      addLog(`Usuario creado correctamente: ${signUpData.user.id}`);
+      
+      // Guardar token en localStorage
+      if (signUpData.access_token) {
+        localStorage.setItem('supabase.auth.token', JSON.stringify({
+          access_token: signUpData.access_token,
+          refresh_token: signUpData.refresh_token,
+          expires_at: Date.now() + signUpData.expires_in * 1000
+        }));
+      }
+      
+      // Paso 2: Crear perfil manualmente
+      addLog('Paso 2: Creando perfil manualmente');
+      
+      const profileData = {
+        id: signUpData.user.id,
+        email,
+        phone,
+        level: 1,
+        balance: 0,
+        avatar_url: null,
+        created_at: new Date().toISOString()
+      };
+      
+      // Intentar crear perfil en la tabla profiles
+      try {
+        const profileResponse = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${signUpData.access_token || SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(profileData)
+        });
+        
+        if (!profileResponse.ok) {
+          const profileError = await profileResponse.json();
+          addLog(`Error al crear perfil: ${JSON.stringify(profileError)}`);
+          
+          // Intentar crear en user_profiles como alternativa
+          addLog('Intentando crear en user_profiles como alternativa');
+          
+          const userProfileResponse = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${signUpData.access_token || SUPABASE_KEY}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              user_id: signUpData.user.id,
+              email,
+              phone,
+              level: 1,
+              balance: 0,
+              avatar_url: null,
+              created_at: new Date().toISOString()
+            })
+          });
+          
+          if (!userProfileResponse.ok) {
+            const userProfileError = await userProfileResponse.json();
+            addLog(`Error al crear en user_profiles: ${JSON.stringify(userProfileError)}`);
+          } else {
+            addLog('Perfil creado correctamente en user_profiles');
+          }
+        } else {
+          addLog('Perfil creado correctamente en profiles');
+        }
+      } catch (profileErr) {
+        addLog(`Error inesperado al crear perfil: ${profileErr}`);
+      }
+      
+      // Paso 3: Iniciar sesión automáticamente
+      if (!signUpData.access_token) {
+        addLog('Paso 3: Iniciando sesión automáticamente');
+        
+        try {
+          const signInResponse = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_KEY,
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            })
+          });
+          
+          const signInData = await signInResponse.json();
+          
+          if (!signInResponse.ok) {
+            addLog(`Error en inicio de sesión automático: ${JSON.stringify(signInData.error || signInData.msg || 'Error desconocido')}`);
+          } else {
+            addLog('Inicio de sesión automático exitoso');
+            
+            // Guardar token en localStorage
+            localStorage.setItem('supabase.auth.token', JSON.stringify({
+              access_token: signInData.access_token,
+              refresh_token: signInData.refresh_token,
+              expires_at: Date.now() + signInData.expires_in * 1000
+            }));
+          }
+        } catch (signInErr) {
+          addLog(`Error inesperado en inicio de sesión automático: ${signInErr}`);
+        }
+      }
+      
+      // Registro exitoso
+      toast.dismiss(toastId);
+      toast.success('Registro exitoso. ¡Bienvenido a Flasti!');
+      
+      // Redirigir al dashboard
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1500);
+      
+    } catch (error: any) {
+      addLog(`Error inesperado: ${error?.message || 'Error desconocido'}`);
+      console.error('Error inesperado durante el registro:', error);
+      toast.dismiss(toastId);
+      toast.error(`Error al registrarse: ${error?.message || 'Error desconocido'}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-md relative">
+        <div className="bg-card rounded-lg shadow-xl p-6 space-y-6 border border-border">
+          <div className="space-y-2 text-center">
+            <h1 className="text-3xl font-bold">Registro API</h1>
+            <p className="text-muted-foreground">Crea una cuenta para comenzar</p>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="tu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Contraseña
+              </label>
+              <input
+                id="password"
+                type="password"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="phone" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Teléfono
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="+1234567890"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className={`w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Procesando...' : 'Registrarse'}
+            </button>
+          </form>
+          <div className="mt-4 text-center text-sm">
+            ¿Ya tienes una cuenta?{' '}
+            <Link href="/login" className="underline text-primary">
+              Iniciar sesión
+            </Link>
+          </div>
+          <div className="mt-4 text-center text-sm">
+            <Link href="/register" className="underline text-muted-foreground">
+              Volver al registro normal
+            </Link>
+          </div>
+        </div>
+      </div>
+      
+      {/* Sección de logs */}
+      {logs.length > 0 && (
+        <div className="w-full max-w-md mt-8 bg-card rounded-lg shadow-xl p-4 border border-border">
+          <h2 className="text-lg font-bold mb-2">Logs de registro</h2>
+          <div className="bg-background p-2 rounded text-xs font-mono h-48 overflow-y-auto">
+            {logs.map((log, index) => (
+              <div key={index} className="mb-1">{log}</div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
