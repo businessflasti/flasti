@@ -11,11 +11,7 @@ const SimplePricingSection = () => {
   const { t } = useLanguage();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [progressWidth, setProgressWidth] = useState(0);
-  const totalSeconds = useRef(22 * 60 * 60); // 22 horas en segundos
   const [showCountdown, setShowCountdown] = useState(true);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(false);
   const countdownInterval = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -42,10 +38,7 @@ const SimplePricingSection = () => {
             seconds: remainingSeconds
           });
 
-          // Calcular el porcentaje de tiempo restante para la barra de progreso
-          const totalRemainingSeconds = remainingHours * 3600 + remainingMinutes * 60 + remainingSeconds;
-          const progressPercentage = (totalRemainingSeconds / totalSeconds.current) * 100;
-          setProgressWidth(progressPercentage);
+
 
           setShowCountdown(true);
         } else {
@@ -63,8 +56,7 @@ const SimplePricingSection = () => {
           minutes: 0,
           seconds: 0
         });
-        // Inicializar la barra de progreso al 100% (llena)
-        setProgressWidth(100);
+
         setShowCountdown(true);
       }
     };
@@ -110,9 +102,7 @@ const SimplePricingSection = () => {
         const newExpiryTime = Date.now() + remainingMs;
         localStorage.setItem('flastiCountdownExpiry', newExpiryTime.toString());
 
-        // Actualizar la barra de progreso
-        const progressPercentage = (remainingSeconds / totalSeconds.current) * 100;
-        setProgressWidth(progressPercentage);
+
 
         return {
           hours: newHours,
@@ -123,51 +113,12 @@ const SimplePricingSection = () => {
     }, 1000);
     }
 
-    // Lógica para la barra de progreso
-    const handleScroll = () => {
-      if (hasAnimated.current || !progressRef.current) return;
 
-      const rect = progressRef.current.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-
-      if (isVisible) {
-        hasAnimated.current = true;
-        let startTime: number | null = null;
-        const duration = 1500; // 1.5 segundos para la animación
-
-        const animate = (timestamp: number) => {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-
-          // Función de easing para hacer la animación más natural
-          const easeOutQuad = (t: number) => t * (2 - t);
-          const easedProgress = easeOutQuad(progress);
-
-          setProgressWidth(Math.floor(easedProgress * 87));
-
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          }
-        };
-
-        requestAnimationFrame(animate);
-      }
-    };
-
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', handleScroll);
-      // Verificar también al cargar la página
-      handleScroll();
-    }
 
     // Limpiar al desmontar
     return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('scroll', handleScroll);
-        if (countdownInterval.current) {
-          clearInterval(countdownInterval.current);
-        }
+      if (typeof window !== 'undefined' && countdownInterval.current) {
+        clearInterval(countdownInterval.current);
       }
     };
   }, []);
@@ -331,26 +282,7 @@ const SimplePricingSection = () => {
 
 
 
-              {/* Progress Bar */}
-              <div className="mb-6 bg-black/20 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-                <div className="p-3 relative">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center">
-                      <AlertTriangle className="h-4 w-4 text-[#ef4444] mr-2" />
-                      <span className="text-white text-sm">{t('terminandoseRapido')}</span>
-                    </div>
-                    <span className="text-white text-sm font-bold">87%</span>
-                  </div>
-                  <div className="h-2 w-full bg-[#ef4444]/30 rounded-full overflow-hidden" ref={progressRef}>
-                    <div
-                      className="h-full bg-gradient-to-r from-[#ef4444] to-[#22c55e] rounded-full relative overflow-hidden transition-all duration-300 ease-out"
-                      style={{ width: `${progressWidth}%` }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/30 to-white/10 animate-progress-pulse"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
 
               <Link href="/checkout">
                 <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#22c55e] to-[#16a34a] hover:from-[#16a34a] hover:to-[#15803d] border-0 shadow-lg shadow-[#22c55e]/20 flex items-center justify-center gap-2">
