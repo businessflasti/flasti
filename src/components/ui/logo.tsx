@@ -37,7 +37,7 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
 
   // Determinar el color basado en el tema y la ruta del logo
   const textColor = isDark ? "text-white" : "text-gray-900";
-  const logoPath = isDark ? "/logo/logotipo.svg" : "/logo/logotipoblack.svg";
+  const logoPath = isDark ? "/logo/logotipo.svg" : "/logo/logotipoblack.png";
 
   return (
     <Link href="/" className={`${className}`}>

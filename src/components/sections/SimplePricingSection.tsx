@@ -164,7 +164,7 @@ const SimplePricingSection = () => {
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
                   <div className="relative w-6 h-6">
                     <Image
-                      src={theme === 'dark' ? "/logo/logotipo.svg" : "/logo/logotipoblack.svg"}
+                      src={theme === 'dark' ? "/logo/logotipo.svg" : "/logo/logotipoblack.png"}
                       alt="flasti logo"
                       width={24}
                       height={24}
