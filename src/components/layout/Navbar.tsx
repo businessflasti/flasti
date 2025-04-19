@@ -29,7 +29,13 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-2">
             <Link href="/login">
-              <Button variant="outline" size="sm" className="whitespace-nowrap bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] text-white border-0 hover:opacity-90">
+              <Button
+                variant="outline"
+                size="sm"
+                className={`whitespace-nowrap border-0 transition-colors ${theme === 'dark'
+                  ? 'bg-white text-black hover:bg-white hover:text-black'
+                  : 'bg-black text-white hover:bg-black hover:text-white'}`}
+              >
                 {t('iniciarSesion')}
               </Button>
             </Link>

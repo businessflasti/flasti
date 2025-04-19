@@ -4,11 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import Image from "next/image";
 import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, Lock, Gift } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const SimplePricingSection = () => {
   const { t } = useLanguage();
+  const { theme } = useTheme();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [showCountdown, setShowCountdown] = useState(true);
@@ -159,10 +162,25 @@ const SimplePricingSection = () => {
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <Sparkles className="text-[#ec4899]" size={24} />
+                  <div className="relative w-6 h-6">
+                    <Image
+                      src={theme === 'dark' ? "/logo/logotipo.svg" : "/logo/logotipoblack.svg"}
+                      alt="flasti logo"
+                      width={24}
+                      height={24}
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold group-hover:text-gradient transition-all duration-300">Flasti</h3>
+                  <h3 className="text-2xl group-hover:text-gradient transition-all duration-300"
+                    style={{
+                      fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                      fontWeight: 600,
+                      letterSpacing: '-0.01em'
+                    }}
+                  >flasti</h3>
                   <p className="text-foreground/70">
                     {t('accesoExclusivoPlataforma')}
                   </p>
