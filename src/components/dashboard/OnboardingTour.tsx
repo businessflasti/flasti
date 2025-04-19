@@ -120,19 +120,29 @@ export default function OnboardingTour() {
   useEffect(() => {
     if (!user) return;
 
-    // Verificar si el usuario ya ha visto el tour
-    const hasSeenTour = localStorage.getItem(`flasti_hasSeenTour_${user.id}`);
+    try {
+      // Verificar si el usuario ya ha visto el tour
+      const hasSeenTour = localStorage.getItem(`flasti_hasSeenTour_${user.id}`);
 
-    // SIEMPRE mostrar el tour para nuevos usuarios (sin opción de omitirlo)
-    if (!hasSeenTour) {
-      console.log('Mostrando tour de onboarding obligatorio para nuevo usuario');
-      // Esperar a que la página se cargue completamente
-      setTimeout(() => {
-        // Asegurarse de que el usuario esté en la parte superior de la página
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setIsVisible(true);
-        updateTooltipPosition();
-      }, 1500);
+      // SIEMPRE mostrar el tour para nuevos usuarios (sin opción de omitirlo)
+      if (!hasSeenTour) {
+        console.log('Mostrando tour de onboarding obligatorio para nuevo usuario');
+        // Esperar a que la página se cargue completamente
+        setTimeout(() => {
+          try {
+            // Asegurarse de que el usuario esté en la parte superior de la página
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setIsVisible(true);
+            updateTooltipPosition();
+          } catch (err) {
+            console.error('Error al mostrar el tour:', err);
+            // No bloquear la carga de la página si hay un error
+          }
+        }, 2000);
+      }
+    } catch (err) {
+      console.error('Error al verificar el tour:', err);
+      // No bloquear la carga de la página si hay un error
     }
   }, [user]);
 
@@ -173,10 +183,13 @@ export default function OnboardingTour() {
 
   // Función para actualizar la posición del tooltip
   const updateTooltipPosition = useCallback(() => {
-    if (isScrolling) return; // Evitar actualizaciones durante el scroll
+    try {
+      if (isScrolling) return; // Evitar actualizaciones durante el scroll
 
-    const step = tourSteps[currentStep];
-    let element = document.querySelector(step.target) as HTMLElement;
+      const step = tourSteps[currentStep];
+      if (!step) return; // Protección contra errores
+
+      let element = document.querySelector(step.target) as HTMLElement;
 
     // Si no se encuentra el elemento, intentar con selectores alternativos
     if (!element && step.target.includes(',')) {
@@ -257,6 +270,14 @@ export default function OnboardingTour() {
     } else {
       console.warn(`Elemento no encontrado: ${step.target}`);
       // Si no se encuentra el elemento, mostrar el tooltip en el centro de la pantalla
+      const centerTop = window.innerHeight / 2 - 110;
+      const centerLeft = window.innerWidth / 2 - 192;
+      setTooltipPosition({ top: centerTop, left: centerLeft });
+    }
+    } catch (err) {
+      console.error('Error al actualizar posición del tooltip:', err);
+      // No bloquear la carga de la página si hay un error
+      // Mostrar el tooltip en el centro de la pantalla como fallback
       const centerTop = window.innerHeight / 2 - 110;
       const centerLeft = window.innerWidth / 2 - 192;
       setTooltipPosition({ top: centerTop, left: centerLeft });

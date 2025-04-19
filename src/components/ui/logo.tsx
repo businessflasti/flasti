@@ -49,7 +49,8 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
             alt="flasti logo"
             width={logoWidth * 1.2}
             height={logoHeight * 1.2}
-            className="object-contain transform scale-110"
+            className={`object-contain transform scale-110 ${!isDark ? 'mix-blend-multiply' : ''}`}
+            style={{ filter: !isDark ? 'brightness(0)' : 'none' }}
             priority
             unoptimized={true}
           />

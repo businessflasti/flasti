@@ -168,7 +168,8 @@ const SimplePricingSection = () => {
                       alt="flasti logo"
                       width={32}
                       height={32}
-                      className="object-contain transform scale-110"
+                      className={`object-contain transform scale-110 ${theme !== 'dark' ? 'mix-blend-multiply' : ''}`}
+                      style={{ filter: theme !== 'dark' ? 'brightness(0)' : 'none' }}
                       priority
                       unoptimized={true}
                     />
