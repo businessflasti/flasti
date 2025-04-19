@@ -170,6 +170,7 @@ const SimplePricingSection = () => {
                       height={32}
                       className="object-contain transform scale-110"
                       priority
+                      unoptimized={true}
                     />
                   </div>
                 </div>

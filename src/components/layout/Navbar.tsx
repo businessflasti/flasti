@@ -32,9 +32,9 @@ const Navbar = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className={`whitespace-nowrap border-0 transition-colors ${theme === 'dark'
-                  ? 'bg-white text-black hover:bg-white hover:text-black'
-                  : 'bg-black text-white hover:bg-black hover:text-white'}`}
+                className={`whitespace-nowrap border-0 transition-all ${theme === 'dark'
+                  ? 'bg-white text-black hover:bg-white hover:text-black hover:shadow-md hover:shadow-white/20 hover:translate-y-[-1px]'
+                  : 'bg-black text-white hover:bg-black hover:text-white hover:shadow-md hover:shadow-black/20 hover:translate-y-[-1px]'}`}
               >
                 {t('iniciarSesion')}
               </Button>

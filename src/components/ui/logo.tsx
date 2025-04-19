@@ -51,6 +51,7 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
             height={logoHeight * 1.2}
             className="object-contain transform scale-110"
             priority
+            unoptimized={true}
           />
         </div>
 

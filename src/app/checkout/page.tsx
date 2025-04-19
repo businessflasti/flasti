@@ -249,7 +249,13 @@ const CheckoutContent = () => {
             <Card className="border border-[#2a2a4a] bg-[#1a1a2e] p-6 rounded-xl">
               <div className="flex justify-between items-center mb-2">
                 <div>
-                  <h2 className="text-2xl font-bold text-white">Flasti</h2>
+                  <h2 className="text-2xl text-white"
+                    style={{
+                      fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                      fontWeight: 600,
+                      letterSpacing: '-0.01em'
+                    }}
+                  >flasti</h2>
                   <p className="text-sm text-white/70">Acceso exclusivo a la plataforma</p>
                 </div>
                 <div className="bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1 whitespace-nowrap md:-mt-7">
