@@ -134,6 +134,9 @@ export default function CasinoContent() {
 
   return (
     <>
+      {/* Bloque de balance */}
+      <CasinoBalance />
+
       {/* Banner principal */}
       <div className="main-banner">
         <div className="banner-content">
@@ -154,9 +157,6 @@ export default function CasinoContent() {
           />
         </div>
       </div>
-
-      {/* Bloque de balance */}
-      <CasinoBalance />
 
       {/* Bloque de tutora asignada */}
       <CasinoTutor />

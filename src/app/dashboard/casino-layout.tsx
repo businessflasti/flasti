@@ -54,6 +54,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   const router = useRouter();
 
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -186,16 +187,35 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
   // Alternar expansión del sidebar
   const toggleSidebar = () => {
-    setSidebarExpanded(!sidebarExpanded);
+    if (isMobile) {
+      setMobileSidebarOpen(!mobileSidebarOpen);
+    } else {
+      setSidebarExpanded(!sidebarExpanded);
+    }
   };
 
   return (
     <div className="casino-layout">
+      {/* Overlay para el menú móvil */}
+      {isMobile && (
+        <div
+          className={`mobile-menu-overlay ${mobileSidebarOpen ? 'active' : ''}`}
+          onClick={() => setMobileSidebarOpen(false)}
+        ></div>
+      )}
+
       {/* Sidebar */}
-      <div className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''}`}>
+      <div className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''} ${mobileSidebarOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-logo">
-          <Logo showTextWhenExpanded={sidebarExpanded} />
+          <Logo showTextWhenExpanded={sidebarExpanded || isMobile} />
         </div>
+
+        {/* Botón para cerrar el menú móvil */}
+        {isMobile && (
+          <div className="mobile-menu-close" onClick={() => setMobileSidebarOpen(false)}>
+            <X size={18} />
+          </div>
+        )}
 
         <div className="sidebar-nav">
           {sidebarItems.map((item) => (
@@ -221,13 +241,13 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
         {!isMobile && (
           <div
-            className="mt-auto mx-auto mb-4 cursor-pointer"
+            className="absolute top-4 right-4 cursor-pointer bg-foreground/5 hover:bg-foreground/10 rounded-full p-1 transition-colors"
             onClick={toggleSidebar}
           >
             {sidebarExpanded ? (
-              <ChevronLeft size={24} className="text-foreground/60" />
+              <ChevronLeft size={20} className="text-foreground/80" />
             ) : (
-              <ChevronRight size={24} className="text-foreground/60" />
+              <ChevronRight size={20} className="text-foreground/80" />
             )}
           </div>
         )}
@@ -239,7 +259,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
           <div className="flex items-center gap-2">
             {isMobile && (
               <>
-                <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+                <Button variant="ghost" size="icon" onClick={() => setMobileSidebarOpen(true)}>
                   <Menu size={24} />
                 </Button>
                 <Logo showTextWhenExpanded={true} />
