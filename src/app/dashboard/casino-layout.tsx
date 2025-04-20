@@ -16,13 +16,10 @@ import {
   Trophy,
   Star,
   Crown,
-  Bell,
   User,
   LogOut,
   ChevronRight,
   ChevronLeft,
-  MessageSquare,
-  Send,
   Check,
   DollarSign,
   Search,
@@ -152,30 +149,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
     }
   ];
 
-  // Notificaciones
-  const notifications = [
-    {
-      id: 1,
-      title: 'Nueva comisión recibida',
-      time: 'Hace 5 min',
-      icon: <DollarSign size={16} />,
-      color: '#22c55e'
-    },
-    {
-      id: 2,
-      title: 'Nuevo nivel desbloqueado',
-      time: 'Hace 2 horas',
-      icon: <Crown size={16} />,
-      color: '#f59e0b'
-    },
-    {
-      id: 3,
-      title: 'Actualización de plataforma',
-      time: 'Hace 1 día',
-      icon: <Bell size={16} />,
-      color: '#8b5cf6'
-    }
-  ];
+
 
   // Beneficios VIP
   const vipBenefits = [
@@ -277,19 +251,9 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
           <div className="user-profile">
             <div className="user-avatar">
-              {profile?.avatar_url ? (
-                <Image
-                  src={profile.avatar_url}
-                  alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
-                  width={36}
-                  height={36}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold">
-                  {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
-                </div>
-              )}
+              <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold">
+                {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+              </div>
               <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background translate-x-1/4 translate-y-1/4"></div>
             </div>
             <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
@@ -335,50 +299,6 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
               <div key={index} className="vip-benefits-item">
                 <Check size={16} />
                 <span>{benefit}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Chat y soporte */}
-        <div className="chat-support">
-          <div className="chat-support-title">
-            <MessageSquare size={20} />
-            <span>Chat de Soporte</span>
-          </div>
-
-          <div className="chat-messages">
-            {/* Aquí irían los mensajes del chat */}
-          </div>
-
-          <div className="chat-input">
-            <input type="text" placeholder="Escribe un mensaje..." />
-            <button>
-              <Send size={16} />
-            </button>
-          </div>
-        </div>
-
-        {/* Notificaciones */}
-        <div className="notifications">
-          <div className="notifications-title">
-            <span>Notificaciones</span>
-            <span className="text-xs text-foreground/60">Ver todas</span>
-          </div>
-
-          <div className="notifications-list">
-            {notifications.map((notification) => (
-              <div key={notification.id} className="notification-item">
-                <div
-                  className="notification-icon"
-                  style={{ backgroundColor: `${notification.color}20`, color: notification.color }}
-                >
-                  {notification.icon}
-                </div>
-                <div className="notification-content">
-                  <div className="notification-title">{notification.title}</div>
-                  <div className="notification-time">{notification.time}</div>
-                </div>
               </div>
             ))}
           </div>

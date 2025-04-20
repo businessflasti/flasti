@@ -14,6 +14,21 @@ const nextConfig = {
   staticPageGenerationTimeout: 1000,
   // Mover skipTrailingSlashRedirect a la raíz de la configuración
   skipTrailingSlashRedirect: true,
+  // Configuración de imágenes remotas
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ewfvfvkhqftbvldvjnrk.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
   // Ignorar errores específicos durante la exportación estática
   experimental: {
     // Esto permite que la compilación continúe incluso con errores
