@@ -15,13 +15,11 @@ import { useBalanceVisibility } from "@/contexts/BalanceVisibilityContext";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { useState, useRef, useEffect } from "react";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
-
-// Nuevos componentes para el dashboard mejorado
+import LocationBadge from "@/components/dashboard/LocationBadge";
+import LiveNotifications from "@/components/dashboard/LiveNotifications";
 import QuickStats from "@/components/dashboard/QuickStats";
 import LevelProgress from "@/components/dashboard/LevelProgress";
-import LiveNotifications from "@/components/dashboard/LiveNotifications";
 import OnboardingTour from "@/components/dashboard/OnboardingTour";
-import LocationBadge from "@/components/dashboard/LocationBadge";
 
 // Importar estilos de animaciones
 import "./animations.css";
