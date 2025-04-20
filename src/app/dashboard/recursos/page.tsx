@@ -225,7 +225,9 @@ const ResourcesPage = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-[#9333ea]/10 text-[#9333ea] font-medium">Premium</span>
+                          {app.name !== "Próximamente..." && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-[#9333ea]/10 text-[#9333ea] font-medium">Premium</span>
+                          )}
                           <a href={resource.url} download target="_blank" rel="noopener noreferrer">
                             <Button variant="ghost" size="icon" className="h-8 w-8">
                               <Download size={18} className="text-[#ec4899] hover:text-[#9333ea] transition-colors" />
