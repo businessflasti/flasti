@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Eye, ArrowDown, ArrowUp, PlusCircle, MinusCircle, Building2, CreditCard, Repeat, Clock, ArrowRight, Link2, BarChart2, AppWindow, BookOpen, Wallet, HelpCircle, Trophy, Star, Crown, Check, Bell, User, Sun, Moon, LogOut } from "lucide-react";
+import { Eye, ArrowDown, ArrowUp, PlusCircle, MinusCircle, Building2, CreditCard, Repeat, Clock, ArrowRight, Link2, BarChart2, AppWindow, BookOpen, Wallet, HelpCircle, Trophy, Star, Crown, Check, Bell, User, Sun, Moon, LogOut, Target, Calculator, Palette, Sparkles, BarChart3, Lightbulb } from "lucide-react";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -18,6 +18,7 @@ import NotificationCenter from "@/components/notifications/NotificationCenter";
 import LocationBadge from "@/components/dashboard/LocationBadge";
 import LiveNotifications from "@/components/dashboard/LiveNotifications";
 import QuickStats from "@/components/dashboard/QuickStats";
+import DailyTips from "@/components/content/DailyTips";
 import LevelProgress from "@/components/dashboard/LevelProgress";
 import OnboardingTour from "@/components/dashboard/OnboardingTour";
 
@@ -141,6 +142,38 @@ export default function DashboardPage() {
                     >
                       <Trophy size={18} />
                       <span>Niveles</span>
+                    </Link>
+                    <Link
+                      href="/dashboard/logros"
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Trophy size={18} />
+                      <span>Logros</span>
+                    </Link>
+                    <Link
+                      href="/dashboard/clasificacion"
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Crown size={18} />
+                      <span>Clasificación</span>
+                    </Link>
+                    <Link
+                      href="/dashboard/objetivos"
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Target size={18} />
+                      <span>Objetivos</span>
+                    </Link>
+                    <Link
+                      href="/dashboard/temas"
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <Palette size={18} />
+                      <span>Temas</span>
                     </Link>
                     <div className="border-t border-border/20 mt-2 pt-2">
                       <button
@@ -303,6 +336,87 @@ export default function DashboardPage() {
                     <BookOpen className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">{t('recursos') as string}</h3>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/logros">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-500 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Trophy className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Logros</h3>
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
+                    NUEVO
+                  </span>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/clasificacion">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-600 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Crown className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Clasificación</h3>
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
+                    NUEVO
+                  </span>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/objetivos">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-700 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Target className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Objetivos</h3>
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
+                    NUEVO
+                  </span>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/simulador">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-800 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Calculator className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Simulador</h3>
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
+                    NUEVO
+                  </span>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/editor-enlaces">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-900 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Link2 className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Editor Enlaces</h3>
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
+                    NUEVO
+                  </span>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/generador-contenido">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-1000 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Sparkles className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Generador IA</h3>
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
+                    NUEVO
+                  </span>
+                </Card>
+              </Link>
+
+              <Link href="/dashboard/analisis">
+                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-1100 hover-lift mobile-card mobile-touch-feedback">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <BarChart3 className="text-primary icon-glow" size={22} />
+                  </div>
+                  <h3 className="font-medium mb-1">Analizador</h3>
                   <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
                     NUEVO
                   </span>
@@ -320,21 +434,17 @@ export default function DashboardPage() {
                   </span>
                 </Card>
               </Link>
-
-              <Link href="/dashboard/centro-ayuda" data-tour="centro-ayuda">
-                <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center h-full mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
-                    <HelpCircle className="text-primary icon-glow" size={22} />
-                  </div>
-                  <h3 className="font-medium mb-1">Centro de Ayuda</h3>
-                </Card>
-              </Link>
             </div>
 
 
             {/* Progreso de Nivel */}
             <div className="mb-8" data-tour="level">
               <LevelProgress />
+            </div>
+
+            {/* Tips del Día */}
+            <div className="mb-8">
+              <DailyTips />
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { UserLevelProvider } from '@/contexts/UserLevelContext';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import OnboardingModal from '@/components/dashboard/OnboardingModal';
+import GamificationProviders from '@/components/providers/GamificationProviders';
 
 // No se puede exportar metadata desde un componente 'use client'
 // Los metadatos se manejarán a nivel de configuración global
@@ -19,8 +20,10 @@ export default function DashboardLayout({
       <MainLayout>
         <BalanceVisibilityProvider>
           <UserLevelProvider>
-            {children}
-            <OnboardingModal />
+            <GamificationProviders>
+              {children}
+              <OnboardingModal />
+            </GamificationProviders>
           </UserLevelProvider>
         </BalanceVisibilityProvider>
       </MainLayout>
