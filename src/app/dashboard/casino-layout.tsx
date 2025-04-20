@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,10 @@ import {
   DollarSign,
   Search,
   Menu,
-  X
+  X,
+  Settings,
+  CreditCard,
+  Bell
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -53,6 +56,8 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Detectar si es móvil
   useEffect(() => {
@@ -65,6 +70,20 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
     return () => {
       window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
+
+  // Cerrar menú de perfil al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -155,7 +174,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
   // Beneficios VIP
   const vipBenefits = [
-    'Comisiones aumentadas en un 10%',
+    'Comisiones aumentadas al 90%',
     'Soporte prioritario 24/7',
     'Acceso anticipado a nuevas apps'
   ];
@@ -190,7 +209,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
               >
                 <div
                   className="sidebar-nav-item-icon"
-                  style={{ backgroundColor: `${item.color}20`, color: item.color }}
+                  style={{ backgroundColor: `${item.color}20`, color: item.color, borderRadius: '50%' }}
                 >
                   {item.icon}
                 </div>
@@ -219,18 +238,18 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
         <div className="header-left">
           <div className="flex items-center gap-2">
             {isMobile && (
-              <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-                <Menu size={24} />
-              </Button>
+              <>
+                <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+                  <Menu size={24} />
+                </Button>
+                <Logo showTextWhenExpanded={true} />
+              </>
             )}
-            <div className="flex items-center gap-2">
-              {!isMobile && (
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Crown size={16} className="text-primary" />
-                </div>
-              )}
-              <Logo showTextWhenExpanded={true} />
-            </div>
+            {!isMobile && (
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <Crown size={16} className="text-primary" />
+              </div>
+            )}
           </div>
         </div>
 
@@ -257,29 +276,62 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             </Button>
           </div>
 
-          <div className="user-profile">
-            <div className="user-avatar relative">
-              {profile?.avatar_url ? (
-                <Image
-                  src={profile.avatar_url}
-                  alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
-                  width={36}
-                  height={36}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold rounded-full">
-                  {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
-                </div>
-              )}
-              <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background translate-x-1/4 translate-y-1/4"></div>
+          <div className="user-profile relative" ref={profileMenuRef}>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+            >
+              <div className="user-avatar relative">
+                {profile?.avatar_url ? (
+                  <Image
+                    src={profile.avatar_url}
+                    alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+                    width={36}
+                    height={36}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold rounded-full">
+                    {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                )}
+                <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background translate-x-1/2 translate-y-1/2"></div>
+              </div>
+              <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
             </div>
-            <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
-          </div>
 
-          <Button variant="ghost" size="icon" onClick={() => signOut()}>
-            <LogOut size={20} />
-          </Button>
+            {/* Menú desplegable de perfil */}
+            {profileMenuOpen && (
+              <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-card/95 backdrop-blur-md border border-border/30 z-50 top-full">
+                <div className="py-1">
+                  <Link href="/dashboard/perfil" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
+                    <User size={16} />
+                    <span>Mi Perfil</span>
+                  </Link>
+                  <Link href="/dashboard/paypal" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
+                    <CreditCard size={16} />
+                    <span>Mis Pagos</span>
+                  </Link>
+                  <Link href="/dashboard/notificaciones" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
+                    <Bell size={16} />
+                    <span>Notificaciones</span>
+                  </Link>
+                  <Link href="/dashboard/configuracion" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
+                    <Settings size={16} />
+                    <span>Configuración</span>
+                  </Link>
+                  <div className="border-t border-border/20 my-1"></div>
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors w-full text-left text-red-500"
+                  >
+                    <LogOut size={16} />
+                    <span>Cerrar Sesión</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -294,7 +346,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
         <div className="vip-program">
           <div className="vip-program-title">
             <Crown size={20} />
-            <span>VIP Program</span>
+            <span>Flasti Plus</span>
           </div>
 
           <div className="vip-level">
