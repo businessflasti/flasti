@@ -54,8 +54,8 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   const router = useRouter();
 
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -73,8 +73,6 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       window.removeEventListener('resize', checkIfMobile);
     };
   }, []);
-
-
 
   // Cerrar menú de perfil al hacer clic fuera
   useEffect(() => {
@@ -190,37 +188,19 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   // Alternar expansión del sidebar
   const toggleSidebar = () => {
     if (isMobile) {
-      setMobileSidebarOpen(!mobileSidebarOpen);
+      setMobileMenuOpen(!mobileMenuOpen);
     } else {
       setSidebarExpanded(!sidebarExpanded);
     }
   };
 
   return (
-    <div className="casino-layout" style={{ gridTemplateColumns: !isMobile ? (sidebarExpanded ? '240px 1fr 280px' : '80px 1fr 280px') : '1fr' }}>
-      {/* Overlay para el menú móvil */}
-      {isMobile && (
-        <div
-          className={`mobile-menu-overlay ${mobileSidebarOpen ? 'active' : ''}`}
-          onClick={() => setMobileSidebarOpen(false)}
-        ></div>
-      )}
-
+    <div className="casino-layout">
       {/* Sidebar */}
-      <div
-        className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''} ${mobileSidebarOpen ? 'mobile-open' : ''}`}
-        style={{ width: !isMobile ? (sidebarExpanded ? '240px' : '80px') : mobileSidebarOpen ? '250px' : '0' }}
-      >
+      <div className={`casino-sidebar ${sidebarExpanded || mobileMenuOpen ? 'expanded' : ''}`}>
         <div className="sidebar-logo">
-          <Logo showTextWhenExpanded={isMobile ? true : sidebarExpanded} />
+          <Logo showTextWhenExpanded={sidebarExpanded} />
         </div>
-
-        {/* Botón para cerrar el menú móvil */}
-        {isMobile && (
-          <div className="mobile-menu-close" onClick={() => setMobileSidebarOpen(false)}>
-            <X size={18} />
-          </div>
-        )}
 
         <div className="sidebar-nav">
           {sidebarItems.map((item) => (
@@ -246,13 +226,13 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
         {!isMobile && (
           <div
-            className="absolute top-4 right-4 cursor-pointer bg-foreground/5 hover:bg-foreground/10 rounded-full p-1.5 transition-colors z-10"
+            className="absolute top-4 right-4 cursor-pointer bg-primary/10 rounded-full p-1 hover:bg-primary/20 transition-colors"
             onClick={toggleSidebar}
           >
             {sidebarExpanded ? (
-              <ChevronLeft size={20} className="text-foreground/80" />
+              <ChevronLeft size={20} className="text-primary" />
             ) : (
-              <ChevronRight size={20} className="text-foreground/80" />
+              <ChevronRight size={20} className="text-primary" />
             )}
           </div>
         )}
@@ -264,12 +244,10 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
           <div className="flex items-center gap-2">
             {isMobile && (
               <>
-                <Button variant="ghost" size="icon" onClick={() => setMobileSidebarOpen(true)}>
+                <Button variant="ghost" size="icon" onClick={toggleSidebar}>
                   <Menu size={24} />
                 </Button>
-                <div className="ml-2">
-                  <Logo showTextWhenExpanded={true} />
-                </div>
+                <Logo showTextWhenExpanded={true} />
               </>
             )}
             {!isMobile && (
@@ -361,6 +339,14 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
           </div>
         </div>
       </div>
+
+      {/* Overlay para menú móvil */}
+      {isMobile && (
+        <div
+          className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
+          onClick={toggleSidebar}
+        ></div>
+      )}
 
       {/* Contenido principal */}
       <div className="casino-main">
