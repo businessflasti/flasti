@@ -23,9 +23,6 @@ const ResourcesPage = () => {
         { id: "img-banners", name: "Banners Promocionales", type: "ZIP", size: "1.8 KB", category: "marketing", url: "/recursos/flasti-imagenes/banners-promocionales.zip" },
         { id: "img-social", name: "Pack Redes Sociales", type: "ZIP", size: "3.4 KB", category: "marketing", url: "/recursos/flasti-imagenes/pack-redes-sociales.zip" },
         { id: "img-email", name: "Plantillas Email", type: "ZIP", size: "3.2 KB", category: "marketing", url: "/recursos/flasti-imagenes/plantillas-email.zip" },
-        { id: "img-xpost", name: "Plantilla Post X", type: "SVG", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-imagenes/x-post.svg" },
-        { id: "img-promo", name: "Material Promocional", type: "Carpeta", size: "Varios", category: "marketing", url: "/recursos/flasti-imagenes/promocionales" },
-        { id: "img-video", name: "Videos Promocionales", type: "Carpeta", size: "Varios", category: "video", url: "/recursos/flasti-imagenes/videos" },
       ],
       marketingText: [
         {
@@ -82,10 +79,6 @@ const ResourcesPage = () => {
         { id: "ai-banners", name: "Banners Web", type: "ZIP", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-ai/banners-web.zip" },
         { id: "ai-social", name: "Kit Redes Sociales", type: "ZIP", size: "4.7 KB", category: "marketing", url: "/recursos/flasti-ai/kit-redes-sociales.zip" },
         { id: "ai-email", name: "Plantillas Email", type: "ZIP", size: "3.6 KB", category: "marketing", url: "/recursos/flasti-ai/plantillas-email.zip" },
-        { id: "ai-xpost", name: "Plantilla Post X", type: "SVG", size: "6.4 KB", category: "marketing", url: "/recursos/flasti-ai/x-post.svg" },
-        { id: "ai-promo", name: "Material Promocional", type: "Carpeta", size: "Varios", category: "marketing", url: "/recursos/flasti-ai/promocionales" },
-        { id: "ai-video", name: "Videos Promocionales", type: "Carpeta", size: "Varios", category: "video", url: "/recursos/flasti-ai/videos" },
-        { id: "ai-backup", name: "Archivos de Respaldo", type: "Carpeta", size: "Varios", category: "branding", url: "/recursos/flasti-ai/backups" },
       ],
       marketingText: [
         {
@@ -173,7 +166,7 @@ const ResourcesPage = () => {
         <div>
           <h1 className="text-3xl font-bold">Recursos Promocionales</h1>
           <p className="text-foreground/70 mt-1">
-            Descarga materiales, utiliza textos promocionales y comparte en grupos de Facebook para maximizar tus conversiones
+            Descarga materiales, utiliza textos promocionales y comparte en redes sociales y grupos de Facebook para maximizar tus conversiones
           </p>
         </div>
 
@@ -208,7 +201,9 @@ const ResourcesPage = () => {
                   <TabsTrigger value="social" className="flex items-center gap-2">
                     <div className="flex items-center gap-1">
                       <Instagram size={14} />
-                      <Twitter size={14} className="text-black" />
+                      <div className="w-3.5 h-3.5 flex items-center justify-center">
+                        <span className="text-white font-bold text-xs">X</span>
+                      </div>
                       <Facebook size={14} />
                     </div>
                     <span>Redes Sociales</span>
@@ -279,7 +274,11 @@ const ResourcesPage = () => {
                           <div className="flex items-center gap-2">
                             <h4 className="font-medium">{item.title}</h4>
                             {item.title.includes("Instagram") && <Instagram size={16} className="text-[#E1306C]" />}
-                            {item.title.includes("Post X") && <Twitter size={16} className="text-black" />}
+                            {item.title.includes("Post X") && (
+                              <div className="w-4 h-4 flex items-center justify-center bg-black rounded-sm">
+                                <span className="text-white font-bold text-xs">X</span>
+                              </div>
+                            )}
                             {item.title.includes("Facebook") && <Facebook size={16} className="text-[#4267B2]" />}
                             {item.title.includes("LinkedIn") && <Linkedin size={16} className="text-[#0077B5]" />}
                             {item.title.includes("Grupo") && <Users size={16} className="text-[#4267B2]" />}
