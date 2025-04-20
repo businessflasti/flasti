@@ -33,7 +33,14 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
   const shouldShowChat = !disableChat && isInternalPage;
 
   // Ocultar la burbuja de chat en todas las páginas excepto en la de contacto
-  DirectTawkToScript({ showBubble: isContactPage });
+  useEffect(() => {
+    try {
+      // Usar DirectTawkToScript de manera segura
+      DirectTawkToScript({ showBubble: isContactPage });
+    } catch (error) {
+      console.error('Error al inicializar DirectTawkToScript:', error);
+    }
+  }, [isContactPage]);
 
   return (
     <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden">

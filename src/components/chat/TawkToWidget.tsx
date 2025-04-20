@@ -16,63 +16,93 @@ declare global {
 
 export default function TawkToWidget({ showBubble = true }: TawkToWidgetProps) {
   const scriptLoaded = useRef(false);
-  
+
   useEffect(() => {
-    // Configuración inicial de Tawk_API
-    window.Tawk_API = window.Tawk_API || {};
-    window.Tawk_LoadStart = new Date();
-    
-    // Configurar la visibilidad de la burbuja cuando el script se cargue
-    const handleScriptLoad = () => {
-      scriptLoaded.current = true;
-      
-      if (window.Tawk_API) {
-        if (!showBubble && typeof window.Tawk_API.hideWidget === 'function') {
+    try {
+      // Configuración inicial de Tawk_API
+      window.Tawk_API = window.Tawk_API || {};
+      window.Tawk_LoadStart = new Date();
+
+      // Función segura para actualizar la visibilidad del widget
+      const safeUpdateVisibility = (shouldShow: boolean) => {
+        try {
+          if (!window.Tawk_API) return;
+
           setTimeout(() => {
-            window.Tawk_API.hideWidget();
-          }, 100);
-        } else if (showBubble && typeof window.Tawk_API.showWidget === 'function') {
-          setTimeout(() => {
-            window.Tawk_API.showWidget();
-          }, 100);
+            try {
+              if (!shouldShow && typeof window.Tawk_API.hideWidget === 'function') {
+                window.Tawk_API.hideWidget();
+              } else if (shouldShow && typeof window.Tawk_API.showWidget === 'function') {
+                window.Tawk_API.showWidget();
+              }
+            } catch (error) {
+              console.warn('Error al actualizar visibilidad del widget Tawk.to:', error);
+            }
+          }, 500); // Aumentar el tiempo para mayor seguridad
+        } catch (error) {
+          console.warn('Error en safeUpdateVisibility:', error);
         }
+      };
+
+      // Configurar la visibilidad de la burbuja cuando el script se cargue
+      const handleScriptLoad = () => {
+        try {
+          scriptLoaded.current = true;
+          safeUpdateVisibility(showBubble);
+        } catch (error) {
+          console.warn('Error en handleScriptLoad:', error);
+        }
+      };
+
+      // Si el script ya está cargado, configurar la visibilidad
+      if (scriptLoaded.current) {
+        safeUpdateVisibility(showBubble);
       }
-    };
-    
-    // Si el script ya está cargado, configurar la visibilidad
-    if (scriptLoaded.current && window.Tawk_API) {
-      if (!showBubble && typeof window.Tawk_API.hideWidget === 'function') {
-        window.Tawk_API.hideWidget();
-      } else if (showBubble && typeof window.Tawk_API.showWidget === 'function') {
-        window.Tawk_API.showWidget();
+
+      // Verificar si el script ya existe
+      const existingScript = document.getElementById('tawkto-widget-script');
+      if (existingScript) {
+        handleScriptLoad();
       }
+    } catch (error) {
+      console.error('Error en el useEffect de TawkToWidget:', error);
     }
-    
-    // Agregar el evento de carga del script
-    const existingScript = document.getElementById('tawkto-widget-script');
-    if (existingScript) {
-      handleScriptLoad();
-    }
-    
+
     return () => {
       // No es necesario limpiar nada, ya que no queremos eliminar el script
     };
   }, [showBubble]);
-  
+
   return (
     <Script
       id="tawkto-widget-script"
       strategy="lazyOnload"
       src="https://embed.tawk.to/6281726e7b967b11798f79e1/1g34qe1tb"
       onLoad={() => {
-        scriptLoaded.current = true;
-        if (!showBubble && window.Tawk_API) {
+        try {
+          console.log('Script de Tawk.to cargado correctamente');
+          scriptLoaded.current = true;
+
+          // Dar tiempo suficiente para que la API se inicialice completamente
           setTimeout(() => {
-            if (typeof window.Tawk_API.hideWidget === 'function') {
-              window.Tawk_API.hideWidget();
+            try {
+              if (window.Tawk_API) {
+                if (!showBubble && typeof window.Tawk_API.hideWidget === 'function') {
+                  window.Tawk_API.hideWidget();
+                } else if (showBubble && typeof window.Tawk_API.showWidget === 'function') {
+                  window.Tawk_API.showWidget();
+                }
+              }
+            } catch (error) {
+              console.warn('Error al configurar la visibilidad del widget Tawk.to:', error);
             }
-          }, 100);
+          }, 500);
+        } catch (error) {
+          console.error('Error en onLoad del script Tawk.to:', error);
         }
+      }}
+      onError={(error) => {
+        console.error('Error al cargar el script de Tawk.to:', error);
       }}
     />
   );
