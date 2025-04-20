@@ -20,9 +20,9 @@ const ResourcesPage = () => {
       price: 5,
       description: "Genera imágenes impresionantes con inteligencia artificial. Ideal para marketing, diseño y contenido creativo.",
       resources: [
-        { id: "img-banners", name: "Banners Promocionales", type: "ZIP", size: "1.8 KB", category: "marketing", url: "/recursos/flasti-imagenes/banners-promocionales.zip" },
-        { id: "img-social", name: "Pack Redes Sociales", type: "ZIP", size: "3.4 KB", category: "marketing", url: "/recursos/flasti-imagenes/pack-redes-sociales.zip" },
-        { id: "img-email", name: "Plantillas Email", type: "ZIP", size: "3.2 KB", category: "marketing", url: "/recursos/flasti-imagenes/plantillas-email.zip" },
+        { id: "img-banners", name: "Banners Promocionales", type: "ZIP", category: "marketing", url: "/recursos/flasti-imagenes/banners-promocionales.zip" },
+        { id: "img-social", name: "Pack Redes Sociales", type: "ZIP", category: "marketing", url: "/recursos/flasti-imagenes/pack-redes-sociales.zip" },
+        { id: "img-email", name: "Plantillas Email", type: "ZIP", category: "marketing", url: "/recursos/flasti-imagenes/plantillas-email.zip" },
       ],
       marketingText: [
         {
@@ -76,9 +76,9 @@ const ResourcesPage = () => {
       price: 7,
       description: "Asistente de IA avanzado para responder preguntas, generar contenido y automatizar tareas cotidianas.",
       resources: [
-        { id: "ai-banners", name: "Banners Promocionales", type: "ZIP", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-ai/banners-web.zip" },
-        { id: "ai-social", name: "Pack Redes Sociales", type: "ZIP", size: "4.7 KB", category: "marketing", url: "/recursos/flasti-ai/kit-redes-sociales.zip" },
-        { id: "ai-email", name: "Plantillas Email", type: "ZIP", size: "3.6 KB", category: "marketing", url: "/recursos/flasti-ai/plantillas-email.zip" },
+        { id: "ai-banners", name: "Banners Promocionales", type: "ZIP", category: "marketing", url: "/recursos/flasti-ai/banners-web.zip" },
+        { id: "ai-social", name: "Pack Redes Sociales", type: "ZIP", category: "marketing", url: "/recursos/flasti-ai/kit-redes-sociales.zip" },
+        { id: "ai-email", name: "Plantillas Email", type: "ZIP", category: "marketing", url: "/recursos/flasti-ai/plantillas-email.zip" },
       ],
       marketingText: [
         {
@@ -225,7 +225,7 @@ const ResourcesPage = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm text-foreground/60">{resource.size}</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-[#9333ea]/10 text-[#9333ea] font-medium">Premium</span>
                           <a href={resource.url} download target="_blank" rel="noopener noreferrer">
                             <Button variant="ghost" size="icon" className="h-8 w-8">
                               <Download size={18} className="text-[#ec4899] hover:text-[#9333ea] transition-colors" />
