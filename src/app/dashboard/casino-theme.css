@@ -76,7 +76,6 @@
 }
 
 .casino-sidebar.expanded {
-  width: var(--sidebar-expanded-width);
   align-items: flex-start;
 }
 

@@ -74,6 +74,16 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
     };
   }, []);
 
+  // Actualizar el grid del layout cuando cambia el sidebar
+  useEffect(() => {
+    if (!isMobile) {
+      const layout = document.querySelector('.casino-layout');
+      if (layout) {
+        layout.setAttribute('style', `grid-template-columns: ${sidebarExpanded ? 'var(--sidebar-expanded-width)' : 'var(--sidebar-width)'} 1fr 280px`);
+      }
+    }
+  }, [sidebarExpanded, isMobile]);
+
   // Cerrar menú de perfil al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -191,6 +201,8 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       setMobileSidebarOpen(!mobileSidebarOpen);
     } else {
       setSidebarExpanded(!sidebarExpanded);
+
+      // El efecto se encargará de actualizar el grid
     }
   };
 
@@ -205,7 +217,10 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       )}
 
       {/* Sidebar */}
-      <div className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''} ${mobileSidebarOpen ? 'mobile-open' : ''}`}>
+      <div
+        className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''} ${mobileSidebarOpen ? 'mobile-open' : ''}`}
+        style={{ width: sidebarExpanded ? 'var(--sidebar-expanded-width)' : 'var(--sidebar-width)' }}
+      >
         <div className="sidebar-logo">
           <Logo showTextWhenExpanded={sidebarExpanded} />
         </div>
@@ -242,7 +257,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
         {!isMobile && (
           <div
             className="absolute top-4 right-4 cursor-pointer bg-foreground/5 hover:bg-foreground/10 rounded-full p-1.5 transition-colors z-10"
-            onClick={() => setSidebarExpanded(!sidebarExpanded)}
+            onClick={toggleSidebar}
           >
             {sidebarExpanded ? (
               <ChevronLeft size={20} className="text-foreground/80" />
