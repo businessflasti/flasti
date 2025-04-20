@@ -166,7 +166,7 @@ const ResourcesPage = () => {
         <div>
           <h1 className="text-3xl font-bold">Recursos Promocionales</h1>
           <p className="text-foreground/70 mt-1">
-            Descarga materiales, utiliza textos promocionales y comparte en redes sociales y grupos de Facebook para maximizar tus conversiones
+            Descarga materiales, utiliza textos promocionales y comparte en redes sociales para maximizar tus conversiones
           </p>
         </div>
 
@@ -199,13 +199,7 @@ const ResourcesPage = () => {
                     <span>Textos</span>
                   </TabsTrigger>
                   <TabsTrigger value="social" className="flex items-center gap-2">
-                    <div className="flex items-center gap-1">
-                      <Instagram size={14} />
-                      <div className="w-3.5 h-3.5 flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">X</span>
-                      </div>
-                      <Facebook size={14} />
-                    </div>
+                    <Globe size={16} />
                     <span>Redes Sociales</span>
                   </TabsTrigger>
                   <TabsTrigger value="email" className="flex items-center gap-2">
@@ -222,9 +216,9 @@ const ResourcesPage = () => {
                         className="flex items-center justify-between p-4 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          {resource.category === "branding" && <FileImage size={20} className="text-[#ec4899]" />}
-                          {resource.category === "marketing" && <FileText size={20} className="text-[#9333ea]" />}
-                          {resource.category === "video" && <Film size={20} className="text-[#facc15]" />}
+                          {resource.name.includes("Banners") && <Image size={20} className="text-[#ec4899]" />}
+                          {(resource.name.includes("Pack") || resource.name.includes("Kit")) && <Globe size={20} className="text-[#9333ea]" />}
+                          {resource.name.includes("Plantillas") && <Mail size={20} className="text-[#facc15]" />}
                           <div>
                             <p className="font-medium">{resource.name}</p>
                             <p className="text-sm text-foreground/60">{resource.type}</p>
