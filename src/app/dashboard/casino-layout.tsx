@@ -197,7 +197,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   };
 
   return (
-    <div className="casino-layout" style={{ gridTemplateColumns: sidebarExpanded ? '240px 1fr 280px' : '80px 1fr 280px' }}>
+    <div className="casino-layout" style={{ gridTemplateColumns: !isMobile ? (sidebarExpanded ? '240px 1fr 280px' : '80px 1fr 280px') : '1fr' }}>
       {/* Overlay para el menú móvil */}
       {isMobile && (
         <div
@@ -209,10 +209,10 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {/* Sidebar */}
       <div
         className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''} ${mobileSidebarOpen ? 'mobile-open' : ''}`}
-        style={{ width: sidebarExpanded ? '240px' : '80px' }}
+        style={{ width: !isMobile ? (sidebarExpanded ? '240px' : '80px') : mobileSidebarOpen ? '250px' : '0' }}
       >
         <div className="sidebar-logo">
-          <Logo showTextWhenExpanded={sidebarExpanded} />
+          <Logo showTextWhenExpanded={isMobile ? true : sidebarExpanded} />
         </div>
 
         {/* Botón para cerrar el menú móvil */}
