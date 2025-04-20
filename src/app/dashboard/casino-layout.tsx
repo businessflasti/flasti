@@ -33,6 +33,8 @@ import { useBalanceVisibility } from '@/contexts/BalanceVisibilityContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Logo from '@/components/ui/logo';
+import { LanguageSelector } from '@/components/LanguageSelector';
+import ThemeSelector from '@/components/ui/theme-selector';
 
 // Importar estilos
 import './casino-theme.css';
@@ -173,7 +175,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {/* Sidebar */}
       <div className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''}`}>
         <div className="sidebar-logo">
-          <Logo />
+          <Logo showTextWhenExpanded={sidebarExpanded} />
         </div>
 
         <div className="sidebar-nav">
@@ -215,21 +217,27 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {/* Header */}
       <div className="casino-header">
         <div className="header-left">
-          {isMobile ? (
-            <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-              <Menu size={24} />
-            </Button>
-          ) : (
+          <div className="flex items-center gap-2">
+            {isMobile && (
+              <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+                <Menu size={24} />
+              </Button>
+            )}
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <Crown size={16} className="text-primary" />
-              </div>
-              <span className="font-medium">Flasti Dashboard</span>
+              {!isMobile && (
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Crown size={16} className="text-primary" />
+                </div>
+              )}
+              <Logo showTextWhenExpanded={true} />
             </div>
-          )}
+          </div>
         </div>
 
         <div className="header-right">
+          <LanguageSelector />
+          <ThemeSelector variant="icon" size="md" />
+
           <div className="user-balance">
             <DollarSign size={16} className="text-primary" />
             <span className="user-balance-amount">
@@ -250,10 +258,20 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
           </div>
 
           <div className="user-profile">
-            <div className="user-avatar">
-              <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold">
-                {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
-              </div>
+            <div className="user-avatar relative">
+              {profile?.avatar_url ? (
+                <Image
+                  src={profile.avatar_url}
+                  alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold rounded-full">
+                  {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+                </div>
+              )}
               <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background translate-x-1/4 translate-y-1/4"></div>
             </div>
             <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>

@@ -7,9 +7,10 @@ import Image from "next/image";
 interface LogoProps {
   className?: string;
   size?: "sm" | "md" | "lg";
+  showTextWhenExpanded?: boolean;
 }
 
-const Logo = ({ className = "", size = "md" }: LogoProps) => {
+const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: LogoProps) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -57,16 +58,18 @@ const Logo = ({ className = "", size = "md" }: LogoProps) => {
         </div>
 
         {/* Texto del logo */}
-        <span
-          className={`${textColor} ${textClass} transform -translate-y-px`}
-          style={{
-            fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-            fontWeight: 600,
-            letterSpacing: '-0.01em'
-          }}
-        >
-          flasti
-        </span>
+        {showTextWhenExpanded && (
+          <span
+            className={`${textColor} ${textClass} transform -translate-y-px`}
+            style={{
+              fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              fontWeight: 600,
+              letterSpacing: '-0.01em'
+            }}
+          >
+            flasti
+          </span>
+        )}
       </div>
     </Link>
   );

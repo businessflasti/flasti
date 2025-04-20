@@ -1,15 +1,15 @@
 /* Estilos para el tema de casino */
 :root {
   /* Colores principales */
-  --casino-primary: #6e8efb;
-  --casino-secondary: #a777e3;
+  --casino-primary: #8b5cf6;
+  --casino-secondary: #a855f7;
   --casino-accent: #ec4899;
-  --casino-background: #13111C;
-  --casino-card-bg: #1E1B2E;
+  --casino-background: #0f0f12;
+  --casino-card-bg: #1a1a22;
   --casino-text: #ffffff;
   --casino-text-muted: rgba(255, 255, 255, 0.7);
-  --casino-border: rgba(110, 142, 251, 0.2);
-  
+  --casino-border: rgba(139, 92, 246, 0.2);
+
   /* Colores de tarjetas */
   --casino-card-1: #ec4899;
   --casino-card-2: #9333ea;
@@ -17,7 +17,7 @@
   --casino-card-4: #22c55e;
   --casino-card-5: #f59e0b;
   --casino-card-6: #8b5cf6;
-  
+
   /* Tamaños */
   --sidebar-width: 80px;
   --sidebar-expanded-width: 240px;
@@ -35,9 +35,10 @@
     "sidebar main rightbar";
   min-height: 100vh;
   background-color: var(--casino-background);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(110, 142, 251, 0.1) 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, rgba(167, 119, 227, 0.1) 0%, transparent 20%);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 25%),
+    radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 25%),
+    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
   color: var(--casino-text);
 }
 
@@ -97,7 +98,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: 50%;
   margin-right: 1rem;
 }
 
@@ -612,11 +613,11 @@
       "sidebar header"
       "sidebar main";
   }
-  
+
   .casino-rightbar {
     display: none;
   }
-  
+
   .featured-promos {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -629,7 +630,7 @@
       "header"
       "main";
   }
-  
+
   .casino-sidebar {
     position: fixed;
     bottom: 0;
@@ -643,46 +644,46 @@
     padding: 0;
     z-index: 100;
   }
-  
+
   .sidebar-logo,
   .sidebar-nav-item-text {
     display: none;
   }
-  
+
   .sidebar-nav {
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
   }
-  
+
   .sidebar-nav-item {
     flex: 1;
     justify-content: center;
     margin: 0;
     padding: 0.5rem;
   }
-  
+
   .sidebar-nav-item-icon {
     margin-right: 0;
     width: 24px;
     height: 24px;
   }
-  
+
   .featured-promos {
     grid-template-columns: 1fr;
   }
-  
+
   .main-banner {
     flex-direction: column;
     text-align: center;
     padding: 1.5rem;
   }
-  
+
   .banner-content {
     max-width: 100%;
     margin-bottom: 1.5rem;
   }
-  
+
   .banner-image {
     position: relative;
     right: auto;
