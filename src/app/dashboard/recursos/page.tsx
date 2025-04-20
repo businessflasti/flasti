@@ -76,8 +76,8 @@ const ResourcesPage = () => {
       price: 7,
       description: "Asistente de IA avanzado para responder preguntas, generar contenido y automatizar tareas cotidianas.",
       resources: [
-        { id: "ai-banners", name: "Banners Web", type: "ZIP", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-ai/banners-web.zip" },
-        { id: "ai-social", name: "Kit Redes Sociales", type: "ZIP", size: "4.7 KB", category: "marketing", url: "/recursos/flasti-ai/kit-redes-sociales.zip" },
+        { id: "ai-banners", name: "Banners Promocionales", type: "ZIP", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-ai/banners-web.zip" },
+        { id: "ai-social", name: "Pack Redes Sociales", type: "ZIP", size: "4.7 KB", category: "marketing", url: "/recursos/flasti-ai/kit-redes-sociales.zip" },
         { id: "ai-email", name: "Plantillas Email", type: "ZIP", size: "3.6 KB", category: "marketing", url: "/recursos/flasti-ai/plantillas-email.zip" },
       ],
       marketingText: [
