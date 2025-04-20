@@ -222,9 +222,9 @@ export default function DashboardPage() {
               <div className="flex items-center gap-3 mb-4 animate-fadeInUp delay-400">
                 <Link href="/dashboard/paypal">
                   <Button
-                    className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90 transition-opacity flex items-center gap-2 button-hover-effect"
+                    className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90 transition-opacity flex items-center gap-2 animate-pulse"
                   >
-                    <MinusCircle size={18} className="animate-bounce" />
+                    <MinusCircle size={18} />
                     Retirar
                   </Button>
                 </Link>
