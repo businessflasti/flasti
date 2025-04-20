@@ -119,6 +119,8 @@ const filters = [
 // Importar componentes existentes
 import QuickStats from '@/components/dashboard/QuickStats';
 import LevelProgress from '@/components/dashboard/LevelProgress';
+import CasinoBalance from './casino-balance';
+import CasinoTutor from './casino-tutor';
 
 export default function CasinoContent() {
   const { user, profile } = useAuth();
@@ -152,6 +154,12 @@ export default function CasinoContent() {
           />
         </div>
       </div>
+
+      {/* Bloque de balance */}
+      <CasinoBalance />
+
+      {/* Bloque de tutora asignada */}
+      <CasinoTutor />
 
       {/* Estadísticas rápidas */}
       <div className="mb-6">
