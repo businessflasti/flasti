@@ -5,23 +5,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { 
-  Home, 
-  Link2, 
-  BarChart2, 
-  AppWindow, 
-  BookOpen, 
-  Wallet, 
-  HelpCircle, 
-  Trophy, 
-  Star, 
-  Crown, 
-  Bell, 
-  User, 
-  LogOut, 
-  ChevronRight, 
-  ChevronLeft, 
-  MessageSquare, 
+import {
+  Home,
+  Link2,
+  BarChart2,
+  AppWindow,
+  BookOpen,
+  Wallet,
+  HelpCircle,
+  Trophy,
+  Star,
+  Crown,
+  Bell,
+  User,
+  LogOut,
+  ChevronRight,
+  ChevronLeft,
+  MessageSquare,
   Send,
   Check,
   DollarSign,
@@ -50,25 +50,25 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   const { theme, setTheme } = useTheme();
   const { isBalanceVisible, toggleBalanceVisibility } = useBalanceVisibility();
   const router = useRouter();
-  
+
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
-  
+
   // Detectar si es móvil
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
-    
+
     return () => {
       window.removeEventListener('resize', checkIfMobile);
     };
   }, []);
-  
+
   // Navegación del sidebar
   const sidebarItems = [
     { id: 'home', icon: <Home size={20} />, label: t('inicio'), href: '/dashboard', color: '#6e8efb' },
@@ -80,53 +80,53 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
     { id: 'help', icon: <HelpCircle size={20} />, label: t('ayuda'), href: '/dashboard/centro-ayuda', color: '#8b5cf6' },
     { id: 'ranking', icon: <Trophy size={20} />, label: t('ranking'), href: '/dashboard/clasificacion', color: '#f43f5e' },
   ];
-  
+
   // Aplicaciones destacadas para el carrusel
   const featuredApps = [
-    { 
-      id: 1, 
-      title: 'Flasti Images', 
-      image: '/apps/flasti-images.jpg', 
-      clicks: '1.2k', 
-      commission: '$25' 
+    {
+      id: 1,
+      title: 'Flasti Images',
+      image: '/apps/flasti-images.jpg',
+      clicks: '1.2k',
+      commission: '$25'
     },
-    { 
-      id: 2, 
-      title: 'Flasti AI', 
-      image: '/apps/flasti-ai.jpg', 
-      clicks: '950', 
-      commission: '$30' 
+    {
+      id: 2,
+      title: 'Flasti AI',
+      image: '/apps/flasti-ai.jpg',
+      clicks: '950',
+      commission: '$30'
     },
-    { 
-      id: 3, 
-      title: 'Flasti Video', 
-      image: '/apps/flasti-video.jpg', 
-      clicks: '750', 
-      commission: '$20' 
+    {
+      id: 3,
+      title: 'Flasti Video',
+      image: '/apps/flasti-video.jpg',
+      clicks: '750',
+      commission: '$20'
     },
-    { 
-      id: 4, 
-      title: 'Flasti Audio', 
-      image: '/apps/flasti-audio.jpg', 
-      clicks: '500', 
-      commission: '$15' 
+    {
+      id: 4,
+      title: 'Flasti Audio',
+      image: '/apps/flasti-audio.jpg',
+      clicks: '500',
+      commission: '$15'
     },
-    { 
-      id: 5, 
-      title: 'Flasti PDF', 
-      image: '/apps/flasti-pdf.jpg', 
-      clicks: '320', 
-      commission: '$18' 
+    {
+      id: 5,
+      title: 'Flasti PDF',
+      image: '/apps/flasti-pdf.jpg',
+      clicks: '320',
+      commission: '$18'
     },
-    { 
-      id: 6, 
-      title: 'Flasti Chat', 
-      image: '/apps/flasti-chat.jpg', 
-      clicks: '280', 
-      commission: '$22' 
+    {
+      id: 6,
+      title: 'Flasti Chat',
+      image: '/apps/flasti-chat.jpg',
+      clicks: '280',
+      commission: '$22'
     },
   ];
-  
+
   // Promociones destacadas
   const promotions = [
     {
@@ -151,7 +151,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       color: '#0ea5e9'
     }
   ];
-  
+
   // Notificaciones
   const notifications = [
     {
@@ -176,24 +176,24 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       color: '#8b5cf6'
     }
   ];
-  
+
   // Beneficios VIP
   const vipBenefits = [
     'Comisiones aumentadas en un 10%',
     'Soporte prioritario 24/7',
     'Acceso anticipado a nuevas apps'
   ];
-  
+
   // Manejar clic en el sidebar
   const handleSidebarItemClick = (id: string) => {
     setActiveTab(id);
   };
-  
+
   // Alternar expansión del sidebar
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
   };
-  
+
   return (
     <div className="casino-layout">
       {/* Sidebar */}
@@ -201,18 +201,18 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
         <div className="sidebar-logo">
           <Logo />
         </div>
-        
+
         <div className="sidebar-nav">
           {sidebarItems.map((item) => (
-            <Link 
-              key={item.id} 
+            <Link
+              key={item.id}
               href={item.href}
               onClick={() => handleSidebarItemClick(item.id)}
             >
-              <div 
+              <div
                 className={`sidebar-nav-item ${activeTab === item.id ? 'active' : ''}`}
               >
-                <div 
+                <div
                   className="sidebar-nav-item-icon"
                   style={{ backgroundColor: `${item.color}20`, color: item.color }}
                 >
@@ -223,9 +223,9 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             </Link>
           ))}
         </div>
-        
+
         {!isMobile && (
-          <div 
+          <div
             className="mt-auto mx-auto mb-4 cursor-pointer"
             onClick={toggleSidebar}
           >
@@ -237,7 +237,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
           </div>
         )}
       </div>
-      
+
       {/* Header */}
       <div className="casino-header">
         <div className="header-left">
@@ -254,17 +254,17 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             </div>
           )}
         </div>
-        
+
         <div className="header-right">
           <div className="user-balance">
             <DollarSign size={16} className="text-primary" />
             <span className="user-balance-amount">
               {isBalanceVisible ? `$${profile?.balance || '0.00'}` : '****'}
             </span>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-6 w-6" 
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
               onClick={toggleBalanceVisibility}
             >
               {isBalanceVisible ? (
@@ -274,36 +274,38 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
               )}
             </Button>
           </div>
-          
+
           <div className="user-profile">
             <div className="user-avatar">
-              {profile?.photoURL ? (
-                <Image 
-                  src={profile.photoURL} 
-                  alt={profile.displayName || 'Usuario'} 
-                  width={36} 
-                  height={36} 
+              {profile?.avatar_url ? (
+                <Image
+                  src={profile.avatar_url}
+                  alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-primary/20 flex items-center justify-center">
-                  <User size={20} className="text-primary" />
+                <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold">
+                  {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
                 </div>
               )}
+              <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background translate-x-1/4 translate-y-1/4"></div>
             </div>
-            <span className="hidden md:block">{profile?.displayName || 'Usuario'}</span>
+            <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
           </div>
-          
+
           <Button variant="ghost" size="icon" onClick={() => signOut()}>
             <LogOut size={20} />
           </Button>
         </div>
       </div>
-      
+
       {/* Contenido principal */}
       <div className="casino-main">
         {children}
       </div>
-      
+
       {/* Barra lateral derecha */}
       <div className="casino-rightbar">
         {/* Programa VIP */}
@@ -312,7 +314,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             <Crown size={20} />
             <span>VIP Program</span>
           </div>
-          
+
           <div className="vip-level">
             <div className="vip-level-icon">
               <Star size={20} />
@@ -320,14 +322,14 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             <div className="vip-level-info">
               <div className="vip-level-name">Nivel {profile?.level || 1}</div>
               <div className="vip-level-progress">
-                <div 
+                <div
                   className="vip-level-progress-bar"
                   style={{ width: `${Math.min(100, ((profile?.balance || 0) / 30) * 100)}%` }}
                 ></div>
               </div>
             </div>
           </div>
-          
+
           <div className="vip-benefits">
             {vipBenefits.map((benefit, index) => (
               <div key={index} className="vip-benefits-item">
@@ -337,18 +339,18 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             ))}
           </div>
         </div>
-        
+
         {/* Chat y soporte */}
         <div className="chat-support">
           <div className="chat-support-title">
             <MessageSquare size={20} />
             <span>Chat de Soporte</span>
           </div>
-          
+
           <div className="chat-messages">
             {/* Aquí irían los mensajes del chat */}
           </div>
-          
+
           <div className="chat-input">
             <input type="text" placeholder="Escribe un mensaje..." />
             <button>
@@ -356,18 +358,18 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
             </button>
           </div>
         </div>
-        
+
         {/* Notificaciones */}
         <div className="notifications">
           <div className="notifications-title">
             <span>Notificaciones</span>
             <span className="text-xs text-foreground/60">Ver todas</span>
           </div>
-          
+
           <div className="notifications-list">
             {notifications.map((notification) => (
               <div key={notification.id} className="notification-item">
-                <div 
+                <div
                   className="notification-icon"
                   style={{ backgroundColor: `${notification.color}20`, color: notification.color }}
                 >

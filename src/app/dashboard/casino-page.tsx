@@ -5,6 +5,9 @@ import CasinoLayout from './casino-layout';
 import CasinoContent from './casino-content';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { UserLevelProvider } from '@/contexts/UserLevelContext';
+import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
+import OnboardingModal from '@/components/dashboard/OnboardingModal';
 
 // Importar estilos
 import './casino-theme.css';
@@ -12,14 +15,14 @@ import './casino-theme.css';
 export default function CasinoDashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  
+
   // Redireccionar si no está autenticado
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     }
   }, [user, loading, router]);
-  
+
   // Mostrar pantalla de carga mientras se verifica la autenticación
   if (loading) {
     return (
@@ -30,15 +33,20 @@ export default function CasinoDashboardPage() {
       </div>
     );
   }
-  
+
   // Si no hay usuario y no está cargando, no renderizar nada (se redireccionará)
   if (!user && !loading) {
     return null;
   }
-  
+
   return (
-    <CasinoLayout>
-      <CasinoContent />
-    </CasinoLayout>
+    <BalanceVisibilityProvider>
+      <UserLevelProvider>
+        <CasinoLayout>
+          <CasinoContent />
+        </CasinoLayout>
+        <OnboardingModal />
+      </UserLevelProvider>
+    </BalanceVisibilityProvider>
   );
 }

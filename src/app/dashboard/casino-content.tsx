@@ -4,15 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Play, 
-  ArrowRight, 
-  Star, 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  ArrowRight,
+  Star,
+  TrendingUp,
+  Users,
+  DollarSign,
   Clock,
   Search,
   Filter,
@@ -27,49 +27,49 @@ import { Card } from '@/components/ui/card';
 
 // Aplicaciones destacadas para el carrusel
 const featuredApps = [
-  { 
-    id: 1, 
-    title: 'Flasti Images', 
-    image: '/apps/flasti-images.jpg', 
-    clicks: '1.2k', 
+  {
+    id: 1,
+    title: 'Flasti Images',
+    image: '/apps/flasti-images.jpg',
+    clicks: '1.2k',
     commission: '$25',
     isNew: true
   },
-  { 
-    id: 2, 
-    title: 'Flasti AI', 
-    image: '/apps/flasti-ai.jpg', 
-    clicks: '950', 
+  {
+    id: 2,
+    title: 'Flasti AI',
+    image: '/apps/flasti-ai.jpg',
+    clicks: '950',
     commission: '$30',
     isHot: true
   },
-  { 
-    id: 3, 
-    title: 'Flasti Video', 
-    image: '/apps/flasti-video.jpg', 
-    clicks: '750', 
-    commission: '$20' 
+  {
+    id: 3,
+    title: 'Flasti Video',
+    image: '/apps/flasti-video.jpg',
+    clicks: '750',
+    commission: '$20'
   },
-  { 
-    id: 4, 
-    title: 'Flasti Audio', 
-    image: '/apps/flasti-audio.jpg', 
-    clicks: '500', 
-    commission: '$15' 
+  {
+    id: 4,
+    title: 'Flasti Audio',
+    image: '/apps/flasti-audio.jpg',
+    clicks: '500',
+    commission: '$15'
   },
-  { 
-    id: 5, 
-    title: 'Flasti PDF', 
-    image: '/apps/flasti-pdf.jpg', 
-    clicks: '320', 
+  {
+    id: 5,
+    title: 'Flasti PDF',
+    image: '/apps/flasti-pdf.jpg',
+    clicks: '320',
     commission: '$18',
     isNew: true
   },
-  { 
-    id: 6, 
-    title: 'Flasti Chat', 
-    image: '/apps/flasti-chat.jpg', 
-    clicks: '280', 
+  {
+    id: 6,
+    title: 'Flasti Chat',
+    image: '/apps/flasti-chat.jpg',
+    clicks: '280',
     commission: '$22',
     isHot: true
   },
@@ -116,48 +116,20 @@ const filters = [
   { id: 'recent', label: 'Recientes' }
 ];
 
-// Estadísticas rápidas
-const quickStats = [
-  {
-    id: 'clicks',
-    title: 'Total de Clics',
-    value: '1,234',
-    icon: <TrendingUp size={20} />,
-    color: '#9333ea'
-  },
-  {
-    id: 'commissions',
-    title: 'Comisiones Totales',
-    value: '$123.45',
-    icon: <DollarSign size={20} />,
-    color: '#ec4899'
-  },
-  {
-    id: 'conversion',
-    title: 'Tasa de Conversión',
-    value: '3.2%',
-    icon: <Users size={20} />,
-    color: '#0ea5e9'
-  },
-  {
-    id: 'activity',
-    title: 'Última Actividad',
-    value: 'Hace 2h',
-    icon: <Clock size={20} />,
-    color: '#22c55e'
-  }
-];
+// Importar componentes existentes
+import QuickStats from '@/components/dashboard/QuickStats';
+import LevelProgress from '@/components/dashboard/LevelProgress';
 
 export default function CasinoContent() {
   const { user, profile } = useAuth();
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState('all');
-  
+
   // Manejar cambio de filtro
   const handleFilterChange = (filterId: string) => {
     setActiveFilter(filterId);
   };
-  
+
   return (
     <>
       {/* Banner principal */}
@@ -171,36 +143,21 @@ export default function CasinoContent() {
           </div>
         </div>
         <div className="banner-image">
-          <Image 
-            src="/dashboard/banner-character.png" 
-            alt="Personaje Flasti" 
-            width={200} 
+          <Image
+            src="/dashboard/banner-character.png"
+            alt="Personaje Flasti"
+            width={200}
             height={250}
             className="float-effect"
           />
         </div>
       </div>
-      
+
       {/* Estadísticas rápidas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {quickStats.map((stat) => (
-          <Card key={stat.id} className="glass-effect p-4 hover-lift">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm text-foreground/60 font-medium">{stat.title}</h3>
-              <div 
-                className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: `${stat.color}20`, color: stat.color }}
-              >
-                {stat.icon}
-              </div>
-            </div>
-            <div className="flex items-end gap-1">
-              <span className="text-2xl font-bold">{stat.value}</span>
-            </div>
-          </Card>
-        ))}
+      <div className="mb-6">
+        <QuickStats />
       </div>
-      
+
       {/* Filtros */}
       <div className="filter-buttons">
         {filters.map((filter) => (
@@ -213,7 +170,7 @@ export default function CasinoContent() {
           </div>
         ))}
       </div>
-      
+
       {/* Carrusel de aplicaciones */}
       <div className="apps-carousel">
         <div className="carousel-header">
@@ -227,13 +184,13 @@ export default function CasinoContent() {
             </div>
           </div>
         </div>
-        
+
         <div className="carousel-items">
           {featuredApps.map((app) => (
             <div key={app.id} className="app-card">
-              <div 
-                className="app-card-image" 
-                style={{ 
+              <div
+                className="app-card-image"
+                style={{
                   backgroundImage: `url(${app.image})`,
                   backgroundColor: '#1E1B2E' // Fallback color
                 }}
@@ -262,14 +219,14 @@ export default function CasinoContent() {
           ))}
         </div>
       </div>
-      
+
       {/* Promociones destacadas */}
       <div className="featured-promos">
         {promotions.map((promo) => (
-          <div 
-            key={promo.id} 
+          <div
+            key={promo.id}
             className="promo-card"
-            style={{ 
+            style={{
               backgroundImage: `url(${promo.image})`,
               backgroundColor: '#1E1B2E' // Fallback color
             }}
@@ -285,16 +242,16 @@ export default function CasinoContent() {
           </div>
         ))}
       </div>
-      
+
       {/* Sección de aplicaciones populares */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold">Aplicaciones Populares</h2>
           <div className="flex items-center gap-2">
             <div className="relative">
-              <input 
-                type="text" 
-                placeholder="Buscar aplicación..." 
+              <input
+                type="text"
+                placeholder="Buscar aplicación..."
                 className="bg-card/50 border border-white/5 rounded-lg py-2 pl-10 pr-4 text-sm w-64"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/60" size={16} />
@@ -304,13 +261,13 @@ export default function CasinoContent() {
             </Button>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {featuredApps.map((app) => (
             <div key={app.id} className="app-card">
-              <div 
-                className="app-card-image" 
-                style={{ 
+              <div
+                className="app-card-image"
+                style={{
                   backgroundImage: `url(${app.image})`,
                   backgroundColor: '#1E1B2E' // Fallback color
                 }}
@@ -338,6 +295,11 @@ export default function CasinoContent() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Progreso de Nivel */}
+      <div className="mb-8">
+        <LevelProgress />
       </div>
     </>
   );
