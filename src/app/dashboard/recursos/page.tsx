@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Image, Sparkles, Copy, Check, ExternalLink, FileText, FileImage, Film, Instagram, Twitter, Facebook, Linkedin, Mail } from "lucide-react";
+import { Download, Image, Sparkles, Copy, Check, ExternalLink, FileText, FileImage, Film, Instagram, Facebook, Linkedin, Mail, Users, Globe } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import BackButton from "@/components/ui/back-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,12 +21,12 @@ const ResourcesPage = () => {
       price: 5,
       description: "Genera imágenes impresionantes con inteligencia artificial. Ideal para marketing, diseño y contenido creativo.",
       resources: [
-        { id: "img-logo", name: "Logo Kit", type: "SVG, PNG, AI", size: "2.4 MB", category: "branding" },
-        { id: "img-guide", name: "Brand Guidelines", type: "PDF", size: "1.8 MB", category: "branding" },
-        { id: "img-banners", name: "Banners Promocionales", type: "ZIP", size: "5.2 MB", category: "marketing" },
-        { id: "img-social", name: "Pack Redes Sociales", type: "ZIP", size: "4.7 MB", category: "marketing" },
-        { id: "img-email", name: "Plantillas Email", type: "HTML, PSD", size: "3.1 MB", category: "marketing" },
-        { id: "img-video", name: "Video Promocional", type: "MP4", size: "12.8 MB", category: "video" },
+        { id: "img-banners", name: "Banners Promocionales", type: "ZIP", size: "1.8 KB", category: "marketing", url: "/recursos/flasti-imagenes/banners-promocionales.zip" },
+        { id: "img-social", name: "Pack Redes Sociales", type: "ZIP", size: "3.4 KB", category: "marketing", url: "/recursos/flasti-imagenes/pack-redes-sociales.zip" },
+        { id: "img-email", name: "Plantillas Email", type: "ZIP", size: "3.2 KB", category: "marketing", url: "/recursos/flasti-imagenes/plantillas-email.zip" },
+        { id: "img-xpost", name: "Plantilla Post X", type: "SVG", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-imagenes/x-post.svg" },
+        { id: "img-promo", name: "Material Promocional", type: "Carpeta", size: "Varios", category: "marketing", url: "/recursos/flasti-imagenes/promocionales" },
+        { id: "img-video", name: "Videos Promocionales", type: "Carpeta", size: "Varios", category: "video", url: "/recursos/flasti-imagenes/videos" },
       ],
       marketingText: [
         {
@@ -54,8 +55,20 @@ const ResourcesPage = () => {
         },
         {
           id: "img-social2",
-          title: "Tweet",
+          title: "Post X",
           text: "Acabo de descubrir Flasti Imágenes y es increíble 🤯 Genera cualquier imagen que imagines con IA avanzada. Perfecto para creadores de contenido y diseñadores. Pruébalo aquí: [TU ENLACE]",
+          category: "social"
+        },
+        {
+          id: "img-social3",
+          title: "Post Facebook",
+          text: "¡Descubrí una herramienta que está revolucionando mi forma de crear contenido visual! 🎨 Flasti Imágenes utiliza inteligencia artificial para generar imágenes profesionales en segundos. Ya no necesito pasar horas buscando la imagen perfecta o aprendiendo programas complejos de diseño. ¡Pruébalo con mi enlace y transforma tu creatividad! [TU ENLACE]",
+          category: "social"
+        },
+        {
+          id: "img-fb-group",
+          title: "Texto para Grupo de Facebook",
+          text: "Hola a todos 👋 ¿Alguien más está cansado de pagar por bancos de imágenes o luchar con programas de diseño complicados? Descubrí Flasti Imágenes y ha cambiado completamente mi flujo de trabajo creativo. Es una herramienta de IA que genera imágenes profesionales a partir de descripciones de texto. Perfecta para marketing, redes sociales, blogs, o cualquier proyecto visual. Si quieren probarlo, pueden usar mi enlace: [TU ENLACE] (Sí, gano una pequeña comisión, pero realmente creo que les será útil). Si tienen preguntas, ¡estoy aquí para ayudar! 😊",
           category: "social"
         }
       ]
@@ -67,12 +80,13 @@ const ResourcesPage = () => {
       price: 7,
       description: "Asistente de IA avanzado para responder preguntas, generar contenido y automatizar tareas cotidianas.",
       resources: [
-        { id: "ai-logo", name: "Logo Package", type: "SVG, PNG, AI", size: "2.1 MB", category: "branding" },
-        { id: "ai-guide", name: "Style Guide", type: "PDF", size: "2.0 MB", category: "branding" },
-        { id: "ai-banners", name: "Banners Web", type: "ZIP", size: "4.8 MB", category: "marketing" },
-        { id: "ai-social", name: "Kit Redes Sociales", type: "ZIP", size: "5.3 MB", category: "marketing" },
-        { id: "ai-email", name: "Templates Email", type: "HTML, PSD", size: "2.9 MB", category: "marketing" },
-        { id: "ai-video", name: "Demo Video", type: "MP4", size: "15.2 MB", category: "video" },
+        { id: "ai-banners", name: "Banners Web", type: "ZIP", size: "2.5 KB", category: "marketing", url: "/recursos/flasti-ai/banners-web.zip" },
+        { id: "ai-social", name: "Kit Redes Sociales", type: "ZIP", size: "4.7 KB", category: "marketing", url: "/recursos/flasti-ai/kit-redes-sociales.zip" },
+        { id: "ai-email", name: "Plantillas Email", type: "ZIP", size: "3.6 KB", category: "marketing", url: "/recursos/flasti-ai/plantillas-email.zip" },
+        { id: "ai-xpost", name: "Plantilla Post X", type: "SVG", size: "6.4 KB", category: "marketing", url: "/recursos/flasti-ai/x-post.svg" },
+        { id: "ai-promo", name: "Material Promocional", type: "Carpeta", size: "Varios", category: "marketing", url: "/recursos/flasti-ai/promocionales" },
+        { id: "ai-video", name: "Videos Promocionales", type: "Carpeta", size: "Varios", category: "video", url: "/recursos/flasti-ai/videos" },
+        { id: "ai-backup", name: "Archivos de Respaldo", type: "Carpeta", size: "Varios", category: "branding", url: "/recursos/flasti-ai/backups" },
       ],
       marketingText: [
         {
@@ -101,15 +115,27 @@ const ResourcesPage = () => {
         },
         {
           id: "ai-social2",
-          title: "Tweet",
+          title: "Post X",
           text: "Flasti AI es el asistente que siempre quise tener 🚀 Responde preguntas, crea contenido y me ahorra horas de trabajo. Una inversión que vale cada centavo. Pruébalo: [TU ENLACE]",
+          category: "social"
+        },
+        {
+          id: "ai-social3",
+          title: "Post Facebook",
+          text: "¡Acabo de descubrir la herramienta que está transformando mi productividad! 🚀 Flasti AI es un asistente de inteligencia artificial que responde preguntas, genera contenido y automatiza tareas repetitivas. Desde que lo uso, he reducido a la mitad el tiempo que dedico a investigar información y redactar textos. Si valoras tu tiempo y quieres potenciar tu trabajo, te recomiendo probarlo: [TU ENLACE]",
+          category: "social"
+        },
+        {
+          id: "ai-fb-group",
+          title: "Texto para Grupo de Facebook",
+          text: "Hola a todos 👋 Quería compartir un descubrimiento que ha cambiado mi forma de trabajar. Para quienes, como yo, luchan con la sobrecarga de información y tareas, Flasti AI ha sido una revelación. Es un asistente de IA que no solo responde preguntas con precisión, sino que también puede generar contenido, resumir textos largos, y ayudarte con tareas creativas. Lo uso para investigación, redacción, ideas de marketing y mucho más. Si quieren ahorrar tiempo y mejorar su productividad, pueden probarlo con mi enlace: [TU ENLACE] (Sí, recibo una comisión, pero realmente creo que es una herramienta que vale la pena). ¡Feliz de responder cualquier pregunta que tengan! 💻✨",
           category: "social"
         }
       ]
     },
     {
       id: 3,
-      name: "Coming soon...",
+      name: "Próximamente...",
       icon: <Sparkles className="text-[#facc15] animate-[pulse_1.5s_ease-in-out_infinite]" size={24} />,
       price: 0,
       description: "Una nueva herramienta revolucionaria está en desarrollo. Mantente atento para más información.",
@@ -148,7 +174,7 @@ const ResourcesPage = () => {
         <div>
           <h1 className="text-3xl font-bold">Recursos Promocionales</h1>
           <p className="text-foreground/70 mt-1">
-            Descarga materiales y utiliza textos promocionales para maximizar tus conversiones
+            Descarga materiales, utiliza textos promocionales y comparte en grupos de Facebook para maximizar tus conversiones
           </p>
         </div>
 
@@ -181,7 +207,11 @@ const ResourcesPage = () => {
                     <span>Textos</span>
                   </TabsTrigger>
                   <TabsTrigger value="social" className="flex items-center gap-2">
-                    <Instagram size={16} />
+                    <div className="flex items-center gap-1">
+                      <Instagram size={14} />
+                      <FaXTwitter size={12} />
+                      <Facebook size={14} />
+                    </div>
                     <span>Redes Sociales</span>
                   </TabsTrigger>
                   <TabsTrigger value="email" className="flex items-center gap-2">
@@ -208,9 +238,11 @@ const ResourcesPage = () => {
                         </div>
                         <div className="flex items-center gap-3">
                           <span className="text-sm text-foreground/60">{resource.size}</span>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Download size={18} className="text-[#ec4899] hover:text-[#9333ea] transition-colors" />
-                          </Button>
+                          <a href={resource.url} download target="_blank" rel="noopener noreferrer">
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Download size={18} className="text-[#ec4899] hover:text-[#9333ea] transition-colors" />
+                            </Button>
+                          </a>
                         </div>
                       </div>
                     ))}
@@ -248,9 +280,10 @@ const ResourcesPage = () => {
                           <div className="flex items-center gap-2">
                             <h4 className="font-medium">{item.title}</h4>
                             {item.title.includes("Instagram") && <Instagram size={16} className="text-[#E1306C]" />}
-                            {item.title.includes("Tweet") && <Twitter size={16} className="text-[#1DA1F2]" />}
+                            {item.title.includes("Post X") && <FaXTwitter size={14} className="text-white" />}
                             {item.title.includes("Facebook") && <Facebook size={16} className="text-[#4267B2]" />}
                             {item.title.includes("LinkedIn") && <Linkedin size={16} className="text-[#0077B5]" />}
+                            {item.title.includes("Grupo") && <Users size={16} className="text-[#4267B2]" />}
                           </div>
                           <Button
                             variant="ghost"
