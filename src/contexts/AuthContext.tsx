@@ -30,58 +30,148 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const getSession = async () => {
       try {
         console.log('AuthContext: Verificando sesión...');
-        const { data, error } = await supabase.auth.getSession();
 
-        if (error) {
-          console.error('AuthContext: Error al obtener sesión:', error);
+        // Intentar obtener la sesión con reintentos
+        let sessionData = null;
+        let sessionError = null;
+        let retryCount = 0;
+        const maxRetries = 3;
+
+        while (retryCount < maxRetries && !sessionData) {
+          try {
+            const { data, error } = await supabase.auth.getSession();
+            if (!error) {
+              sessionData = data;
+              break;
+            } else {
+              sessionError = error;
+              console.warn(`AuthContext: Error al obtener sesión (intento ${retryCount + 1}):`, error);
+              // Esperar antes de reintentar
+              await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+              retryCount++;
+            }
+          } catch (e) {
+            console.error(`AuthContext: Excepción al obtener sesión (intento ${retryCount + 1}):`, e);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+            retryCount++;
+          }
+        }
+
+        // Si después de los reintentos seguimos sin sesión y hay error
+        if (!sessionData && sessionError) {
+          console.error('AuthContext: Error persistente al obtener sesión después de reintentos:', sessionError);
           setLoading(false);
           return;
         }
 
-        if (data.session) {
-          console.log('AuthContext: Sesión encontrada para usuario:', data.session.user.email);
-          setUser(data.session.user);
+        // Si tenemos datos de sesión y un usuario
+        if (sessionData?.session) {
+          console.log('AuthContext: Sesión encontrada para usuario:', sessionData.session.user.email);
+          setUser(sessionData.session.user);
 
           try {
-            // Obtener el perfil del usuario
-            let { data: profileData, error: profileError } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', data.session.user.id)
-              .single();
+            // Intentar cargar el perfil con reintentos
+            let profileData = null;
+            let profileError = null;
+            retryCount = 0;
 
-            // Si no se encuentra el perfil en 'profiles', buscar en 'user_profiles'
-            if (profileError && profileError.code === 'PGRST116') {
-              console.log('AuthContext: Perfil no encontrado en profiles, buscando en user_profiles');
-              const { data: userProfileData, error: userProfileError } = await supabase
-                .from('user_profiles')
-                .select('*')
-                .eq('user_id', data.session.user.id)
-                .single();
+            while (retryCount < maxRetries && !profileData) {
+              try {
+                // Obtener el perfil del usuario
+                const { data: pData, error: pError } = await supabase
+                  .from('profiles')
+                  .select('*')
+                  .eq('id', sessionData.session.user.id)
+                  .single();
 
-              if (!userProfileError && userProfileData) {
-                console.log('AuthContext: Perfil encontrado en user_profiles');
-                // Convertir el formato de user_profiles a profiles
-                profileData = {
-                  id: data.session.user.id,
-                  email: data.session.user.email,
-                  level: userProfileData.level || 1,
-                  balance: userProfileData.balance || 0,
-                  avatar_url: userProfileData.avatar_url || null,
-                  created_at: userProfileData.created_at || new Date().toISOString()
-                };
-                profileError = null;
+                if (!pError) {
+                  profileData = pData;
+                  break;
+                } else if (pError.code === 'PGRST116') {
+                  // Si no se encuentra el perfil en 'profiles', buscar en 'user_profiles'
+                  console.log('AuthContext: Perfil no encontrado en profiles, buscando en user_profiles');
+                  const { data: userProfileData, error: userProfileError } = await supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', sessionData.session.user.id)
+                    .single();
+
+                  if (!userProfileError && userProfileData) {
+                    console.log('AuthContext: Perfil encontrado en user_profiles');
+                    // Convertir el formato de user_profiles a profiles
+                    profileData = {
+                      id: sessionData.session.user.id,
+                      email: sessionData.session.user.email,
+                      level: userProfileData.level || 1,
+                      balance: userProfileData.balance || 0,
+                      avatar_url: userProfileData.avatar_url || null,
+                      created_at: userProfileData.created_at || new Date().toISOString()
+                    };
+                    break;
+                  } else {
+                    // Si no se encuentra en ninguna tabla, crear un perfil básico
+                    console.log('AuthContext: Perfil no encontrado, creando perfil básico');
+                    profileData = {
+                      id: sessionData.session.user.id,
+                      email: sessionData.session.user.email,
+                      level: 1,
+                      balance: 0,
+                      avatar_url: null,
+                      created_at: new Date().toISOString()
+                    };
+
+                    // Intentar guardar el perfil básico
+                    try {
+                      await supabase.from('profiles').insert(profileData);
+                      console.log('AuthContext: Perfil básico creado correctamente');
+                    } catch (insertErr) {
+                      console.warn('AuthContext: No se pudo guardar el perfil básico, pero continuando:', insertErr);
+                    }
+                    break;
+                  }
+                } else {
+                  profileError = pError;
+                  console.warn(`AuthContext: Error al obtener perfil (intento ${retryCount + 1}):`, pError);
+                  await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+                  retryCount++;
+                }
+              } catch (e) {
+                console.error(`AuthContext: Excepción al obtener perfil (intento ${retryCount + 1}):`, e);
+                await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+                retryCount++;
               }
             }
 
-            if (profileError) {
-              console.error('AuthContext: Error al obtener perfil:', profileError);
-            } else if (profileData) {
+            if (profileData) {
               console.log('AuthContext: Perfil cargado correctamente');
               setProfile(profileData);
+            } else if (profileError) {
+              console.error('AuthContext: Error persistente al obtener perfil después de reintentos:', profileError);
+              // Crear un perfil básico en memoria para que la aplicación pueda funcionar
+              const basicProfile = {
+                id: sessionData.session.user.id,
+                email: sessionData.session.user.email,
+                level: 1,
+                balance: 0,
+                avatar_url: null,
+                created_at: new Date().toISOString()
+              };
+              console.log('AuthContext: Usando perfil básico en memoria');
+              setProfile(basicProfile);
             }
           } catch (err) {
-            console.error('AuthContext: Error al cargar perfil:', err);
+            console.error('AuthContext: Error general al cargar perfil:', err);
+            // Crear un perfil básico en memoria para que la aplicación pueda funcionar
+            const basicProfile = {
+              id: sessionData.session.user.id,
+              email: sessionData.session.user.email,
+              level: 1,
+              balance: 0,
+              avatar_url: null,
+              created_at: new Date().toISOString()
+            };
+            console.log('AuthContext: Usando perfil básico en memoria debido a error');
+            setProfile(basicProfile);
           }
         } else {
           console.log('AuthContext: No hay sesión activa');
@@ -397,41 +487,71 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('AuthContext: Actualizando balance del usuario');
 
-      // Buscar en user_profiles primero
-      const { data: userProfileData, error: userProfileError } = await supabase
-        .from('user_profiles')
-        .select('balance, level')
-        .eq('user_id', user.id)
-        .single();
+      // Implementar reintentos para mayor robustez
+      let retryCount = 0;
+      const maxRetries = 3;
+      let balanceUpdated = false;
 
-      if (!userProfileError && userProfileData) {
-        console.log('AuthContext: Balance actualizado desde user_profiles:', userProfileData.balance);
-        // Actualizar tanto el balance como el nivel
-        setProfile(prev => ({
-          ...prev,
-          balance: userProfileData.balance || 0,
-          level: userProfileData.level || 1
-        }));
-      } else {
-        // Si no se encuentra en user_profiles, buscar en profiles
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('balance, level')
-          .eq('id', user.id)
-          .single();
+      while (retryCount < maxRetries && !balanceUpdated) {
+        try {
+          // Buscar en user_profiles primero
+          const { data: userProfileData, error: userProfileError } = await supabase
+            .from('user_profiles')
+            .select('balance, level')
+            .eq('user_id', user.id)
+            .single();
 
-        if (!profileError && profileData) {
-          console.log('AuthContext: Balance actualizado desde profiles:', profileData.balance);
-          // Actualizar tanto el balance como el nivel
-          setProfile(prev => ({
-            ...prev,
-            balance: profileData.balance || 0,
-            level: profileData.level || 1
-          }));
+          if (!userProfileError && userProfileData) {
+            console.log('AuthContext: Balance actualizado desde user_profiles:', userProfileData.balance);
+            // Actualizar tanto el balance como el nivel
+            setProfile(prev => ({
+              ...prev,
+              balance: userProfileData.balance || 0,
+              level: userProfileData.level || 1
+            }));
+            balanceUpdated = true;
+          } else {
+            // Si no se encuentra en user_profiles, buscar en profiles
+            const { data: profileData, error: profileError } = await supabase
+              .from('profiles')
+              .select('balance, level')
+              .eq('id', user.id)
+              .single();
+
+            if (!profileError && profileData) {
+              console.log('AuthContext: Balance actualizado desde profiles:', profileData.balance);
+              // Actualizar tanto el balance como el nivel
+              setProfile(prev => ({
+                ...prev,
+                balance: profileData.balance || 0,
+                level: profileData.level || 1
+              }));
+              balanceUpdated = true;
+            } else if (profileError && profileError.code === 'PGRST116') {
+              // Si no existe el perfil, mantener los valores actuales
+              console.log('AuthContext: No se encontró perfil para actualizar balance, manteniendo valores actuales');
+              balanceUpdated = true; // Consideramos que hemos terminado
+            } else {
+              // Si hay otro tipo de error, reintentar
+              console.warn(`AuthContext: Error al actualizar balance (intento ${retryCount + 1}):`, profileError);
+              await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+              retryCount++;
+            }
+          }
+        } catch (e) {
+          console.error(`AuthContext: Excepción al actualizar balance (intento ${retryCount + 1}):`, e);
+          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+          retryCount++;
         }
       }
+
+      // Si después de todos los reintentos no se pudo actualizar, registrar error pero no fallar
+      if (!balanceUpdated) {
+        console.error('AuthContext: No se pudo actualizar el balance después de múltiples intentos');
+      }
     } catch (error) {
-      console.error('AuthContext: Error al actualizar balance:', error);
+      console.error('AuthContext: Error general al actualizar balance:', error);
+      // No fallar completamente, simplemente registrar el error
     }
   };
 
