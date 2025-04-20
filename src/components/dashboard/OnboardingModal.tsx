@@ -13,48 +13,62 @@ export default function OnboardingModal() {
   const steps = [
     {
       title: "¡Bienvenido a Flasti!",
-      description: "Estamos emocionados de tenerte con nosotros. Vamos a mostrarte cómo sacar el máximo provecho de tu nueva cuenta.",
+      description: "Estamos emocionados de tenerte con nosotros. Descubre cómo generar ingresos recomendando nuestras aplicaciones y servicios.",
       image: "/images/onboarding/welcome.svg"
     },
     {
       title: "Tu Panel Personal",
-      description: "Aquí podrás ver tus estadísticas, ganancias y acceder a todas las funciones de Flasti.",
+      description: "Este es tu centro de operaciones donde podrás ver tus estadísticas, ganancias, enlaces de afiliado y gestionar tus retiros.",
       image: "/images/onboarding/dashboard.svg"
     },
     {
       title: "Genera Ingresos",
-      description: "Prueba y recomienda nuestras aplicaciones y gana comisiones por cada venta que generes.",
+      description: "Recomienda nuestras aplicaciones usando tus enlaces únicos y gana hasta un 70% de comisión por cada venta que generes.",
       image: "/images/onboarding/earnings.svg"
     },
     {
-      title: "Sube de Nivel",
-      description: "A medida que generes más ganancias, subirás de nivel y aumentarás tus comisiones.",
+      title: "Sistema de Niveles",
+      description: "Comienza con un 50% de comisión y sube hasta el 70% a medida que generes más ventas. ¡Más ventas = mayores comisiones!",
       image: "/images/onboarding/level-up.svg"
     },
     {
-      title: "¡Listo para Empezar!",
-      description: "Ya estás listo para comenzar a generar ingresos con Flasti. Te damos la bienvenida y te deseamos muchos éxitos en esta nueva etapa trabajando con nosotros.",
+      title: "¡Listo para Triunfar!",
+      description: "Ya tienes todo lo necesario para comenzar a generar ingresos con Flasti. Recuerda que nuestro equipo está aquí para ayudarte en cada paso.",
       image: "/images/onboarding/success.svg"
     }
   ];
 
-  // Escuchar el evento personalizado para mostrar el onboarding
+  // Escuchar el evento personalizado para mostrar el onboarding y verificar nuevos usuarios
   useEffect(() => {
+    // Función para manejar el evento personalizado
     const handleShowOnboarding = (event: CustomEvent) => {
       setIsVisible(true);
     };
 
+    // Registrar el listener para el evento
     window.addEventListener('showOnboarding', handleShowOnboarding as EventListener);
 
     // Verificar si es un nuevo usuario que nunca ha visto el onboarding
     if (user) {
-      const hasSeenOnboarding = localStorage.getItem(`flasti_hasSeenOnboarding_${user.id}`);
-      if (!hasSeenOnboarding) {
-        console.log('Mostrando onboarding obligatorio para nuevo usuario');
-        setIsVisible(true);
+      try {
+        const hasSeenOnboarding = localStorage.getItem(`flasti_hasSeenOnboarding_${user.id}`);
+        if (!hasSeenOnboarding) {
+          console.log('Mostrando onboarding obligatorio para nuevo usuario');
+          // Pequeño retraso para asegurar que el dashboard esté completamente cargado
+          setTimeout(() => {
+            setIsVisible(true);
+          }, 500);
+        }
+      } catch (error) {
+        console.error('Error al verificar el estado del onboarding:', error);
+        // En caso de error, mostrar el onboarding de todos modos
+        setTimeout(() => {
+          setIsVisible(true);
+        }, 500);
       }
     }
 
+    // Limpiar el listener al desmontar
     return () => {
       window.removeEventListener('showOnboarding', handleShowOnboarding as EventListener);
     };
@@ -62,12 +76,28 @@ export default function OnboardingModal() {
 
   // Cerrar el onboarding
   const closeOnboarding = () => {
-    setIsVisible(false);
-    setCurrentStep(0);
+    // Animación suave al cerrar
+    const modal = document.querySelector('.onboarding-modal');
+    if (modal) {
+      modal.classList.add('animate-fadeOutDown');
+
+      // Esperar a que termine la animación antes de ocultar
+      setTimeout(() => {
+        setIsVisible(false);
+        setCurrentStep(0);
+      }, 300);
+    } else {
+      setIsVisible(false);
+      setCurrentStep(0);
+    }
 
     // Guardar que el usuario ha visto el onboarding
-    if (user) {
-      localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
+    try {
+      if (user) {
+        localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
+      }
+    } catch (error) {
+      console.error('Error al guardar el estado del onboarding:', error);
     }
   };
 
@@ -107,8 +137,8 @@ export default function OnboardingModal() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[1001] p-4 overflow-y-auto">
-      <div className="bg-card/95 backdrop-blur-md rounded-xl border border-border/20 shadow-2xl w-full max-w-md animate-fadeInUp my-8 mx-auto">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-start justify-center z-[1001] p-4 overflow-y-auto">
+      <div className="onboarding-modal bg-card/95 backdrop-blur-md rounded-xl border border-border/20 shadow-2xl w-full max-w-md animate-fadeInUp mt-20 mx-auto">
         {/* Añadir un botón flotante para cerrar en móviles */}
         <button
           onClick={closeOnboarding}
@@ -117,8 +147,8 @@ export default function OnboardingModal() {
           <X size={24} />
         </button>
         {/* Cabecera */}
-        <div className="flex items-center justify-between p-4 border-b border-border/20">
-          <h3 className="font-semibold text-lg">Onboarding</h3>
+        <div className="flex items-center justify-between p-4 border-b border-border/20 bg-gradient-to-r from-[#9333ea]/10 to-[#ec4899]/10">
+          <h3 className="font-semibold text-lg text-gradient">Bienvenido a Flasti</h3>
           <button
             onClick={closeOnboarding}
             className="text-foreground/60 hover:text-foreground transition-colors"
@@ -130,25 +160,25 @@ export default function OnboardingModal() {
         {/* Contenido */}
         <div className="p-6">
           <div className="flex justify-center mb-6">
-            <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-36 h-36 rounded-full bg-gradient-to-r from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center shadow-lg border border-white/10">
               {/* Aquí iría la imagen del paso actual */}
               <img
                 src={steps[currentStep].image || "/images/onboarding/placeholder.svg"}
                 alt={steps[currentStep].title}
-                className="w-20 h-20 object-contain"
+                className="w-24 h-24 object-contain drop-shadow-md"
               />
             </div>
           </div>
 
-          <h2 className="text-xl font-bold text-center mb-2">{steps[currentStep].title}</h2>
-          <p className="text-center text-foreground/70 mb-6">{steps[currentStep].description}</p>
+          <h2 className="text-2xl font-bold text-center mb-3 text-gradient">{steps[currentStep].title}</h2>
+          <p className="text-center text-foreground/80 mb-6 max-w-sm mx-auto">{steps[currentStep].description}</p>
 
           {/* Indicadores de paso */}
-          <div className="flex justify-center gap-2 mb-6">
+          <div className="flex justify-center gap-3 mb-8">
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full ${index === currentStep ? 'bg-primary' : 'bg-foreground/20'}`}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentStep ? 'bg-gradient-to-r from-[#9333ea] to-[#ec4899] scale-125' : 'bg-foreground/20'}`}
               />
             ))}
           </div>
@@ -157,7 +187,7 @@ export default function OnboardingModal() {
           <div className="flex justify-between">
             <button
               onClick={prevStep}
-              className={`px-4 py-2 rounded-lg flex items-center gap-1 ${currentStep === 0 ? 'text-foreground/40 cursor-not-allowed' : 'text-foreground/70 hover:text-foreground'}`}
+              className={`px-4 py-2.5 rounded-lg flex items-center gap-1.5 border ${currentStep === 0 ? 'text-foreground/40 cursor-not-allowed border-border/20' : 'text-foreground/70 hover:text-foreground hover:border-foreground/40 border-border/30'}`}
               disabled={currentStep === 0}
             >
               <ChevronLeft size={16} />
@@ -166,7 +196,7 @@ export default function OnboardingModal() {
 
             <button
               onClick={nextStep}
-              className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-opacity px-4 py-2 rounded-lg flex items-center gap-1 text-white"
+              className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90 transition-opacity px-5 py-2.5 rounded-lg flex items-center gap-1.5 text-white font-medium shadow-md hover:shadow-lg"
             >
               {currentStep === steps.length - 1 ? (
                 <>

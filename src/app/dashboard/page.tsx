@@ -206,40 +206,40 @@ export default function DashboardPage() {
 
           <div className="max-w-5xl mx-auto">
             {/* Balance Card - Mejorado con animaciones */}
-            <div data-tour="balance" className="bg-gradient-to-br from-[#9333ea]/10 via-[#ec4899]/10 to-[#facc15]/10 backdrop-blur-sm rounded-xl p-6 mb-8 border border-white/10 relative z-0 animate-fadeInUp hover-lift particles-bg">
-              <h2 className="text-sm text-foreground/60 uppercase font-medium mb-2">{t('balance') as string}</h2>
+            <div data-tour="balance" className="bg-gradient-to-br from-[#9333ea]/10 via-[#ec4899]/10 to-[#facc15]/10 backdrop-blur-sm rounded-xl p-6 mb-8 border animate-border-glow relative z-0 animate-fadeInUp hover-lift particles-bg hardware-accelerated">
+              <h2 className="text-sm text-foreground/60 uppercase font-medium mb-2 animate-fadeInUp delay-100">{t('balance') as string}</h2>
 
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-4xl font-bold animate-countUp">{isBalanceVisible ? `$${profile?.balance || '0.00'}` : "****"}</h3>
-                <span className="text-lg">USDC</span>
-                <button className="text-foreground/60 hover:text-foreground transition-colors" onClick={toggleBalanceVisibility}>
+                <h3 className="text-4xl font-bold animate-countUp delay-200">{isBalanceVisible ? `$${profile?.balance || '0.00'}` : "****"}</h3>
+                <span className="text-lg animate-fadeInUp delay-300">USDC</span>
+                <button className="text-foreground/60 hover:text-foreground transition-colors icon-glow" onClick={toggleBalanceVisibility}>
                   <Eye size={20} />
                 </button>
               </div>
 
-              <p className="text-foreground/70 mb-4">{isBalanceVisible ? `$${profile?.balance || '0.00'} USD` : "****"}</p>
+              <p className="text-foreground/70 mb-4 animate-fadeInUp delay-300">{isBalanceVisible ? `$${profile?.balance || '0.00'} USD` : "****"}</p>
 
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-4 animate-fadeInUp delay-400">
                 <Link href="/dashboard/paypal">
                   <Button
-                    className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90 transition-opacity flex items-center gap-2 animate-pulse"
+                    className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90 transition-opacity flex items-center gap-2 button-hover-effect"
                   >
-                    <MinusCircle size={18} />
+                    <MinusCircle size={18} className="animate-bounce" />
                     Retirar
                   </Button>
                 </Link>
               </div>
 
-              <div className="flex items-center gap-1 text-sm">
+              <div className="flex items-center gap-1 text-sm animate-fadeInUp delay-500">
                 <span>1 USDC = 1 USD</span>
               </div>
             </div>
 
             {/* Tutor Asignado - Movido a segunda posición con color azul */}
-            <div className="bg-gradient-to-br from-[#3b82f6]/10 via-[#06b6d4]/10 to-[#3b82f6]/10 backdrop-blur-sm rounded-xl p-6 mb-8 border border-[#3b82f6]/20 shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-shadow duration-300" data-tour="contacto">
-              <h2 className="text-sm text-foreground/60 uppercase font-medium mb-4">Tu Tutora Asignada</h2>
-              <div className="flex items-center gap-6">
-                <div className="w-20 h-20 rounded-full overflow-hidden relative shadow-[0_0_10px_rgba(59,130,246,0.3)] border-2 border-[#3b82f6]/20">
+            <div className="bg-gradient-to-br from-[#3b82f6]/10 via-[#06b6d4]/10 to-[#3b82f6]/10 backdrop-blur-sm rounded-xl p-6 mb-8 border border-[#3b82f6]/20 shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-shadow duration-300 animate-fadeInUp delay-100 hardware-accelerated" data-tour="contacto">
+              <h2 className="text-sm text-foreground/60 uppercase font-medium mb-4 animate-fadeInUp delay-200">Tu Tutora Asignada</h2>
+              <div className="flex items-center gap-6 animate-fadeInUp delay-300">
+                <div className="w-20 h-20 rounded-full overflow-hidden relative shadow-[0_0_10px_rgba(59,130,246,0.3)] border-2 border-[#3b82f6]/20 animate-scale">
                   <img
                     src="/images/tutors/soporte-maria.png"
                     alt="Tutora María"
@@ -247,17 +247,17 @@ export default function DashboardPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-1">María</h3>
-                  <p className="text-foreground/70 mb-3">Equipo de Flasti</p>
+                  <h3 className="text-xl font-bold mb-1 animate-fadeInUp delay-400">María</h3>
+                  <p className="text-foreground/70 mb-3 animate-fadeInUp delay-500">Equipo de Flasti</p>
                   <Button
-                    className="bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback"
+                    className="bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback button-hover-effect"
                     onClick={() => {
                       if (window.Tawk_API && window.Tawk_API.maximize) {
                         window.Tawk_API.maximize();
                       }
                     }}
                   >
-                    Iniciar chat
+                    <span className="animate-fadeInUp delay-600">Iniciar chat</span>
                   </Button>
                 </div>
               </div>
@@ -272,8 +272,8 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
               <Link href="/dashboard/links" data-tour="links">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center animate-fadeInUp delay-100 hover-lift mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                    <Link2 className="text-primary" size={22} />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Link2 className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">{t('misEnlaces') as string}</h3>
                 </Card>
@@ -281,8 +281,8 @@ export default function DashboardPage() {
 
               <Link href="/dashboard/stats" data-tour="stats">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center animate-fadeInUp delay-200 hover-lift mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                    <BarChart2 className="text-primary" size={22} />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <BarChart2 className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">{t('estadisticas') as string}</h3>
                 </Card>
@@ -290,8 +290,8 @@ export default function DashboardPage() {
 
               <Link href="/dashboard/aplicaciones">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center animate-fadeInUp delay-300 hover-lift mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                    <AppWindow className="text-primary" size={22} />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <AppWindow className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">{t('apps') as string}</h3>
                 </Card>
@@ -299,11 +299,11 @@ export default function DashboardPage() {
 
               <Link href="/dashboard/recursos">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative animate-fadeInUp delay-400 hover-lift mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                    <BookOpen className="text-primary" size={22} />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <BookOpen className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">{t('recursos') as string}</h3>
-                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full">
+                  <span className="absolute top-2 right-2 text-xs bg-[#10b981] text-white px-2 py-0.5 rounded-full animate-pulse shadow-sm">
                     NUEVO
                   </span>
                 </Card>
@@ -311,11 +311,11 @@ export default function DashboardPage() {
 
               <Link href="/dashboard/paypal" data-tour="paypal">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center relative mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                    <Wallet className="text-primary" size={22} />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <Wallet className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">{t('retiros') as string}</h3>
-                  <span className="absolute top-2 right-2 text-xs bg-primary/80 text-white px-2 py-0.5 rounded-full">
+                  <span className="absolute top-2 right-2 text-xs bg-primary/80 text-white px-2 py-0.5 rounded-full animate-border-glow shadow-sm">
                     0% Fee
                   </span>
                 </Card>
@@ -323,8 +323,8 @@ export default function DashboardPage() {
 
               <Link href="/dashboard/centro-ayuda" data-tour="centro-ayuda">
                 <Card className="glass-card p-4 flex flex-col items-center justify-center group hover:border-primary/30 transition-colors text-center h-full mobile-card mobile-touch-feedback">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                    <HelpCircle className="text-primary" size={22} />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:animate-scale">
+                    <HelpCircle className="text-primary icon-glow" size={22} />
                   </div>
                   <h3 className="font-medium mb-1">Centro de Ayuda</h3>
                 </Card>
