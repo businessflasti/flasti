@@ -19,6 +19,11 @@ import LocationBadge from "@/components/dashboard/LocationBadge";
 import LiveNotifications from "@/components/dashboard/LiveNotifications";
 import QuickStats from "@/components/dashboard/QuickStats";
 import DailyTips from "@/components/content/DailyTips";
+import FloatingMenu from "@/components/dashboard/FloatingMenu";
+import SideToolbar from "@/components/dashboard/SideToolbar";
+import TopToolbar from "@/components/dashboard/TopToolbar";
+import QuickAccessMenu from "@/components/dashboard/QuickAccessMenu";
+import FloatingCards from "@/components/dashboard/FloatingCards";
 import LevelProgress from "@/components/dashboard/LevelProgress";
 import OnboardingTour from "@/components/dashboard/OnboardingTour";
 
@@ -297,7 +302,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Estadísticas Rápidas */}
-            <div className="quick-stats">
+            <div className="quick-stats relative">
               <QuickStats />
             </div>
 
@@ -446,9 +451,23 @@ export default function DashboardPage() {
             <div className="mb-8">
               <DailyTips />
             </div>
+
+            {/* Barra de herramientas superior */}
+            <div className="mb-8">
+              <TopToolbar />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Menú flotante */}
+      <FloatingMenu />
+
+      {/* Menú de acceso rápido */}
+      <QuickAccessMenu />
+
+      {/* Barra lateral de herramientas */}
+      <SideToolbar />
 
       {/* Tour de Onboarding desactivado para evitar errores */}
     </div>

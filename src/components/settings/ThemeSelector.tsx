@@ -1,16 +1,48 @@
 'use client';
 
-import React from 'react';
-import { useThemes } from '@/contexts/ThemesContext';
+import React, { useState, useEffect } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Check, Moon, Sun } from 'lucide-react';
+import { Theme, themesService } from '@/lib/themes-service';
+import { toast } from 'sonner';
 
 export default function ThemeSelector() {
-  const { themes, currentTheme, loading, setUserTheme } = useThemes();
+  const { customTheme, setCustomTheme } = useTheme();
+  const [themes, setThemes] = useState<Theme[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    loadThemes();
+  }, []);
+
+  const loadThemes = async () => {
+    setLoading(true);
+    try {
+      const allThemes = await themesService.getAllThemes();
+      setThemes(allThemes);
+    } catch (error) {
+      console.error('Error al cargar temas:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleThemeChange = async (themeId: number) => {
+    const success = await setCustomTheme(themeId);
+    if (success) {
+      const selectedTheme = themes.find(theme => theme.id === themeId);
+      if (selectedTheme) {
+        toast.success(`Tema "${selectedTheme.name}" aplicado con éxito`);
+      }
+    } else {
+      toast.error('Error al actualizar el tema');
+    }
+  };
 
   if (loading) {
     return (
@@ -38,37 +70,37 @@ export default function ThemeSelector() {
         </p>
       </div>
 
-      <RadioGroup 
-        value={currentTheme?.id.toString()} 
-        onValueChange={(value) => setUserTheme(parseInt(value))}
+      <RadioGroup
+        value={customTheme?.id.toString()}
+        onValueChange={(value) => handleThemeChange(parseInt(value))}
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
       >
         {systemThemes.map((theme) => (
           <div key={theme.id} className="relative">
-            <RadioGroupItem 
-              value={theme.id.toString()} 
-              id={`theme-${theme.id}`} 
+            <RadioGroupItem
+              value={theme.id.toString()}
+              id={`theme-${theme.id}`}
               className="sr-only"
             />
-            <Label 
+            <Label
               htmlFor={`theme-${theme.id}`}
               className="cursor-pointer"
             >
-              <Card 
+              <Card
                 className={`overflow-hidden transition-all duration-300 hover:shadow-md ${
-                  currentTheme?.id === theme.id ? 'ring-2 ring-accent-color' : ''
+                  customTheme?.id === theme.id ? 'ring-2 ring-accent-color' : ''
                 }`}
               >
-                <div 
-                  className="h-24 w-full" 
-                  style={{ 
+                <div
+                  className="h-24 w-full"
+                  style={{
                     background: `linear-gradient(to right, ${theme.primary_color}, ${theme.secondary_color})`,
                     borderBottom: `3px solid ${theme.accent_color}`
                   }}
                 >
                   <div className="flex justify-between items-start p-2">
-                    <Badge 
-                      variant="outline" 
+                    <Badge
+                      variant="outline"
                       className="bg-background/80 backdrop-blur-sm"
                     >
                       {theme.is_dark ? (
@@ -78,8 +110,8 @@ export default function ThemeSelector() {
                       )}
                       {theme.is_dark ? 'Oscuro' : 'Claro'}
                     </Badge>
-                    
-                    {currentTheme?.id === theme.id && (
+
+                    {customTheme?.id === theme.id && (
                       <Badge className="bg-accent-color">
                         <Check className="h-3 w-3 mr-1" />
                         Activo
@@ -105,37 +137,37 @@ export default function ThemeSelector() {
             </p>
           </div>
 
-          <RadioGroup 
-            value={currentTheme?.id.toString()} 
-            onValueChange={(value) => setUserTheme(parseInt(value))}
+          <RadioGroup
+            value={customTheme?.id.toString()}
+            onValueChange={(value) => handleThemeChange(parseInt(value))}
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
           >
             {customThemes.map((theme) => (
               <div key={theme.id} className="relative">
-                <RadioGroupItem 
-                  value={theme.id.toString()} 
-                  id={`theme-${theme.id}`} 
+                <RadioGroupItem
+                  value={theme.id.toString()}
+                  id={`theme-${theme.id}`}
                   className="sr-only"
                 />
-                <Label 
+                <Label
                   htmlFor={`theme-${theme.id}`}
                   className="cursor-pointer"
                 >
-                  <Card 
+                  <Card
                     className={`overflow-hidden transition-all duration-300 hover:shadow-md ${
-                      currentTheme?.id === theme.id ? 'ring-2 ring-accent-color' : ''
+                      customTheme?.id === theme.id ? 'ring-2 ring-accent-color' : ''
                     }`}
                   >
-                    <div 
-                      className="h-24 w-full" 
-                      style={{ 
+                    <div
+                      className="h-24 w-full"
+                      style={{
                         background: `linear-gradient(to right, ${theme.primary_color}, ${theme.secondary_color})`,
                         borderBottom: `3px solid ${theme.accent_color}`
                       }}
                     >
                       <div className="flex justify-between items-start p-2">
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className="bg-background/80 backdrop-blur-sm"
                         >
                           {theme.is_dark ? (
@@ -145,8 +177,8 @@ export default function ThemeSelector() {
                           )}
                           {theme.is_dark ? 'Oscuro' : 'Claro'}
                         </Badge>
-                        
-                        {currentTheme?.id === theme.id && (
+
+                        {customTheme?.id === theme.id && (
                           <Badge className="bg-accent-color">
                             <Check className="h-3 w-3 mr-1" />
                             Activo
