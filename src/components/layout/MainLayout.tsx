@@ -32,15 +32,8 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
   // Solo mostrar el chat en páginas internas (dashboard)
   const shouldShowChat = !disableChat && isInternalPage;
 
-  // Ocultar la burbuja de chat en todas las páginas excepto en la de contacto
-  useEffect(() => {
-    try {
-      // Usar DirectTawkToScript de manera segura
-      DirectTawkToScript({ showBubble: isContactPage });
-    } catch (error) {
-      console.error('Error al inicializar DirectTawkToScript:', error);
-    }
-  }, [isContactPage]);
+  // Renderizar el componente DirectTawkToScript para manejar el chat
+  // El componente se encargará de mostrar u ocultar la burbuja según la página
 
   return (
     <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden">
@@ -68,6 +61,9 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
 
       {/* Chat widget - cargado de forma diferida solo cuando es necesario */}
       {shouldShowChat && <DashboardChatWidget />}
+
+      {/* Tawk.to chat script */}
+      <DirectTawkToScript showBubble={isContactPage} />
     </div>
   );
 };

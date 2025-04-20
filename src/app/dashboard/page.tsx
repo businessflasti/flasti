@@ -59,9 +59,8 @@ export default function DashboardPage() {
         <div className="container-custom flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Logo />
-            <div className="hidden md:block ml-4">
-              <LocationBadge />
-            </div>
+            {/* Espacio para logo */}
+            <div className="hidden md:block ml-4"></div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -77,9 +76,9 @@ export default function DashboardPage() {
               <p className="text-sm text-foreground/60">{isBalanceVisible ? `$${profile?.balance || '0.00'} USD` : "****"}</p>
             </div>
 
-            {/* Centro de Notificaciones en tiempo real */}
+            {/* Espacio para notificaciones */}
             <div className="relative">
-              <LiveNotifications />
+              {/* Notificaciones desactivadas para evitar errores */}
             </div>
 
             {/* Avatar de usuario */}
@@ -202,10 +201,8 @@ export default function DashboardPage() {
 
         {/* Main Content */}
         <div className="flex-1 p-4 md:p-8">
-          {/* LocationBadge para móviles */}
-          <div className="md:hidden mb-4 flex justify-center">
-            <LocationBadge />
-          </div>
+          {/* Espacio para móviles */}
+          <div className="md:hidden mb-4"></div>
 
           <div className="max-w-5xl mx-auto">
             {/* Balance Card - Mejorado con animaciones */}
@@ -343,8 +340,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Tour de Onboarding */}
-      <OnboardingTour />
+      {/* Tour de Onboarding desactivado para evitar errores */}
     </div>
   );
 }

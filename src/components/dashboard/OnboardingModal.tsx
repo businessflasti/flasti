@@ -87,9 +87,6 @@ export default function OnboardingModal() {
     }
   };
 
-  // Si no es visible, no renderizar nada
-  if (!isVisible) return null;
-
   // Asegurar que el modal aparezca en el área visible al abrirse
   useEffect(() => {
     if (isVisible) {
@@ -105,6 +102,9 @@ export default function OnboardingModal() {
       document.body.style.overflow = '';
     };
   }, [isVisible]);
+
+  // Si no es visible, no renderizar nada
+  if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[1001] p-4 overflow-y-auto">

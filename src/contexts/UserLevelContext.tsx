@@ -46,11 +46,13 @@ export const UserLevelProvider = ({ children }: { children: ReactNode }) => {
   }, [balance, highestBalance]);
 
   // Calcular comisión basada en el nivel
-  const commission = {
-    1: 50,
-    2: 60,
-    3: 70
-  }[level];
+  const commissionRates = [
+    { level: 1, rate: 50 },
+    { level: 2, rate: 60 },
+    { level: 3, rate: 70 }
+  ];
+
+  const commission = commissionRates.find(item => item.level === level)?.rate || 50;
 
   // Obtener el umbral para el siguiente nivel
   const getNextLevelThreshold = (): number | null => {
