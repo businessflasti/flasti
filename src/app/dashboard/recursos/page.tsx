@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Image, Sparkles, Copy, Check, ExternalLink, FileText, FileImage, Film, Instagram, Facebook, Linkedin, Mail, Users, Globe } from "lucide-react";
-import { FaXTwitter } from "react-icons/fa6";
+import { Download, Image, Sparkles, Copy, Check, ExternalLink, FileText, FileImage, Film, Instagram, Facebook, Linkedin, Mail, Users, Globe, Twitter } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/components/ui/back-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -209,7 +208,7 @@ const ResourcesPage = () => {
                   <TabsTrigger value="social" className="flex items-center gap-2">
                     <div className="flex items-center gap-1">
                       <Instagram size={14} />
-                      <FaXTwitter size={12} />
+                      <Twitter size={14} className="text-black" />
                       <Facebook size={14} />
                     </div>
                     <span>Redes Sociales</span>
@@ -280,7 +279,7 @@ const ResourcesPage = () => {
                           <div className="flex items-center gap-2">
                             <h4 className="font-medium">{item.title}</h4>
                             {item.title.includes("Instagram") && <Instagram size={16} className="text-[#E1306C]" />}
-                            {item.title.includes("Post X") && <FaXTwitter size={14} className="text-white" />}
+                            {item.title.includes("Post X") && <Twitter size={16} className="text-black" />}
                             {item.title.includes("Facebook") && <Facebook size={16} className="text-[#4267B2]" />}
                             {item.title.includes("LinkedIn") && <Linkedin size={16} className="text-[#0077B5]" />}
                             {item.title.includes("Grupo") && <Users size={16} className="text-[#4267B2]" />}
