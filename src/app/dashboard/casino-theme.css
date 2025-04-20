@@ -121,14 +121,18 @@
 }
 
 .sidebar-nav-item-text {
-  font-weight: 500;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .casino-sidebar.expanded .sidebar-nav-item-text {
   opacity: 1;
+  transform: translateX(0);
 }
 
 /* Header */
@@ -692,6 +696,11 @@
     display: flex;
     justify-content: center;
     margin-bottom: 2rem;
+  }
+
+  .sidebar-logo svg + span {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
   }
 
   .sidebar-nav {

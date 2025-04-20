@@ -207,7 +207,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {/* Sidebar */}
       <div className={`casino-sidebar ${sidebarExpanded ? 'expanded' : ''} ${mobileSidebarOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-logo">
-          <Logo showTextWhenExpanded={sidebarExpanded || isMobile} />
+          <Logo showTextWhenExpanded={sidebarExpanded} />
         </div>
 
         {/* Botón para cerrar el menú móvil */}
@@ -241,8 +241,8 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
         {!isMobile && (
           <div
-            className="absolute top-4 right-4 cursor-pointer bg-foreground/5 hover:bg-foreground/10 rounded-full p-1 transition-colors"
-            onClick={toggleSidebar}
+            className="absolute top-4 right-4 cursor-pointer bg-foreground/5 hover:bg-foreground/10 rounded-full p-1.5 transition-colors z-10"
+            onClick={() => setSidebarExpanded(!sidebarExpanded)}
           >
             {sidebarExpanded ? (
               <ChevronLeft size={20} className="text-foreground/80" />
@@ -262,7 +262,9 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
                 <Button variant="ghost" size="icon" onClick={() => setMobileSidebarOpen(true)}>
                   <Menu size={24} />
                 </Button>
-                <Logo showTextWhenExpanded={true} />
+                <div className="ml-2">
+                  <Logo showTextWhenExpanded={true} />
+                </div>
               </>
             )}
             {!isMobile && (
