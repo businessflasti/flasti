@@ -50,8 +50,8 @@ export const MobileMenu = () => {
                     <img
                       src={profile.avatar_url}
                       alt="Avatar"
-                      className="min-h-full min-w-full object-cover"
-                      style={{ objectFit: 'cover', objectPosition: 'center' }}
+                      className="h-full w-full object-cover"
+                      style={{ objectPosition: 'center' }}
                     />
                   </div>
                 ) : (

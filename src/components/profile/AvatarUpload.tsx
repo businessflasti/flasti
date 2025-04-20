@@ -19,11 +19,11 @@ export default function AvatarUpload() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
-    width: 100,
-    height: 100,
-    x: 0,
-    y: 0,
-    aspect: 1
+    width: 90, // Ligeramente menor para evitar recortes extremos
+    height: 90,
+    x: 5, // Centrado con un pequeño margen
+    y: 5,
+    aspect: 1 // Mantener relación de aspecto 1:1 para avatar circular
   });
   const [completedCrop, setCompletedCrop] = useState<any>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -90,7 +90,7 @@ export default function AvatarUpload() {
       }
 
       // Asegurar que el tamaño del canvas sea adecuado para un avatar (cuadrado y tamaño razonable)
-      const size = Math.min(400, Math.max(200, completedCrop.width)); // Entre 200px y 400px
+      const size = 400; // Tamaño fijo para evitar problemas de escala
       canvas.width = size;
       canvas.height = size;
 
@@ -276,8 +276,8 @@ export default function AvatarUpload() {
                 <img
                   src={profile.avatar_url}
                   alt="Foto de perfil"
-                  className="min-h-full min-w-full object-cover"
-                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  className="h-full w-full object-cover"
+                  style={{ objectPosition: 'center' }}
                 />
               </div>
             ) : (
@@ -356,13 +356,13 @@ export default function AvatarUpload() {
                   onLoad={() => {
                     // Asegurarse de que la imagen esté cargada antes de permitir el recorte
                     if (!completedCrop) {
-                      // Establecer un recorte inicial que cubra toda la imagen
+                      // Establecer un recorte inicial con un pequeño margen
                       const initialCrop = {
                         unit: '%',
-                        width: 100,
-                        height: 100,
-                        x: 0,
-                        y: 0,
+                        width: 90,
+                        height: 90,
+                        x: 5,
+                        y: 5,
                         aspect: 1
                       };
                       setCrop(initialCrop);
