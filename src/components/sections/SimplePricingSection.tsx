@@ -164,12 +164,11 @@ const SimplePricingSection = () => {
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
                   <div className="relative w-8 h-8">
                     <Image
-                      src={theme === 'dark' ? "/logo/logotipo.svg" : "/logo/logotipoblack.png"}
+                      src="/logo/isotipo.png"
                       alt="flasti logo"
                       width={32}
                       height={32}
-                      className={`object-contain transform scale-110 ${theme !== 'dark' ? 'mix-blend-multiply' : ''}`}
-                      style={{ filter: theme !== 'dark' ? 'brightness(0)' : 'none' }}
+                      className="object-contain transform scale-110"
                       priority
                       unoptimized={true}
                     />

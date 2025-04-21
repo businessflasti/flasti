@@ -38,7 +38,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
 
   // Determinar el color basado en el tema y la ruta del logo
   const textColor = isDark ? "text-white" : "text-gray-900";
-  const logoPath = isDark ? "/logo/logotipo.svg" : "/logo/logotipoblack.png";
+  const logoPath = "/logo/isotipo.png";
 
   return (
     <Link href="/" className={`${className}`}>
@@ -50,8 +50,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
             alt="flasti logo"
             width={logoWidth * 1.2}
             height={logoHeight * 1.2}
-            className={`object-contain transform scale-110 ${!isDark ? 'mix-blend-multiply' : ''}`}
-            style={{ filter: !isDark ? 'brightness(0)' : 'none' }}
+            className="object-contain transform scale-110"
             priority
             unoptimized={true}
           />

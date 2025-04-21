@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   title: "Flasti | Ganancia colectiva",
   description: "Plataforma de afiliados y herramientas digitales para generar ingresos online.",
   icons: {
-    icon: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "/logo/isotipo.png",
+    apple: "/logo/isotipo.png",
   },
   appleWebApp: {
     capable: true,
