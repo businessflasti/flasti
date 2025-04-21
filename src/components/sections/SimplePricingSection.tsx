@@ -166,9 +166,9 @@ const SimplePricingSection = () => {
                     <Image
                       src="/logo/isotipo.png"
                       alt="flasti logo"
-                      width={32}
-                      height={32}
-                      className="object-contain transform scale-110"
+                      width={24}
+                      height={24}
+                      className="object-contain"
                       priority
                       unoptimized={true}
                     />

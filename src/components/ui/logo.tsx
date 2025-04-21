@@ -17,18 +17,18 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   // Tamaños basados en el prop size
   const sizes = {
     sm: {
-      logoHeight: 28,
-      logoWidth: 28,
+      logoHeight: 20,
+      logoWidth: 20,
       textClass: "text-xl"
     },
     md: {
-      logoHeight: 36,
-      logoWidth: 36,
+      logoHeight: 24,
+      logoWidth: 24,
       textClass: "text-2xl"
     },
     lg: {
-      logoHeight: 48,
-      logoWidth: 48,
+      logoHeight: 32,
+      logoWidth: 32,
       textClass: "text-3xl"
     }
   };
@@ -42,15 +42,15 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
 
   return (
     <Link href="/" className={`${className}`}>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         {/* Logo SVG */}
         <div className="relative flex items-center justify-center" style={{ height: logoHeight, width: logoWidth }}>
           <Image
             src={logoPath}
             alt="flasti logo"
-            width={logoWidth * 1.2}
-            height={logoHeight * 1.2}
-            className="object-contain transform scale-110"
+            width={logoWidth}
+            height={logoHeight}
+            className="object-contain"
             priority
             unoptimized={true}
           />
