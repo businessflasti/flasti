@@ -15,22 +15,14 @@ import {
   HelpCircle,
   Trophy,
   Star,
-  Crown,
-  User,
   LogOut,
   ChevronRight,
   ChevronLeft,
   DollarSign,
-  Search,
   Menu,
   X,
-  Settings,
-  CreditCard,
-  Bell,
   Lightbulb,
-  Megaphone,
-  Sun,
-  Moon
+  Megaphone
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -59,8 +51,6 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Detectar si es móvil
   useEffect(() => {
@@ -84,19 +74,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
     };
   }, []);
 
-  // Cerrar menú de perfil al hacer clic fuera
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
-        setProfileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  // El menú desplegable de perfil ha sido eliminado
 
   // Navegación del sidebar
   const sidebarItems = [
@@ -336,11 +314,8 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
               </div>
             </div>
 
-            <div className="user-profile relative" ref={profileMenuRef}>
-              <div
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-              >
+            <div className="user-profile relative">
+              <div className="flex items-center gap-3">
                 <div className="user-avatar relative">
                   {profile?.avatar_url ? (
                     <div className="w-9 h-9 rounded-full" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -359,48 +334,23 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
                   <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-background transform translate-x-1/2 translate-y-1/2 animate-pulse"></div>
                 </div>
                 <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    signOut();
+                  }}
+                  className="flex items-center justify-center p-2 rounded-full hover:bg-primary/10 transition-colors text-foreground/70 hover:text-foreground"
+                  title="Cerrar Sesión"
+                >
+                  <LogOut size={18} />
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Menú desplegable de perfil */}
-      {profileMenuOpen && (
-        <div className="absolute right-4 mt-2 w-56 rounded-md shadow-lg bg-card/95 backdrop-blur-md border border-border/30 z-50" style={{ top: '70px' }}>
-          <div className="py-1">
-            <Link
-              href="/dashboard/perfil"
-              className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors"
-              onClick={() => setProfileMenuOpen(false)}
-            >
-              <User size={16} />
-              <span>Mi Perfil</span>
-            </Link>
-            <Link
-              href="/dashboard/paypal"
-              className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors"
-              onClick={() => setProfileMenuOpen(false)}
-            >
-              <CreditCard size={16} />
-              <span>Retiros</span>
-            </Link>
-
-            <div className="border-t border-border/20 my-1"></div>
-            <a
-              href="/login"
-              onClick={(e) => {
-                e.preventDefault();
-                signOut();
-              }}
-              className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors w-full text-left text-red-500"
-            >
-              <LogOut size={16} />
-              <span>Cerrar Sesión</span>
-            </a>
-          </div>
-        </div>
-      )}
+      {/* Menú desplegable de perfil eliminado */}
 
       {/* Overlay para menú móvil */}
       {isMobile && (
