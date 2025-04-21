@@ -17,18 +17,18 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   // Tamaños basados en el prop size
   const sizes = {
     sm: {
-      logoHeight: 20,
-      logoWidth: 20,
+      logoHeight: 22,
+      logoWidth: 22,
       textClass: "text-xl"
     },
     md: {
-      logoHeight: 24,
-      logoWidth: 24,
+      logoHeight: 28,
+      logoWidth: 28,
       textClass: "text-2xl"
     },
     lg: {
-      logoHeight: 32,
-      logoWidth: 32,
+      logoHeight: 36,
+      logoWidth: 36,
       textClass: "text-3xl"
     }
   };
