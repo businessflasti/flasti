@@ -58,11 +58,13 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!user) return;
 
-    // Mostrar el tour solo a nuevos usuarios - con ID de usuario para que sea único por cuenta
-    const hasSeenTour = localStorage.getItem(`flasti_hasSeenContextTour_${user.id}`);
-    if (!hasSeenTour) {
-      console.log('Activando tour de contexto para nuevo usuario');
-      setIsActive(true);
+    // Desactivado: ya no mostramos el tour para nuevos usuarios
+    // Siempre establecemos que el usuario ya ha visto el tour
+    try {
+      localStorage.setItem(`flasti_hasSeenContextTour_${user.id}`, 'true');
+      setIsActive(false);
+    } catch (error) {
+      console.error('Error al guardar el estado del tour:', error);
     }
   }, [user]);
 

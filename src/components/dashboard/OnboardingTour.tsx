@@ -116,33 +116,18 @@ export default function OnboardingTour() {
     }
   ];
 
-  // Verificar si es la primera visita del usuario - OBLIGATORIO para nuevos usuarios
+  // Verificar si es la primera visita del usuario - DESACTIVADO
   useEffect(() => {
     if (!user) return;
 
     try {
-      // Verificar si el usuario ya ha visto el tour
-      const hasSeenTour = localStorage.getItem(`flasti_hasSeenTour_${user.id}`);
+      // Siempre establecer que el usuario ya ha visto el tour
+      localStorage.setItem(`flasti_hasSeenTour_${user.id}`, 'true');
 
-      // SIEMPRE mostrar el tour para nuevos usuarios (sin opción de omitirlo)
-      if (!hasSeenTour) {
-        console.log('Mostrando tour de onboarding obligatorio para nuevo usuario');
-        // Esperar a que la página se cargue completamente
-        setTimeout(() => {
-          try {
-            // Asegurarse de que el usuario esté en la parte superior de la página
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setIsVisible(true);
-            updateTooltipPosition();
-          } catch (err) {
-            console.error('Error al mostrar el tour:', err);
-            // No bloquear la carga de la página si hay un error
-          }
-        }, 2000);
-      }
+      // Nunca mostrar el tour
+      setIsVisible(false);
     } catch (err) {
-      console.error('Error al verificar el tour:', err);
-      // No bloquear la carga de la página si hay un error
+      console.error('Error al guardar el estado del tour:', err);
     }
   }, [user]);
 
