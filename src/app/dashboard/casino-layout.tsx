@@ -369,22 +369,22 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {profileMenuOpen && (
         <div className="absolute right-4 mt-2 w-56 rounded-md shadow-lg bg-card/95 backdrop-blur-md border border-border/30 z-50" style={{ top: '70px' }}>
           <div className="py-1">
-            <a
+            <Link
               href="/dashboard/perfil"
               className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors"
               onClick={() => setProfileMenuOpen(false)}
             >
               <User size={16} />
               <span>Mi Perfil</span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="/dashboard/paypal"
               className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors"
               onClick={() => setProfileMenuOpen(false)}
             >
               <CreditCard size={16} />
               <span>Retiros</span>
-            </a>
+            </Link>
 
             <div className="border-t border-border/20 my-1"></div>
             <a

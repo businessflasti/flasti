@@ -85,10 +85,24 @@ export default function OnboardingModal() {
       setTimeout(() => {
         setIsVisible(false);
         setCurrentStep(0);
+        // Asegurarse de que el desenfoque se elimine
+        document.body.style.overflow = '';
+        document.body.classList.remove('backdrop-blur-sm');
+        // Eliminar cualquier clase que pueda causar desenfoque
+        document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+          el.classList.remove('backdrop-blur-sm');
+        });
       }, 300);
     } else {
       setIsVisible(false);
       setCurrentStep(0);
+      // Asegurarse de que el desenfoque se elimine
+      document.body.style.overflow = '';
+      document.body.classList.remove('backdrop-blur-sm');
+      // Eliminar cualquier clase que pueda causar desenfoque
+      document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+        el.classList.remove('backdrop-blur-sm');
+      });
     }
 
     // Guardar que el usuario ha visto el onboarding
@@ -127,9 +141,17 @@ export default function OnboardingModal() {
     } else {
       // Restaurar el scroll cuando se cierra
       document.body.style.overflow = '';
+      // Eliminar cualquier clase que pueda causar desenfoque
+      document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+        el.classList.remove('backdrop-blur-sm');
+      });
     }
     return () => {
       document.body.style.overflow = '';
+      // Asegurarse de eliminar el desenfoque al desmontar el componente
+      document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+        el.classList.remove('backdrop-blur-sm');
+      });
     };
   }, [isVisible]);
 
@@ -137,8 +159,8 @@ export default function OnboardingModal() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-start justify-center z-[1001] p-4 overflow-y-auto">
-      <div className="onboarding-modal bg-card/95 backdrop-blur-md rounded-xl border border-border/20 shadow-2xl w-full max-w-md animate-fadeInUp mt-20 mx-auto">
+    <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-[1001] p-4 overflow-y-auto">
+      <div className="onboarding-modal bg-card/95 rounded-xl border border-border/20 shadow-2xl w-full max-w-md animate-fadeInUp mt-20 mx-auto">
         {/* Añadir un botón flotante para cerrar en móviles */}
         <button
           onClick={closeOnboarding}
