@@ -30,27 +30,27 @@ export default function DashboardNav() {
     {
       name: t('inicio'),
       href: '/dashboard-new',
-      icon: <Home size={20} />
+      icon: <Home size={22} />
     },
     {
       name: t('aplicaciones'),
       href: '/dashboard-new/apps',
-      icon: <Apps size={20} />
+      icon: <Apps size={22} />
     },
     {
       name: t('enlaces'),
       href: '/dashboard-new/links',
-      icon: <LinkIcon size={20} />
+      icon: <LinkIcon size={22} />
     },
     {
       name: t('estadisticas'),
       href: '/dashboard-new/stats',
-      icon: <BarChart2 size={20} />
+      icon: <BarChart2 size={22} />
     },
     {
       name: t('perfil'),
       href: '/dashboard-new/profile',
-      icon: <Settings size={20} />
+      icon: <Settings size={22} />
     }
   ];
 
@@ -61,15 +61,15 @@ export default function DashboardNav() {
   };
 
   return (
-    <header className="w-full py-3 border-b border-border/20 bg-card/70 backdrop-blur-md sticky top-0 z-50 hardware-accelerated">
-      <div className="container mx-auto px-4 flex items-center justify-between">
+    <header className="w-full py-4 border-b border-border/20 bg-card/70 backdrop-blur-md sticky top-0 z-50 hardware-accelerated">
+      <div className="container mx-auto px-5 flex items-center justify-between">
         {/* Logo y botón de menú móvil */}
         <div className="flex items-center gap-4">
           <button
             className="p-2 rounded-full hover:bg-foreground/10 transition-colors md:hidden mobile-touch-friendly hardware-accelerated"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
           <Link href="/dashboard-new">
@@ -83,7 +83,7 @@ export default function DashboardNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`px-3 py-2 rounded-lg flex items-center gap-2 transition-colors mobile-touch-friendly hardware-accelerated ${
+              className={`px-4 py-2.5 rounded-lg flex items-center gap-2 transition-colors text-sm mobile-touch-friendly hardware-accelerated ${
                 pathname === item.href
                   ? 'bg-primary/10 text-primary'
                   : 'hover:bg-foreground/5 text-foreground/70 hover:text-foreground'
@@ -107,7 +107,7 @@ export default function DashboardNav() {
             className="p-2 rounded-full hover:bg-foreground/10 transition-colors mobile-touch-friendly hardware-accelerated"
             onClick={handleLogout}
           >
-            <LogOut size={20} className="text-foreground/70" />
+            <LogOut size={22} className="text-foreground/70" />
           </button>
         </div>
       </div>

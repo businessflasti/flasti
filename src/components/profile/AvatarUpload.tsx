@@ -89,8 +89,8 @@ export default function AvatarUpload() {
         return null;
       }
 
-      // Asegurar que el tamaño del canvas sea adecuado para un avatar (cuadrado y tamaño razonable)
-      const size = 400; // Tamaño fijo para evitar problemas de escala
+      // Usar un tamaño estándar para el avatar
+      const size = 400; // Tamaño más grande para mejor calidad
       canvas.width = size;
       canvas.height = size;
 
@@ -206,6 +206,7 @@ export default function AvatarUpload() {
       // Subir a Supabase Storage
       const fileName = `avatar-${user.id}-${Date.now()}.jpg`;
       try {
+        // Subir el nuevo avatar
         const { data, error } = await supabase.storage
           .from('avatars')
           .upload(fileName, croppedFile, {
@@ -272,12 +273,12 @@ export default function AvatarUpload() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#9333ea]/30 via-[#ec4899]/30 to-[#facc15]/30 rounded-full blur-md animate-pulse-slow"></div>
           <div className="h-28 w-28 rounded-full overflow-hidden border-4 border-background shadow-lg relative">
             {profile?.avatar_url ? (
-              <div className="h-full w-full flex items-center justify-center overflow-hidden">
+              <div className="h-full w-full flex items-center justify-center">
                 <img
                   src={profile.avatar_url}
                   alt="Foto de perfil"
-                  className="h-full w-full object-cover"
-                  style={{ objectPosition: 'center' }}
+                  className="rounded-full"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
               </div>
             ) : (
@@ -352,11 +353,11 @@ export default function AvatarUpload() {
                   ref={imgRef}
                   src={previewUrl}
                   alt="Preview"
-                  className="max-h-[300px] max-w-full object-contain"
+                  className="max-h-[300px] max-w-full object-contain bg-background/50 rounded-lg"
                   onLoad={() => {
                     // Asegurarse de que la imagen esté cargada antes de permitir el recorte
                     if (!completedCrop) {
-                      // Establecer un recorte inicial con un pequeño margen
+                      // Establecer un recorte inicial centrado
                       const initialCrop = {
                         unit: '%',
                         width: 90,

@@ -725,6 +725,26 @@ interface LanguageContextType {
 // Crear contexto
 export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Función para detectar el idioma del navegador
+const detectBrowserLanguage = (): 'es' | 'en' | 'pt-br' => {
+  if (typeof window === 'undefined') return 'es'; // Valor predeterminado para SSR
+
+  try {
+    const browserLang = navigator.language.toLowerCase();
+
+    // Detectar idioma basado en el código del navegador
+    if (browserLang.startsWith('es')) return 'es';
+    if (browserLang.startsWith('en')) return 'en';
+    if (browserLang.startsWith('pt')) return 'pt-br';
+
+    // Si no coincide con ninguno de los idiomas soportados, usar español como predeterminado
+    return 'es';
+  } catch (e) {
+    console.error('Error detecting browser language:', e);
+    return 'es'; // Valor predeterminado en caso de error
+  }
+};
+
 // Proveedor del contexto
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Estado para el idioma actual
@@ -733,9 +753,16 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Cargar preferencia de idioma al iniciar
   useEffect(() => {
     try {
+      // Primero intentar cargar desde localStorage
       const savedLanguage = localStorage.getItem('language');
       if (savedLanguage === 'es' || savedLanguage === 'en' || savedLanguage === 'pt-br') {
         setLanguage(savedLanguage);
+      } else {
+        // Si no hay preferencia guardada, detectar idioma del navegador
+        const detectedLanguage = detectBrowserLanguage();
+        setLanguage(detectedLanguage);
+        // Guardar la preferencia detectada
+        localStorage.setItem('language', detectedLanguage);
       }
     } catch (e) {
       console.error('Error reading from localStorage:', e);

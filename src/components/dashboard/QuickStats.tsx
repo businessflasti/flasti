@@ -25,6 +25,19 @@ export default function QuickStats() {
   });
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const [userLocale, setUserLocale] = useState<string>('default');
+
+  // Detectar la configuración regional del usuario
+  useEffect(() => {
+    // Intentar obtener la configuración regional del navegador
+    try {
+      const detectedLocale = navigator.language || 'default';
+      setUserLocale(detectedLocale);
+    } catch (error) {
+      console.warn('No se pudo detectar la configuración regional:', error);
+      setUserLocale('default');
+    }
+  }, []);
 
   // Cargar datos reales del usuario
   useEffect(() => {
@@ -84,7 +97,12 @@ export default function QuickStats() {
             const totalSales = salesData && Array.isArray(salesData) ? salesData.length : 0;
             const conversionRate = totalClicks > 0 ? (totalSales / totalClicks) * 100 : 0;
             const lastActivity = activityData && Array.isArray(activityData) && activityData.length > 0
-              ? new Date(activityData[0].created_at).toLocaleTimeString()
+              ? new Date(activityData[0].created_at).toLocaleTimeString(userLocale, {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: true
+                })
               : '---';
 
             setStats({
@@ -138,7 +156,12 @@ export default function QuickStats() {
         )}
 
         <div className="mt-2 text-xs text-foreground/60">
-          Última actualización: {lastUpdate.toLocaleTimeString()}
+          Última actualización: {lastUpdate.toLocaleTimeString(userLocale, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+          })}
         </div>
       </Card>
 
@@ -160,7 +183,12 @@ export default function QuickStats() {
         )}
 
         <div className="mt-2 text-xs text-foreground/60">
-          Última actualización: {lastUpdate.toLocaleTimeString()}
+          Última actualización: {lastUpdate.toLocaleTimeString(userLocale, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+          })}
         </div>
       </Card>
 
@@ -182,7 +210,12 @@ export default function QuickStats() {
         )}
 
         <div className="mt-2 text-xs text-foreground/60">
-          Última actualización: {lastUpdate.toLocaleTimeString()}
+          Última actualización: {lastUpdate.toLocaleTimeString(userLocale, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+          })}
         </div>
       </Card>
 
@@ -204,7 +237,7 @@ export default function QuickStats() {
         )}
 
         <div className="mt-2 text-xs text-foreground/60">
-          Última actividad: {stats.lastActivity}
+          Última actividad: {stats.lastActivity !== '---' ? stats.lastActivity : 'Sin actividad'}
         </div>
       </Card>
     </div>

@@ -109,16 +109,16 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('empresa')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('empresa')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/nosotros" className="text-foreground/60 dark:text-foreground/60 light:text-foreground/80 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
+                <Link href="/nosotros" className="text-foreground/60 dark:text-white light:text-foreground/80 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
                   <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
                   {t('sobreNosotros')}
                 </Link>
               </li>
               <li>
-                <Link href="/contacto" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
+                <Link href="/contacto" className="text-foreground/60 dark:text-white hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
                   <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
                   {t('contacto')}
                 </Link>
@@ -127,16 +127,16 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('legal')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('legal')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/legal" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
+                <Link href="/legal" className="text-foreground/60 dark:text-white hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
                   <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
                   {t('informacionLegal')}
                 </Link>
               </li>
               <li>
-                <Link href="/terminos" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
+                <Link href="/terminos" className="text-foreground/60 dark:text-white hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
                   <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
                   {t('terminosCondiciones')}
                 </Link>
@@ -145,16 +145,16 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('recursos')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('recursos')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/privacidad" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
+                <Link href="/privacidad" className="text-foreground/60 dark:text-white hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
                   <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
                   {t('politicaPrivacidad')}
                 </Link>
               </li>
               <li>
-                <Link href="mailto:access@flasti.com" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
+                <Link href="mailto:access@flasti.com" className="text-foreground/60 dark:text-white hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
                   <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
                   access@flasti.com
                 </Link>
@@ -163,9 +163,9 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('contactanos')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('contactanos')}</h4>
             <div className="space-y-4">
-              <p className="text-foreground/60 text-sm">{t('ayudaInmediata')}</p>
+              <p className="text-foreground/60 dark:text-white text-sm">{t('ayudaInmediata')}</p>
               <ChatButton
                 className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2"
                 size="sm"
@@ -189,18 +189,18 @@ const Footer = () => {
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10">
-              <h4 className="font-bold mb-3 text-sm font-outfit dark:text-white text-black inline-flex items-center">
+              <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
                 {t('empresa')}
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/nosotros" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/nosotros" className="dark:text-white text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
                     {t('sobreNosotros')}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contacto" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/contacto" className="dark:text-white text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
                     {t('contacto')}
                   </Link>
                 </li>
@@ -208,18 +208,18 @@ const Footer = () => {
             </div>
 
             <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10">
-              <h4 className="font-bold mb-3 text-sm font-outfit dark:text-white text-black inline-flex items-center">
+              <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
                 {t('legal')}
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/legal" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/legal" className="dark:text-white text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
                     {t('informacionLegal')}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terminos" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/terminos" className="dark:text-white text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
                     {t('terminosCondiciones')}
                   </Link>
                 </li>
@@ -228,18 +228,18 @@ const Footer = () => {
           </div>
 
           <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10 mb-6">
-            <h4 className="font-bold mb-3 text-sm font-outfit dark:text-white text-black inline-flex items-center">
+            <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
               <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
               {t('recursos')}
             </h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/privacidad" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                <Link href="/privacidad" className="dark:text-white text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
                   {t('politicaPrivacidad')}
                 </Link>
               </li>
               <li>
-                <Link href="mailto:access@flasti.com" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                <Link href="mailto:access@flasti.com" className="dark:text-white text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
                   access@flasti.com
                 </Link>
               </li>
@@ -247,12 +247,12 @@ const Footer = () => {
           </div>
 
           <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10 mb-6">
-            <h4 className="font-bold mb-3 text-sm font-outfit dark:text-white text-black inline-flex items-center">
+            <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
               <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
               {t('contactanos')}
             </h4>
             <div className="flex flex-col items-center">
-              <p className="dark:text-foreground/70 text-foreground/80 text-xs mb-3 text-center">
+              <p className="dark:text-white text-foreground/80 text-xs mb-3 text-center">
                 {t('ayudaInmediata')}
               </p>
               <ChatButton

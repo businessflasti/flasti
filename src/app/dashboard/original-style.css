@@ -1,0 +1,151 @@
+/* Estilos para las páginas con layout original */
+.original-layout {
+  min-height: 100vh;
+}
+
+/* Asegurar que las tarjetas tengan el estilo original */
+.original-layout .card {
+  background-color: #1a1a22; /* Color original */
+  color: #ffffff; /* Color original */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Color original */
+}
+
+/* Asegurar que los botones tengan el estilo original */
+.original-layout .button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Asegurar que los textos tengan el estilo original */
+.original-layout h1,
+.original-layout h2,
+.original-layout h3,
+.original-layout h4,
+.original-layout h5,
+.original-layout h6 {
+  color: var(--foreground);
+}
+
+.original-layout p {
+  color: var(--foreground);
+}
+
+/* Asegurar que los enlaces tengan el estilo original */
+.original-layout a {
+  color: var(--primary);
+}
+
+/* Asegurar que los inputs tengan el estilo original */
+.original-layout input,
+.original-layout textarea,
+.original-layout select {
+  background-color: var(--input);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+
+/* Asegurar que los fondos tengan el estilo original */
+.original-layout .bg-card {
+  background-color: var(--card);
+}
+
+.original-layout .bg-primary {
+  background-color: var(--primary);
+}
+
+.original-layout .bg-secondary {
+  background-color: var(--secondary);
+}
+
+.original-layout .bg-muted {
+  background-color: var(--muted);
+}
+
+.original-layout .bg-accent {
+  background-color: var(--accent);
+}
+
+/* Asegurar que los textos tengan el estilo original */
+.original-layout .text-foreground {
+  color: var(--foreground);
+}
+
+.original-layout .text-primary {
+  color: var(--primary);
+}
+
+.original-layout .text-secondary {
+  color: var(--secondary);
+}
+
+.original-layout .text-muted {
+  color: var(--muted);
+}
+
+.original-layout .text-accent {
+  color: var(--accent);
+}
+
+/* Asegurar que los bordes tengan el estilo original */
+.original-layout .border {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.original-layout .border-primary {
+  border-color: #8b5cf6;
+}
+
+.original-layout .border-secondary {
+  border-color: #1a1a22;
+}
+
+.original-layout .border-muted {
+  border-color: #2a2a35;
+}
+
+.original-layout .border-accent {
+  border-color: #facc15;
+}
+
+/* Estilos específicos para la página de enlaces */
+.original-layout p {
+  color: #ffffff;
+}
+
+.original-layout h1,
+.original-layout h2,
+.original-layout h3 {
+  color: #ffffff;
+}
+
+.original-layout .bg-card {
+  background-color: #1a1a22;
+}
+
+/* Eliminar cualquier efecto de transparencia */
+.original-layout .bg-card\/50,
+.original-layout .bg-card\/60,
+.original-layout .bg-card\/70,
+.original-layout .bg-card\/80,
+.original-layout .bg-card\/90,
+.original-layout .bg-card\/95 {
+  background-color: #1a1a22 !important;
+  backdrop-filter: none !important;
+}
+
+/* Asegurar que los textos sean visibles */
+.original-layout .text-foreground\/70 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.original-layout .text-green-500 {
+  color: #22c55e !important;
+}
+
+.original-layout .text-blue-500 {
+  color: #3b82f6 !important;
+}
+
+.original-layout .text-purple-500 {
+  color: #8b5cf6 !important;
+}

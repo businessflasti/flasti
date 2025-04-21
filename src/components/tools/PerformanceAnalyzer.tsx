@@ -8,19 +8,19 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  CheckCircle2, 
-  RefreshCw, 
-  Calendar, 
-  Clock, 
-  Users, 
-  MousePointer, 
-  DollarSign, 
-  Lightbulb 
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  CheckCircle2,
+  RefreshCw,
+  Calendar,
+  Clock,
+  Users,
+  MousePointer,
+  DollarSign,
+  Lightbulb
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -74,72 +74,72 @@ export default function PerformanceAnalyzer() {
 
   const loadPerformanceData = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       // En una implementación real, aquí se cargarían datos reales desde la API
       // Por ahora, simulamos datos para la demostración
-      
+
       // Simular tiempo de carga
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Datos simulados
+
+      // Datos iniciales en cero para nuevas cuentas
       const data: PerformanceData = {
-        totalClicks: Math.floor(Math.random() * 1000) + 100,
-        totalSales: Math.floor(Math.random() * 50) + 1,
-        conversionRate: Math.random() * 5 + 1, // 1-6%
-        averageOrderValue: Math.random() * 50 + 20, // $20-$70
+        totalClicks: 0,
+        totalSales: 0,
+        conversionRate: 0,
+        averageOrderValue: 0,
         topReferrers: [
           {
             source: 'facebook.com',
-            clicks: Math.floor(Math.random() * 300) + 50,
-            percentage: Math.random() * 40 + 10
+            clicks: 0,
+            percentage: 0
           },
           {
             source: 'instagram.com',
-            clicks: Math.floor(Math.random() * 200) + 30,
-            percentage: Math.random() * 30 + 5
+            clicks: 0,
+            percentage: 0
           },
           {
             source: 'twitter.com',
-            clicks: Math.floor(Math.random() * 150) + 20,
-            percentage: Math.random() * 20 + 5
+            clicks: 0,
+            percentage: 0
           },
           {
             source: 'linkedin.com',
-            clicks: Math.floor(Math.random() * 100) + 10,
-            percentage: Math.random() * 15 + 3
+            clicks: 0,
+            percentage: 0
           },
           {
             source: 'email',
-            clicks: Math.floor(Math.random() * 80) + 5,
-            percentage: Math.random() * 10 + 2
+            clicks: 0,
+            percentage: 0
           }
         ],
         clicksByDay: Array.from({ length: 7 }, (_, i) => ({
           day: new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('es-ES', { weekday: 'short' }),
-          clicks: Math.floor(Math.random() * 50) + 5
+          clicks: 0
         })),
         salesByDay: Array.from({ length: 7 }, (_, i) => ({
           day: new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('es-ES', { weekday: 'short' }),
-          sales: Math.floor(Math.random() * 5) + 0
+          sales: 0
         })),
         performanceByApp: [
           {
             app: 'Flasti Imágenes',
-            clicks: Math.floor(Math.random() * 500) + 50,
-            sales: Math.floor(Math.random() * 25) + 1,
-            conversionRate: Math.random() * 5 + 1
+            clicks: 0,
+            sales: 0,
+            conversionRate: 0
           },
           {
             app: 'Flasti AI',
-            clicks: Math.floor(Math.random() * 400) + 40,
-            sales: Math.floor(Math.random() * 20) + 1,
-            conversionRate: Math.random() * 5 + 1
+            clicks: 0,
+            sales: 0,
+            conversionRate: 0
           }
         ]
       };
-      
+
       setPerformanceData(data);
       generateSuggestions(data);
     } catch (error) {
@@ -157,7 +157,7 @@ export default function PerformanceAnalyzer() {
 
   const generateSuggestions = (data: PerformanceData) => {
     const newSuggestions: Suggestion[] = [];
-    
+
     // Sugerencia basada en tasa de conversión
     if (data.conversionRate < 2) {
       newSuggestions.push({
@@ -176,7 +176,7 @@ export default function PerformanceAnalyzer() {
         icon: <CheckCircle2 className="h-5 w-5 text-green-500" />
       });
     }
-    
+
     // Sugerencia basada en fuentes de tráfico
     const topReferrer = data.topReferrers[0];
     if (topReferrer && topReferrer.percentage > 50) {
@@ -188,13 +188,13 @@ export default function PerformanceAnalyzer() {
         icon: <AlertTriangle className="h-5 w-5 text-amber-500" />
       });
     }
-    
+
     // Sugerencia basada en rendimiento por aplicación
     const appPerformance = data.performanceByApp.sort((a, b) => b.conversionRate - a.conversionRate);
     if (appPerformance.length > 1) {
       const bestApp = appPerformance[0];
       const worstApp = appPerformance[appPerformance.length - 1];
-      
+
       if (bestApp.conversionRate > worstApp.conversionRate * 2) {
         newSuggestions.push({
           id: 'app-focus',
@@ -205,11 +205,11 @@ export default function PerformanceAnalyzer() {
         });
       }
     }
-    
+
     // Sugerencia basada en tendencia de clics
-    const clickTrend = data.clicksByDay.slice(-3).reduce((sum, day) => sum + day.clicks, 0) - 
+    const clickTrend = data.clicksByDay.slice(-3).reduce((sum, day) => sum + day.clicks, 0) -
                        data.clicksByDay.slice(0, 3).reduce((sum, day) => sum + day.clicks, 0);
-    
+
     if (clickTrend < 0) {
       newSuggestions.push({
         id: 'declining-traffic',
@@ -227,7 +227,7 @@ export default function PerformanceAnalyzer() {
         icon: <TrendingUp className="h-5 w-5 text-green-500" />
       });
     }
-    
+
     // Añadir sugerencias generales si hay pocas específicas
     if (newSuggestions.length < 3) {
       newSuggestions.push({
@@ -237,7 +237,7 @@ export default function PerformanceAnalyzer() {
         type: 'improvement',
         icon: <Lightbulb className="h-5 w-5 text-blue-500" />
       });
-      
+
       newSuggestions.push({
         id: 'testing',
         title: 'Prueba diferentes enfoques',
@@ -246,7 +246,7 @@ export default function PerformanceAnalyzer() {
         icon: <Lightbulb className="h-5 w-5 text-blue-500" />
       });
     }
-    
+
     setSuggestions(newSuggestions);
   };
 
@@ -298,11 +298,11 @@ export default function PerformanceAnalyzer() {
               <TabsTrigger value="90d">90 días</TabsTrigger>
             </TabsList>
           </Tabs>
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleRefresh} 
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
             disabled={refreshing}
             className="gap-1"
           >
@@ -327,7 +327,7 @@ export default function PerformanceAnalyzer() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="text-sm font-medium text-foreground/70">Ventas</CardTitle>
@@ -340,7 +340,7 @@ export default function PerformanceAnalyzer() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="text-sm font-medium text-foreground/70">Tasa de Conversión</CardTitle>
@@ -353,7 +353,7 @@ export default function PerformanceAnalyzer() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="text-sm font-medium text-foreground/70">Valor Promedio</CardTitle>
@@ -367,7 +367,7 @@ export default function PerformanceAnalyzer() {
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -387,10 +387,10 @@ export default function PerformanceAnalyzer() {
                       {performanceData.clicksByDay.map((day, index) => (
                         <div key={index} className="flex flex-col items-center">
                           <div className="h-24 w-full flex items-end">
-                            <div 
+                            <div
                               className="w-full bg-primary/20 rounded-t-sm"
-                              style={{ 
-                                height: `${(day.clicks / getMaxValue(performanceData.clicksByDay, 'clicks')) * 100}%` 
+                              style={{
+                                height: `${(day.clicks / getMaxValue(performanceData.clicksByDay, 'clicks')) * 100}%`
                               }}
                             ></div>
                           </div>
@@ -400,7 +400,7 @@ export default function PerformanceAnalyzer() {
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium">Ventas por Día</span>
@@ -410,10 +410,10 @@ export default function PerformanceAnalyzer() {
                       {performanceData.salesByDay.map((day, index) => (
                         <div key={index} className="flex flex-col items-center">
                           <div className="h-16 w-full flex items-end">
-                            <div 
+                            <div
                               className="w-full bg-green-500/20 rounded-t-sm"
-                              style={{ 
-                                height: `${(day.sales / getMaxValue(performanceData.salesByDay, 'sales')) * 100}%` 
+                              style={{
+                                height: `${(day.sales / getMaxValue(performanceData.salesByDay, 'sales')) * 100}%`
                               }}
                             ></div>
                           </div>
@@ -426,7 +426,7 @@ export default function PerformanceAnalyzer() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Principales Fuentes de Tráfico</CardTitle>
@@ -449,7 +449,7 @@ export default function PerformanceAnalyzer() {
               </CardContent>
             </Card>
           </div>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Rendimiento por Aplicación</CardTitle>
@@ -476,7 +476,7 @@ export default function PerformanceAnalyzer() {
                         <td className="text-right py-3">{app.clicks.toLocaleString()}</td>
                         <td className="text-right py-3">{app.sales.toLocaleString()}</td>
                         <td className="text-right py-3">
-                          <Badge 
+                          <Badge
                             variant={app.conversionRate > 3 ? 'default' : 'outline'}
                             className={app.conversionRate > 3 ? 'bg-green-500' : ''}
                           >
@@ -493,7 +493,7 @@ export default function PerformanceAnalyzer() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Sugerencias de Mejora</CardTitle>
@@ -505,10 +505,10 @@ export default function PerformanceAnalyzer() {
               <div className="space-y-4">
                 {suggestions.map((suggestion) => (
                   <Card key={suggestion.id} className="border-l-4 p-4" style={{
-                    borderLeftColor: suggestion.type === 'warning' 
-                      ? 'rgb(245, 158, 11)' 
-                      : suggestion.type === 'success' 
-                        ? 'rgb(34, 197, 94)' 
+                    borderLeftColor: suggestion.type === 'warning'
+                      ? 'rgb(245, 158, 11)'
+                      : suggestion.type === 'success'
+                        ? 'rgb(34, 197, 94)'
                         : 'rgb(14, 165, 233)'
                   }}>
                     <div className="flex gap-3">

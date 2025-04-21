@@ -115,7 +115,7 @@
 }
 
 @layer base {
-  /* Tema oscuro (por defecto) */
+  /* Tema único - sin modo claro/oscuro */
   :root {
     --background: 220 33% 6%;
     --foreground: 230 10% 95%;
@@ -137,29 +137,6 @@
     --input: 220 40% 12%;
     --ring: 280 85% 65%;
     --radius: 0.6rem;
-  }
-
-  /* Tema claro mejorado con mejor contraste */
-  .light {
-    --background: 220 30% 95%;        /* Ligeramente más oscuro para el fondo */
-    --foreground: 220 30% 10%;        /* Texto más oscuro para mejor legibilidad */
-    --card: 220 25% 98%;              /* Tarjetas más claras para contraste */
-    --card-foreground: 220 30% 10%;   /* Texto de tarjetas más oscuro */
-    --popover: 220 20% 97%;           /* Popovers ligeramente más claros */
-    --popover-foreground: 220 30% 10%;
-    --primary: 280 85% 60%;           /* Color primario ligeramente más oscuro */
-    --primary-foreground: 0 0% 100%;  /* Texto sobre primario en blanco */
-    --secondary: 220 15% 85%;         /* Secundario más oscuro para mejor contraste */
-    --secondary-foreground: 220 30% 10%;
-    --muted: 220 15% 80%;             /* Elementos muteados más oscuros */
-    --muted-foreground: 220 25% 30%;  /* Texto muteado más oscuro para legibilidad */
-    --accent: 45 80% 50%;             /* Mantener acento */
-    --accent-foreground: 220 30% 10%;
-    --destructive: 350 90% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 20% 75%;            /* Bordes más oscuros para mejor definición */
-    --input: 220 20% 90%;             /* Inputs ligeramente más oscuros */
-    --ring: 280 85% 60%;              /* Ring ligeramente más oscuro */
   }
 }
 
@@ -269,16 +246,10 @@
     }
   }
 
-  /* Fondos para modo oscuro y claro */
+  /* Fondo único */
   .gradient-background {
     background: radial-gradient(circle at 50% 50%, rgba(140, 50, 250, 0.15) 0%, rgba(140, 50, 250, 0) 70%),
                 linear-gradient(180deg, var(--background) 0%, hsl(220, 40%, 3%) 100%);
-  }
-
-  .light .gradient-background {
-    background: radial-gradient(circle at 50% 50%, rgba(140, 50, 250, 0.2) 0%, rgba(140, 50, 250, 0.05) 70%),
-                linear-gradient(180deg, hsl(220, 30%, 96%) 0%, hsl(220, 25%, 88%) 100%);
-    background-attachment: fixed;
   }
 
   .card-school {
@@ -295,14 +266,9 @@
     @apply font-outfit font-bold;
   }
 
-  /* Títulos en modo oscuro */
+  /* Títulos */
   h1:not(.text-gradient), h2:not(.text-gradient), h3:not(.text-gradient) {
     @apply text-white;
-  }
-
-  /* Títulos en modo claro */
-  .light h1:not(.text-gradient), .light h2:not(.text-gradient), .light h3:not(.text-gradient) {
-    @apply text-black;
   }
 
   .glow-effect {
@@ -354,17 +320,11 @@
   }
 
   .glass-card {
-    @apply bg-card/60 backdrop-blur-md shadow-xl;
+    @apply bg-card shadow-xl;
   }
 
-  .light .glass-card {
-    @apply bg-white/80 backdrop-blur-md shadow-lg;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  }
-
-  .light .dropdown-menu {
-    @apply bg-white/80 backdrop-blur-md shadow-lg;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  .dropdown-menu {
+    @apply bg-card shadow-lg;
   }
 
   .neon-border {
@@ -373,7 +333,7 @@
   }
 
   .dropdown-menu {
-    @apply fixed z-[9999] bg-card/95 backdrop-blur-md shadow-lg rounded-lg;
+    @apply fixed z-[9999] bg-card shadow-lg rounded-lg;
   }
 
   /* Estilos para el iframe de Hotmart */
@@ -387,63 +347,24 @@
     background: linear-gradient(to bottom, #0f0f1a, #1a1a2e) !important;
   }
 
-  /* Mejoras para botones en modo claro */
-  .light .btn-primary {
-    @apply bg-primary/90 text-white shadow-md;
+  /* Estilos para botones */
+  .btn-primary {
+    @apply bg-primary text-white shadow-md;
     box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
   }
 
-  .light .btn-primary:hover {
-    @apply bg-primary;
+  .btn-primary:hover {
+    @apply bg-primary/90;
     box-shadow: 0 6px 16px rgba(147, 51, 234, 0.4);
   }
 
-  .light .btn-secondary {
-    @apply bg-secondary/90 text-secondary-foreground border-border/60;
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground border-border/60;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
-  .light .btn-secondary:hover {
-    @apply bg-secondary text-secondary-foreground;
+  .btn-secondary:hover {
+    @apply bg-secondary/90 text-secondary-foreground;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Mejoras para inputs en modo claro */
-  .light input, .light textarea, .light select {
-    @apply bg-white/80 border-border/60;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-
-  .light input:focus, .light textarea:focus, .light select:focus {
-    @apply border-primary/60 ring-primary/30;
-    box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-
-  /* Mejoras para tarjetas en modo claro */
-  .light .card {
-    @apply bg-white/90 border-border/50 shadow-md;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  }
-
-  /* Mejoras para el footer en modo claro */
-  .light footer a {
-    @apply text-foreground/80 hover:text-primary;
-  }
-
-  /* Mejoras para tablas en modo claro */
-  .light table {
-    @apply bg-white/80 border-border/50;
-  }
-
-  .light table th {
-    @apply bg-secondary/50 text-secondary-foreground font-semibold;
-  }
-
-  .light table tr:nth-child(even) {
-    @apply bg-secondary/20;
-  }
-
-  .light table tr:hover {
-    @apply bg-secondary/30;
   }
 }

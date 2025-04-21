@@ -20,14 +20,17 @@ import {
   LogOut,
   ChevronRight,
   ChevronLeft,
-  Check,
   DollarSign,
   Search,
   Menu,
   X,
   Settings,
   CreditCard,
-  Bell
+  Bell,
+  Lightbulb,
+  Megaphone,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -37,7 +40,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Logo from '@/components/ui/logo';
 import { LanguageSelector } from '@/components/LanguageSelector';
-import ThemeSelector from '@/components/ui/theme-selector';
 
 // Importar estilos
 import './casino-theme.css';
@@ -53,7 +55,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   const { isBalanceVisible, toggleBalanceVisibility } = useBalanceVisibility();
   const router = useRouter();
 
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
@@ -66,7 +68,15 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       setIsMobile(window.innerWidth < 768);
     };
 
+    // Inicializar el estado
     checkIfMobile();
+
+    // Establecer un valor inicial para asegurar que se muestre correctamente
+    if (window.innerWidth < 768) {
+      setIsMobile(true);
+      setSidebarExpanded(false);
+    }
+
     window.addEventListener('resize', checkIfMobile);
 
     return () => {
@@ -97,7 +107,6 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
     { id: 'resources', icon: <BookOpen size={20} />, label: t('recursos'), href: '/dashboard/recursos', color: '#22c55e' },
     { id: 'withdraw', icon: <Wallet size={20} />, label: t('retiros'), href: '/dashboard/paypal', color: '#f59e0b' },
     { id: 'help', icon: <HelpCircle size={20} />, label: t('ayuda'), href: '/dashboard/centro-ayuda', color: '#8b5cf6' },
-    { id: 'ranking', icon: <Trophy size={20} />, label: t('ranking'), href: '/dashboard/clasificacion', color: '#f43f5e' },
   ];
 
   // Aplicaciones destacadas para el carrusel
@@ -173,25 +182,40 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
 
 
 
-  // Beneficios VIP
-  const vipBenefits = [
-    'Comisiones aumentadas al 90%',
-    'Soporte prioritario 24/7',
-    'Acceso anticipado a nuevas apps'
+  // Consejos de marketing de afiliados
+  const marketingTips = [
+    { id: 1, tip: 'Comparte tu enlace en redes sociales con una historia personal sobre cómo usas la app.' },
+    { id: 2, tip: 'Crea tutoriales mostrando cómo usar las aplicaciones para resolver problemas específicos.' },
+    { id: 3, tip: 'Utiliza los recursos promocionales disponibles en la sección "Recursos".' },
+    { id: 4, tip: 'Enfócate en los beneficios que obtendrán tus referidos, no solo en tu comisión.' },
+    { id: 5, tip: 'Personaliza tus mensajes según la audiencia a la que te diriges.' },
+    { id: 6, tip: 'Combina promociones en diferentes plataformas para maximizar tu alcance.' },
+    { id: 7, tip: 'Analiza tus estadísticas para identificar qué estrategias funcionan mejor.' }
   ];
+
+  // Estado para el consejo actual
+  const [currentTipIndex, setCurrentTipIndex] = useState(0);
+
+  // Cambiar al siguiente consejo cada 10 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTipIndex((prevIndex) => (prevIndex + 1) % marketingTips.length);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Manejar clic en el sidebar
   const handleSidebarItemClick = (id: string) => {
     setActiveTab(id);
   };
 
-  // Alternar expansión del sidebar
+  // Alternar expansión del sidebar (solo en móvil)
   const toggleSidebar = () => {
     if (isMobile) {
       setMobileMenuOpen(!mobileMenuOpen);
-    } else {
-      setSidebarExpanded(!sidebarExpanded);
     }
+    // En escritorio, el sidebar siempre está expandido
   };
 
   return (
@@ -199,7 +223,29 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {/* Sidebar */}
       <div className={`casino-sidebar ${sidebarExpanded || mobileMenuOpen ? 'expanded' : ''}`}>
         <div className="sidebar-logo">
-          <Logo showTextWhenExpanded={sidebarExpanded} />
+          <div className="flex flex-col items-center gap-4 p-4">
+            <div className="flex flex-col items-center w-full bg-gradient-to-br from-[rgba(20,20,25,0.95)] to-[rgba(40,40,50,0.95)] py-4 px-5 rounded-xl border border-white/10 shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-[#facc15]/20 flex items-center justify-center border border-[#facc15]/30">
+                  <Trophy size={20} className="text-[#facc15]" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-white/60 text-xs uppercase tracking-wider">Nivel</span>
+                  <span className="text-white text-lg font-bold">1</span>
+                </div>
+              </div>
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent my-2"></div>
+              <div className="flex items-center gap-3 mt-3">
+                <div className="w-10 h-10 rounded-full bg-[#22c55e]/20 flex items-center justify-center border border-[#22c55e]/30">
+                  <DollarSign size={20} className="text-[#22c55e]" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-white/60 text-xs uppercase tracking-wider">Comisión</span>
+                  <span className="text-white text-lg font-bold">50%</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="sidebar-nav">
@@ -224,121 +270,137 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
           ))}
         </div>
 
-        {!isMobile && (
-          <div
-            className="absolute top-4 right-4 cursor-pointer bg-primary/10 rounded-full p-1 hover:bg-primary/20 transition-colors"
-            onClick={toggleSidebar}
-          >
-            {sidebarExpanded ? (
-              <ChevronLeft size={20} className="text-primary" />
-            ) : (
-              <ChevronRight size={20} className="text-primary" />
-            )}
-          </div>
-        )}
+        {/* El botón de toggle del sidebar se ha eliminado en escritorio */}
       </div>
 
       {/* Header */}
       <div className="casino-header">
         <div className="header-left">
-          <div className="flex items-center gap-2">
-            {isMobile && (
-              <>
-                <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-                  <Menu size={24} />
-                </Button>
-                <Logo showTextWhenExpanded={true} />
-              </>
-            )}
-            {!isMobile && (
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <Crown size={16} className="text-primary" />
-              </div>
-            )}
-          </div>
+          {/* Versión móvil */}
+          {isMobile && (
+            <div className="flex items-center">
+              <Button variant="ghost" size="icon" onClick={toggleSidebar} className="mobile-menu-button mr-3">
+                <Menu size={24} />
+              </Button>
+              <Logo showTextWhenExpanded={false} />
+            </div>
+          )}
+
+          {/* Versión desktop */}
+          {!isMobile && (
+            <div className="flex items-center gap-4">
+              <Logo showTextWhenExpanded={true} />
+            </div>
+          )}
         </div>
 
+        {/* Espacio central en móvil */}
+        {isMobile && (
+          <div className="flex-1"></div>
+        )}
+
         <div className="header-right">
-          <LanguageSelector />
-          <ThemeSelector variant="icon" size="md" />
+          <div className="flex items-center gap-3">
+            <LanguageSelector />
 
-          <div className="user-balance">
-            <DollarSign size={16} className="text-primary" />
-            <span className="user-balance-amount">
-              {isBalanceVisible ? `$${profile?.balance || '0.00'}` : '****'}
-            </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={toggleBalanceVisibility}
-            >
-              {isBalanceVisible ? (
-                <Eye size={14} />
-              ) : (
-                <EyeOff size={14} />
-              )}
-            </Button>
-          </div>
-
-          <div className="user-profile relative" ref={profileMenuRef}>
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-            >
-              <div className="user-avatar relative">
-                {profile?.avatar_url ? (
-                  <Image
-                    src={profile.avatar_url}
-                    alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
-                    width={36}
-                    height={36}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+            <div className="user-balance hidden md:block">
+              <div className="user-balance-amount">
+                {isBalanceVisible ? (
+                  <>
+                    <span>${profile?.balance || '0.00'} USDC</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-4 w-4 opacity-60 hover:opacity-100 transition-opacity"
+                      onClick={toggleBalanceVisibility}
+                    >
+                      <Eye size={10} className="text-white/60" />
+                    </Button>
+                  </>
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold rounded-full">
-                    {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
-                  </div>
+                  <>
+                    <span>****</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-4 w-4 opacity-60 hover:opacity-100 transition-opacity"
+                      onClick={toggleBalanceVisibility}
+                    >
+                      <EyeOff size={10} className="text-white/60" />
+                    </Button>
+                  </>
                 )}
-                <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background translate-x-1/2 translate-y-1/2"></div>
               </div>
-              <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
+              <div className="user-balance-usd">
+                {isBalanceVisible ? `$${profile?.balance || '0.00'} USD` : '****'}
+              </div>
             </div>
 
-            {/* Menú desplegable de perfil */}
-            {profileMenuOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-card/95 backdrop-blur-md border border-border/30 z-50 top-full">
-                <div className="py-1">
-                  <Link href="/dashboard/perfil" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
-                    <User size={16} />
-                    <span>Mi Perfil</span>
-                  </Link>
-                  <Link href="/dashboard/paypal" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
-                    <CreditCard size={16} />
-                    <span>Mis Pagos</span>
-                  </Link>
-                  <Link href="/dashboard/notificaciones" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
-                    <Bell size={16} />
-                    <span>Notificaciones</span>
-                  </Link>
-                  <Link href="/dashboard/configuracion" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors">
-                    <Settings size={16} />
-                    <span>Configuración</span>
-                  </Link>
-                  <div className="border-t border-border/20 my-1"></div>
-                  <button
-                    onClick={() => signOut()}
-                    className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors w-full text-left text-red-500"
-                  >
-                    <LogOut size={16} />
-                    <span>Cerrar Sesión</span>
-                  </button>
+            <div className="user-profile relative" ref={profileMenuRef}>
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+              >
+                <div className="user-avatar relative">
+                  {profile?.avatar_url ? (
+                    <div className="w-9 h-9 rounded-full" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img
+                        src={profile.avatar_url}
+                        alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+                        className="w-full h-full rounded-full"
+                        style={{ objectFit: 'contain', maxWidth: '100%', maxHeight: '100%' }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-r from-[#1a1a1a] to-[#333333] flex items-center justify-center text-white font-bold rounded-full">
+                      {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                  )}
+                  <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-background transform translate-x-1/2 translate-y-1/2 animate-pulse"></div>
                 </div>
+                <span className="hidden md:block">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</span>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Menú desplegable de perfil */}
+      {profileMenuOpen && (
+        <div className="absolute right-4 mt-2 w-56 rounded-md shadow-lg bg-card/95 backdrop-blur-md border border-border/30 z-50" style={{ top: '70px' }}>
+          <div className="py-1">
+            <a
+              href="/dashboard/perfil"
+              className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors"
+              onClick={() => setProfileMenuOpen(false)}
+            >
+              <User size={16} />
+              <span>Mi Perfil</span>
+            </a>
+            <a
+              href="/dashboard/paypal"
+              className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors"
+              onClick={() => setProfileMenuOpen(false)}
+            >
+              <CreditCard size={16} />
+              <span>Retiros</span>
+            </a>
+
+            <div className="border-t border-border/20 my-1"></div>
+            <a
+              href="/login"
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
+              className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-primary/10 transition-colors w-full text-left text-red-500"
+            >
+              <LogOut size={16} />
+              <span>Cerrar Sesión</span>
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Overlay para menú móvil */}
       {isMobile && (
@@ -351,38 +413,30 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
       {/* Contenido principal */}
       <div className="casino-main">
         {children}
-      </div>
 
-      {/* Barra lateral derecha */}
-      <div className="casino-rightbar">
-        {/* Programa VIP */}
-        <div className="vip-program">
-          <div className="vip-program-title">
-            <Crown size={20} />
-            <span>Flasti Plus</span>
+        {/* Consejos de Marketing (movido al final) */}
+        <div className="marketing-tips-container mb-6">
+          <div className="marketing-tips-title">
+            <Lightbulb size={20} />
+            <span>Consejo del Día</span>
           </div>
 
-          <div className="vip-level">
-            <div className="vip-level-icon">
-              <Star size={20} />
+          <div className="marketing-tips-content">
+            <div className="marketing-tip-icon">
+              <Megaphone size={16} />
             </div>
-            <div className="vip-level-info">
-              <div className="vip-level-name">Nivel {profile?.level || 1}</div>
-              <div className="vip-level-progress">
-                <div
-                  className="vip-level-progress-bar"
-                  style={{ width: `${Math.min(100, ((profile?.balance || 0) / 30) * 100)}%` }}
-                ></div>
-              </div>
+            <div className="marketing-tip-text">
+              {marketingTips[currentTipIndex].tip}
             </div>
           </div>
 
-          <div className="vip-benefits">
-            {vipBenefits.map((benefit, index) => (
-              <div key={index} className="vip-benefits-item">
-                <Check size={16} />
-                <span>{benefit}</span>
-              </div>
+          <div className="marketing-tips-navigation">
+            {marketingTips.map((tip, index) => (
+              <div
+                key={tip.id}
+                className={`tip-indicator ${index === currentTipIndex ? 'active' : ''}`}
+                onClick={() => setCurrentTipIndex(index)}
+              ></div>
             ))}
           </div>
         </div>

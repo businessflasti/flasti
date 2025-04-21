@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { LeaderboardProvider } from '@/contexts/LeaderboardContext';
-import Leaderboard from '@/components/gamification/Leaderboard';
+import CustomLeaderboard from '@/components/gamification/CustomLeaderboard';
 import BackButton from '@/components/ui/back-button';
 import { Card } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
@@ -14,7 +13,7 @@ export default function LeaderboardPage() {
         <BackButton />
         <h1 className="text-3xl font-bold">Clasificación de Afiliados</h1>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="col-span-1 md:col-span-3 p-6 bg-gradient-to-r from-[#ec4899]/10 to-[#9333ea]/10 border-none">
           <div className="flex flex-col md:flex-row items-center gap-4">
@@ -32,9 +31,7 @@ export default function LeaderboardPage() {
         </Card>
       </div>
 
-      <LeaderboardProvider>
-        <Leaderboard />
-      </LeaderboardProvider>
+      <CustomLeaderboard />
     </div>
   );
 }

@@ -110,9 +110,9 @@ export default function LiveNotifications() {
         className="relative p-2 rounded-full hover:bg-foreground/10 transition-colors mobile-touch-friendly hardware-accelerated notifications-icon"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <Bell size={20} className="text-foreground/70" />
+        <Bell size={22} className="text-foreground/70" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
+          <span className="absolute top-0 right-0 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
             {unreadCount}
           </span>
         )}

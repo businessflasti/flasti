@@ -1,21 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
-  Play,
   ArrowRight,
   Star,
   TrendingUp,
   Users,
   DollarSign,
   Clock,
-  Search,
-  Filter,
   Sparkles,
   Gift,
   Zap
@@ -30,90 +27,92 @@ const featuredApps = [
   {
     id: 1,
     title: 'Flasti Images',
-    image: '/apps/flasti-images.jpg',
+    image: '/apps/active/images-logo.png',
     clicks: '1.2k',
-    commission: '$25',
-    isNew: true
+    price: '$5',
+    commission: '$2.50',
+    isNew: true,
+    isActive: true,
+    href: '/dashboard/apps/flasti-images',
+    bgColor: '#ec4899'
   },
   {
     id: 2,
     title: 'Flasti AI',
-    image: '/apps/flasti-ai.jpg',
+    image: '/apps/active/ia-logo.png',
     clicks: '950',
-    commission: '$30',
-    isHot: true
+    price: '$7',
+    commission: '$3.50',
+    isTop: true,
+    isActive: true,
+    href: '/dashboard/apps/flasti-ai',
+    bgColor: '#9333ea'
   },
   {
     id: 3,
-    title: 'Flasti Video',
-    image: '/apps/flasti-video.jpg',
-    clicks: '750',
-    commission: '$20'
+    title: 'Velto',
+    image: '/apps/coming-soon/velto-logo.png',
+    comingSoon: true,
+    bgColor: '#3a86ff'
   },
   {
     id: 4,
-    title: 'Flasti Audio',
-    image: '/apps/flasti-audio.jpg',
-    clicks: '500',
-    commission: '$15'
+    title: 'Flux',
+    image: '/apps/coming-soon/flux-logo.png',
+    comingSoon: true,
+    bgColor: '#8338ec'
   },
   {
     id: 5,
-    title: 'Flasti PDF',
-    image: '/apps/flasti-pdf.jpg',
-    clicks: '320',
-    commission: '$18',
-    isNew: true
+    title: 'Thinkerly',
+    image: '/apps/coming-soon/thinkerly-logo.png',
+    comingSoon: true,
+    bgColor: '#ff006e'
   },
   {
     id: 6,
-    title: 'Flasti Chat',
-    image: '/apps/flasti-chat.jpg',
-    clicks: '280',
-    commission: '$22',
-    isHot: true
+    title: 'Mindra',
+    image: '/apps/coming-soon/mindra-logo.png',
+    comingSoon: true,
+    bgColor: '#fb5607'
   },
 ];
 
-// Promociones destacadas
+// Gamificación y progreso
 const promotions = [
   {
     id: 1,
-    title: 'Lucky Promo',
-    description: 'Gana comisiones extra por cada referido',
-    image: '/promos/promo1.jpg',
+    title: 'Niveles',
+    description: 'Sube de nivel y desbloquea beneficios',
+    image: '/gamification/levels-bg.jpg',
     color: '#ec4899',
-    icon: <Sparkles size={20} />
+    icon: <Star size={20} />
   },
   {
     id: 2,
-    title: 'Gift of Fortune',
-    description: 'Bonos especiales para afiliados nivel 2',
-    image: '/promos/promo2.jpg',
+    title: 'Logros',
+    description: 'Completa misiones y gana recompensas',
+    image: '/gamification/achievements-bg.jpg',
     color: '#9333ea',
     icon: <Gift size={20} />
   },
   {
     id: 3,
-    title: 'Treasure Hunter',
-    description: 'Desbloquea recompensas exclusivas',
-    image: '/promos/promo3.jpg',
+    title: 'Clasificación',
+    description: 'Compite con otros afiliados por premios',
+    image: '/gamification/ranking-bg.jpg',
     color: '#0ea5e9',
-    icon: <Zap size={20} />
+    icon: <Users size={20} />
   }
 ];
 
-// Filtros para aplicaciones
-const filters = [
-  { id: 'all', label: 'Todas' },
-  { id: 'popular', label: 'Populares' },
-  { id: 'new', label: 'Nuevas' },
-  { id: 'hot', label: 'Hot' },
-  { id: 'recommended', label: 'Recomendadas' },
-  { id: 'top', label: 'Top' },
-  { id: 'jackpot', label: 'Jackpot' },
-  { id: 'big-bonus', label: 'Big Bonus' },
-  { id: 'recent', label: 'Recientes' }
+// Herramientas para afiliados
+const affiliateTools = [
+  { id: 'earnings-simulator', label: 'Simulador de ganancias', href: '/dashboard/simulador' },
+  { id: 'ai-generator', label: 'Generador IA', href: '/dashboard/generador-contenido' },
+  { id: 'analysis', label: 'Optimiza tus resultados', href: '/dashboard/analisis' },
+  { id: 'goals', label: 'Establece tus metas', href: '/dashboard/objetivos' },
+  { id: 'link-editor', label: 'Personaliza tus enlaces', href: '/dashboard/editor-enlaces' }
 ];
 
 // Importar componentes existentes
@@ -125,38 +124,138 @@ import CasinoTutor from './casino-tutor';
 export default function CasinoContent() {
   const { user, profile } = useAuth();
   const { t } = useLanguage();
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState('');
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Manejar cambio de filtro
-  const handleFilterChange = (filterId: string) => {
-    setActiveFilter(filterId);
+  // Manejar cambio de herramienta
+  const handleToolChange = (toolId: string) => {
+    setActiveFilter(toolId);
+  };
+
+  // Efecto para mostrar un desplazamiento sutil al cargar la página
+  useEffect(() => {
+    if (carouselRef.current) {
+      // Esperar a que se cargue todo y luego hacer un pequeño desplazamiento
+      const timer = setTimeout(() => {
+        if (carouselRef.current) {
+          carouselRef.current.scrollTo({
+            left: 60,
+            behavior: 'smooth'
+          });
+
+          // Volver a la posición inicial después de un momento
+          setTimeout(() => {
+            if (carouselRef.current) {
+              carouselRef.current.scrollTo({
+                left: 0,
+                behavior: 'smooth'
+              });
+            }
+          }, 1200);
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  // Funciones para el carrusel
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (!carouselRef.current) return;
+
+    const scrollAmount = 300; // Cantidad de píxeles a desplazar
+    const currentScroll = carouselRef.current.scrollLeft;
+
+    carouselRef.current.scrollTo({
+      left: direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
+  // Variables para el seguimiento de clics vs. arrastres
+  const [clickStartTime, setClickStartTime] = useState<number>(0);
+  const [clickStartPosition, setClickStartPosition] = useState<{x: number, y: number}>({x: 0, y: 0});
+  const [hasMoved, setHasMoved] = useState<boolean>(false);
+
+  // Funciones para el deslizamiento táctil
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!carouselRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - carouselRef.current.offsetLeft);
+    setScrollLeft(carouselRef.current.scrollLeft);
+
+    // Registrar el inicio del clic
+    setClickStartTime(Date.now());
+    setClickStartPosition({x: e.pageX, y: e.pageY});
+    setHasMoved(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!carouselRef.current) return;
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - carouselRef.current.offsetLeft);
+    setScrollLeft(carouselRef.current.scrollLeft);
+
+    // Registrar el inicio del toque
+    setClickStartTime(Date.now());
+    setClickStartPosition({x: e.touches[0].pageX, y: e.touches[0].pageY});
+    setHasMoved(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !carouselRef.current) return;
+
+    // Calcular la distancia movida
+    const deltaX = Math.abs(e.pageX - clickStartPosition.x);
+    const deltaY = Math.abs(e.pageY - clickStartPosition.y);
+
+    // Si se ha movido más de 5 píxeles, considerar como arrastre
+    if (deltaX > 5 || deltaY > 5) {
+      setHasMoved(true);
+    }
+
+    e.preventDefault();
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Multiplicador para ajustar la velocidad
+    carouselRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging || !carouselRef.current) return;
+
+    // Calcular la distancia movida
+    const deltaX = Math.abs(e.touches[0].pageX - clickStartPosition.x);
+    const deltaY = Math.abs(e.touches[0].pageY - clickStartPosition.y);
+
+    // Si se ha movido más de 5 píxeles, considerar como arrastre
+    if (deltaX > 5 || deltaY > 5) {
+      setHasMoved(true);
+    }
+
+    const x = e.touches[0].pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    carouselRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(false);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
   };
 
   return (
     <>
       {/* Bloque de balance */}
       <CasinoBalance />
-
-      {/* Banner principal */}
-      <div className="main-banner">
-        <div className="banner-content">
-          <h1 className="banner-title">WELCOME TO THE FLASTI HUB!</h1>
-          <p className="banner-subtitle">Explora las mejores aplicaciones y gana comisiones promocionando productos exclusivos</p>
-          <div className="banner-action">
-            <Play size={16} />
-            <span>Iniciar ahora</span>
-          </div>
-        </div>
-        <div className="banner-image">
-          <Image
-            src="/dashboard/banner-character.png"
-            alt="Personaje Flasti"
-            width={200}
-            height={250}
-            className="float-effect"
-          />
-        </div>
-      </div>
 
       {/* Bloque de tutora asignada */}
       <CasinoTutor />
@@ -166,73 +265,166 @@ export default function CasinoContent() {
         <QuickStats />
       </div>
 
-      {/* Filtros */}
+      {/* Herramientas para afiliados */}
       <div className="filter-buttons">
-        {filters.map((filter) => (
-          <div
-            key={filter.id}
-            className={`filter-button ${activeFilter === filter.id ? 'active' : ''}`}
-            onClick={() => handleFilterChange(filter.id)}
+        {affiliateTools.map((tool) => (
+          <Link
+            key={tool.id}
+            href={tool.href}
+            className={`filter-button ${activeFilter === tool.id ? 'active' : ''}`}
           >
-            {filter.label}
-          </div>
+            {tool.label}
+          </Link>
         ))}
       </div>
 
       {/* Carrusel de aplicaciones */}
       <div className="apps-carousel">
         <div className="carousel-header">
-          <h2 className="carousel-title">Aplicaciones Populares</h2>
-          <div className="carousel-nav">
-            <div className="carousel-nav-button">
-              <ChevronLeft size={20} />
+          <div className="carousel-title-container">
+            <h2 className="carousel-title">Aplicaciones Populares</h2>
+            <div className="carousel-nav carousel-nav-mobile">
+              <button
+                className="carousel-nav-button"
+                onClick={() => scrollCarousel('left')}
+                aria-label="Desplazar a la izquierda"
+              >
+                <ChevronLeft size={18} color="white" />
+              </button>
+              <button
+                className="carousel-nav-button"
+                onClick={() => scrollCarousel('right')}
+                aria-label="Desplazar a la derecha"
+              >
+                <ChevronRight size={18} color="white" />
+              </button>
             </div>
-            <div className="carousel-nav-button">
-              <ChevronRight size={20} />
-            </div>
+          </div>
+          <div className="carousel-nav carousel-nav-desktop">
+            <button
+              className="carousel-nav-button"
+              onClick={() => scrollCarousel('left')}
+              aria-label="Desplazar a la izquierda"
+            >
+              <ChevronLeft size={20} color="white" />
+            </button>
+            <button
+              className="carousel-nav-button"
+              onClick={() => scrollCarousel('right')}
+              aria-label="Desplazar a la derecha"
+            >
+              <ChevronRight size={20} color="white" />
+            </button>
           </div>
         </div>
 
-        <div className="carousel-items">
+        <div
+          className={`carousel-items ${isDragging && hasMoved ? 'dragging' : ''}`}
+          ref={carouselRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{ cursor: isDragging && hasMoved ? 'grabbing' : 'pointer' }}
+        >
           {featuredApps.map((app) => (
-            <div key={app.id} className="app-card">
-              <div
-                className="app-card-image"
-                style={{
-                  backgroundImage: `url(${app.image})`,
-                  backgroundColor: '#1E1B2E' // Fallback color
-                }}
-              >
-                {app.isNew && (
-                  <div className="badge badge-new absolute top-2 left-2">NEW</div>
-                )}
-                {app.isHot && (
-                  <div className="badge badge-hot absolute top-2 left-2">HOT</div>
-                )}
-              </div>
-              <div className="app-card-content">
-                <div className="app-card-title">{app.title}</div>
-                <div className="app-card-stats">
-                  <div className="flex items-center gap-1">
-                    <TrendingUp size={12} />
-                    <span>{app.clicks}</span>
+            <div key={app.id} className={`app-card ${app.comingSoon ? 'app-card-coming-soon' : ''}`}>
+              {app.isActive ? (
+                <Link href={app.href || '#'}>
+                  <div
+                    className="app-card-image active-app-image"
+                    style={{
+                      background: app.bgColor ? `linear-gradient(135deg, ${app.bgColor}20, ${app.bgColor}40)` : 'linear-gradient(135deg, rgba(30, 27, 46, 0.8), rgba(30, 27, 46, 0.95))',
+                      boxShadow: app.bgColor ? `0 8px 32px ${app.bgColor}30` : 'none',
+                      border: app.bgColor ? `1px solid ${app.bgColor}40` : 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Image
+                      src={app.image}
+                      alt={app.title}
+                      width={70}
+                      height={70}
+                      className="active-app-logo"
+                    />
+
+                    {app.isNew && (
+                      <div className="badge badge-new absolute top-2 left-2">NEW</div>
+                    )}
+                    {app.isTop && (
+                      <div className="badge badge-hot absolute top-2 left-2">TOP</div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1">
-                    <DollarSign size={12} />
-                    <span>{app.commission}</span>
+                  <div className="app-card-content">
+                    <div className="app-card-title">{app.title}</div>
+                    <div className="app-card-stats">
+                      <div className="flex items-center gap-1">
+                        <DollarSign size={12} />
+                        <span>Precio: {app.price}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <TrendingUp size={12} />
+                        <span>Comisión: {app.commission}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </Link>
+              ) : (
+                <>
+                  <div
+                    className="app-card-image coming-soon-image"
+                    style={{
+                      background: app.bgColor ? `linear-gradient(135deg, ${app.bgColor}20, ${app.bgColor}40)` : 'linear-gradient(135deg, rgba(30, 27, 46, 0.8), rgba(30, 27, 46, 0.95))',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backdropFilter: 'blur(10px)',
+                      boxShadow: app.bgColor ? `0 8px 32px ${app.bgColor}30` : 'none'
+                    }}
+                  >
+                    <Image
+                      src={app.image}
+                      alt="Flasti Logo"
+                      width={70}
+                      height={70}
+                      className="opacity-80 drop-shadow-md app-logo-image"
+                    />
+                  </div>
+                  <div className="app-card-content">
+                    <div className="app-card-title">{app.title}</div>
+                    <div className="coming-soon-label">
+                      <Clock size={12} />
+                      <span>En desarrollo</span>
+                    </div>
+                    <div className="app-card-stats coming-soon-stats">
+                      <div className="flex items-center gap-1 opacity-50">
+                        <TrendingUp size={12} />
+                        <span>--</span>
+                      </div>
+                      <div className="flex items-center gap-1 opacity-50">
+                        <DollarSign size={12} />
+                        <span>--</span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Promociones destacadas */}
+      {/* Gamificación y progreso */}
       <div className="featured-promos">
         {promotions.map((promo) => (
-          <div
+          <Link
             key={promo.id}
+            href={promo.title === 'Clasificación' ? '/dashboard/clasificacion' : `/dashboard/${promo.title.toLowerCase()}`}
             className="promo-card"
             style={{
               backgroundImage: `url(${promo.image})`,
@@ -244,65 +436,11 @@ export default function CasinoContent() {
               <p className="promo-card-description">{promo.description}</p>
               <div className="promo-card-action">
                 {promo.icon}
-                <span>Descubrir</span>
+                <span>Explorar</span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
-      </div>
-
-      {/* Sección de aplicaciones populares */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Aplicaciones Populares</h2>
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Buscar aplicación..."
-                className="bg-card/50 border border-white/5 rounded-lg py-2 pl-10 pr-4 text-sm w-64"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/60" size={16} />
-            </div>
-            <Button variant="outline" size="icon">
-              <Filter size={16} />
-            </Button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {featuredApps.map((app) => (
-            <div key={app.id} className="app-card">
-              <div
-                className="app-card-image"
-                style={{
-                  backgroundImage: `url(${app.image})`,
-                  backgroundColor: '#1E1B2E' // Fallback color
-                }}
-              >
-                {app.isNew && (
-                  <div className="badge badge-new absolute top-2 left-2">NEW</div>
-                )}
-                {app.isHot && (
-                  <div className="badge badge-hot absolute top-2 left-2">HOT</div>
-                )}
-              </div>
-              <div className="app-card-content">
-                <div className="app-card-title">{app.title}</div>
-                <div className="app-card-stats">
-                  <div className="flex items-center gap-1">
-                    <TrendingUp size={12} />
-                    <span>{app.clicks}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <DollarSign size={12} />
-                    <span>{app.commission}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Progreso de Nivel */}

@@ -20,7 +20,6 @@ const ThemeSelector = ({ variant = 'icon', size = 'md' }: ThemeSelectorProps) =>
   const themes = [
     { id: 'light', label: t('modoClaro'), icon: <Sun size={16} /> },
     { id: 'dark', label: t('modoOscuro'), icon: <Moon size={16} /> },
-    { id: 'system', label: 'Sistema', icon: <Laptop size={16} /> },
   ];
 
   const currentTheme = themes.find((t) => t.id === theme) || themes[0];
@@ -49,21 +48,17 @@ const ThemeSelector = ({ variant = 'icon', size = 'md' }: ThemeSelectorProps) =>
   return (
     <div className="relative" ref={dropdownRef}>
       {variant === 'icon' ? (
-        <Button
-          variant="ghost"
-          size="icon"
-          className={sizeClasses[size].button}
+        <button
+          className="flex items-center justify-center text-sm text-white hover:text-white/90 transition-colors py-1.5 px-3 rounded-lg bg-[rgba(20,20,25,0.95)] hover:bg-[rgba(30,30,35,0.95)] border border-white/5"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Cambiar tema"
         >
           {theme === 'dark' ? (
-            <Moon className={sizeClasses[size].icon} />
-          ) : theme === 'light' ? (
-            <Sun className={sizeClasses[size].icon} />
+            <Moon size={14} />
           ) : (
-            <Palette className={sizeClasses[size].icon} />
+            <Sun size={14} />
           )}
-        </Button>
+        </button>
       ) : (
         <Button
           variant="outline"
@@ -77,22 +72,27 @@ const ThemeSelector = ({ variant = 'icon', size = 'md' }: ThemeSelectorProps) =>
       )}
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-card/95 backdrop-blur-md border border-border/30 z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-[rgba(20,20,25,0.95)] backdrop-blur-md border border-white/5 rounded-lg shadow-xl z-50">
           <div className="py-1">
             {themes.map((t) => (
               <button
                 key={t.id}
                 onClick={() => {
-                  setTheme(t.id === 'system' ? 'dark' : t.id as 'light' | 'dark');
+                  setTheme(t.id as 'light' | 'dark');
                   setIsOpen(false);
+
+                  // Forzar una recarga de la página para asegurar que el tema se aplique correctamente
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
                 }}
-                className="flex items-center justify-between w-full px-4 py-2 text-sm text-foreground/80 hover:bg-primary/10 hover:text-primary transition-colors"
+                className="flex items-center justify-between w-full px-4 py-2 text-sm text-white hover:bg-white/5 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   {t.icon}
                   <span>{t.label}</span>
                 </div>
-                {theme === t.id && <Check size={14} className="text-primary" />}
+                {theme === t.id && <Check size={14} className="text-white" />}
               </button>
             ))}
           </div>
