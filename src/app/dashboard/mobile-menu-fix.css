@@ -1,0 +1,34 @@
+/* Ajustes para el menú móvil */
+
+/* Asegurar que el menú móvil se vea completo sin barra de desplazamiento */
+@media (max-width: 767px) {
+  .casino-sidebar {
+    max-height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding-bottom: 100px; /* Espacio adicional al final */
+  }
+  
+  /* Ocultar la barra de desplazamiento para Chrome, Safari y Opera */
+  .casino-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Ajustar el tamaño de los elementos del menú para que quepan mejor */
+  .sidebar-nav-item {
+    padding: 10px 15px;
+    margin-bottom: 5px;
+  }
+  
+  /* Asegurar que el último elemento tenga suficiente espacio */
+  .sidebar-nav-item:last-child {
+    margin-bottom: 80px;
+  }
+  
+  /* Mejorar la visualización del menú cuando está abierto */
+  .casino-sidebar.expanded {
+    width: 260px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+}

@@ -22,7 +22,8 @@ import {
   Menu,
   X,
   Lightbulb,
-  Megaphone
+  Megaphone,
+  User
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -35,6 +36,7 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 
 // Importar estilos
 import './casino-theme.css';
+import './mobile-menu-fix.css';
 
 interface CasinoLayoutProps {
   children: React.ReactNode;
@@ -79,6 +81,7 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
   // Navegación del sidebar
   const sidebarItems = [
     { id: 'home', icon: <Home size={20} />, label: t('inicio'), href: '/dashboard', color: '#6e8efb' },
+    { id: 'profile', icon: <User size={20} />, label: 'Mi Perfil', href: '/dashboard/perfil', color: '#8b5cf6' },
     { id: 'links', icon: <Link2 size={20} />, label: t('misEnlaces'), href: '/dashboard/links', color: '#ec4899' },
     { id: 'stats', icon: <BarChart2 size={20} />, label: t('estadisticas'), href: '/dashboard/stats', color: '#9333ea' },
     { id: 'apps', icon: <AppWindow size={20} />, label: t('apps'), href: '/dashboard/aplicaciones', color: '#0ea5e9' },

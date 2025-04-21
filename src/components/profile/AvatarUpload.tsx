@@ -275,10 +275,10 @@ export default function AvatarUpload() {
             {profile?.avatar_url ? (
               <div className="h-full w-full flex items-center justify-center">
                 <img
-                  src={profile.avatar_url}
+                  src={`${profile.avatar_url}?${new Date().getTime()}`}
                   alt="Foto de perfil"
                   className="rounded-full"
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', maxWidth: '100%', maxHeight: '100%' }}
                 />
               </div>
             ) : (
