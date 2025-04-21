@@ -345,12 +345,13 @@ export default function CasinoContent() {
                       justifyContent: 'center'
                     }}
                   >
-                    <Image
+                    <img
                       src={app.image}
                       alt={app.title}
                       width={70}
                       height={70}
                       className="active-app-logo"
+                      style={{ objectFit: 'contain' }}
                     />
 
                     {app.isNew && (
@@ -387,12 +388,13 @@ export default function CasinoContent() {
                       boxShadow: app.bgColor ? `0 8px 32px ${app.bgColor}30` : 'none'
                     }}
                   >
-                    <Image
+                    <img
                       src={app.image}
                       alt="Flasti Logo"
                       width={70}
                       height={70}
                       className="opacity-80 drop-shadow-md app-logo-image"
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <div className="app-card-content">

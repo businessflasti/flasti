@@ -25,7 +25,7 @@ export default function AplicacionesPage() {
     {
       id: 1,
       name: "Flasti Imágenes",
-      icon: <img src="/apps/active/images-logo.png" alt="Flasti Images" className="w-6 h-6 rounded-full" />,
+      icon: <img src="/apps/active/images-logo.png" alt="Flasti Images" className="w-6 h-6 rounded-full" style={{ objectFit: 'contain' }} />,
       description: "Genera imágenes impresionantes con inteligencia artificial. Ideal para marketing, diseño y contenido creativo.",
       bgGradient: "from-[#ec4899]/20 to-[#f97316]/20",
       iconBg: "bg-[#ec4899]/10",
@@ -36,7 +36,7 @@ export default function AplicacionesPage() {
     {
       id: 2,
       name: "Flasti AI",
-      icon: <img src="/apps/active/ia-logo.png" alt="Flasti AI" className="w-6 h-6 rounded-full" />,
+      icon: <img src="/apps/active/ia-logo.png" alt="Flasti AI" className="w-6 h-6 rounded-full" style={{ objectFit: 'contain' }} />,
       description: "Asistente de IA avanzado para responder preguntas, generar contenido y automatizar tareas cotidianas.",
       bgGradient: "from-[#9333ea]/20 to-[#ec4899]/20",
       iconBg: "bg-[#9333ea]/10",

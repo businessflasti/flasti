@@ -24,12 +24,13 @@ export default function FlastiAIPage() {
           <Card className="overflow-hidden border-border/50 h-full">
             <div className="relative h-64 w-full bg-[#9333ea]/10 flex items-center justify-center">
               <div className="w-32 h-32 rounded-full bg-[#9333ea]/20 flex items-center justify-center">
-                <Image
+                <img
                   src="/apps/active/ia-logo.png"
                   alt="Flasti AI"
                   width={120}
                   height={120}
                   className="drop-shadow-lg rounded-full"
+                  style={{ objectFit: 'contain' }}
                 />
               </div>
               <div className="absolute top-4 right-4">
