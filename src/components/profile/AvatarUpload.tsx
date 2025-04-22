@@ -192,8 +192,8 @@ export default function AvatarUpload() {
                 />
               </div>
             ) : (
-              <div className="h-28 w-28 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white">
-                <img src="/images/default-avatar.png" alt="Avatar" className="w-20 h-20 rounded-full" />
+              <div className="h-28 w-28 rounded-full overflow-hidden">
+                <img src="/images/default-avatar.png" alt="Avatar" className="w-full h-full object-cover" />
               </div>
             )}
           </div>
