@@ -20,10 +20,10 @@ export default function AvatarUpload() {
   // Configuración fija para el recorte circular
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
-    width: 100, // Usar el 100% del ancho disponible
-    height: 100, // Usar el 100% del alto disponible
-    x: 0, // Centrado exacto
-    y: 0, // Centrado exacto
+    width: 80, // Usar solo el 80% del ancho disponible para evitar tocar los bordes
+    height: 80, // Usar solo el 80% del alto disponible para evitar tocar los bordes
+    x: 10, // Centrado con margen del 10%
+    y: 10, // Centrado con margen del 10%
     aspect: 1 // Mantener relación de aspecto 1:1 para avatar circular
   });
   const [completedCrop, setCompletedCrop] = useState<any>(null);
@@ -343,7 +343,7 @@ export default function AvatarUpload() {
 
           <div className="flex flex-col items-center justify-center py-4">
             <p className="text-sm text-foreground/70 mb-4 text-center">
-              Tu foto de perfil se mostrará en formato circular
+              Tu foto de perfil se mostrará en formato circular perfectamente redondo
             </p>
             {previewUrl && (
               <ReactCrop
@@ -354,16 +354,19 @@ export default function AvatarUpload() {
                 circularCrop
                 disabled={true} // Deshabilitar interacción del usuario con el recorte
               >
-                <img
-                  ref={imgRef}
-                  src={previewUrl}
-                  alt="Preview"
-                  className="max-h-[300px] max-w-full object-contain bg-background/50 rounded-lg"
-                  onLoad={() => {
-                    // Usar siempre el recorte fijo predefinido
-                    setCompletedCrop(crop);
-                  }}
-                />
+                <div className="w-[300px] h-[300px] flex items-center justify-center bg-background/50 rounded-lg overflow-hidden">
+                  <img
+                    ref={imgRef}
+                    src={previewUrl}
+                    alt="Preview"
+                    className="max-w-none max-h-none object-cover"
+                    style={{ minWidth: '100%', minHeight: '100%' }}
+                    onLoad={() => {
+                      // Usar siempre el recorte fijo predefinido
+                      setCompletedCrop(crop);
+                    }}
+                  />
+                </div>
               </ReactCrop>
             )}
           </div>
