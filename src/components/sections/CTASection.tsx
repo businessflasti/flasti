@@ -21,7 +21,7 @@ const CTASection = () => {
       <div className="container-custom relative z-10">
         <div className="glass-card border border-white/10 rounded-2xl p-6 max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-5 text-white dark:text-white light:text-black">
-            {t('conoceFlasti')} <span className="text-gradient">Flasti</span>
+            {t('conoceFlasti')}
           </h2>
 
           <p className="text-foreground/70 text-sm max-w-2xl mx-auto mb-8">
