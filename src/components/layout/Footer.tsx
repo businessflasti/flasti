@@ -176,7 +176,7 @@ const Footer = () => {
         </div>
 
         {/* Enlaces de móvil - Diseño moderno */}
-        <div className="md:hidden">
+        <div className="md:hidden mobile-footer-blocks">
           <div className="flex justify-center mb-6">
             <Logo size="md" />
           </div>
@@ -207,7 +207,7 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10">
+            <div className="dark:bg-[#1a1a22] bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10">
               <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
                 {t('legal')}
