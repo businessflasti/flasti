@@ -49,7 +49,7 @@ const allFaqs = [
   {
     id: 'pagos-1',
     question: '¿Cuándo recibo mis pagos?',
-    answer: 'Los pagos se procesan cada 15 días. Una vez que solicitas un retiro, recibirás tu pago en un plazo de 1-3 días hábiles, dependiendo del método de pago seleccionado. Recuerda que debes tener un saldo mínimo para solicitar un retiro.',
+    answer: 'Los pagos se procesan cada 15 días. Una vez que solicitas un retiro, recibirás tu pago en un plazo de 1-3 días hábiles, dependiendo del método de pago seleccionado. Puedes solicitar un retiro de cualquier cantidad disponible en tu balance.',
     category: 'pagos'
   },
   {
@@ -61,7 +61,7 @@ const allFaqs = [
   {
     id: 'pagos-3',
     question: '¿Cuál es el monto mínimo para solicitar un retiro?',
-    answer: 'El monto mínimo para solicitar un retiro es de $10 USD. Una vez que alcances este monto, podrás solicitar un retiro a través de la sección "Retiros" en tu dashboard.',
+    answer: 'No hay monto mínimo para solicitar un retiro. Puedes retirar cualquier cantidad disponible en tu balance a través de la sección "Retiros" en tu dashboard.',
     category: 'pagos'
   },
   {

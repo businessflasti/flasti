@@ -36,7 +36,7 @@ class WithdrawalService {
   private initializeWebSocket() {
     // TODO: Reemplazar con la URL real del servidor WebSocket
     const wsUrl = 'ws://localhost:3001';
-    
+
     try {
       this.ws = new WebSocket(wsUrl);
 
@@ -80,9 +80,9 @@ class WithdrawalService {
   }
 
   public validateWithdrawalRequest(userId: string, amount: number): { valid: boolean; message?: string } {
-    // Validar monto mínimo de $2 USD
-    if (amount < 2) {
-      return { valid: false, message: 'El monto mínimo de retiro es $2 USD' };
+    // Validar que el monto sea mayor que cero
+    if (amount <= 0) {
+      return { valid: false, message: 'El monto debe ser mayor que cero' };
     }
 
     // Simular validación de balance disponible
@@ -222,22 +222,21 @@ class WithdrawalService {
     return userBalance >= amount;
   }
 
-  // Verificar si el monto de retiro cumple con el mínimo requerido
+  // Verificar si el monto de retiro es válido (mayor que cero)
   public validateWithdrawalAmount(amount: number): boolean {
-    const MIN_WITHDRAWAL_AMOUNT = 2; // Mínimo de $2 USD
-    return amount >= MIN_WITHDRAWAL_AMOUNT;
+    return amount > 0;
   }
 
-  // Validar una solicitud de retiro (monto mínimo y balance suficiente)
+  // Validar una solicitud de retiro (monto válido y balance suficiente)
   public validateWithdrawalRequest(userId: string, amount: number): { valid: boolean; message?: string } {
     if (!this.validateWithdrawalAmount(amount)) {
-      return { valid: false, message: 'El monto mínimo de retiro es de $2 USD' };
+      return { valid: false, message: 'El monto debe ser mayor que cero' };
     }
-    
+
     if (!this.checkUserBalance(userId, amount)) {
       return { valid: false, message: 'No tienes suficiente balance disponible para este retiro' };
     }
-    
+
     return { valid: true };
   }
 }

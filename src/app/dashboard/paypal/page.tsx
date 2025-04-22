@@ -151,11 +151,7 @@ export default function PayPalWithdrawalPage() {
 
     const amountValue = parseFloat(amount);
 
-    if (amountValue < 10) {
-      setError("El monto mínimo de retiro es $10 USD");
-      setIsLoading(false);
-      return;
-    }
+    // Se ha eliminado la validación de monto mínimo
 
     if (amountValue > balance) {
       setError("No tienes suficiente balance para este retiro");
@@ -329,7 +325,7 @@ export default function PayPalWithdrawalPage() {
                         <Input
                           id="amount"
                           type="number"
-                          min="10"
+                          min="0.01"
                           step="0.01"
                           placeholder="0.00"
                           className="pl-8"
@@ -338,7 +334,7 @@ export default function PayPalWithdrawalPage() {
                           required
                         />
                       </div>
-                      <p className="text-xs text-foreground/60">Monto mínimo: $10.00 USD</p>
+                      <p className="text-xs text-foreground/60">Sin monto mínimo de retiro</p>
                     </div>
 
                     {error && (
@@ -402,7 +398,7 @@ export default function PayPalWithdrawalPage() {
                         ¿Cuál es el monto mínimo de retiro?
                       </AccordionTrigger>
                       <AccordionContent className="text-sm text-foreground/70">
-                        El monto mínimo para solicitar un retiro es de $10 USD.
+                        No hay monto mínimo para solicitar un retiro. Puedes retirar cualquier cantidad disponible en tu balance.
                       </AccordionContent>
                     </AccordionItem>
 
