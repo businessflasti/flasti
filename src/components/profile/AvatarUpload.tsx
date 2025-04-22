@@ -192,8 +192,8 @@ export default function AvatarUpload() {
                 />
               </div>
             ) : (
-              <div className="h-28 w-28 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white text-3xl font-bold">
-                {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+              <div className="h-28 w-28 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white">
+                <img src="/images/default-avatar.png" alt="Avatar" className="w-20 h-20 rounded-full" />
               </div>
             )}
           </div>

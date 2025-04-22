@@ -13,27 +13,27 @@ export default function OnboardingModal() {
   const steps = [
     {
       title: "¡Bienvenido a Flasti!",
-      description: "Estamos emocionados de tenerte con nosotros. Descubre cómo generar ingresos recomendando nuestras aplicaciones y servicios.",
+      description: "Estamos emocionados de tenerte con nosotros. Descubre cómo obtener recompensas compartiendo nuestras aplicaciones y servicios.",
       image: "/images/onboarding/welcome.svg"
     },
     {
       title: "Tu Panel Personal",
-      description: "Este es tu centro de operaciones donde podrás ver tus estadísticas, ganancias, enlaces de afiliado y gestionar tus retiros.",
+      description: "Este es tu centro de operaciones donde podrás ver tus estadísticas, recompensas, enlaces personalizados y gestionar tus retiros.",
       image: "/images/onboarding/dashboard.svg"
     },
     {
-      title: "Genera Ingresos",
-      description: "Recomienda nuestras aplicaciones usando tus enlaces únicos y gana hasta un 70% de comisión por cada venta que generes.",
+      title: "Obtén Recompensas",
+      description: "Comparte nuestras aplicaciones usando tus enlaces únicos y recibe hasta un 70% de comisión por cada activación exitosa.",
       image: "/images/onboarding/earnings.svg"
     },
     {
       title: "Sistema de Niveles",
-      description: "Comienza con un 50% de comisión y sube hasta el 70% a medida que generes más ventas. ¡Más ventas = mayores comisiones!",
+      description: "Comienza con un 50% de comisión y avanza hasta el 70% a medida que compartes más. ¡Más participación = mayores beneficios!",
       image: "/images/onboarding/level-up.svg"
     },
     {
-      title: "¡Listo para Triunfar!",
-      description: "Ya tienes todo lo necesario para comenzar a generar ingresos con Flasti. Recuerda que nuestro equipo está aquí para ayudarte en cada paso.",
+      title: "¡Listo para Comenzar!",
+      description: "Ya tienes todo lo necesario para empezar a recibir recompensas con Flasti. Nuestro equipo está aquí para apoyarte en cada paso del camino.",
       image: "/images/onboarding/success.svg"
     }
   ];
@@ -114,7 +114,22 @@ export default function OnboardingModal() {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
+      // Guardar que el usuario ha visto el onboarding
+      try {
+        if (user) {
+          localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
+        }
+      } catch (error) {
+        console.error('Error al guardar el estado del onboarding:', error);
+      }
+
+      // Cerrar el onboarding y recargar la página
       closeOnboarding();
+
+      // Recargar la página después de un breve retraso para permitir que se cierre el modal
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 300);
     }
   };
 
