@@ -330,7 +330,9 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
                     </div>
                   ) : (
                     <div className="w-9 h-9 rounded-full bg-gradient-to-r from-[#1a1a1a] to-[#333333] flex items-center justify-center text-white font-bold">
-                      {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+                      <span className="inline-flex items-center justify-center h-full w-full text-center">
+                        {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
+                      </span>
                     </div>
                   )}
                   <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-background transform translate-x-1/2 translate-y-1/2 animate-pulse"></div>

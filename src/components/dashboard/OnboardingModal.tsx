@@ -42,20 +42,23 @@ export default function OnboardingModal() {
   useEffect(() => {
     // Función para manejar el evento personalizado
     const handleShowOnboarding = (event: CustomEvent) => {
-      // Desactivado: ya no mostramos el onboarding automáticamente
-      // setIsVisible(true);
+      // Permitir mostrar el onboarding manualmente mediante evento
+      setIsVisible(true);
     };
 
     // Registrar el listener para el evento
     window.addEventListener('showOnboarding', handleShowOnboarding as EventListener);
 
-    // Desactivado: ya no mostramos el onboarding para nuevos usuarios
-    // Siempre establecemos que el usuario ya ha visto el onboarding
+    // Verificar si es un nuevo usuario que nunca ha visto el onboarding
     if (user) {
       try {
-        localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
+        const hasSeenOnboarding = localStorage.getItem(`flasti_hasSeenOnboarding_${user.id}`);
+        if (!hasSeenOnboarding) {
+          console.log('Mostrando onboarding para nuevo usuario:', user.id);
+          setIsVisible(true);
+        }
       } catch (error) {
-        console.error('Error al guardar el estado del onboarding:', error);
+        console.error('Error al verificar estado del onboarding:', error);
       }
     }
 
