@@ -18,7 +18,7 @@ export const LanguageSelector = () => {
   };
 
   return (
-    <div className="relative group">
+    <div className="relative group hidden md:block">
       <button
         onClick={toggleLanguage}
         className="flex items-center gap-1.5 text-sm text-white hover:text-white/90 transition-colors py-1.5 px-3 rounded-lg bg-[rgba(20,20,25,0.95)] hover:bg-[rgba(30,30,35,0.95)] border border-white/5"
