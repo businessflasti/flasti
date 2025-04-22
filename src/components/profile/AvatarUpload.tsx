@@ -60,14 +60,16 @@ export default function AvatarUpload() {
 
     setIsUploading(true);
     try {
+      // Crear un timestamp único para evitar problemas de caché
+      const timestamp = Date.now();
       // Subir directamente el archivo seleccionado sin recorte
-      const fileName = `avatar-${user.id}-${Date.now()}.${selectedFile.name.split('.').pop()}`;
+      const fileName = `avatar-${user.id}-${timestamp}.${selectedFile.name.split('.').pop()}`;
 
       // Subir a Supabase Storage
       const { data, error } = await supabase.storage
         .from('avatars')
         .upload(fileName, selectedFile, {
-          cacheControl: '3600',
+          cacheControl: '0', // Sin caché para asegurar que se cargue la nueva imagen
           upsert: true
         });
 
@@ -77,7 +79,7 @@ export default function AvatarUpload() {
         return;
       }
 
-      // Obtener la URL pública
+      // Obtener la URL pública con el timestamp para evitar caché
       const { data: urlData } = supabase.storage
         .from('avatars')
         .getPublicUrl(fileName);
@@ -87,14 +89,24 @@ export default function AvatarUpload() {
         return;
       }
 
+      // Añadir timestamp a la URL para evitar caché
+      const publicUrlWithTimestamp = `${urlData.publicUrl}?t=${timestamp}`;
+
       // Actualizar el perfil del usuario
-      const { error: updateError } = await updateAvatar(urlData.publicUrl);
+      const { error: updateError } = await updateAvatar(publicUrlWithTimestamp);
 
       if (updateError) {
         console.error('Error al actualizar el perfil:', updateError);
         toast.error(`Error al actualizar el perfil: ${updateError.message}`);
         return;
       }
+
+      // Actualizar la imagen mostrada en la interfaz inmediatamente
+      // Esto evita tener que recargar la página
+      const avatarImg = document.querySelectorAll('img[src*="avatar"]');
+      avatarImg.forEach(img => {
+        img.src = publicUrlWithTimestamp;
+      });
 
       toast.success('Foto de perfil actualizada correctamente');
 

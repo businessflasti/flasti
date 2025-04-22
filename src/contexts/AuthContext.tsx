@@ -408,7 +408,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Establecer el usuario en el estado
       setUser(data.user);
 
-      // Crear un perfil básico
+      // Intentar cargar el perfil existente
+      try {
+        // Buscar primero en la tabla profiles
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+
+        if (!profileError && profileData) {
+          console.log('Perfil encontrado en tabla profiles');
+          setProfile(profileData);
+          setLoading(false);
+          return { error: null };
+        }
+
+        // Si no se encuentra en profiles, buscar en user_profiles
+        const { data: userProfileData, error: userProfileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', data.user.id)
+          .single();
+
+        if (!userProfileError && userProfileData) {
+          console.log('Perfil encontrado en tabla user_profiles');
+          // Convertir el formato de user_profiles a profiles
+          const mappedProfile = {
+            id: data.user.id,
+            email: data.user.email || email,
+            phone: userProfileData.phone || '',
+            level: userProfileData.level || 1,
+            balance: userProfileData.balance || 0,
+            avatar_url: userProfileData.avatar_url || null,
+            created_at: userProfileData.created_at || new Date().toISOString()
+          };
+          setProfile(mappedProfile);
+          setLoading(false);
+          return { error: null };
+        }
+      } catch (profileErr) {
+        console.error('Error al cargar perfil existente:', profileErr);
+      }
+
+      // Si no se encuentra perfil, crear uno básico
+      console.log('No se encontró perfil existente, creando uno básico');
       const basicProfile = {
         id: data.user.id,
         email: data.user.email || email,

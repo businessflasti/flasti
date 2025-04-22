@@ -321,16 +321,15 @@ export default function CasinoLayout({ children }: CasinoLayoutProps) {
               <div className="flex items-center gap-3">
                 <div className="user-avatar relative">
                   {profile?.avatar_url ? (
-                    <div className="w-9 h-9 rounded-full" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="w-9 h-9 rounded-full overflow-hidden">
                       <img
                         src={profile.avatar_url}
                         alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
-                        className="w-full h-full rounded-full"
-                        style={{ objectFit: 'contain', maxWidth: '100%', maxHeight: '100%' }}
+                        className="w-full h-full object-cover"
                       />
                     </div>
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-r from-[#1a1a1a] to-[#333333] flex items-center justify-center text-white font-bold rounded-full">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-r from-[#1a1a1a] to-[#333333] flex items-center justify-center text-white font-bold">
                       {profile?.name ? profile.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase() || 'U'}
                     </div>
                   )}
