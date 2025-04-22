@@ -60,11 +60,11 @@ const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] 
               <div className="ml-2 bg-transparent rounded-full p-1 border dark:border-white/10 border-gray-300 flex items-center justify-center w-6 h-6 overflow-hidden">
                 {testimonial.paymentMethod === "paypal" ? (
                   <div className="flex items-center justify-center pl-0.5">
-                    <PayPalIcon className="h-3.5 w-3.5 dark:text-white text-gray-700" />
+                    <PayPalIcon className="h-3.5 w-3.5 text-white" />
                   </div>
                 ) : (
                   <div className="flex items-center justify-center">
-                    <Landmark className="h-3.5 w-3.5 dark:text-white text-gray-700" />
+                    <Landmark className="h-3.5 w-3.5 text-white" />
                   </div>
                 )}
               </div>

@@ -137,7 +137,7 @@ const SimplePricingSection = () => {
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
-          <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block dark:text-white text-black">{t('registrateAhoraBtn')}</span>
+          <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
           <h2 className="text-3xl font-bold font-outfit mb-3"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">{t('unicoPago')}</span></h2>
           <p className="text-foreground/70 max-w-lg mx-auto">
             {t('accedeComienza')}
