@@ -1,0 +1,151 @@
+/* Estilos para mejorar la experiencia móvil del dashboard */
+
+/* Ajustes generales para móviles */
+@media (max-width: 767px) {
+  /* Eliminar scroll de rebote en iOS */
+  html, body {
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Contenedor principal con scroll */
+  .mobile-app-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Ajustes para el header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Ajustes para botones y elementos interactivos */
+  button, a, .interactive-element {
+    cursor: default; /* Eliminar cursor pointer en móviles */
+    -webkit-tap-highlight-color: transparent; /* Eliminar highlight al tocar */
+    touch-action: manipulation; /* Optimizar para touch */
+  }
+  
+  /* Añadir área de toque más grande */
+  .mobile-touch-friendly {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Animaciones más suaves */
+  .hardware-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Ajustes para el menú lateral */
+  .mobile-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 85%;
+    max-width: 300px;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .mobile-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  /* Overlay para cuando el menú está abierto */
+  .mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .mobile-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  /* Ajustes para tarjetas y contenedores */
+  .card, .container {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  
+  /* Ajustes para el footer en móvil */
+  .mobile-footer {
+    background-color: rgba(26, 26, 34, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    bottom: 0;
+    z-index: 40;
+  }
+  
+  /* Eliminar espacios innecesarios en móvil */
+  .mobile-compact {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Ajustar tamaños de texto para móvil */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  h3 {
+    font-size: 1.125rem !important;
+  }
+  
+  p, span, div {
+    font-size: 0.9375rem;
+  }
+  
+  /* Ajustes para botones del menú vertical */
+  .vertical-menu-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    width: 100%;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .vertical-menu-button:last-child {
+    border-bottom: none;
+  }
+}

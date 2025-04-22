@@ -36,7 +36,7 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
   // El componente se encargará de mostrar u ocultar la burbuja según la página
 
   return (
-    <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden">
+    <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden mobile-app-container">
       {/* Elementos decorativos futuristas */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl animate-float decorative-element hardware-accelerated"></div>

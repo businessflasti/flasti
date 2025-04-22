@@ -122,6 +122,13 @@ export default function AvatarUpload() {
           size,
           size
         );
+
+        // Crear un recorte circular
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.beginPath();
+        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
       } catch (drawError) {
         console.error('Error al dibujar la imagen en el canvas:', drawError);
         return null;

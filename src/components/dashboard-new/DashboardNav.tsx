@@ -61,7 +61,7 @@ export default function DashboardNav() {
   };
 
   return (
-    <header className="w-full py-4 border-b border-border/20 bg-card/70 backdrop-blur-md sticky top-0 z-50 hardware-accelerated">
+    <header className="w-full py-2 border-b border-border/20 bg-card/70 backdrop-blur-md sticky top-0 z-50 hardware-accelerated">
       <div className="container mx-auto px-5 flex items-center justify-between">
         {/* Logo y botón de menú móvil */}
         <div className="flex items-center gap-4">
@@ -116,12 +116,12 @@ export default function DashboardNav() {
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-40 bg-background/95 backdrop-blur-md animate-fadeIn hardware-accelerated">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-0">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`p-4 rounded-lg flex items-center gap-3 transition-colors mobile-touch-friendly hardware-accelerated ${
+                  className={`p-4 border-b border-border/10 flex items-center gap-3 transition-colors mobile-touch-friendly hardware-accelerated vertical-menu-button ${
                     pathname === item.href
                       ? 'bg-primary/10 text-primary'
                       : 'hover:bg-foreground/5 text-foreground/70 hover:text-foreground'

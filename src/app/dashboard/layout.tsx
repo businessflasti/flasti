@@ -7,6 +7,9 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import OnboardingModal from '@/components/dashboard/OnboardingModal';
 import GamificationProviders from '@/components/providers/GamificationProviders';
 
+// Importar estilos para mejorar la experiencia móvil
+import '@/styles/mobile-app.css';
+
 // No se puede exportar metadata desde un componente 'use client'
 // Los metadatos se manejarán a nivel de configuración global
 
