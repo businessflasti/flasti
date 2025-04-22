@@ -17,12 +17,13 @@ export default function AvatarUpload() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // Configuración fija para el recorte circular
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
-    width: 90, // Ligeramente menor para evitar recortes extremos
-    height: 90,
-    x: 5, // Centrado con un pequeño margen
-    y: 5,
+    width: 100, // Usar el 100% del ancho disponible
+    height: 100, // Usar el 100% del alto disponible
+    x: 0, // Centrado exacto
+    y: 0, // Centrado exacto
     aspect: 1 // Mantener relación de aspecto 1:1 para avatar circular
   });
   const [completedCrop, setCompletedCrop] = useState<any>(null);
@@ -337,17 +338,21 @@ export default function AvatarUpload() {
       >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Ajustar foto de perfil</DialogTitle>
+            <DialogTitle>Previsualizar foto de perfil</DialogTitle>
           </DialogHeader>
 
           <div className="flex flex-col items-center justify-center py-4">
+            <p className="text-sm text-foreground/70 mb-4 text-center">
+              Tu foto de perfil se mostrará en formato circular
+            </p>
             {previewUrl && (
               <ReactCrop
                 crop={crop}
-                onChange={(c) => setCrop(c)}
-                onComplete={(c) => setCompletedCrop(c)}
+                onChange={(c) => setCrop(crop)} // Mantener el crop fijo, ignorando cambios
+                onComplete={(c) => setCompletedCrop(crop)} // Usar siempre el crop fijo
                 aspect={1}
                 circularCrop
+                disabled={true} // Deshabilitar interacción del usuario con el recorte
               >
                 <img
                   ref={imgRef}
@@ -355,20 +360,8 @@ export default function AvatarUpload() {
                   alt="Preview"
                   className="max-h-[300px] max-w-full object-contain bg-background/50 rounded-lg"
                   onLoad={() => {
-                    // Asegurarse de que la imagen esté cargada antes de permitir el recorte
-                    if (!completedCrop) {
-                      // Establecer un recorte inicial centrado
-                      const initialCrop = {
-                        unit: '%',
-                        width: 90,
-                        height: 90,
-                        x: 5,
-                        y: 5,
-                        aspect: 1
-                      };
-                      setCrop(initialCrop);
-                      setCompletedCrop(initialCrop);
-                    }
+                    // Usar siempre el recorte fijo predefinido
+                    setCompletedCrop(crop);
                   }}
                 />
               </ReactCrop>
@@ -399,7 +392,7 @@ export default function AvatarUpload() {
               ) : (
                 <>
                   <Check size={16} className="mr-2" />
-                  Guardar
+                  Usar esta foto
                 </>
               )}
             </Button>
