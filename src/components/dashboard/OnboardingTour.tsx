@@ -116,18 +116,27 @@ export default function OnboardingTour() {
     }
   ];
 
-  // Verificar si es la primera visita del usuario - DESACTIVADO
+  // Verificar si es la primera visita del usuario - ACTIVADO
   useEffect(() => {
     if (!user) return;
 
     try {
-      // Siempre establecer que el usuario ya ha visto el tour
-      localStorage.setItem(`flasti_hasSeenTour_${user.id}`, 'true');
+      // Verificar si el usuario ya ha visto el tour
+      const hasSeenTour = localStorage.getItem(`flasti_hasSeenTour_${user.id}`);
 
-      // Nunca mostrar el tour
-      setIsVisible(false);
+      // Mostrar el tour para nuevos usuarios
+      if (!hasSeenTour) {
+        console.log('Mostrando tour de onboarding para nuevo usuario');
+        // Esperar a que la página se cargue completamente
+        setTimeout(() => {
+          // Asegurarse de que el usuario esté en la parte superior de la página
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setIsVisible(true);
+          updateTooltipPosition();
+        }, 1000);
+      }
     } catch (err) {
-      console.error('Error al guardar el estado del tour:', err);
+      console.error('Error al verificar el estado del tour:', err);
     }
   }, [user]);
 
@@ -377,17 +386,24 @@ export default function OnboardingTour() {
       return;
     }
 
-    setIsVisible(false);
-    // Guardar con el ID del usuario para que sea único por cuenta
-    localStorage.setItem(`flasti_hasSeenTour_${user.id}`, 'true');
-
-    // Limpiar todos los resaltados
+    // Primero limpiar todos los resaltados para evitar efectos visuales extraños
     document.querySelectorAll('.tour-highlight').forEach(el => {
       el.classList.remove('tour-highlight');
     });
 
-    // Notificar que el tour ha sido completado
-    toast.success('¡Felicidades! Has completado el tour de introducción. Ahora puedes comenzar a usar la plataforma.');
+    // Eliminar cualquier clase que pueda afectar el scroll
+    document.body.classList.remove('tour-active');
+
+    // Guardar con el ID del usuario para que sea único por cuenta
+    localStorage.setItem(`flasti_hasSeenTour_${user.id}`, 'true');
+
+    // Ocultar el tour sin animaciones
+    setIsVisible(false);
+
+    // Notificar que el tour ha sido completado (con un pequeño retraso para evitar solapamiento)
+    setTimeout(() => {
+      toast.success('¡Felicidades! Has completado el tour de introducción.');
+    }, 300);
   }, [currentStep, tourSteps.length, user]);
 
   // Función para intentar cerrar el tour (solo permitido en el último paso)

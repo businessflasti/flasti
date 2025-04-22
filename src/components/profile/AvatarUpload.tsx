@@ -1,15 +1,12 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Camera, Upload, X, Check } from 'lucide-react';
+import { Camera, X, Check } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
-import ReactCrop, { type Crop } from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 
 export default function AvatarUpload() {
   const { user, profile, updateAvatar } = useAuth();
@@ -17,17 +14,6 @@ export default function AvatarUpload() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  // Configuración fija para el recorte circular
-  const [crop, setCrop] = useState<Crop>({
-    unit: '%',
-    width: 80, // Usar solo el 80% del ancho disponible para evitar tocar los bordes
-    height: 80, // Usar solo el 80% del alto disponible para evitar tocar los bordes
-    x: 10, // Centrado con margen del 10%
-    y: 10, // Centrado con margen del 10%
-    aspect: 1 // Mantener relación de aspecto 1:1 para avatar circular
-  });
-  const [completedCrop, setCompletedCrop] = useState<any>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Función para abrir el selector de archivos
@@ -65,102 +51,7 @@ export default function AvatarUpload() {
     }
   };
 
-  // Función para generar la imagen recortada
-  const generateCroppedImage = useCallback(async () => {
-    if (!imgRef.current || !completedCrop) {
-      console.error('Error: No hay imagen de referencia o recorte completado');
-      return null;
-    }
-
-    try {
-      const image = imgRef.current;
-      const canvas = document.createElement('canvas');
-      const scaleX = image.naturalWidth / image.width;
-      const scaleY = image.naturalHeight / image.height;
-      const ctx = canvas.getContext('2d');
-
-      if (!ctx) {
-        console.error('Error: No se pudo obtener el contexto del canvas');
-        return null;
-      }
-
-      // Asegurarse de que las dimensiones sean válidas
-      if (completedCrop.width <= 0 || completedCrop.height <= 0) {
-        console.error('Error: Dimensiones de recorte inválidas', completedCrop);
-        return null;
-      }
-
-      // Usar un tamaño estándar para el avatar
-      const size = 400; // Tamaño más grande para mejor calidad
-      canvas.width = size;
-      canvas.height = size;
-
-      // Limpiar el canvas antes de dibujar
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Asegurar que el fondo sea transparente
-      ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Dibujar la imagen recortada en el canvas
-      try {
-        // Calcular las dimensiones de origen
-        const sourceX = completedCrop.x * scaleX;
-        const sourceY = completedCrop.y * scaleY;
-        const sourceWidth = completedCrop.width * scaleX;
-        const sourceHeight = completedCrop.height * scaleY;
-
-        // Dibujar la imagen manteniendo la relación de aspecto 1:1
-        ctx.drawImage(
-          image,
-          sourceX,
-          sourceY,
-          sourceWidth,
-          sourceHeight,
-          0,
-          0,
-          size,
-          size
-        );
-
-        // Crear un recorte circular
-        ctx.globalCompositeOperation = 'destination-in';
-        ctx.beginPath();
-        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.fill();
-      } catch (drawError) {
-        console.error('Error al dibujar la imagen en el canvas:', drawError);
-        return null;
-      }
-
-      // Convertir el canvas a blob con buena calidad
-      return new Promise<Blob | null>((resolve) => {
-        try {
-          canvas.toBlob(
-            (blob) => {
-              if (!blob) {
-                console.error('Error: No se pudo generar el blob');
-                resolve(null);
-                return;
-              }
-              resolve(blob);
-            },
-            'image/jpeg',
-            0.92 // Calidad ligeramente reducida para mejor rendimiento
-          );
-        } catch (blobError) {
-          console.error('Error al generar el blob:', blobError);
-          resolve(null);
-        }
-      });
-    } catch (error) {
-      console.error('Error general al procesar la imagen:', error);
-      return null;
-    }
-  }, [completedCrop]);
-
-  // Función para subir la imagen a Supabase Storage
+  // Función simplificada para subir la imagen a Supabase Storage
   const uploadAvatar = async () => {
     if (!user || !selectedFile) {
       toast.error('No hay usuario autenticado o archivo seleccionado');
@@ -169,100 +60,54 @@ export default function AvatarUpload() {
 
     setIsUploading(true);
     try {
-      // Verificar que el recorte esté completo
-      if (!completedCrop || !completedCrop.width || !completedCrop.height) {
-        toast.error('Por favor, ajusta la imagen antes de guardar');
-        setIsUploading(false);
-        return;
-      }
-
-      // Generar la imagen recortada
-      const croppedBlob = await generateCroppedImage();
-      if (!croppedBlob) {
-        toast.error('No se pudo procesar la imagen. Por favor, intenta con otra imagen.');
-        setIsUploading(false);
-        return;
-      }
-
-      // Crear un nuevo archivo con el blob recortado
-      let croppedFile;
-      try {
-        // Asegurarse de que el blob tenga un tamaño razonable
-        if (croppedBlob.size > 5 * 1024 * 1024) {
-          toast.error('La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.');
-          setIsUploading(false);
-          return;
-        }
-
-        // Verificar que el blob sea válido
-        if (croppedBlob.size === 0) {
-          toast.error('La imagen procesada está vacía. Por favor, intenta con otra imagen.');
-          setIsUploading(false);
-          return;
-        }
-
-        croppedFile = new File([croppedBlob], `avatar-${Date.now()}.jpg`, {
-          type: 'image/jpeg',
-        });
-      } catch (fileError) {
-        console.error('Error al crear el archivo:', fileError);
-        toast.error('Error al crear el archivo de imagen');
-        setIsUploading(false);
-        return;
-      }
+      // Subir directamente el archivo seleccionado sin recorte
+      const fileName = `avatar-${user.id}-${Date.now()}.${selectedFile.name.split('.').pop()}`;
 
       // Subir a Supabase Storage
-      const fileName = `avatar-${user.id}-${Date.now()}.jpg`;
-      try {
-        // Subir el nuevo avatar
-        const { data, error } = await supabase.storage
-          .from('avatars')
-          .upload(fileName, croppedFile, {
-            cacheControl: '3600',
-            upsert: true
-          });
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, selectedFile, {
+          cacheControl: '3600',
+          upsert: true
+        });
 
-        if (error) {
-          console.error('Error al subir a Supabase Storage:', error);
-          toast.error(`Error al subir la imagen: ${error.message}`);
-          setIsUploading(false);
-          return;
-        }
-
-        // Obtener la URL pública
-        const { data: urlData } = supabase.storage
-          .from('avatars')
-          .getPublicUrl(fileName);
-
-        if (!urlData || !urlData.publicUrl) {
-          toast.error('No se pudo obtener la URL de la imagen');
-          setIsUploading(false);
-          return;
-        }
-
-        // Actualizar el perfil del usuario
-        const { error: updateError } = await updateAvatar(urlData.publicUrl);
-
-        if (updateError) {
-          console.error('Error al actualizar el perfil:', updateError);
-          toast.error(`Error al actualizar el perfil: ${updateError.message}`);
-          setIsUploading(false);
-          return;
-        }
-
-        toast.success('Foto de perfil actualizada correctamente');
-        setIsDialogOpen(false);
-      } catch (storageError) {
-        console.error('Error en la operación de almacenamiento:', storageError);
-        toast.error('Error al guardar la imagen. Por favor, intenta de nuevo.');
+      if (error) {
+        console.error('Error al subir a Supabase Storage:', error);
+        toast.error(`Error al subir la imagen: ${error.message}`);
+        return;
       }
+
+      // Obtener la URL pública
+      const { data: urlData } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      if (!urlData || !urlData.publicUrl) {
+        toast.error('No se pudo obtener la URL de la imagen');
+        return;
+      }
+
+      // Actualizar el perfil del usuario
+      const { error: updateError } = await updateAvatar(urlData.publicUrl);
+
+      if (updateError) {
+        console.error('Error al actualizar el perfil:', updateError);
+        toast.error(`Error al actualizar el perfil: ${updateError.message}`);
+        return;
+      }
+
+      toast.success('Foto de perfil actualizada correctamente');
+
+      // Cerrar el diálogo y limpiar
+      setIsDialogOpen(false);
+      setSelectedFile(null);
+      setPreviewUrl(null);
+
     } catch (error: any) {
       console.error('Error general al subir avatar:', error);
       toast.error(`Error al subir la imagen: ${error.message || 'Inténtalo de nuevo'}`);
     } finally {
       setIsUploading(false);
-      setSelectedFile(null);
-      setPreviewUrl(null);
     }
   };
 
@@ -270,6 +115,9 @@ export default function AvatarUpload() {
   const handleCancel = () => {
     setIsDialogOpen(false);
     setSelectedFile(null);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setPreviewUrl(null);
   };
 
@@ -285,8 +133,7 @@ export default function AvatarUpload() {
                 <img
                   src={`${profile.avatar_url}?${new Date().getTime()}`}
                   alt="Foto de perfil"
-                  className="rounded-full"
-                  style={{ width: '100%', height: '100%', objectFit: 'contain', maxWidth: '100%', maxHeight: '100%' }}
+                  className="h-full w-full object-cover"
                 />
               </div>
             ) : (
@@ -332,12 +179,11 @@ export default function AvatarUpload() {
         className="hidden"
       />
 
-      {/* Diálogo para recortar imagen */}
+      {/* Diálogo para previsualizar imagen */}
       <Dialog
         open={isDialogOpen}
         onOpenChange={(open) => {
           if (!open) {
-            // Limpiar recursos cuando se cierra el diálogo
             handleCancel();
           }
           setIsDialogOpen(open);
@@ -350,31 +196,16 @@ export default function AvatarUpload() {
 
           <div className="flex flex-col items-center justify-center py-4">
             <p className="text-sm text-foreground/70 mb-4 text-center">
-              Tu foto de perfil se mostrará en formato circular perfectamente redondo
+              Tu foto de perfil se mostrará en formato circular
             </p>
             {previewUrl && (
-              <ReactCrop
-                crop={crop}
-                onChange={(c) => setCrop(crop)} // Mantener el crop fijo, ignorando cambios
-                onComplete={(c) => setCompletedCrop(crop)} // Usar siempre el crop fijo
-                aspect={1}
-                circularCrop
-                disabled={true} // Deshabilitar interacción del usuario con el recorte
-              >
-                <div className="w-[300px] h-[300px] flex items-center justify-center bg-background/50 rounded-lg overflow-hidden">
-                  <img
-                    ref={imgRef}
-                    src={previewUrl}
-                    alt="Preview"
-                    className="max-w-none max-h-none object-cover"
-                    style={{ minWidth: '100%', minHeight: '100%' }}
-                    onLoad={() => {
-                      // Usar siempre el recorte fijo predefinido
-                      setCompletedCrop(crop);
-                    }}
-                  />
-                </div>
-              </ReactCrop>
+              <div className="w-[200px] h-[200px] rounded-full overflow-hidden border-2 border-primary/20">
+                <img
+                  src={previewUrl}
+                  alt="Vista previa"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             )}
           </div>
 

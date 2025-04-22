@@ -54,14 +54,7 @@ const guides = [
     category: 'pagos',
     popular: false
   },
-  {
-    id: 'tutorial-video',
-    title: 'Tutorial en video: Primeros pasos',
-    description: 'Guía visual para comenzar con Flasti',
-    icon: Video,
-    category: 'basico',
-    popular: true
-  },
+
   {
     id: 'optimizar-ganancias',
     title: 'Cómo optimizar tus ganancias',
