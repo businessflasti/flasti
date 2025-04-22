@@ -14,6 +14,8 @@ export default function AvatarUpload() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // Añadir un estado para forzar la actualización del componente
+  const [refreshKey, setRefreshKey] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Función para abrir el selector de archivos
@@ -103,10 +105,44 @@ export default function AvatarUpload() {
 
       // Actualizar la imagen mostrada en la interfaz inmediatamente
       // Esto evita tener que recargar la página
-      const avatarImg = document.querySelectorAll('img[src*="avatar"]');
-      avatarImg.forEach(img => {
-        img.src = publicUrlWithTimestamp;
-      });
+      try {
+        // 1. Actualizar todas las imágenes de avatar en la página
+        const avatarImg = document.querySelectorAll('img[src*="avatar"]');
+        avatarImg.forEach(img => {
+          img.src = publicUrlWithTimestamp;
+        });
+
+        // 2. Actualizar específicamente la imagen en la página de perfil
+        // Usar el ID específico que hemos añadido
+        const profileMainAvatar = document.getElementById('profile-main-avatar');
+        if (profileMainAvatar instanceof HTMLImageElement) {
+          profileMainAvatar.src = publicUrlWithTimestamp;
+        }
+
+        // También buscar por clase para mayor seguridad
+        const profileAvatarByClass = document.querySelector('.profile-avatar-image');
+        if (profileAvatarByClass instanceof HTMLImageElement) {
+          profileAvatarByClass.src = publicUrlWithTimestamp;
+        }
+
+        // Y también por selector más específico
+        const profileAvatarBySelector = document.querySelector('.h-28.w-28.rounded-full.overflow-hidden img');
+        if (profileAvatarBySelector instanceof HTMLImageElement) {
+          profileAvatarBySelector.src = publicUrlWithTimestamp;
+        }
+
+        // 3. Actualizar cualquier otra imagen de perfil que pueda estar en la página
+        const allProfileImages = document.querySelectorAll('img[alt="Foto de perfil"]');
+        allProfileImages.forEach(img => {
+          img.src = publicUrlWithTimestamp;
+        });
+      } catch (updateError) {
+        console.error('Error al actualizar imágenes en la interfaz:', updateError);
+        // No fallar completamente si hay un error al actualizar la interfaz
+      }
+
+      // Forzar la actualización del componente
+      setRefreshKey(prevKey => prevKey + 1);
 
       toast.success('Foto de perfil actualizada correctamente');
 
@@ -114,6 +150,11 @@ export default function AvatarUpload() {
       setIsDialogOpen(false);
       setSelectedFile(null);
       setPreviewUrl(null);
+
+      // Forzar una actualización adicional después de un breve retraso
+      setTimeout(() => {
+        setRefreshKey(prevKey => prevKey + 1);
+      }, 100);
 
     } catch (error: any) {
       console.error('Error general al subir avatar:', error);
@@ -143,9 +184,11 @@ export default function AvatarUpload() {
             {profile?.avatar_url ? (
               <div className="h-full w-full flex items-center justify-center">
                 <img
-                  src={`${profile.avatar_url}?${new Date().getTime()}`}
+                  key={`profile-avatar-${refreshKey}`}
+                  src={`${profile.avatar_url}?t=${new Date().getTime()}-${refreshKey}`}
                   alt="Foto de perfil"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover profile-avatar-image"
+                  id="profile-main-avatar"
                 />
               </div>
             ) : (
