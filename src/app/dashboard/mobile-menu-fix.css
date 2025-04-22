@@ -9,26 +9,44 @@
     -ms-overflow-style: none; /* IE and Edge */
     padding-bottom: 100px; /* Espacio adicional al final */
   }
-  
+
   /* Ocultar la barra de desplazamiento para Chrome, Safari y Opera */
   .casino-sidebar::-webkit-scrollbar {
     display: none;
   }
-  
+
   /* Ajustar el tamaño de los elementos del menú para que quepan mejor */
   .sidebar-nav-item {
-    padding: 10px 15px;
-    margin-bottom: 5px;
+    padding: 8px 15px;
+    margin-bottom: 0;
   }
-  
+
+  /* Ajustar el espacio entre elementos del menú */
+  .sidebar-nav {
+    gap: 0;
+    padding-top: 0;
+  }
+
   /* Asegurar que el último elemento tenga suficiente espacio */
   .sidebar-nav-item:last-child {
-    margin-bottom: 80px;
+    margin-bottom: 20px;
   }
-  
+
   /* Mejorar la visualización del menú cuando está abierto */
   .casino-sidebar.expanded {
     width: 260px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Ajustar márgenes laterales para elementos del menú */
+  .sidebar-nav-item {
+    margin: 0 0.5rem;
+  }
+
+  /* Ajustar tamaño de los iconos en móvil */
+  .sidebar-nav-item-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 0.7rem;
   }
 }
