@@ -422,7 +422,7 @@ export const translations = {
     ofertaTermina: 'The offer ends in:',
 
     // CTA Section
-    conoceFlasti: 'Get to know Flasti',
+    conoceFlasti: 'Meet Flasti',
     confianza: 'Trust',
     relacionesTransparentes: 'Transparent relationships',
     resultados: 'Results',

@@ -142,20 +142,25 @@ const LocationBadge = () => {
         </div>
       ) : (
         <>
-          <div className="w-5 h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10">
-            <img
-              src={`https://flagcdn.com/w20/${locationData.countryCode}.png`}
-              alt={locationData.country}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Si hay error al cargar la bandera, mostrar un globo
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.parentElement?.classList.add('flex', 'items-center', 'justify-center', 'bg-primary/10');
-                const globe = document.createElement('span');
-                globe.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#9333ea]"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
-                e.currentTarget.parentElement?.appendChild(globe);
-              }}
-            />
+          <div className="w-5 h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
+            {locationData.countryCode && locationData.countryCode !== 'global' ? (
+              <img
+                src={`https://flagcdn.com/w20/${locationData.countryCode}.png`}
+                alt={locationData.country}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Si hay error al cargar la bandera, mostrar un globo
+                  e.currentTarget.style.display = 'none';
+                  const globe = document.createElement('span');
+                  globe.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#9333ea]"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
+                  e.currentTarget.parentElement?.appendChild(globe);
+                }}
+              />
+            ) : (
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#9333ea]"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </span>
+            )}
           </div>
           <div className="flex items-center">
             {locationData.city ? (

@@ -162,12 +162,12 @@ const SimplePricingSection = () => {
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <div className="relative w-8 h-8">
+                  <div className="flex items-center justify-center w-6 h-6">
                     <Image
                       src="/logo/isotipo.png"
                       alt="flasti logo"
-                      width={28}
-                      height={28}
+                      width={24}
+                      height={24}
                       className="object-contain"
                       priority
                       unoptimized={true}
