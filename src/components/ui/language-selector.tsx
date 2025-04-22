@@ -31,7 +31,7 @@ const LanguageSelector = () => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative hidden md:block" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 text-sm text-foreground/70 hover:text-foreground transition-colors px-2 py-1 rounded-md border border-border/30 bg-card/30 backdrop-blur-sm"
