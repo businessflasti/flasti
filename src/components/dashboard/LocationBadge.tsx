@@ -25,16 +25,20 @@ const LocationBadge = () => {
           const options: Intl.DateTimeFormatOptions = {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true,
+            hour12: false, // Formato 24 horas para consistencia
             timeZone: timezone
           };
-          timeString = new Date().toLocaleTimeString(navigator.language, options);
+
+          // Usar el idioma del navegador para el formato de hora
+          const browserLang = navigator.language || 'en-US';
+          timeString = new Date().toLocaleTimeString(browserLang, options);
         } else {
           // Si no hay zona horaria, usar la hora local del navegador
-          timeString = new Date().toLocaleTimeString(navigator.language, {
+          const browserLang = navigator.language || 'en-US';
+          timeString = new Date().toLocaleTimeString(browserLang, {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true
+            hour12: false // Formato 24 horas para consistencia
           });
         }
 
@@ -47,7 +51,8 @@ const LocationBadge = () => {
         // En caso de error, usar formato simple
         const simpleTime = new Date().toLocaleTimeString([], {
           hour: '2-digit',
-          minute: '2-digit'
+          minute: '2-digit',
+          hour12: false
         });
         setLocationData(prev => ({ ...prev, time: simpleTime }));
       }
@@ -61,7 +66,7 @@ const LocationBadge = () => {
           country: 'Global',
           countryCode: 'global',
           city: '',
-          time: new Date().toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: true }),
+          time: new Date().toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }),
           loading: false,
           error: false
         });
@@ -79,7 +84,7 @@ const LocationBadge = () => {
           time: new Date().toLocaleTimeString(navigator.language, {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true,
+            hour12: false,
             timeZone: data.timezone
           }),
           loading: false,
@@ -95,7 +100,7 @@ const LocationBadge = () => {
           country: 'Global',
           countryCode: 'global',
           city: '',
-          time: new Date().toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: true }),
+          time: new Date().toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }),
           loading: false,
           error: true
         });
@@ -128,7 +133,7 @@ const LocationBadge = () => {
              'Detectando localização...'}
           </span>
         </div>
-      ) : locationData.error ? (
+      ) : locationData.error || locationData.countryCode === 'global' ? (
         <div className="flex items-center gap-2">
           <Globe className="h-4 w-4 text-[#9333ea]" />
           <span className="text-foreground/80">
@@ -136,9 +141,7 @@ const LocationBadge = () => {
              language === 'en' ? 'Global Access' :
              'Acesso Global'}
           </span>
-          {locationData.time && (
-            <span className="text-foreground/60 border-l border-foreground/20 pl-2">{locationData.time}</span>
-          )}
+          {/* No mostrar el reloj cuando es Acceso Global */}
         </div>
       ) : (
         <>
@@ -149,11 +152,18 @@ const LocationBadge = () => {
                 alt={locationData.country}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  // Si hay error al cargar la bandera, mostrar un globo
-                  e.currentTarget.style.display = 'none';
-                  const globe = document.createElement('span');
-                  globe.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#9333ea]"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
-                  e.currentTarget.parentElement?.appendChild(globe);
+                  // Intentar cargar la bandera nuevamente con una URL alternativa
+                  const img = e.currentTarget;
+                  const countryCode = locationData.countryCode.toLowerCase();
+                  img.src = `https://flagsapi.com/${countryCode.toUpperCase()}/flat/64.png`;
+
+                  // Si aún falla, mostrar un globo
+                  img.onerror = () => {
+                    img.style.display = 'none';
+                    const globe = document.createElement('span');
+                    globe.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#9333ea]"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
+                    img.parentElement?.appendChild(globe);
+                  };
                 }}
               />
             ) : (
