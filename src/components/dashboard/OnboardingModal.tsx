@@ -70,9 +70,6 @@ export default function OnboardingModal() {
 
   // Cerrar el onboarding
   const closeOnboarding = () => {
-    // Guardar que el usuario ha visto el onboarding
-    saveOnboardingState();
-
     // Animación suave al cerrar
     const modal = document.querySelector('.onboarding-modal');
     if (modal) {
@@ -82,59 +79,27 @@ export default function OnboardingModal() {
       setTimeout(() => {
         setIsVisible(false);
         setCurrentStep(0);
-        // Restaurar la interactividad de la página
-        resetPageInteractivity();
+        // Asegurarse de que el desenfoque se elimine
+        document.body.style.overflow = '';
+        document.body.classList.remove('backdrop-blur-sm');
+        // Eliminar cualquier clase que pueda causar desenfoque
+        document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+          el.classList.remove('backdrop-blur-sm');
+        });
       }, 300);
     } else {
       setIsVisible(false);
       setCurrentStep(0);
-      // Restaurar la interactividad de la página inmediatamente
-      resetPageInteractivity();
-    }
-  };
-
-  // Función para restaurar la interactividad de la página
-  const resetPageInteractivity = () => {
-    // 1. Restaurar el scroll
-    document.body.style.overflow = '';
-
-    // 2. Eliminar cualquier clase que pueda causar desenfoque
-    document.body.classList.remove('backdrop-blur-sm');
-    document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
-      el.classList.remove('backdrop-blur-sm');
-    });
-
-    // 3. Eliminar específicamente el overlay del onboarding por ID
-    const onboardingOverlay = document.getElementById('onboarding-overlay');
-    if (onboardingOverlay) {
-      onboardingOverlay.remove();
+      // Asegurarse de que el desenfoque se elimine
+      document.body.style.overflow = '';
+      document.body.classList.remove('backdrop-blur-sm');
+      // Eliminar cualquier clase que pueda causar desenfoque
+      document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+        el.classList.remove('backdrop-blur-sm');
+      });
     }
 
-    // 4. Eliminar cualquier otro overlay que pueda estar bloqueando la interacción
-    const overlays = document.querySelectorAll('.fixed.inset-0.bg-black\/70, .fixed.inset-0');
-    overlays.forEach(overlay => {
-      if (overlay.classList.contains('z-[1001]') ||
-          overlay.classList.contains('z-50') ||
-          overlay.classList.contains('bg-black\/70')) {
-        overlay.remove();
-      }
-    });
-
-    // 5. Forzar un reflow para asegurar que los cambios se apliquen
-    window.requestAnimationFrame(() => {
-      document.body.style.display = 'none';
-      document.body.offsetHeight; // Forzar reflow
-      document.body.style.display = '';
-    });
-
-    // 6. Asegurarse de que no queden elementos con z-index alto que bloqueen la interacción
-    document.querySelectorAll('[style*="z-index: 1001"], [style*="z-index:1001"]').forEach(el => {
-      el.remove();
-    });
-  };
-
-  // Guardar que el usuario ha visto el onboarding cuando se cierra
-  const saveOnboardingState = () => {
+    // Guardar que el usuario ha visto el onboarding
     try {
       if (user) {
         localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
@@ -168,14 +133,19 @@ export default function OnboardingModal() {
       // Bloquear el scroll mientras el modal está abierto
       document.body.style.overflow = 'hidden';
     } else {
-      // Si el modal se cierra, restaurar la interactividad completa
-      resetPageInteractivity();
+      // Restaurar el scroll cuando se cierra
+      document.body.style.overflow = '';
+      // Eliminar cualquier clase que pueda causar desenfoque
+      document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+        el.classList.remove('backdrop-blur-sm');
+      });
     }
-
-    // Limpiar al desmontar el componente
     return () => {
-      // Asegurarse de restaurar la interactividad completa
-      resetPageInteractivity();
+      document.body.style.overflow = '';
+      // Asegurarse de eliminar el desenfoque al desmontar el componente
+      document.querySelectorAll('.backdrop-blur-sm').forEach(el => {
+        el.classList.remove('backdrop-blur-sm');
+      });
     };
   }, [isVisible]);
 
@@ -183,7 +153,7 @@ export default function OnboardingModal() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-[1001] p-4 overflow-y-auto" id="onboarding-overlay">
+    <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-[1001] p-4 overflow-y-auto">
       <div className="onboarding-modal bg-card/95 rounded-xl border border-border/20 shadow-2xl w-full max-w-md animate-fadeInUp mt-20 mx-auto">
         {/* Añadir un botón flotante para cerrar en móviles */}
         <button
