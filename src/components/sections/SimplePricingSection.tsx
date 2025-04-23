@@ -303,7 +303,7 @@ const SimplePricingSection = () => {
 
 
 
-              <Link href="/checkout">
+              <Link href="/secure-registration-portal-7f9a2b3c5d8e">
                 <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#22c55e] to-[#16a34a] hover:from-[#16a34a] hover:to-[#15803d] border-0 shadow-lg shadow-[#22c55e]/20 flex items-center justify-center gap-2">
                   {t('empiezaGanarBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
