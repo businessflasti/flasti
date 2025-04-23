@@ -137,18 +137,10 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <div className="mt-6 text-center space-y-4">
-          <div>
-            <span className="text-sm text-muted-foreground">¿No tienes una cuenta? </span>
-            <Link href="/secure-registration-portal-7f9a2b3c5d8e" className="text-sm text-primary hover:underline mobile-touch-friendly">
-              Regístrate aquí
-            </Link>
-          </div>
-          <div>
-            <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors py-2 px-4 mobile-touch-friendly mobile-touch-feedback inline-block">
-              &larr; Volver a inicio
-            </Link>
-          </div>
+        <div className="mt-6 text-center">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors py-2 px-4 mobile-touch-friendly mobile-touch-feedback inline-block">
+            &larr; Volver a inicio
+          </Link>
         </div>
       </div>
     </div>
