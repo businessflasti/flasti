@@ -204,8 +204,8 @@ const ExitIntentPopup = ({ isOpen, onClose, onApplyCoupon, onApplyFinalDiscount,
         }}
       >
         <DialogContent
-          className={`sm:max-w-[350px] max-w-[300px] mx-auto border border-[#2a2a4a] bg-gradient-to-b from-[#1a1a2e] to-[#141428] text-white p-0 overflow-hidden shadow-xl animate-in fade-in-0 zoom-in-95 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:duration-500 data-[state=closed]:duration-300 ${
-            showConfirmation ? 'max-w-[280px] sm:max-w-[320px]' : ''
+          className={`sm:max-w-[380px] max-w-[320px] mx-auto border border-[#2a2a4a] bg-gradient-to-b from-[#1a1a2e] to-[#141428] text-white p-0 overflow-hidden shadow-xl animate-in fade-in-0 zoom-in-95 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:duration-500 data-[state=closed]:duration-300 rounded-[12px] ${
+            showConfirmation ? 'max-w-[300px] sm:max-w-[340px]' : ''
           }`}
           onEscapeKeyDown={(e) => e.preventDefault()} // Prevenir cierre con tecla Escape
           onPointerDownOutside={(e) => e.preventDefault()} // Prevenir cierre al hacer clic fuera

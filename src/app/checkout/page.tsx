@@ -818,8 +818,8 @@ const CheckoutContent = () => {
               </div>
 
               <div className="bg-[#0f0f1a] rounded-xl border border-[#2a2a4a] p-4 mt-4 mb-4 relative">
-                {/* Banderita del país en la esquina inferior derecha */}
-                <div className="absolute bottom-3 right-3">
+                {/* Banderita del país - En la esquina superior derecha en desktop, inferior en móvil */}
+                <div className="md:absolute md:top-3 md:right-3 absolute bottom-3 right-3">
                   <div className="w-4 h-4 md:w-5 md:h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
                     {(() => {
                       // Obtener el código de país desde localStorage
@@ -858,7 +858,7 @@ const CheckoutContent = () => {
                         <span className="text-xl font-bold text-white">
                           $ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD
                         </span>
-                        <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded">
+                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded whitespace-nowrap">
                           {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                         </span>
                       </div>
@@ -872,7 +872,7 @@ const CheckoutContent = () => {
                         <span className="text-xl font-bold text-white">
                           AR$ {finalDiscountApplied ? "5.750" : (discountApplied ? "9.200" : "11.500")}
                         </span>
-                        <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded">
+                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded whitespace-nowrap">
                           {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                         </span>
                       </div>
@@ -895,7 +895,7 @@ const CheckoutContent = () => {
                           </span>
                           <div className="flex items-center gap-1">
                             <span className="text-xs line-through text-red-500">$50</span>
-                            <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
+                            <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1 whitespace-nowrap">
                               {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                             </span>
                           </div>
@@ -909,7 +909,7 @@ const CheckoutContent = () => {
                           </span>
                           <div className="flex items-center gap-1">
                             <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                            <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
+                            <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1 whitespace-nowrap">
                               {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                             </span>
                           </div>
@@ -929,7 +929,7 @@ const CheckoutContent = () => {
                   <div className="w-5 h-5 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3 w-3 text-[#22c55e]" />
                   </div>
-                  <span className="text-xs font-medium text-[#22c55e]">
+                  <span className="text-[10px] sm:text-xs font-medium text-[#22c55e] whitespace-nowrap">
                     {selectedPaymentMethod === "paypal" ? (
                       `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")}`
                     ) : isArgentina ? (
@@ -955,7 +955,7 @@ const CheckoutContent = () => {
                   <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
                   </div>
-                  <span className="text-xs font-medium text-[#22c55e]">
+                  <span className="text-[10px] sm:text-xs font-medium text-[#22c55e] whitespace-nowrap">
                     {selectedPaymentMethod === "paypal" ? (
                       `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
                     ) : isArgentina ? (
@@ -1198,7 +1198,7 @@ const CheckoutContent = () => {
                                 ) : (
                                   <span className="text-sm line-through text-red-500">$50 USD</span>
                                 )}
-                                <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
+                                <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1 whitespace-nowrap">
                                   {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                                 </span>
                               </div>
