@@ -273,29 +273,74 @@ const SimplePricingSection = () => {
                   </div>
                 </div>
 
-                <div className="flex items-baseline mb-2">
+                {/* Versión móvil - Diseño más compacto */}
+                <div className="md:hidden">
                   {isArgentina ? (
-                    <>
-                      <span className="text-2xl font-bold">AR$ 11.500</span>
-                      <span className="ml-1 text-xs line-through text-red-500">AR$ 57.500</span>
-                      <span className="ml-1 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
-                    </>
+                    <div className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-bold">AR$ 11.500</span>
+                        <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                      </div>
+                      <div className="flex items-center mt-1">
+                        <span className="text-xs line-through text-red-500">AR$ 57.500</span>
+                      </div>
+                    </div>
                   ) : (
-                    <>
-                      <span className="text-4xl font-bold">$10</span>
-                      <span className="text-foreground/70 text-sm ml-2">USD</span>
-                      <span className="ml-2 text-sm line-through text-red-500">$50</span>
-                      <span className="ml-2 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
-                    </>
+                    <div className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <span className="text-2xl font-bold">$10</span>
+                          <span className="text-foreground/70 text-xs ml-1">USD</span>
+                        </div>
+                        <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                      </div>
+                      <div className="flex items-center mt-1">
+                        <span className="text-xs line-through text-red-500">$50</span>
+                      </div>
+                    </div>
                   )}
                 </div>
 
-                <p className="text-sm text-foreground/70 mt-2">
+                {/* Versión desktop - Diseño original */}
+                <div className="hidden md:block">
+                  <div className="flex items-baseline mb-2">
+                    {isArgentina ? (
+                      <>
+                        <span className="text-2xl font-bold">AR$ 11.500</span>
+                        <span className="ml-1 text-xs line-through text-red-500">AR$ 57.500</span>
+                        <span className="ml-1 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-4xl font-bold">$10</span>
+                        <span className="text-foreground/70 text-sm ml-2">USD</span>
+                        <span className="ml-2 text-sm line-through text-red-500">$50</span>
+                        <span className="ml-2 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-xs md:text-sm text-foreground/70 mt-2">
                   {t('pagoUnico')}
                 </p>
 
-                {/* Etiqueta de ahorro */}
-                <div className="mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 flex items-center gap-2 shadow-sm shadow-[#22c55e]/10">
+                {/* Etiqueta de ahorro - Versión móvil */}
+                <div className="md:hidden mt-2 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-1.5 px-2 rounded-lg border border-[#22c55e]/30 flex items-center gap-1 shadow-sm shadow-[#22c55e]/10">
+                  <div className="w-4 h-4 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
+                    <Wallet className="h-2.5 w-2.5 text-[#22c55e]" />
+                  </div>
+                  <span className="text-xs font-medium text-[#22c55e]">
+                    {isArgentina ? (
+                      `${t('ahorras')} AR$ 46.000`
+                    ) : (
+                      `${t('ahorras')} $40`
+                    )}
+                  </span>
+                </div>
+
+                {/* Etiqueta de ahorro - Versión desktop */}
+                <div className="hidden md:flex mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 items-center gap-2 shadow-sm shadow-[#22c55e]/10">
                   <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
                   </div>
