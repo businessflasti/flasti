@@ -244,7 +244,7 @@ const SimplePricingSection = () => {
               <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10 relative">
                 {/* Banderita del país en la esquina superior derecha */}
                 <div className="absolute top-4 right-5">
-                  <div className="w-7 h-7 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10 shadow-sm">
+                  <div className="w-5 h-5 md:w-7 md:h-7 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10 shadow-sm">
                     {(() => {
                       // Obtener el código de país desde localStorage
                       const countryCode = typeof window !== 'undefined' ? localStorage.getItem('flastiUserCountry') : null;
@@ -260,14 +260,14 @@ const SimplePricingSection = () => {
                               e.currentTarget.style.display = 'none';
                               // Verificar que parentElement no sea null antes de modificar innerHTML
                               if (e.currentTarget.parentElement) {
-                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
+                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
                               }
                             }}
                           />
                         );
                       } else {
                         // Si no hay código de país o no es válido, mostrar el icono de globo
-                        return <Globe className="h-4 w-4 text-[#9333ea]" />;
+                        return <Globe className="h-3 w-3 md:h-4 md:w-4 text-[#9333ea]" />;
                       }
                     })()}
                   </div>
@@ -277,9 +277,9 @@ const SimplePricingSection = () => {
                 <div className="md:hidden">
                   {isArgentina ? (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xl font-bold">AR$ 11.500</span>
+                      <div className="flex items-center gap-2">
                         <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                        <span className="text-xl font-bold">AR$ 11.500</span>
                       </div>
                       <div className="flex items-center mt-1">
                         <span className="text-xs line-through text-red-500">AR$ 57.500</span>
@@ -287,12 +287,12 @@ const SimplePricingSection = () => {
                     </div>
                   ) : (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
                         <div className="flex items-center">
                           <span className="text-2xl font-bold">$10</span>
                           <span className="text-foreground/70 text-xs ml-1">USD</span>
                         </div>
-                        <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
                       </div>
                       <div className="flex items-center mt-1">
                         <span className="text-xs line-through text-red-500">$50</span>
