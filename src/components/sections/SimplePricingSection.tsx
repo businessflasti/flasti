@@ -277,7 +277,7 @@ const SimplePricingSection = () => {
                 <div className="md:hidden">
                   {isArgentina ? (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
                         <span className="text-xl font-bold">AR$ 11.500</span>
                         <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
                       </div>
@@ -287,7 +287,7 @@ const SimplePricingSection = () => {
                     </div>
                   ) : (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
                         <div className="flex items-center">
                           <span className="text-2xl font-bold">$10</span>
                           <span className="text-foreground/70 text-xs ml-1">USD</span>

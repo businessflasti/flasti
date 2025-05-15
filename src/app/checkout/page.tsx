@@ -1101,7 +1101,7 @@ const CheckoutContent = () => {
                     <div>
                       <h3 className="font-medium text-white">Moneda local</h3>
 
-                      <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full">
+                      <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full pr-2">
                             {[
                               // Primera línea (10 banderas)
                               "🇦🇷", // Argentina
@@ -1134,7 +1134,7 @@ const CheckoutContent = () => {
                               const country = (countryChar1 + countryChar2).toLowerCase();
 
                               return (
-                                <span key={index} className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-[#0f0f1a] border border-white/10">
+                                <span key={index} className="w-4 h-4 md:w-5 md:h-5 rounded-full overflow-hidden flex items-center justify-center bg-[#0f0f1a] border border-white/10">
                                   <img
                                     src={`https://flagcdn.com/w20/${country}.png`}
                                     alt={country.toUpperCase()}
@@ -1143,7 +1143,7 @@ const CheckoutContent = () => {
                                       e.currentTarget.style.display = 'none';
                                       // Verificar que parentElement no sea null antes de modificar innerHTML
                                       if (e.currentTarget.parentElement) {
-                                        e.currentTarget.parentElement.innerHTML = `<span class="text-[10px] font-bold">${flag}</span>`;
+                                        e.currentTarget.parentElement.innerHTML = `<span class="text-[8px] md:text-[10px] font-bold">${flag}</span>`;
                                       }
                                     }}
                                   />
