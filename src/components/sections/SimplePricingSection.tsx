@@ -301,9 +301,9 @@ const SimplePricingSection = () => {
                   </div>
                   <span className="text-xs font-medium text-[#22c55e]">
                     {isArgentina ? (
-                      `Ahorras AR$ 46.000`
+                      `${t('ahorras')} AR$ 46.000`
                     ) : (
-                      `Ahorras $40 USD`
+                      `${t('ahorras')} $40 USD`
                     )}
                   </span>
                 </div>

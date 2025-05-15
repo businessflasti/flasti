@@ -177,6 +177,7 @@ export const translations = {
     monedaLocal: 'Moneda local',
     descuento: '80% OFF',
     ofertaTermina: 'La oferta termina en:',
+    ahorras: 'Ahorras',
 
     // CTA Section
     conoceFlasti: 'Conoce a Flasti',
@@ -420,6 +421,7 @@ export const translations = {
     monedaLocal: 'Local currency',
     descuento: '80% OFF',
     ofertaTermina: 'The offer ends in:',
+    ahorras: 'You save',
 
     // CTA Section
     conoceFlasti: 'Meet Flasti',
@@ -620,6 +622,7 @@ export const translations = {
     monedaLocal: 'Moeda local',
     descuento: '80% OFF',
     ofertaTermina: 'A oferta termina em:',
+    ahorras: 'Você economiza',
 
     // CTA Section
     conoceFlasti: 'Conheça a Flasti',
