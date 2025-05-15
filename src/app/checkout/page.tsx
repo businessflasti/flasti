@@ -813,7 +813,7 @@ const CheckoutContent = () => {
               <div className="bg-[#0f0f1a] rounded-xl border border-[#2a2a4a] p-4 mt-4 mb-4 relative">
                 {/* Banderita del país en la esquina superior derecha */}
                 <div className="absolute top-3 right-3">
-                  <div className="w-5 h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
+                  <div className="w-4 h-4 md:w-5 md:h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
                     {(() => {
                       // Obtener el código de país desde localStorage
                       const countryCode = typeof window !== 'undefined' ? localStorage.getItem('flastiUserCountry') : null;
@@ -829,57 +829,121 @@ const CheckoutContent = () => {
                               e.currentTarget.style.display = 'none';
                               // Verificar que parentElement no sea null antes de modificar innerHTML
                               if (e.currentTarget.parentElement) {
-                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
+                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
                               }
                             }}
                           />
                         );
                       } else {
                         // Si no hay código de país o no es válido, mostrar el icono de globo
-                        return <Globe className="h-2.5 w-2.5 text-[#9333ea]" />;
+                        return <Globe className="h-2 w-2 md:h-2.5 md:w-2.5 text-[#9333ea]" />;
                       }
                     })()}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 mb-1">
+                {/* Versión móvil - Diseño más compacto */}
+                <div className="md:hidden">
                   {/* Mostrar precio en USD cuando se selecciona PayPal o cuando no es Argentina */}
                   {(selectedPaymentMethod === "paypal" || !isArgentina) ? (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-white">
+                    <div className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-bold text-white">
                           $ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD
                         </span>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs line-through text-red-500">$50</span>
-                          <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
-                            {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
-                          </span>
-                        </div>
+                        <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded">
+                          {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                        </span>
                       </div>
-                    </>
+                      <div className="flex items-center mt-1">
+                        <span className="text-xs line-through text-red-500">$50</span>
+                      </div>
+                    </div>
                   ) : (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-white">
+                    <div className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-bold text-white">
                           AR$ {finalDiscountApplied ? "5.750" : (discountApplied ? "9.200" : "11.500")}
                         </span>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                          <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
-                            {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
-                          </span>
-                        </div>
+                        <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded">
+                          {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                        </span>
                       </div>
-                    </>
+                      <div className="flex items-center mt-1">
+                        <span className="text-xs line-through text-red-500">AR$ 57.500</span>
+                      </div>
+                    </div>
                   )}
                 </div>
 
-                <p className="text-xs text-white/70 md:whitespace-nowrap mt-3">Pago único - Sin suscripciones ni cargos recurrentes</p>
+                {/* Versión desktop - Diseño original */}
+                <div className="hidden md:block">
+                  <div className="flex items-center gap-2 mb-1">
+                    {/* Mostrar precio en USD cuando se selecciona PayPal o cuando no es Argentina */}
+                    {(selectedPaymentMethod === "paypal" || !isArgentina) ? (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl font-bold text-white">
+                            $ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD
+                          </span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs line-through text-red-500">$50</span>
+                            <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
+                              {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl font-bold text-white">
+                            AR$ {finalDiscountApplied ? "5.750" : (discountApplied ? "9.200" : "11.500")}
+                          </span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs line-through text-red-500">AR$ 57.500</span>
+                            <span className="text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1">
+                              {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-xs text-white/70 md:whitespace-nowrap mt-2">Pago único - Sin suscripciones ni cargos recurrentes</p>
               </div>
 
               {/* Etiqueta de ahorro llamativa (como caja separada pero compacta) */}
-              <div className="mb-3 mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 flex items-center justify-between shadow-sm shadow-[#22c55e]/10">
+              {/* Versión móvil - Diseño más compacto */}
+              <div className="md:hidden mb-3 mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-2 rounded-lg border border-[#22c55e]/30 flex items-center justify-between shadow-sm shadow-[#22c55e]/10">
+                <div className="flex items-center gap-1">
+                  <div className="w-5 h-5 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
+                    <Wallet className="h-3 w-3 text-[#22c55e]" />
+                  </div>
+                  <span className="text-xs font-medium text-[#22c55e]">
+                    {selectedPaymentMethod === "paypal" ? (
+                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")}`
+                    ) : isArgentina ? (
+                      `Ahorras AR$ ${finalDiscountApplied ? "51.750" : (discountApplied ? "48.300" : "46.000")}`
+                    ) : (
+                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")}`
+                    )}
+                  </span>
+                </div>
+
+                {/* Etiqueta de cupón aplicado - Solo visible cuando hay descuento */}
+                {(discountApplied || finalDiscountApplied) && (
+                  <div className="flex items-center gap-1 bg-gradient-to-r from-[#f59e0b]/20 to-[#eab308]/20 px-1.5 py-0.5 rounded border border-[#f59e0b]/30 animate-pulse">
+                    <Zap className="h-2.5 w-2.5 text-[#fbbf24]" />
+                    <span className="text-xs font-medium text-[#fbbf24]">Cupón</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Versión desktop - Diseño original */}
+              <div className="hidden md:flex mb-3 mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 items-center justify-between shadow-sm shadow-[#22c55e]/10">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
