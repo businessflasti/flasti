@@ -487,7 +487,8 @@ export default function FomoNotifications() {
                   <div className="flex items-center mt-0.5 min-w-0">
                     <span className="mr-1 text-sm flex-shrink-0">{currentNotification.user.flag}</span>
                     <p className="text-xs text-white/70 truncate">
-                      {currentNotification.user.city}, {currentNotification.user.country}
+                      <span className="md:inline hidden">{currentNotification.user.city}, {currentNotification.user.country}</span>
+                      <span className="md:hidden inline">{currentNotification.user.city}</span>
                     </p>
                   </div>
                 </div>
@@ -506,7 +507,8 @@ export default function FomoNotifications() {
                     <div className="flex items-center min-w-0 flex-shrink">
                       <span className="mr-1 text-sm flex-shrink-0">{currentNotification.user.flag}</span>
                       <p className="text-xs text-white/70 truncate">
-                        {currentNotification.user.city}, {currentNotification.user.country}
+                        <span className="md:inline hidden">{currentNotification.user.city}, {currentNotification.user.country}</span>
+                        <span className="md:hidden inline">{currentNotification.user.city}</span>
                       </p>
                     </div>
                     <p className="text-xs font-semibold text-[#10b981]">
