@@ -811,8 +811,8 @@ const CheckoutContent = () => {
               </div>
 
               <div className="bg-[#0f0f1a] rounded-xl border border-[#2a2a4a] p-4 mt-4 mb-4 relative">
-                {/* Banderita del país en la esquina superior derecha */}
-                <div className="absolute top-3 right-3">
+                {/* Banderita del país en la esquina inferior derecha */}
+                <div className="absolute bottom-3 right-3">
                   <div className="w-4 h-4 md:w-5 md:h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
                     {(() => {
                       // Obtener el código de país desde localStorage

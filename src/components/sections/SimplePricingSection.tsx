@@ -306,16 +306,20 @@ const SimplePricingSection = () => {
                   <div className="flex items-baseline mb-2">
                     {isArgentina ? (
                       <>
-                        <span className="text-2xl font-bold">AR$ 11.500</span>
-                        <span className="ml-1 text-xs line-through text-red-500">AR$ 57.500</span>
-                        <span className="ml-1 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                        <div className="flex items-center gap-2 mr-8">
+                          <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                          <span className="text-2xl font-bold">AR$ 11.500</span>
+                          <span className="ml-1 text-xs line-through text-red-500">AR$ 57.500</span>
+                        </div>
                       </>
                     ) : (
                       <>
-                        <span className="text-4xl font-bold">$10</span>
-                        <span className="text-foreground/70 text-sm ml-2">USD</span>
-                        <span className="ml-2 text-sm line-through text-red-500">$50</span>
-                        <span className="ml-2 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
+                        <div className="flex items-center gap-2 mr-8">
+                          <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
+                          <span className="text-4xl font-bold">$10</span>
+                          <span className="text-foreground/70 text-sm ml-2">USD</span>
+                          <span className="ml-2 text-sm line-through text-red-500">$50</span>
+                        </div>
                       </>
                     )}
                   </div>
