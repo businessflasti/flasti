@@ -606,13 +606,20 @@ const CheckoutContent = () => {
     // Función para detectar gestos de deslizamiento en dispositivos móviles
     const handleTouchStart = (e: TouchEvent) => {
       const touchStartX = e.touches[0].clientX;
+      const touchStartY = e.touches[0].clientY;
 
       const handleTouchMove = (e: TouchEvent) => {
         const touchEndX = e.touches[0].clientX;
+        const touchEndY = e.touches[0].clientY;
         const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
 
-        // Si el usuario desliza hacia la derecha (gesto común para ir hacia atrás)
-        if (diffX > 50) {
+        // Calcular la dirección principal del deslizamiento
+        const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+
+        // Solo activar el popup si el usuario desliza horizontalmente hacia la derecha (gesto para ir hacia atrás)
+        // y el deslizamiento es principalmente horizontal (no vertical)
+        if (isHorizontalSwipe && diffX > 50) {
           showPopup();
           document.removeEventListener('touchmove', handleTouchMove);
         }
