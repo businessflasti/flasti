@@ -316,7 +316,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onApplyCoupon, onApplyFinalDiscount,
                       )}
                     </div>
                     <div className="flex items-center gap-2 mr-3">
-                      <div className={`bg-gradient-to-r text-white text-xs font-bold py-1 px-2 rounded ${
+                      <div className={`bg-gradient-to-r text-white text-[8px] sm:text-xs font-bold py-1 px-1.5 sm:px-2 rounded whitespace-nowrap ${
                         showFinalOffer
                           ? "from-[#ef4444] to-[#f97316]"
                           : "from-[#22c55e] to-[#16a34a]"
@@ -324,7 +324,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onApplyCoupon, onApplyFinalDiscount,
                         {showFinalOffer ? "90% OFF" : "84% OFF"}
                       </div>
                       {/* Burbuja de ahorro al costado */}
-                      <div className={`text-white text-xs font-bold py-1 px-2 rounded shadow-md animate-pulse ${
+                      <div className={`text-white text-[8px] sm:text-xs font-bold py-1 px-1.5 sm:px-2 rounded shadow-md animate-pulse whitespace-nowrap ${
                         showFinalOffer
                           ? "bg-gradient-to-r from-[#22c55e] to-[#16a34a] shadow-[#22c55e]/20"
                           : "bg-gradient-to-r from-[#f97316] to-[#f59e0b] shadow-[#f97316]/20"
