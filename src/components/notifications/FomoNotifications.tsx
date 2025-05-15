@@ -441,10 +441,21 @@ export default function FomoNotifications() {
             <div className="flex-shrink-0 relative">
               {/* Logo de Flasti */}
               <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
-                {/* Usar una imagen SVG directamente en lugar de Image component */}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="#ffffff"/>
-                </svg>
+                {/* Usar una imagen estática directamente */}
+                <img
+                  src="/logo/isotipo.png"
+                  alt="Flasti"
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                  style={{ width: '24px', height: '24px' }}
+                  onError={(e) => {
+                    // Fallback a una imagen estática si la carga falla
+                    const target = e.currentTarget;
+                    target.onerror = null; // Prevenir bucle infinito
+                    target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTAtMTRjLTMuMzEgMC02IDIuNjktNiA2czIuNjkgNiA2IDYgNi0yLjY5IDYtNi0yLjY5LTYtNi02em0wIDEwYy0yLjIxIDAtNC0xLjc5LTQtNHMxLjc5LTQgNC00IDQgMS43OSA0IDQtMS43OSA0LTQgNHoiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=';
+                  }}
+                />
               </div>
 
               {/* Indicador de tipo de notificación */}
