@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, Lock, Gift } from "lucide-react";
+import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, Lock, Gift, Wallet, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -16,6 +16,59 @@ const SimplePricingSection = () => {
   const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [showCountdown, setShowCountdown] = useState(true);
   const countdownInterval = useRef<NodeJS.Timeout | null>(null);
+  const [isArgentina, setIsArgentina] = useState(false);
+
+  // Efecto para detectar si el usuario es de Argentina
+  useEffect(() => {
+    // Detectar si el usuario es de Argentina
+    const detectCountry = async () => {
+      try {
+        // Intentar obtener la ubicación del usuario desde localStorage primero
+        // Usar la misma clave que en checkout/page.tsx para consistencia
+        const savedCountry = localStorage.getItem('flastiUserCountry');
+        if (savedCountry) {
+          setIsArgentina(savedCountry === 'AR');
+          console.log(`[SimplePricingSection] País detectado desde localStorage: ${savedCountry}`);
+          return;
+        }
+
+        // Si no hay información en localStorage, intentar detectar por IP
+        console.log('[SimplePricingSection] Detectando país mediante API...');
+        try {
+          const response = await fetch('https://ipapi.co/json/');
+          if (!response.ok) {
+            throw new Error(`Error en la respuesta: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log('[SimplePricingSection] Datos de geolocalización:', data);
+
+          if (data && data.country_code) {
+            const isAR = data.country_code === 'AR';
+
+            // Guardar el resultado en localStorage para futuras visitas
+            // Usar la misma clave que en checkout/page.tsx
+            localStorage.setItem('flastiUserCountry', data.country_code);
+            setIsArgentina(isAR);
+            console.log(`[SimplePricingSection] País detectado: ${data.country_code}, isArgentina: ${isAR}`);
+          } else {
+            console.error('[SimplePricingSection] No se pudo obtener el código de país:', data);
+            setIsArgentina(false);
+          }
+        } catch (apiError) {
+          console.error('[SimplePricingSection] Error al consultar la API de geolocalización:', apiError);
+          // En caso de error con la API, intentar con un servicio alternativo o mostrar el globo
+          setIsArgentina(false);
+        }
+      } catch (error) {
+        console.error('[SimplePricingSection] Error general al detectar país:', error);
+        // En caso de error, asumir que no es de Argentina
+        setIsArgentina(false);
+      }
+    };
+
+    detectCountry();
+  }, []);
 
   useEffect(() => {
     // Inicializar el contador desde localStorage o crear uno nuevo
@@ -49,14 +102,14 @@ const SimplePricingSection = () => {
           setShowCountdown(false);
         }
       } else {
-        // No hay contador guardado, crear uno nuevo (22 horas)
-        const expiryTime = Date.now() + (22 * 60 * 60 * 1000);
+        // No hay contador guardado, crear uno nuevo (17 horas y 47 minutos)
+        const expiryTime = Date.now() + (17 * 60 * 60 * 1000) + (47 * 60 * 1000);
         localStorage.setItem('flastiCountdownExpiry', expiryTime.toString());
         localStorage.setItem('flastiCountdown', 'active');
 
         setCountdown({
-          hours: 22,
-          minutes: 0,
+          hours: 17,
+          minutes: 47,
           seconds: 0
         });
 
@@ -188,16 +241,72 @@ const SimplePricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10">
-                <div className="flex items-baseline mb-2">
-                  <span className="text-4xl font-bold">$10</span>
-                  <span className="text-foreground/70 text-sm ml-2">USD</span>
-                  <span className="ml-2 text-sm line-through text-foreground/50">$50</span>
-                  <span className="ml-2 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
+              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10 relative">
+                {/* Banderita del país en la esquina superior derecha */}
+                <div className="absolute top-4 right-5">
+                  <div className="w-7 h-7 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10 shadow-sm">
+                    {(() => {
+                      // Obtener el código de país desde localStorage
+                      const countryCode = typeof window !== 'undefined' ? localStorage.getItem('flastiUserCountry') : null;
+
+                      // Si tenemos un código de país válido, mostrar la bandera correspondiente
+                      if (countryCode && countryCode.length === 2) {
+                        return (
+                          <img
+                            src={`https://flagcdn.com/w20/${countryCode.toLowerCase()}.png`}
+                            alt={countryCode.toUpperCase()}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              // Verificar que parentElement no sea null antes de modificar innerHTML
+                              if (e.currentTarget.parentElement) {
+                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
+                              }
+                            }}
+                          />
+                        );
+                      } else {
+                        // Si no hay código de país o no es válido, mostrar el icono de globo
+                        return <Globe className="h-4 w-4 text-[#9333ea]" />;
+                      }
+                    })()}
+                  </div>
                 </div>
-                <p className="text-sm text-foreground/70">
+
+                <div className="flex items-baseline mb-2">
+                  {isArgentina ? (
+                    <>
+                      <span className="text-2xl font-bold">AR$ 11.500</span>
+                      <span className="ml-1 text-xs line-through text-red-500">AR$ 57.500</span>
+                      <span className="ml-1 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-4xl font-bold">$10</span>
+                      <span className="text-foreground/70 text-sm ml-2">USD</span>
+                      <span className="ml-2 text-sm line-through text-red-500">$50</span>
+                      <span className="ml-2 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
+                    </>
+                  )}
+                </div>
+
+                <p className="text-sm text-foreground/70 mt-2">
                   {t('pagoUnico')}
                 </p>
+
+                {/* Etiqueta de ahorro */}
+                <div className="mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 flex items-center gap-2 shadow-sm shadow-[#22c55e]/10">
+                  <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
+                    <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
+                  </div>
+                  <span className="text-xs font-medium text-[#22c55e]">
+                    {isArgentina ? (
+                      `Ahorras AR$ 46.000`
+                    ) : (
+                      `Ahorras $40 USD`
+                    )}
+                  </span>
+                </div>
               </div>
 
               {/* Countdown Timer - Solo se muestra si showCountdown es true */}
@@ -345,29 +454,40 @@ const SimplePricingSection = () => {
                           <span className="text-xs font-medium whitespace-nowrap">{t('monedaLocal')}</span>
                           <div className="grid grid-cols-10 grid-rows-2 gap-x-1 gap-y-1 w-[140px] md:flex md:flex-row md:flex-nowrap md:gap-1 md:w-auto">
                             {[
-                              "🇺🇸", // Estados Unidos
-                              "🇦🇷", // Argentina
-                              "🇨🇴", // Colombia
-                              "🇵🇪", // Perú
-                              "🇲🇽", // México
-                              "🇵🇦", // Panamá
-                              "🇬🇹", // Guatemala
-                              "🇸🇻", // El Salvador
-                              "🇩🇴", // República Dominicana
-                              "🇵🇷", // Puerto Rico
-                              "🇪🇨", // Ecuador
-                              "🇵🇾", // Paraguay
-                              "🇪🇸", // España
-                              "🇨🇷", // Costa Rica
-                              "🇨🇱", // Chile
-                              "🇺🇾", // Uruguay
-                              "🇧🇴", // Bolivia
-                              "🇭🇳", // Honduras
-                              "🇻🇪", // Venezuela
-                              "🇧🇷" // Brasil
-                            ].map((flag, index) => (
-                              <span key={index} className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-sm">
-                                <span className="text-[8px] md:text-[9px] font-bold">{flag}</span>
+                              {code: "us", flag: "🇺🇸"}, // Estados Unidos
+                              {code: "ar", flag: "🇦🇷"}, // Argentina
+                              {code: "co", flag: "🇨🇴"}, // Colombia
+                              {code: "pe", flag: "🇵🇪"}, // Perú
+                              {code: "mx", flag: "🇲🇽"}, // México
+                              {code: "pa", flag: "🇵🇦"}, // Panamá
+                              {code: "gt", flag: "🇬🇹"}, // Guatemala
+                              {code: "sv", flag: "🇸🇻"}, // El Salvador
+                              {code: "do", flag: "🇩🇴"}, // República Dominicana
+                              {code: "pr", flag: "🇵🇷"}, // Puerto Rico
+                              {code: "ec", flag: "🇪🇨"}, // Ecuador
+                              {code: "py", flag: "🇵🇾"}, // Paraguay
+                              {code: "es", flag: "🇪🇸"}, // España
+                              {code: "cr", flag: "🇨🇷"}, // Costa Rica
+                              {code: "cl", flag: "🇨🇱"}, // Chile
+                              {code: "uy", flag: "🇺🇾"}, // Uruguay
+                              {code: "bo", flag: "🇧🇴"}, // Bolivia
+                              {code: "hn", flag: "🇭🇳"}, // Honduras
+                              {code: "ve", flag: "🇻🇪"}, // Venezuela
+                              {code: "br", flag: "🇧🇷"}  // Brasil
+                            ].map((country, index) => (
+                              <span key={index} className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full overflow-hidden flex items-center justify-center bg-[#0f0f1a] border border-white/10">
+                                <img
+                                  src={`https://flagcdn.com/w20/${country.code}.png`}
+                                  alt={country.code.toUpperCase()}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = 'none';
+                                    // Verificar que parentElement no sea null antes de modificar innerHTML
+                                    if (e.currentTarget.parentElement) {
+                                      e.currentTarget.parentElement.innerHTML = `<span class="text-[8px] md:text-[9px] font-bold">${country.flag}</span>`;
+                                    }
+                                  }}
+                                />
                               </span>
                             ))}
                           </div>

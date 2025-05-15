@@ -8,6 +8,13 @@ import AffiliateTracker from "@/components/affiliate/AffiliateTracker";
 import { usePathname } from 'next/navigation';
 import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 
+// Cargar el componente de notificaciones FOMO de forma diferida
+// Solo se cargará en páginas que no sean de checkout, ya que allí se maneja por separado
+const FomoNotifications = dynamic(
+  () => import("@/components/notifications/FomoNotifications"),
+  { ssr: false, loading: () => null }
+);
+
 // Cargar el chat widget de forma diferida para mejorar el rendimiento inicial
 const DashboardChatWidget = dynamic(
   () => import("@/components/dashboard/DashboardChatWidget"),
@@ -28,6 +35,9 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
 
   // Determinar si estamos en la página de contacto
   const isContactPage = pathname === '/contacto';
+
+  // Determinar si estamos en la página de checkout
+  const isCheckoutPage = pathname === '/checkout';
 
   // Solo mostrar el chat en páginas internas (dashboard)
   const shouldShowChat = !disableChat && isInternalPage;
@@ -64,6 +74,9 @@ const MainLayout = ({ children, showHeader = false, disableChat = false }: MainL
 
       {/* Tawk.to chat script */}
       <DirectTawkToScript showBubble={isContactPage} />
+
+      {/* Notificaciones FOMO - No mostrar en la página de checkout */}
+      {!isCheckoutPage && <FomoNotifications />}
     </div>
   );
 };

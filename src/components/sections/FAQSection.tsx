@@ -5,6 +5,11 @@ import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles
 import { optimizeFAQs } from "@/utils/faq-optimizer";
 import { useTranslations } from "@/contexts/LanguageContext";
 
+// Definir las respuestas para la pregunta de inversión
+const inversionAnswerUSD = "Hemos diseñado diferentes planes para adaptarnos a distintas necesidades y presupuestos. Nuestra opción más accesible comienza en un único pago de $10 USD, una inversión que muchos de nuestros usuarios recuperan en su primera semana de uso. Este precio representa un 80% de descuento sobre el valor original de $50 USD, y te da acceso de por vida a la plataforma y todas sus actualizaciones futuras.";
+
+const inversionAnswerARS = "Hemos diseñado diferentes planes para adaptarnos a distintas necesidades y presupuestos. Nuestra opción más accesible comienza en un único pago de AR$ 11.500, una inversión que muchos de nuestros usuarios recuperan en su primera semana de uso. Este precio representa un 80% de descuento sobre el valor original de AR$ 57.500, y te da acceso de por vida a la plataforma y todas sus actualizaciones futuras.";
+
 const faqs = [
   {
     icon: <Heart className="h-5 w-5" />,
@@ -49,7 +54,8 @@ const faqs = [
   {
     icon: <Coins className="h-5 w-5" />,
     question: "¿Cuál es la inversión para acceder a Flasti?",
-    answer: "Hemos diseñado diferentes planes para adaptarnos a distintas necesidades y presupuestos. Nuestra opción más accesible comienza en un único pago de $XXX, una inversión que muchos de nuestros usuarios recuperan en su primera semana de uso."
+    // La respuesta se establecerá dinámicamente según el país del usuario
+    answer: inversionAnswerUSD
   },
   {
     icon: <ShieldCheck className="h-5 w-5" />,
@@ -70,6 +76,38 @@ const pulseAnimation = `
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { t } = useTranslations();
+  const [isArgentina, setIsArgentina] = useState(false);
+
+  // Detectar si el usuario es de Argentina
+  useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        // Intentar obtener la ubicación del usuario desde localStorage primero
+        const savedCountry = localStorage.getItem('userCountry');
+        if (savedCountry) {
+          setIsArgentina(savedCountry === 'AR');
+          return;
+        }
+
+        // Si no hay información en localStorage, intentar detectar por IP
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        const isAR = data.country_code === 'AR';
+
+        // Guardar el resultado en localStorage para futuras visitas
+        localStorage.setItem('userCountry', isAR ? 'AR' : 'OTHER');
+        setIsArgentina(isAR);
+      } catch (error) {
+        console.error('Error al detectar país:', error);
+        // En caso de error, asumir que no es de Argentina
+        setIsArgentina(false);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      detectCountry();
+    }
+  }, []);
 
   // Optimizar las FAQs para que abran/cierren más rápido
   useEffect(() => {
@@ -152,7 +190,7 @@ const FAQSection = () => {
                 data-faq-content="true"
               >
                 <div className="pt-2 border-t border-white/10">
-                  {faq.answer}
+                  {index === 8 && isArgentina ? inversionAnswerARS : faq.answer}
                 </div>
               </div>
 

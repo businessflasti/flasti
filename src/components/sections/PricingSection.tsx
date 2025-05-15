@@ -43,7 +43,7 @@ const LoginAccordion = () => {
 };
 
 const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 6, minutes: 59, seconds: 59 });
+  const [timeLeft, setTimeLeft] = useState({ hours: 17, minutes: 47, seconds: 0 });
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const CountdownTimer = () => {
         } else if (prev.hours > 0) {
           return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
         } else {
-          return { hours: 6, minutes: 59, seconds: 59 };
+          return { hours: 17, minutes: 47, seconds: 0 };
         }
       });
     }, 1000);

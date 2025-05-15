@@ -367,4 +367,42 @@
     @apply bg-secondary/90 text-secondary-foreground;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   }
+
+  /* Estilos para las notificaciones FOMO */
+  .glow-blue-subtle {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+    animation: subtle-glow-blue 3s infinite alternate;
+  }
+
+  .glow-green-subtle {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+    animation: subtle-glow-green 3s infinite alternate;
+  }
+
+  @keyframes subtle-glow-blue {
+    0% {
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+    }
+    100% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+  }
+
+  @keyframes subtle-glow-green {
+    0% {
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+    }
+    100% {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  /* Centrar notificaciones FOMO en dispositivos móviles */
+  @media (max-width: 640px) {
+    .fomo-notification {
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+    }
+  }
 }
