@@ -445,10 +445,10 @@ export default function FomoNotifications() {
                 <img
                   src="/logo/isotipo.png"
                   alt="Flasti"
-                  width={24}
-                  height={24}
+                  width={18}
+                  height={18}
                   className="object-contain"
-                  style={{ width: '24px', height: '24px' }}
+                  style={{ width: '18px', height: '18px' }}
                   onError={(e) => {
                     // Fallback a una imagen estática si la carga falla
                     const target = e.currentTarget;
