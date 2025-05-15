@@ -444,9 +444,16 @@ export default function FomoNotifications() {
                 <Image
                   src="/logo/isotipo.png"
                   alt="Flasti"
-                  width={18}
-                  height={18}
+                  width={24}
+                  height={24}
                   className="object-contain"
+                  priority
+                  onError={(e) => {
+                    // Fallback a una imagen estática si la carga falla
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null; // Prevenir bucle infinito
+                    target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6bTAtMTRjLTMuMzEgMC02IDIuNjktNiA2czIuNjkgNiA2IDYgNi0yLjY5IDYtNi0yLjY5LTYtNi02em0wIDEwYy0yLjIxIDAtNC0xLjc5LTQtNHMxLjc5LTQgNC00IDQgMS43OSA0IDQtMS43OSA0LTQgNHoiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=';
+                  }}
                 />
               </div>
 
