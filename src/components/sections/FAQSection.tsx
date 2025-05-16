@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
 import { optimizeFAQs } from "@/utils/faq-optimizer";
-import { useTranslations } from "@/contexts/LanguageContext";
+import { useLanguage as useTranslations } from "@/contexts/LanguageContext";
 import {
   inversionAnswerUSD_EN,
   inversionAnswerUSD_PT,
@@ -199,11 +199,11 @@ const FAQSection = () => {
                   {index === 8 ? (
                     isArgentina ? (
                       language === 'en' ? inversionAnswerARS_EN :
-                      language === 'pt' ? inversionAnswerARS_PT :
+                      language === 'pt-br' ? inversionAnswerARS_PT :
                       inversionAnswerARS
                     ) : (
                       language === 'en' ? inversionAnswerUSD_EN :
-                      language === 'pt' ? inversionAnswerUSD_PT :
+                      language === 'pt-br' ? inversionAnswerUSD_PT :
                       inversionAnswerUSD
                     )
                   ) : faq.answer}
