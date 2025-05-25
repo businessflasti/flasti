@@ -85,7 +85,7 @@ const CheckoutContent = () => {
       if (window.checkoutElements) {
         try {
           // Usar una oferta diferente basada en el descuento aplicado
-          let offerCode = "mz63zpyh"; // Oferta normal (precio completo: $10 USD)
+          let offerCode = "6j1ga51i"; // Oferta normal (precio completo: $10 USD)
 
           if (finalDiscountApplied) {
             offerCode = "5h87lps7"; // Oferta con descuento final (precio: $5 USD)
