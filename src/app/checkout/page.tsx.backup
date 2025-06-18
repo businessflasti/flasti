@@ -8,9 +8,6 @@ import MercadoPagoLogo from "@/components/icons/MercadoPagoLogo";
 import Image from "next/image";
 import CheckoutFomoWrapper from '@/components/checkout/CheckoutFomoWrapper';
 import analyticsService from '@/lib/analytics-service';
-import facebookPixelService from '@/lib/facebook-pixel-service';
-import unifiedTrackingService from '@/lib/unified-tracking-service';
-import FacebookPixelDebug from '@/components/debug/FacebookPixelDebug';
 import { supabase } from '@/lib/supabase';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -43,7 +40,6 @@ const CheckoutContent = () => {
   const [isHotmartLoaded, setIsHotmartLoaded] = useState(false);
   const [isHotmartLoading, setIsHotmartLoading] = useState(false);
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
-  const [isHotmartPreloaded, setIsHotmartPreloaded] = useState(false);
   const [isArgentina, setIsArgentina] = useState(false);
 
   // Estados para los popups
@@ -89,12 +85,6 @@ const CheckoutContent = () => {
   });
   const [isMercadoPagoFormValid, setIsMercadoPagoFormValid] = useState(false);
   const [isSubmittingMercadoPagoForm, setIsSubmittingMercadoPagoForm] = useState(false);
-
-  // Estado para controlar si Mercado Pago está precargado
-  const [isMercadoPagoPreloaded, setIsMercadoPagoPreloaded] = useState(false);
-
-  // Estado para controlar si PayPal está precargado
-  const [isPayPalPreloaded, setIsPayPalPreloaded] = useState(false);
 
   // Referencia para rastrear si el usuario ya ha visto el popup
   const hasSeenPopup = useRef(false);
@@ -183,54 +173,6 @@ const CheckoutContent = () => {
     return isValid;
   }, [mercadoPagoFormData]);
 
-  // Función para guardar datos de Mercado Pago en Supabase
-  const saveMercadoPagoCheckoutLead = async (transactionData?: any) => {
-    try {
-      const leadData = {
-        full_name: mercadoPagoFormData.fullName.trim(),
-        email: mercadoPagoFormData.email.trim().toLowerCase(),
-        payment_method: 'mercadopago',
-        amount: parseFloat(price) * 1150, // Convertir USD a ARS aproximadamente
-        currency: 'ARS',
-        transaction_id: transactionData?.id || null,
-        status: transactionData ? 'completed' : 'form_submitted',
-        created_at: new Date().toISOString(),
-        metadata: {
-          discount_applied: discountApplied,
-          final_discount_applied: finalDiscountApplied,
-          user_agent: navigator.userAgent,
-          referrer: document.referrer || null
-        }
-      };
-
-      const { data, error } = await supabase
-        .from('checkout_leads')
-        .insert([leadData])
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Error al guardar lead de Mercado Pago en Supabase:', error);
-        return { success: false, error };
-      }
-
-      console.log('Lead de Mercado Pago guardado exitosamente:', data);
-
-      // Tracking: Lead guardado
-      analyticsService.trackEvent('checkout_lead_saved', {
-        lead_id: data.id,
-        email: leadData.email,
-        payment_method: 'mercadopago',
-        amount: leadData.amount
-      });
-
-      return { success: true, data };
-    } catch (error) {
-      console.error('Error inesperado al guardar lead de Mercado Pago:', error);
-      return { success: false, error };
-    }
-  };
-
   // Efecto para validar el formulario de Mercado Pago cuando cambian los datos
   useEffect(() => {
     const wasValid = isMercadoPagoFormValid;
@@ -301,57 +243,6 @@ const CheckoutContent = () => {
     }));
   };
 
-  // Función para manejar el pago con Mercado Pago
-  const handleMercadoPagoPayment = async () => {
-    if (!isMercadoPagoFormValid) return;
-
-    try {
-      // Deshabilitar el botón y mostrar loading
-      setIsSubmittingMercadoPagoForm(true);
-
-      // Obtener el precio actual
-      let amountARS = 11500;
-      if (finalDiscountApplied) {
-        amountARS = 5750;
-      } else if (discountApplied) {
-        amountARS = 9200;
-      }
-
-      // Crear preferencia de pago
-      const response = await fetch('/api/mercadopago', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: 'Acceso a Flasti',
-          unitPrice: amountARS,
-          currency: 'ARS',
-          quantity: 1
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al crear preferencia de pago');
-      }
-
-      const data = await response.json();
-
-      // Guardar datos del formulario antes de redirigir
-      await saveMercadoPagoCheckoutLead();
-
-      // Redirigir a Mercado Pago
-      window.location.href = data.init_point;
-
-    } catch (error) {
-      console.error('Error al procesar pago:', error);
-      setIsSubmittingMercadoPagoForm(false);
-
-      // En caso de error, redirigir a registro
-      window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
-    }
-  };
-
   // Función para guardar datos en Supabase
   const saveCheckoutLead = async (transactionData?: any) => {
     try {
@@ -400,233 +291,55 @@ const CheckoutContent = () => {
     }
   };
 
-  // La función loadMercadoPago ahora se importa desde "./mercadoPago"
-
-  // Función para precargar Hotmart en segundo plano
-  const preloadHotmartScript = useCallback(() => {
-    if (isHotmartPreloaded || isHotmartLoading) return; // Evitar cargas múltiples
-
-    console.log('🚀 Precargando Hotmart en segundo plano...');
-    setIsHotmartLoading(true);
-
-    // Crear un contenedor oculto para precargar Hotmart
-    let hiddenContainer = document.getElementById('hotmart-hidden-container');
-    if (!hiddenContainer) {
-      hiddenContainer = document.createElement('div');
-      hiddenContainer.id = 'hotmart-hidden-container';
-      hiddenContainer.style.position = 'absolute';
-      hiddenContainer.style.left = '-9999px';
-      hiddenContainer.style.top = '-9999px';
-      hiddenContainer.style.visibility = 'hidden';
-      hiddenContainer.style.pointerEvents = 'none';
-      hiddenContainer.style.width = '100%';
-      hiddenContainer.style.maxWidth = '600px';
-      hiddenContainer.style.height = '600px';
-      document.body.appendChild(hiddenContainer);
-    }
-
-    // Crear el contenedor interno para el checkout
-    const checkoutContainer = document.createElement('div');
-    checkoutContainer.id = 'inline_checkout_preload';
-    checkoutContainer.style.width = '100%';
-    checkoutContainer.style.maxWidth = '600px';
-    checkoutContainer.innerHTML = '<div class="animate-pulse text-white/70">Precargando Hotmart...</div>';
-    hiddenContainer.appendChild(checkoutContainer);
-
-    // Crear y cargar el script de Hotmart
-    const script = document.createElement("script");
-    script.id = 'hotmart-preload-script';
-    script.src = "https://checkout.hotmart.com/lib/hotmart-checkout-elements.js";
-    script.async = true;
-
-    script.onload = () => {
-      if (window.checkoutElements) {
-        try {
-          // Usar la oferta por defecto para precarga
-          let offerCode = "6j1ga51i"; // Oferta normal (precio completo: $10 USD)
-
-          // Verificar si hay descuentos aplicados desde localStorage
-          const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
-          const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
-
-          if (finalDiscountApplied) {
-            offerCode = "5h87lps7"; // Oferta con descuento final (precio: $5 USD)
-          } else if (discountApplied) {
-            offerCode = "yegwjf6i"; // Oferta con descuento inicial (precio: $8 USD)
-          }
-
-          const elements = window.checkoutElements.init("inlineCheckout", {
-            offer: offerCode,
-          });
-
-          elements.mount("#inline_checkout_preload");
-
-          // Configurar observador para altura dinámica en precarga
-          setTimeout(() => {
-            setupDynamicHeightObserver();
-          }, 1000);
-
-          // Aplicar estilos para ancho completo - AGRESIVO
-          setTimeout(() => {
-            const applyFullWidthStyles = () => {
-              const hotmartContainer = document.querySelector('#inline_checkout_preload');
-              if (hotmartContainer) {
-                // Aplicar estilos al contenedor principal
-                hotmartContainer.style.width = '100%';
-                hotmartContainer.style.maxWidth = '100%';
-                hotmartContainer.style.minWidth = '100%';
-                hotmartContainer.style.margin = '0';
-                hotmartContainer.style.padding = '0';
-
-                // Aplicar estilos a TODOS los elementos internos
-                const allElements = hotmartContainer.querySelectorAll('*');
-                allElements.forEach(el => {
-                  if (el.style) {
-                    el.style.width = '100%';
-                    el.style.maxWidth = '100%';
-                    el.style.minWidth = '100%';
-                    el.style.boxSizing = 'border-box';
-                  }
-                });
-
-                // ALTURA COMPLETA HASTA EL FINAL - SIN CORTAR
-                const iframes = hotmartContainer.querySelectorAll('iframe');
-                iframes.forEach(iframe => {
-                  iframe.style.width = '100%';
-                  iframe.style.border = 'none';
-                  iframe.style.display = 'block';
-
-                  // ALTURA AUTOMÁTICA COMPLETA - NO CORTAR
-                  iframe.style.height = 'auto';
-                  iframe.style.minHeight = '1500px'; // ALTURA GENEROSA
-                  iframe.style.maxHeight = 'none';
-
-                  // SIN SCROLL INTERNO - VER TODO
-                  iframe.style.overflow = 'visible';
-                  iframe.style.overflowY = 'visible';
-                  iframe.setAttribute('scrolling', 'no');
-
-                  console.log('📏 Iframe COMPLETO HASTA EL FINAL');
-                });
-
-                console.log('✅ Estilos de ancho completo aplicados a Hotmart precargado');
-              }
-            };
-
-            // Aplicar inmediatamente y luego cada 500ms por 3 segundos
-            applyFullWidthStyles();
-            const styleInterval = setInterval(applyFullWidthStyles, 500);
-            setTimeout(() => clearInterval(styleInterval), 3000);
-          }, 1000);
-
-          setIsHotmartPreloaded(true);
-          setIsHotmartLoading(false);
-
-          // Configurar expansión por scroll para el formulario precargado
-          setTimeout(() => {
-            setupHotmartScrollExpansion('inline_checkout_preload');
-          }, 1500);
-
-          console.log(`✅ Hotmart precargado exitosamente con oferta: ${offerCode}`);
-        } catch (error) {
-          console.error("Error al precargar Hotmart:", error);
-          setIsHotmartLoading(false);
+  // Función para guardar datos de Mercado Pago en Supabase
+  const saveMercadoPagoCheckoutLead = async (transactionData?: any) => {
+    try {
+      const leadData = {
+        full_name: mercadoPagoFormData.fullName.trim(),
+        email: mercadoPagoFormData.email.trim().toLowerCase(),
+        payment_method: 'mercadopago',
+        amount: parseFloat(price) * 1150, // Convertir USD a ARS aproximadamente
+        currency: 'ARS',
+        transaction_id: transactionData?.id || null,
+        status: transactionData ? 'completed' : 'form_submitted',
+        created_at: new Date().toISOString(),
+        metadata: {
+          discount_applied: discountApplied,
+          final_discount_applied: finalDiscountApplied,
+          user_agent: navigator.userAgent,
+          referrer: document.referrer || null
         }
-      } else {
-        console.error("checkoutElements no está disponible para precarga");
-        setIsHotmartLoading(false);
-      }
-    };
-
-    script.onerror = () => {
-      console.error("Error al cargar el script de precarga de Hotmart");
-      setIsHotmartLoading(false);
-    };
-
-    document.body.appendChild(script);
-  }, [isHotmartPreloaded, isHotmartLoading]);
-
-  // Función simplificada - ya no necesitamos expansión porque inicia completo
-  const setupHotmartScrollExpansion = useCallback((containerId: string) => {
-    console.log(`✅ Hotmart ${containerId} configurado para mostrar completo desde el inicio`);
-  }, []);
-
-  // Función para configurar observador de altura dinámica
-  const setupDynamicHeightObserver = useCallback(() => {
-    // Buscar tanto el contenedor principal como el de precarga
-    const container = document.getElementById('inline_checkout') ||
-                     document.getElementById('inline_checkout_preload') ||
-                     document.getElementById('inline_checkout_active');
-    if (!container) return;
-
-    console.log('🔍 Configurando observador de altura dinámica para Hotmart...');
-
-    // Observador de mutaciones para detectar cambios en el DOM
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList' || mutation.type === 'attributes') {
-          // Asegurar que el contenedor no tenga restricciones de altura
-          const iframes = container.querySelectorAll('iframe');
-          iframes.forEach((iframe) => {
-            // Permitir que el iframe se expanda naturalmente
-            iframe.style.height = 'auto';
-            iframe.style.minHeight = 'auto';
-            iframe.style.maxHeight = 'none';
-            iframe.style.overflow = 'visible';
-          });
-
-          // Asegurar que el contenedor principal no tenga restricciones
-          container.style.height = 'auto';
-          container.style.minHeight = 'auto';
-          container.style.maxHeight = 'none';
-          container.style.overflow = 'visible';
-
-          console.log('📏 Altura dinámica ajustada automáticamente');
-        }
-      });
-    });
-
-    // Observar cambios en el contenedor y sus hijos
-    observer.observe(container, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class']
-    });
-
-    // Observador de redimensionamiento para detectar cambios de tamaño
-    if (window.ResizeObserver) {
-      const resizeObserver = new ResizeObserver((entries) => {
-        entries.forEach((entry) => {
-          console.log('📐 Formulario redimensionado:', entry.contentRect.height + 'px');
-          // El contenedor se ajustará automáticamente
-        });
-      });
-
-      // Observar el contenedor principal
-      resizeObserver.observe(container);
-
-      // También observar iframes cuando aparezcan
-      const checkForIframes = () => {
-        const iframes = container.querySelectorAll('iframe');
-        iframes.forEach((iframe) => {
-          resizeObserver.observe(iframe);
-        });
       };
 
-      // Verificar iframes cada segundo durante los primeros 10 segundos
-      let checkCount = 0;
-      const intervalId = setInterval(() => {
-        checkForIframes();
-        checkCount++;
-        if (checkCount >= 10) {
-          clearInterval(intervalId);
-        }
-      }, 1000);
-    }
+      const { data, error } = await supabase
+        .from('checkout_leads')
+        .insert([leadData])
+        .select()
+        .single();
 
-    console.log('✅ Observador de altura dinámica configurado correctamente');
-  }, []);
+      if (error) {
+        console.error('Error al guardar lead de Mercado Pago en Supabase:', error);
+        return { success: false, error };
+      }
+
+      console.log('Lead de Mercado Pago guardado exitosamente:', data);
+
+      // Tracking: Lead guardado
+      analyticsService.trackEvent('checkout_lead_saved', {
+        lead_id: data.id,
+        email: leadData.email,
+        payment_method: 'mercadopago',
+        amount: leadData.amount
+      });
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error inesperado al guardar lead de Mercado Pago:', error);
+      return { success: false, error };
+    }
+  };
+
+  // La función loadMercadoPago ahora se importa desde "./mercadoPago"
 
   // Función para cargar el script de Hotmart
   const loadHotmartScript = useCallback(() => {
@@ -645,7 +358,7 @@ const CheckoutContent = () => {
     // Limpiar el contenedor de checkout
     const checkoutContainer = document.getElementById('inline_checkout');
     if (checkoutContainer) {
-      checkoutContainer.innerHTML = '';
+      checkoutContainer.innerHTML = '<div class="animate-pulse text-white/70">Cargando formulario de pago...</div>';
     }
 
     // Crear y cargar el nuevo script
@@ -658,7 +371,7 @@ const CheckoutContent = () => {
       if (window.checkoutElements) {
         try {
           // Usar una oferta diferente basada en el descuento aplicado
-          let offerCode = "6j1ga51i"; // Oferta normal (precio completo: $10 USD)
+          let offerCode = "mz63zpyh"; // Oferta normal (precio completo: $10 USD)
 
           if (finalDiscountApplied) {
             offerCode = "5h87lps7"; // Oferta con descuento final (precio: $5 USD)
@@ -671,87 +384,13 @@ const CheckoutContent = () => {
           });
 
           elements.mount("#inline_checkout");
-
-          // Configurar observador para altura dinámica
-          setTimeout(() => {
-            setupDynamicHeightObserver();
-          }, 1000);
-
-          // Aplicar estilos para ancho completo - AGRESIVO
-          setTimeout(() => {
-            const applyFullWidthStyles = () => {
-              const hotmartContainer = document.querySelector('#inline_checkout');
-              if (hotmartContainer) {
-                // Aplicar estilos al contenedor principal
-                hotmartContainer.style.width = '100%';
-                hotmartContainer.style.maxWidth = '100%';
-                hotmartContainer.style.minWidth = '100%';
-                hotmartContainer.style.margin = '0';
-                hotmartContainer.style.padding = '0';
-
-                // Aplicar estilos a TODOS los elementos internos
-                const allElements = hotmartContainer.querySelectorAll('*');
-                allElements.forEach(el => {
-                  if (el.style) {
-                    el.style.width = '100%';
-                    el.style.maxWidth = '100%';
-                    el.style.minWidth = '100%';
-                    el.style.boxSizing = 'border-box';
-                  }
-                });
-
-                // ALTURA COMPLETA HASTA EL FINAL - SIN CORTAR
-                const iframes = hotmartContainer.querySelectorAll('iframe');
-                iframes.forEach(iframe => {
-                  iframe.style.width = '100%';
-                  iframe.style.border = 'none';
-                  iframe.style.display = 'block';
-
-                  // ALTURA AUTOMÁTICA COMPLETA - NO CORTAR
-                  iframe.style.height = 'auto';
-                  iframe.style.minHeight = '1500px'; // ALTURA GENEROSA
-                  iframe.style.maxHeight = 'none';
-
-                  // SIN SCROLL INTERNO - VER TODO
-                  iframe.style.overflow = 'visible';
-                  iframe.style.overflowY = 'visible';
-                  iframe.setAttribute('scrolling', 'no');
-
-                  console.log('📏 Iframe COMPLETO HASTA EL FINAL');
-                });
-
-                console.log('✅ Estilos de ancho completo aplicados a Hotmart normal');
-              }
-            };
-
-            // Aplicar inmediatamente y luego cada 500ms por 3 segundos
-            applyFullWidthStyles();
-            const styleInterval = setInterval(applyFullWidthStyles, 500);
-            setTimeout(() => clearInterval(styleInterval), 3000);
-          }, 1000);
-
           setIsHotmartLoaded(true);
           setIsHotmartLoading(false);
           setHotmartLoadAttempts(0); // Reiniciar los intentos cuando se carga con éxito
 
-          // Configurar expansión por scroll para el formulario normal
-          setTimeout(() => {
-            setupHotmartScrollExpansion('inline_checkout');
-          }, 1500);
-
-          // Track que Hotmart se cargó exitosamente
-          unifiedTrackingService.trackHotmartFormLoaded(offerCode);
-
           console.log(`Hotmart cargado exitosamente con oferta: ${offerCode}`);
         } catch (error) {
           console.error("Error al inicializar Hotmart:", error);
-
-          // Track error de Hotmart
-          unifiedTrackingService.trackHotmartError(
-            'initialization_error',
-            error instanceof Error ? error.message : 'Unknown error'
-          );
-
           setIsHotmartLoading(false);
           retryHotmartLoad();
         }
@@ -851,246 +490,76 @@ const CheckoutContent = () => {
     }
   }, []);
 
-  // Efecto para precargar Hotmart automáticamente
+  // Efecto para precargar el preferenceId cuando se detecta que el usuario es de Argentina
   useEffect(() => {
-    if (typeof window !== 'undefined' && !isArgentina) {
-      console.log('🚀 Precargando Hotmart para usuarios no argentinos...');
+    if (isArgentina) {
+      // Precargar el preferenceId para tenerlo listo cuando el usuario seleccione Moneda local
+      preloadMercadoPagoPreference();
 
-      // Esperar un poco para que la página se cargue completamente
-      setTimeout(() => {
-        preloadHotmartScript();
-      }, 2000);
+      // No precargar el script de Mercado Pago aquí, se cargará cuando se seleccione el método de pago
     }
-  }, [isArgentina, preloadHotmartScript]);
+  }, [isArgentina, preloadMercadoPagoPreference]);
 
-  // Efecto para precargar COMPLETAMENTE Mercado Pago cuando detectamos usuario argentino
+  // Efecto para cargar Hotmart o Mercado Pago cuando se selecciona como método de pago
   useEffect(() => {
-    if (isArgentina && typeof window !== 'undefined') {
-      console.log('🚀 Precargando COMPLETAMENTE Mercado Pago para usuario argentino...');
+    // Limpiar cualquier botón de Mercado Pago existente
+    const cleanupMercadoPago = () => {
+      const mpContainer = document.getElementById('mp-wallet-container');
+      if (mpContainer) {
+        // Eliminar cualquier script de Mercado Pago existente
+        const existingScripts = document.querySelectorAll('script[src*="mercadopago"]');
+        existingScripts.forEach(script => {
+          console.log('Eliminando script de Mercado Pago:', script);
+          script.remove();
+        });
 
-      setTimeout(() => {
-        // Crear un contenedor oculto para precargar el botón completo
-        let hiddenContainer = document.getElementById('mp-hidden-container');
-        if (!hiddenContainer) {
-          hiddenContainer = document.createElement('div');
-          hiddenContainer.id = 'mp-hidden-container';
-          hiddenContainer.style.position = 'absolute';
-          hiddenContainer.style.left = '-9999px';
-          hiddenContainer.style.top = '-9999px';
-          hiddenContainer.style.visibility = 'hidden';
-          hiddenContainer.style.pointerEvents = 'none';
-          document.body.appendChild(hiddenContainer);
+        // Eliminar script con ID específico
+        const namedScript = document.getElementById('mercadopago-script');
+        if (namedScript) {
+          console.log('Eliminando script con ID mercadopago-script');
+          namedScript.remove();
         }
 
-        // Cargar el botón COMPLETO en el contenedor oculto
-        loadMercadoPago(null, null, 'mp-hidden-container');
+        // Limpiar el contenedor
+        while (mpContainer.firstChild) {
+          mpContainer.removeChild(mpContainer.firstChild);
+        }
 
-        // Marcar como precargado después de un tiempo
+        // Agregar mensaje de carga
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'animate-pulse text-white/60 text-center py-3 text-xs font-light tracking-wide';
+        loadingDiv.innerHTML = 'Conectando con Mercado Pago<span class="opacity-80">...</span>';
+        mpContainer.appendChild(loadingDiv);
+      }
+    };
+
+    if (selectedPaymentMethod === "hotmart") {
+      // Si el usuario es de Argentina, cargar Mercado Pago en lugar de Hotmart
+      if (isArgentina) {
+        console.log('Usuario argentino detectado, cargando Mercado Pago...');
+
+        // Limpiar cualquier botón existente
+        cleanupMercadoPago();
+
+        // Precargar el preferenceId con el precio actual
+        preloadMercadoPagoPreference();
+
+        // Esperar un momento para asegurarse de que el preferenceId se haya cargado
         setTimeout(() => {
-          setIsMercadoPagoPreloaded(true);
-          console.log('✅ Botón de Mercado Pago COMPLETAMENTE precargado');
-        }, 3000);
-
-      }, 1500);
-    }
-  }, [isArgentina, loadMercadoPago]);
-
-
-
-  // Efecto para mostrar/ocultar el botón precargado cuando se selecciona la sección
-  useEffect(() => {
-    if (selectedPaymentMethod === "hotmart" && isArgentina && isMercadoPagoPreloaded) {
-      console.log('📦 Clonando botón de Mercado Pago precargado al contenedor visible...');
-
-      const hiddenContainer = document.getElementById('mp-hidden-container');
-      const targetContainer = document.getElementById('mp-wallet-container');
-
-      if (hiddenContainer && targetContainer && hiddenContainer.children.length > 0) {
-        // Limpiar el contenedor objetivo
-        targetContainer.innerHTML = '';
-
-        // CLONAR (no mover) todo el contenido del contenedor oculto al visible
-        Array.from(hiddenContainer.children).forEach(child => {
-          const clonedChild = child.cloneNode(true);
-          targetContainer.appendChild(clonedChild);
-        });
-
-        console.log('✅ Botón de Mercado Pago clonado y visible INMEDIATAMENTE');
-      } else if (selectedPaymentMethod === "hotmart" && isArgentina) {
-        // Fallback: cargar normalmente si la precarga falló
-        console.log('⚠️ Precarga falló, cargando normalmente...');
-        loadMercadoPago();
-      }
-    } else if (selectedPaymentMethod !== "hotmart" && isArgentina) {
-      // Limpiar el contenedor cuando se cierra la sección
-      const targetContainer = document.getElementById('mp-wallet-container');
-      if (targetContainer) {
-        targetContainer.innerHTML = '';
-      }
-    }
-  }, [selectedPaymentMethod, isArgentina, isMercadoPagoPreloaded, loadMercadoPago]);
-
-  // Efecto para mostrar/ocultar PayPal precargado cuando se selecciona la sección
-  useEffect(() => {
-    if (selectedPaymentMethod === "paypal") {
-      console.log('📦 Mostrando PayPal precargado...');
-
-      const preloadedContainer = document.getElementById('paypal-preloaded-container');
-      const targetContainer = document.querySelector('.paypal-buttons-container');
-
-      if (preloadedContainer && targetContainer) {
-        // Limpiar el contenedor objetivo
-        targetContainer.innerHTML = '';
-
-        // Hacer visible el contenedor precargado moviéndolo a posición visible
-        preloadedContainer.style.position = 'static';
-        preloadedContainer.style.left = 'auto';
-        preloadedContainer.style.top = 'auto';
-        preloadedContainer.style.visibility = 'visible';
-        preloadedContainer.style.pointerEvents = 'auto';
-
-        // Mover el contenedor completo al lugar visible
-        targetContainer.appendChild(preloadedContainer);
-
-        console.log('✅ PayPal visible INMEDIATAMENTE');
-      }
-    } else if (selectedPaymentMethod !== "paypal") {
-      // Cuando se cierra PayPal, moverlo de vuelta y ocultarlo
-      console.log('📦 Ocultando PayPal...');
-
-      const preloadedContainer = document.getElementById('paypal-preloaded-container');
-      const targetContainer = document.querySelector('.paypal-buttons-container');
-
-      if (preloadedContainer && targetContainer && targetContainer.contains(preloadedContainer)) {
-        // Mover de vuelta al body y ocultarlo
-        document.body.appendChild(preloadedContainer);
-
-        // Restaurar estilos de ocultación
-        preloadedContainer.style.position = 'absolute';
-        preloadedContainer.style.left = '-9999px';
-        preloadedContainer.style.top = '-9999px';
-        preloadedContainer.style.visibility = 'hidden';
-        preloadedContainer.style.pointerEvents = 'none';
-
-        console.log('✅ PayPal ocultado y listo para próxima apertura');
-      }
-    }
-  }, [selectedPaymentMethod]);
-
-  // Efecto para mostrar/ocultar PayPal precargado cuando se selecciona la sección
-  useEffect(() => {
-    if (selectedPaymentMethod === "paypal" && isPayPalPreloaded) {
-      console.log('📦 Mostrando PayPal precargado...');
-
-      const hiddenPayPalContainer = document.getElementById('paypal-hidden-container');
-      const targetPayPalContainer = document.querySelector('.paypal-buttons-container');
-
-      if (hiddenPayPalContainer && targetPayPalContainer) {
-        // El contenedor de PayPal ya está renderizado en el DOM
-        // Solo necesitamos asegurarnos de que esté visible
-        console.log('✅ PayPal visible INMEDIATAMENTE');
-      }
-    }
-  }, [selectedPaymentMethod, isPayPalPreloaded]);
-
-  // Este efecto ya no es necesario porque precargamos cuando detectamos que es argentino
-
-  // Ya no necesitamos mover contenedores porque cargamos directamente en el contenedor principal
-
-  // Efecto para mostrar/ocultar Hotmart precargado cuando se selecciona la sección
-  useEffect(() => {
-    if (selectedPaymentMethod === "hotmart" && !isArgentina && isHotmartPreloaded) {
-      console.log('📦 Mostrando Hotmart precargado...');
-
-      const hiddenContainer = document.getElementById('hotmart-hidden-container');
-      const targetContainer = document.getElementById('inline_checkout');
-
-      if (hiddenContainer && targetContainer && hiddenContainer.children.length > 0) {
-        // Limpiar el contenedor objetivo
-        targetContainer.innerHTML = '';
-
-        // CLONAR (no mover) todo el contenido del contenedor oculto al visible
-        Array.from(hiddenContainer.children).forEach(child => {
-          const clonedChild = child.cloneNode(true);
-          // Cambiar el ID del contenedor clonado para evitar duplicados
-          if (clonedChild.id === 'inline_checkout_preload') {
-            clonedChild.id = 'inline_checkout_active';
-          }
-          targetContainer.appendChild(clonedChild);
-        });
-
-        // Aplicar estilos de ancho completo al formulario clonado
-        setTimeout(() => {
-          const applyFullWidthToCloned = () => {
-            const clonedContainer = document.querySelector('#inline_checkout_active');
-            if (clonedContainer) {
-              // Aplicar estilos al contenedor clonado
-              clonedContainer.style.width = '100%';
-              clonedContainer.style.maxWidth = '100%';
-              clonedContainer.style.minWidth = '100%';
-              clonedContainer.style.margin = '0';
-              clonedContainer.style.padding = '0';
-
-              // Aplicar estilos a todos los elementos internos
-              const allElements = clonedContainer.querySelectorAll('*');
-              allElements.forEach(el => {
-                if (el.style) {
-                  el.style.width = '100%';
-                  el.style.maxWidth = '100%';
-                  el.style.minWidth = '100%';
-                  el.style.boxSizing = 'border-box';
-                }
-              });
-
-              // ALTURA COMPLETA HASTA EL FINAL - SIN CORTAR
-              const iframes = clonedContainer.querySelectorAll('iframe');
-              iframes.forEach(iframe => {
-                iframe.style.width = '100%';
-                iframe.style.border = 'none';
-                iframe.style.display = 'block';
-
-                // ALTURA AUTOMÁTICA COMPLETA - NO CORTAR
-                iframe.style.height = 'auto';
-                iframe.style.minHeight = '1500px'; // ALTURA GENEROSA
-                iframe.style.maxHeight = 'none';
-
-                // SIN SCROLL INTERNO - VER TODO
-                iframe.style.overflow = 'visible';
-                iframe.style.overflowY = 'visible';
-                iframe.setAttribute('scrolling', 'no');
-
-                console.log('📏 Iframe COMPLETO HASTA EL FINAL');
-              });
-
-              console.log('✅ Estilos de ancho completo aplicados al formulario clonado');
-            }
-          };
-
-          // Aplicar inmediatamente y repetir para asegurar
-          applyFullWidthToCloned();
-          const clonedStyleInterval = setInterval(applyFullWidthToCloned, 500);
-          setTimeout(() => clearInterval(clonedStyleInterval), 3000);
-
-          // Configurar expansión por scroll para el formulario clonado
-          setTimeout(() => {
-            setupHotmartScrollExpansion('inline_checkout_active');
-          }, 500);
-        }, 100);
-
-        console.log('✅ Hotmart clonado y visible INMEDIATAMENTE');
-      } else if (selectedPaymentMethod === "hotmart" && !isArgentina) {
-        // Fallback: cargar normalmente si la precarga falló
-        console.log('⚠️ Precarga de Hotmart falló, cargando normalmente...');
+          // Cargar Mercado Pago
+          loadMercadoPago(mercadoPagoPreferenceId.current, mercadoPagoInitPoint.current);
+          console.log('Mercado Pago cargado inicialmente');
+        }, 300);
+      } else {
+        console.log('Usuario no argentino, cargando Hotmart...');
+        // Cargar Hotmart
         loadHotmartScript();
       }
-    } else if (selectedPaymentMethod !== "hotmart") {
-      // Limpiar el contenedor cuando se cierra la sección
-      const targetContainer = document.getElementById('inline_checkout');
-      if (targetContainer) {
-        targetContainer.innerHTML = '';
-      }
     }
-  }, [selectedPaymentMethod, isArgentina, isHotmartPreloaded, loadHotmartScript]);
+
+    // Función de limpieza vacía
+    return () => {};
+  }, [selectedPaymentMethod, loadHotmartScript, loadMercadoPago, isArgentina, preloadMercadoPagoPreference]);
 
   // Función para aplicar el descuento
   const applyDiscount = useCallback(() => {
@@ -1183,25 +652,8 @@ const CheckoutContent = () => {
             }, 300);
           }
         } else {
-          // Si no es de Argentina, recargar Hotmart con el nuevo precio
-          console.log('Aplicando descuento y recargando Hotmart...');
-
-          // Limpiar la precarga anterior
-          setIsHotmartPreloaded(false);
-          const hiddenContainer = document.getElementById('hotmart-hidden-container');
-          if (hiddenContainer) {
-            hiddenContainer.innerHTML = '';
-          }
-
-          // Precargar nuevamente con el descuento
-          setTimeout(() => {
-            preloadHotmartScript();
-          }, 500);
-
-          // Si la sección está abierta, mostrar el formulario actualizado
-          if (selectedPaymentMethod === "hotmart") {
-            loadHotmartScript();
-          }
+          // Si no es de Argentina, cargar Hotmart
+          loadHotmartScript();
         }
       }
 
@@ -1303,25 +755,8 @@ const CheckoutContent = () => {
             }, 300);
           }
         } else {
-          // Si no es de Argentina, recargar Hotmart con el descuento final
-          console.log('Aplicando descuento final y recargando Hotmart...');
-
-          // Limpiar la precarga anterior
-          setIsHotmartPreloaded(false);
-          const hiddenContainer = document.getElementById('hotmart-hidden-container');
-          if (hiddenContainer) {
-            hiddenContainer.innerHTML = '';
-          }
-
-          // Precargar nuevamente con el descuento final
-          setTimeout(() => {
-            preloadHotmartScript();
-          }, 500);
-
-          // Si la sección está abierta, mostrar el formulario actualizado
-          if (selectedPaymentMethod === "hotmart") {
-            loadHotmartScript();
-          }
+          // Si no es de Argentina, cargar Hotmart
+          loadHotmartScript();
         }
       }
 
@@ -1338,42 +773,6 @@ const CheckoutContent = () => {
       timestamp: new Date().toISOString()
     });
   }, []);
-
-  // Efecto para tracking inicial de la página
-  useEffect(() => {
-    // Track página de checkout vista con servicio unificado
-    unifiedTrackingService.trackPageView('Checkout Page', {
-      content_category: 'checkout',
-      value: parseFloat(price),
-      currency: 'USD'
-    });
-  }, [price]);
-
-  // Efecto para tracking cuando se completa información de pago
-  useEffect(() => {
-    if (isMercadoPagoFormValid) {
-      unifiedTrackingService.trackAddPaymentInfo({
-        content_name: 'Flasti Access',
-        content_category: 'platform_access',
-        value: parseFloat(price),
-        currency: isArgentina ? 'ARS' : 'USD',
-        payment_method: 'mercadopago'
-      });
-    }
-  }, [isMercadoPagoFormValid, price, isArgentina]);
-
-  // Efecto para tracking cuando se completa información de pago de PayPal
-  useEffect(() => {
-    if (isPaypalFormValid) {
-      unifiedTrackingService.trackAddPaymentInfo({
-        content_name: 'Flasti Access',
-        content_category: 'platform_access',
-        value: parseFloat(price),
-        currency: 'USD',
-        payment_method: 'paypal'
-      });
-    }
-  }, [isPaypalFormValid, price]);
 
   // Efecto para detectar el país del usuario
   useEffect(() => {
@@ -1677,8 +1076,7 @@ const CheckoutContent = () => {
   };
 
   return (
-    <>
-      <div className="min-h-screen mobile-smooth-scroll" style={{ background: "linear-gradient(to bottom, #0f0f1a, #1a1a2e)" }}>
+    <div className="min-h-screen mobile-smooth-scroll" style={{ background: "linear-gradient(to bottom, #0f0f1a, #1a1a2e)" }}>
       <CheckoutHeader />
 
       {/* Exit Intent Popup */}
@@ -1828,11 +1226,11 @@ const CheckoutContent = () => {
                   </div>
                   <span className="text-[10px] sm:text-xs font-medium text-[#22c55e] whitespace-nowrap">
                     {selectedPaymentMethod === "paypal" ? (
-                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
+                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")}`
                     ) : isArgentina ? (
                       `Ahorras AR$ ${finalDiscountApplied ? "51.750" : (discountApplied ? "48.300" : "46.000")}`
                     ) : (
-                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
+                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")}`
                     )}
                   </span>
                 </div>
@@ -1964,7 +1362,6 @@ const CheckoutContent = () => {
               </div>
 
 
-
             </Card>
           </div>
 
@@ -1989,29 +1386,6 @@ const CheckoutContent = () => {
                       // Cambiar el método de pago
                     } else {
                       setSelectedPaymentMethod("hotmart");
-                      // Track inicio de checkout con servicio unificado
-                      unifiedTrackingService.trackInitiateCheckout({
-                        content_name: 'Flasti Access',
-                        content_category: 'platform_access',
-                        value: parseFloat(price),
-                        currency: isArgentina ? 'ARS' : 'USD',
-                        payment_method: isArgentina ? 'mercadopago' : 'hotmart'
-                      });
-
-                      // Track específico de Hotmart si no es Argentina
-                      if (!isArgentina) {
-                        let offerCode = "6j1ga51i";
-                        if (finalDiscountApplied) {
-                          offerCode = "5h87lps7";
-                        } else if (discountApplied) {
-                          offerCode = "yegwjf6i";
-                        }
-                        unifiedTrackingService.trackHotmartCheckoutStarted(
-                          offerCode,
-                          parseFloat(price),
-                          'USD'
-                        );
-                      }
                     }
                   }}
                 >
@@ -2082,7 +1456,7 @@ const CheckoutContent = () => {
 
                 {selectedPaymentMethod === "hotmart" && (
                   <div className="p-6 border-t border-[#2a2a4a]" style={{ background: "linear-gradient(to bottom, #0f0f1a, #1a1a2e)" }}>
-                    <div id="inline_checkout" className="w-full"></div>
+                    <div id="inline_checkout" className="min-h-[300px] flex items-center justify-center rounded-lg overflow-hidden">
                       {isArgentina ? (
                         <div className="w-full">
                           <div className="flex items-center justify-between mb-4">
@@ -2134,7 +1508,7 @@ const CheckoutContent = () => {
                           </div>
 
                           {/* Formulario de datos para Mercado Pago */}
-                          <div id="mercadopago-form-block" className="mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
+                          <div className="mb-6 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a]">
                             <div className="flex items-center gap-2 mb-4">
                               <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2142,8 +1516,8 @@ const CheckoutContent = () => {
                                 </svg>
                               </div>
                               <div>
-                                <h3 className="text-sm font-semibold text-white">Ingresa tus datos</h3>
-                                <p className="text-xs text-white/60">Necesarios para completar tu acceso</p>
+                                <h3 className="text-sm font-semibold text-white">Información del usuario</h3>
+                                <p className="text-xs text-white/60">Necesaria para completar tu registro</p>
                               </div>
                             </div>
 
@@ -2218,43 +1592,23 @@ const CheckoutContent = () => {
                             )}
                           </div>
 
-                          {/* Botón de Mercado Pago - Oficial */}
-                          <div
-                            className="relative mb-1"
-                            onClick={(e) => {
-                              if (!isMercadoPagoFormValid) {
-                                e.preventDefault();
-                                e.stopPropagation();
-
-                                // Marcar el formulario en rojo por 0.5 segundos
-                                const formBlock = document.querySelector('#mercadopago-form-block');
-                                if (formBlock) {
-                                  formBlock.classList.remove('border-[#2a2a4a]');
-                                  formBlock.classList.add('border-red-500', 'border-2');
-
-                                  // Agregar animación de pulse
-                                  formBlock.classList.add('animate-pulse');
-
-                                  // Remover el efecto después de 0.5 segundos
-                                  setTimeout(() => {
-                                    formBlock.classList.remove('border-red-500', 'border-2', 'animate-pulse');
-                                    formBlock.classList.add('border-[#2a2a4a]');
-                                  }, 500);
-                                }
-
-                                return false;
-                              }
-                            }}
-                          >
-                            <div
-                              id="mp-wallet-container"
-                              className={`mercadopago-container transition-all duration-300 ${!isMercadoPagoFormValid ? 'pointer-events-none' : ''}`}
-                            >
-                              {/* El botón oficial de Mercado Pago aparecerá aquí */}
+                          {/* Botón de Mercado Pago - Solo se muestra si el formulario es válido */}
+                          {isMercadoPagoFormValid ? (
+                            <div id="mp-wallet-container" className="mb-1 mercadopago-container">
+                              <div className="animate-pulse text-white/60 text-center py-3 text-xs font-light tracking-wide">
+                                Conectando con Mercado Pago<span className="opacity-80">...</span>
+                              </div>
                             </div>
-                          </div>
-
-
+                          ) : (
+                            <div className="bg-gray-500/20 p-4 rounded-lg border border-gray-500/30 mb-1">
+                              <div className="flex items-center justify-center text-gray-400">
+                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <span className="text-sm">Completa el formulario para habilitar Mercado Pago</span>
+                              </div>
+                            </div>
+                          )}
 
                           {/* Imagen de medios de pago aceptados */}
                           <div className="flex justify-center items-center mx-auto mb-4 max-w-[220px]">
@@ -2274,8 +1628,11 @@ const CheckoutContent = () => {
                             Pago seguro, protegemos tus datos.
                           </div>
                         </div>
-                      ) : null}
+                      ) : (
+                        <div className="animate-pulse text-white/70">Cargando formulario de pago...</div>
+                      )}
                     </div>
+                  </div>
                 )}
               </Card>
 
@@ -2289,14 +1646,6 @@ const CheckoutContent = () => {
                       setSelectedPaymentMethod(null);
                     } else {
                       setSelectedPaymentMethod("paypal");
-                      // Track inicio de checkout con PayPal usando servicio unificado
-                      unifiedTrackingService.trackInitiateCheckout({
-                        content_name: 'Flasti Access',
-                        content_category: 'platform_access',
-                        value: parseFloat(price),
-                        currency: 'USD',
-                        payment_method: 'paypal'
-                      });
                     }
                   }}
                 >
@@ -2331,7 +1680,7 @@ const CheckoutContent = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mb-3 p-3 bg-[#0f0f1a] rounded-lg border border-[#2a2a4a]">
+                    <div className="flex justify-between items-center mb-6 p-3 bg-[#0f0f1a] rounded-lg border border-[#2a2a4a]">
                       <div className="flex flex-col">
                         <span className="text-sm text-white">Total</span>
                         {/* Etiqueta de ahorro siempre en USD para PayPal */}
@@ -2350,9 +1699,11 @@ const CheckoutContent = () => {
                       </div>
                     </div>
 
-                    <div>
+
+
+                    <div className="mb-6">
                       {/* Formulario de datos para PayPal */}
-                      <div id="paypal-form-block" className="mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
+                      <div className="mb-6 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a]">
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                             <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2360,8 +1711,8 @@ const CheckoutContent = () => {
                             </svg>
                           </div>
                           <div>
-                            <h3 className="text-sm font-semibold text-white">Ingresa tus datos</h3>
-                            <p className="text-xs text-white/60">Necesarios para completar tu acceso</p>
+                            <h3 className="text-sm font-semibold text-white">Información del usuario</h3>
+                            <p className="text-xs text-white/60">Necesaria para completar tu registro</p>
                           </div>
                         </div>
 
@@ -2436,37 +1787,10 @@ const CheckoutContent = () => {
                         )}
                       </div>
 
-                      {/* Botones de PayPal - Simple y limpio */}
-                      <div
-                        className="relative"
-                        onClick={(e) => {
-                          if (!isPaypalFormValid) {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            // Marcar el formulario en rojo por 0.5 segundos
-                            const formBlock = document.querySelector('#paypal-form-block');
-                            if (formBlock) {
-                              formBlock.classList.remove('border-[#2a2a4a]');
-                              formBlock.classList.add('border-red-500', 'border-2');
-
-                              // Agregar animación de pulse
-                              formBlock.classList.add('animate-pulse');
-
-                              // Remover el efecto después de 0.5 segundos
-                              setTimeout(() => {
-                                formBlock.classList.remove('border-red-500', 'border-2', 'animate-pulse');
-                                formBlock.classList.add('border-[#2a2a4a]');
-                              }, 500);
-                            }
-
-                            return false;
-                          }
-                        }}
-                      >
-                        <div className={`paypal-buttons-container transition-all duration-300 ${!isPaypalFormValid ? 'pointer-events-none' : ''}`}>
-                          <PayPalScriptProvider options={paypalOptions}>
-                            <PayPalButtons
+                      {/* Botones de PayPal - Solo se muestran si el formulario es válido */}
+                      {isPaypalFormValid ? (
+                        <PayPalScriptProvider options={paypalOptions}>
+                          <PayPalButtons
                           style={{ layout: "vertical", label: "pay", tagline: false, shape: "rect" }}
                           fundingSource="paypal"
                           createOrder={(_, actions) => {
@@ -2493,15 +1817,6 @@ const CheckoutContent = () => {
 
                                 const details = await actions.order.capture();
                                 console.log("Pago completado. ID de transacción: " + details.id);
-
-                                // Track compra completada con servicio unificado
-                                unifiedTrackingService.trackPurchase({
-                                  transaction_id: details.id || 'paypal_transaction',
-                                  value: parseFloat(price),
-                                  currency: 'USD',
-                                  payment_method: 'paypal',
-                                  content_name: 'Acceso a Flasti'
-                                });
 
                                 // Guardar datos en Supabase
                                 const saveResult = await saveCheckoutLead(details);
@@ -2566,7 +1881,7 @@ const CheckoutContent = () => {
                                 // Tracking: Compra completada en Yandex Metrica
                                 const purchaseAmount = parseFloat(price);
                                 analyticsService.trackPurchase(
-                                  details.id || 'paypal_transaction',
+                                  details.id,
                                   purchaseAmount,
                                   'USD',
                                   [{
@@ -2596,10 +1911,20 @@ const CheckoutContent = () => {
                               }
                             }
                           }}
-                          />
-                          </PayPalScriptProvider>
+                        />
+                        </PayPalScriptProvider>
+                      ) : (
+                        <div className="bg-gray-500/20 p-4 rounded-lg border border-gray-500/30">
+                          <div className="flex items-center justify-center text-gray-400">
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            <span className="text-sm">Completa el formulario para habilitar PayPal</span>
+                          </div>
                         </div>
-                      </div>
+                      )}
+                    </div>
+
 
                       <div className="flex items-center justify-center text-xs text-white/70 mt-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
@@ -2607,8 +1932,9 @@ const CheckoutContent = () => {
                         </svg>
                         Pago 100% seguro, protegemos tus datos.
                       </div>
+
+
                     </div>
-                  </div>
                 )}
               </Card>
 
@@ -2620,99 +1946,13 @@ const CheckoutContent = () => {
                   Pago 100% seguro, protegemos tus datos.
                 </div>
               )}
-
-              {/* Mensaje sobre el proceso después del pago */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl border-2 border-dashed border-blue-400/30 backdrop-blur-sm relative overflow-hidden">
-                {/* Decoración de fondo sutil */}
-                <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full bg-blue-400/5 blur-xl"></div>
-                <div className="absolute -bottom-2 -left-2 w-12 h-12 rounded-full bg-purple-400/5 blur-xl"></div>
-
-                <div className="relative z-10">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-400/30">
-                      <svg className="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <h4 className="font-semibold text-sm text-blue-400">¿Cómo inicio sesión?</h4>
-                  </div>
-                  <p className="text-sm text-white/80 leading-relaxed pl-8">
-                    Después de completar el pago, serás llevado automáticamente a la página de registro, donde podrás crear tu cuenta y acceder de inmediato a tu panel personal. También recibirás un correo de bienvenida en tu bandeja de entrada con todos los detalles de tu acceso.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* PayPal SIEMPRE renderizado pero oculto - para carga instantánea */}
-          <div
-            id="paypal-preloaded-container"
-            style={{
-              position: 'absolute',
-              left: '-9999px',
-              top: '-9999px',
-              visibility: 'hidden',
-              pointerEvents: 'none'
-            }}
-          >
-            <PayPalScriptProvider options={paypalOptions}>
-              <PayPalButtons
-                style={{ layout: "vertical", label: "pay", tagline: false, shape: "rect" }}
-                fundingSource="paypal"
-                createOrder={(_, actions) => {
-                  if (actions.order) {
-                    return actions.order.create({
-                      intent: "CAPTURE",
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: price,
-                            currency_code: "USD"
-                          },
-                          description: "Acceso a Flasti",
-                        },
-                      ],
-                    });
-                  }
-                  return Promise.reject(new Error("No se pudo crear la orden"));
-                }}
-                onApprove={async (_, actions) => {
-                  if (actions.order) {
-                    try {
-                      setIsSubmittingPaypalForm(true);
-                      const details = await actions.order.capture();
-                      console.log("Pago completado. ID de transacción: " + details.id);
-
-                      // Track compra completada con servicio unificado
-                      unifiedTrackingService.trackPurchase({
-                        transaction_id: details.id || 'paypal_transaction',
-                        value: parseFloat(price),
-                        currency: 'USD',
-                        payment_method: 'paypal',
-                        content_name: 'Acceso a Flasti'
-                      });
-
-                      await saveCheckoutLead(details);
-                      window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
-                    } catch (error) {
-                      console.error('Error en el proceso de pago:', error);
-                      setIsSubmittingPaypalForm(false);
-                    }
-                  }
-                }}
-              />
-            </PayPalScriptProvider>
-          </div>
 
         </div>
       </div>
     </div>
-
-    {/* Componente de debug para Facebook Pixel - solo visible en desarrollo */}
-    {process.env.NODE_ENV === 'development' && (
-      <FacebookPixelDebug isVisible={true} />
-    )}
-    </>
   );
 };
 

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { UserLevelProvider } from '@/contexts/UserLevelContext';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import OnboardingModal from '@/components/dashboard/OnboardingModal';
+import analyticsService from '@/lib/analytics-service';
 
 // Importar estilos
 import './casino-theme.css';
@@ -16,10 +17,17 @@ export default function CasinoDashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // Redireccionar si no está autenticado
+  // Redireccionar si no está autenticado y tracking de acceso al dashboard
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
+    } else if (user) {
+      // Tracking: Usuario accede al dashboard
+      analyticsService.trackDashboardAccess();
+      analyticsService.setUserParams({
+        user_id: user.id,
+        dashboard_access_time: new Date().toISOString()
+      });
     }
   }, [user, loading, router]);
 

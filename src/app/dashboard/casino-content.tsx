@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowRight,
+  ArrowRight,q
   Star,
   TrendingUp,
   Users,
@@ -15,7 +15,13 @@ import {
   Clock,
   Sparkles,
   Gift,
-  Zap
+  Zap,
+  Image as ImageIcon,
+  FileText,
+  Headphones,
+  Lock,
+  CheckCircle,
+  Shield
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -103,6 +109,43 @@ const promotions = [
     image: '/gamification/ranking-bg.jpg',
     color: '#0ea5e9',
     icon: <Users size={20} />
+  }
+];
+
+// Microtrabajos adicionales
+const additionalMicroJobs = [
+  {
+    id: 1,
+    title: 'Creá imágenes',
+    description: 'Usá nuestra plataforma para generar imágenes únicas.',
+    icon: <ImageIcon size={24} />,
+    color: '#f59e0b',
+    bgGradient: 'linear-gradient(135deg, #f59e0b20, #f59e0b40)',
+    shadowColor: '#f59e0b30',
+    borderColor: '#f59e0b40',
+    isLocked: true
+  },
+  {
+    id: 2,
+    title: 'Resumí textos en pocos minutos',
+    description: 'Leés un contenido y hacés un resumen con tus palabras.',
+    icon: <FileText size={24} />,
+    color: '#9333ea',
+    bgGradient: 'linear-gradient(135deg, #9333ea20, #9333ea40)',
+    shadowColor: '#9333ea30',
+    borderColor: '#9333ea40',
+    isLocked: true
+  },
+  {
+    id: 3,
+    title: 'Convertí audios a texto con un clic',
+    description: 'Transforma los audios a texto usando nuestra herramienta de IA',
+    icon: <Headphones size={24} />,
+    color: '#22c55e',
+    bgGradient: 'linear-gradient(135deg, #22c55e20, #22c55e40)',
+    shadowColor: '#22c55e30',
+    borderColor: '#22c55e40',
+    isLocked: true
   }
 ];
 
@@ -285,14 +328,46 @@ export default function CasinoContent() {
             <h2 className="carousel-title">Aplicaciones Populares</h2>
             <div className="carousel-nav carousel-nav-mobile">
               <button
-                className="carousel-nav-button"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-xl hover:scale-110 active:scale-95 active:shadow-sm"
+                style={{ backgroundColor: '#1E1B2E', opacity: 0.8 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '0.8';
+                  e.currentTarget.style.backgroundColor = '#1E1B2E';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#3A3450';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
                 onClick={() => scrollCarousel('left')}
                 aria-label="Desplazar a la izquierda"
               >
                 <ChevronLeft size={18} color="white" />
               </button>
               <button
-                className="carousel-nav-button"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-xl hover:scale-110 active:scale-95 active:shadow-sm"
+                style={{ backgroundColor: '#1E1B2E', opacity: 0.8 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '0.8';
+                  e.currentTarget.style.backgroundColor = '#1E1B2E';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#3A3450';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
                 onClick={() => scrollCarousel('right')}
                 aria-label="Desplazar a la derecha"
               >
@@ -302,18 +377,50 @@ export default function CasinoContent() {
           </div>
           <div className="carousel-nav carousel-nav-desktop">
             <button
-              className="carousel-nav-button"
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-xl hover:scale-110 active:scale-95 active:shadow-sm"
+              style={{ backgroundColor: '#1E1B2E', opacity: 0.8 }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.backgroundColor = '#2A2640';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '0.8';
+                e.currentTarget.style.backgroundColor = '#1E1B2E';
+              }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.backgroundColor = '#3A3450';
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.backgroundColor = '#2A2640';
+              }}
               onClick={() => scrollCarousel('left')}
               aria-label="Desplazar a la izquierda"
             >
-              <ChevronLeft size={20} color="white" />
+              <ChevronLeft size={18} color="white" />
             </button>
             <button
-              className="carousel-nav-button"
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-xl hover:scale-110 active:scale-95 active:shadow-sm"
+              style={{ backgroundColor: '#1E1B2E', opacity: 0.8 }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.backgroundColor = '#2A2640';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '0.8';
+                e.currentTarget.style.backgroundColor = '#1E1B2E';
+              }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.backgroundColor = '#3A3450';
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.backgroundColor = '#2A2640';
+              }}
               onClick={() => scrollCarousel('right')}
               aria-label="Desplazar a la derecha"
             >
-              <ChevronRight size={20} color="white" />
+              <ChevronRight size={18} color="white" />
             </button>
           </div>
         </div>
@@ -443,6 +550,315 @@ export default function CasinoContent() {
             </div>
           </Link>
         ))}
+      </div>
+
+      {/* Microtrabajos adicionales */}
+      <div className="mb-8">
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold text-white mb-3">
+            Microtrabajos adicionales
+          </h2>
+          <div className="flex items-center justify-between">
+            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 md:px-2.5 md:py-1 md:gap-2 rounded-md bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 backdrop-blur-sm">
+              <CheckCircle size={10} className="text-blue-400 md:w-3 md:h-3 flex-shrink-0" />
+              <span className="text-[10px] md:text-xs text-white/90 font-medium leading-tight whitespace-nowrap">
+                Completa los primeros microtrabajos para desbloquear
+              </span>
+            </div>
+
+            {/* Flechas de navegación para ambas versiones */}
+            <div className="flex gap-2">
+              <button
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-xl hover:scale-110 active:scale-95 active:shadow-sm"
+                style={{ backgroundColor: '#1E1B2E', opacity: 0.8 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '0.8';
+                  e.currentTarget.style.backgroundColor = '#1E1B2E';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#3A3450';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
+                onClick={() => {
+                  const container = document.getElementById('microjobs-mobile-carousel');
+                  if (container) {
+                    container.scrollBy({ left: -320, behavior: 'smooth' });
+                  }
+                }}
+                aria-label="Desplazar a la izquierda"
+              >
+                <ChevronLeft size={18} color="white" />
+              </button>
+              <button
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-xl hover:scale-110 active:scale-95 active:shadow-sm"
+                style={{ backgroundColor: '#1E1B2E', opacity: 0.8 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = '0.8';
+                  e.currentTarget.style.backgroundColor = '#1E1B2E';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.backgroundColor = '#3A3450';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2A2640';
+                }}
+                onClick={() => {
+                  const container = document.getElementById('microjobs-mobile-carousel');
+                  if (container) {
+                    container.scrollBy({ left: 320, behavior: 'smooth' });
+                  }
+                }}
+                aria-label="Desplazar a la derecha"
+              >
+                <ChevronRight size={18} color="white" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: Grid de 3 columnas */}
+        <div className="hidden md:grid md:grid-cols-3 gap-6">
+          {additionalMicroJobs.map((job) => (
+            <motion.div
+              key={job.id}
+              className="relative group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                // Animación de candado cuando está bloqueado
+                if (job.isLocked) {
+                  const element = document.getElementById(`microjob-${job.id}`);
+                  if (element) {
+                    element.classList.add('shake-animation');
+                    setTimeout(() => {
+                      element.classList.remove('shake-animation');
+                    }, 600);
+                  }
+                }
+              }}
+            >
+              <div
+                id={`microjob-${job.id}`}
+                className="relative p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 overflow-hidden"
+                style={{
+                  background: job.bgGradient,
+                  border: `1px solid ${job.borderColor}`
+                }}
+              >
+                {/* Etiqueta "Bloqueado" en esquina superior izquierda */}
+                {job.isLocked && (
+                  <div className="absolute top-3 left-3 z-10">
+                    <div className="px-3 py-1.5 rounded-lg bg-black/20 backdrop-blur-sm border border-white/10 flex items-center gap-1.5">
+                      <Lock size={12} className="text-white/80" />
+                      <span className="text-xs font-medium text-white/90">Bloqueado</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Icono de seguridad para elementos bloqueados */}
+                {job.isLocked && (
+                  <div className="absolute top-4 right-4 z-10">
+                    <div className="p-2 rounded-full bg-black/30 backdrop-blur-sm">
+                      <Shield size={16} className="text-white/70" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Overlay de bloqueo - perfectamente contenido */}
+                {job.isLocked && (
+                  <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] z-5 group-hover:opacity-0 transition-opacity duration-300"></div>
+                )}
+
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div
+                    className="p-4 rounded-full"
+                    style={{ backgroundColor: `${job.color}20` }}
+                  >
+                    <div style={{ color: job.color }}>
+                      {job.icon}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-white">
+                      {job.title}
+                    </h3>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      {job.description}
+                    </p>
+                  </div>
+
+                  {job.isLocked && (
+                    <div className="flex items-center gap-2 text-xs text-white/50 mt-4">
+                      <CheckCircle size={12} />
+                      <span>Completa los primeros microtrabajos</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile: Carrusel */}
+        <div className="md:hidden">
+          <div
+            id="microjobs-mobile-carousel"
+            className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide cursor-grab active:cursor-grabbing"
+            style={{
+              scrollSnapType: 'x mandatory',
+              WebkitOverflowScrolling: 'touch'
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const container = e.currentTarget;
+              const startX = e.pageX - container.offsetLeft;
+              const scrollLeft = container.scrollLeft;
+              let isDown = true;
+
+              // Desactivar snap durante arrastre
+              container.style.scrollSnapType = 'none';
+
+              const handleMouseMove = (e: MouseEvent) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1;
+                container.scrollLeft = scrollLeft - walk;
+              };
+
+              const handleMouseUp = () => {
+                isDown = false;
+                // Reactivar snap al soltar
+                container.style.scrollSnapType = 'x mandatory';
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+              };
+
+              document.addEventListener('mousemove', handleMouseMove);
+              document.addEventListener('mouseup', handleMouseUp);
+            }}
+            onTouchStart={(e) => {
+              const container = e.currentTarget;
+              const startX = e.touches[0].pageX;
+              const scrollLeft = container.scrollLeft;
+
+              // Desactivar snap durante arrastre
+              container.style.scrollSnapType = 'none';
+
+              const handleTouchMove = (e: TouchEvent) => {
+                const x = e.touches[0].pageX;
+                const walk = (startX - x) * 0.8; // Más controlado
+                container.scrollLeft = scrollLeft + walk;
+              };
+
+              const handleTouchEnd = () => {
+                // Reactivar snap al soltar
+                container.style.scrollSnapType = 'x mandatory';
+                document.removeEventListener('touchmove', handleTouchMove);
+                document.removeEventListener('touchend', handleTouchEnd);
+              };
+
+              document.addEventListener('touchmove', handleTouchMove, { passive: false });
+              document.addEventListener('touchend', handleTouchEnd);
+            }}
+          >
+            {additionalMicroJobs.map((job) => (
+              <motion.div
+                key={job.id}
+                className="relative group flex-shrink-0 w-80"
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  // Solo ejecutar si no se está arrastrando
+                  if (job.isLocked) {
+                    const element = document.getElementById(`microjob-mobile-${job.id}`);
+                    if (element) {
+                      element.classList.add('shake-animation');
+                      setTimeout(() => {
+                        element.classList.remove('shake-animation');
+                      }, 600);
+                    }
+                  }
+                }}
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <div
+                  id={`microjob-mobile-${job.id}`}
+                  className="relative p-4 rounded-xl border backdrop-blur-sm transition-all duration-300 h-64 flex flex-col overflow-hidden"
+                  style={{
+                    background: job.bgGradient,
+                    border: `1px solid ${job.borderColor}`
+                  }}
+                >
+                  {/* Etiqueta "Bloqueado" en esquina superior izquierda */}
+                  {job.isLocked && (
+                    <div className="absolute top-3 left-3 z-10">
+                      <div className="px-3 py-1.5 rounded-lg bg-black/20 backdrop-blur-sm border border-white/10 flex items-center gap-1.5">
+                        <Lock size={12} className="text-white/80" />
+                        <span className="text-xs font-medium text-white/90">Bloqueado</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Icono de seguridad para elementos bloqueados */}
+                  {job.isLocked && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <div className="p-2 rounded-full bg-black/30 backdrop-blur-sm">
+                        <Shield size={16} className="text-white/70" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Overlay de bloqueo - perfectamente contenido */}
+                  {job.isLocked && (
+                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] z-5 group-hover:opacity-0 group-active:opacity-0 transition-opacity duration-300"></div>
+                  )}
+
+                  <div className="flex flex-col items-center text-center h-full justify-between">
+                    <div className="flex flex-col items-center space-y-3 flex-grow justify-center">
+                      <div
+                        className="p-3 rounded-full"
+                        style={{ backgroundColor: `${job.color}20` }}
+                      >
+                        <div style={{ color: job.color }}>
+                          {React.cloneElement(job.icon, { size: 20 })}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 px-2">
+                        <h3 className="text-base font-semibold text-white leading-tight">
+                          {job.title}
+                        </h3>
+                        <p className="text-xs text-white/70 leading-relaxed">
+                          {job.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {job.isLocked && (
+                      <div className="flex items-center gap-1.5 text-xs text-white/50 mt-2">
+                        <CheckCircle size={10} />
+                        <span className="text-xs">Completa los primeros microtrabajos</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Progreso de Nivel */}

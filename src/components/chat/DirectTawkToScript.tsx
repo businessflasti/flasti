@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Script from 'next/script';
+import analyticsService from '@/lib/analytics-service';
 
 interface DirectTawkToScriptProps {
   showBubble?: boolean;
@@ -54,6 +55,12 @@ export function initTawkTo(showBubble = true) {
       // Dar tiempo suficiente para que la API se inicialice completamente
       setTimeout(safeHideWidget, 1000);
     }
+
+    // Tracking: Chat widget cargado
+    analyticsService.trackEvent('chat_widget_loaded', {
+      show_bubble: showBubble,
+      timestamp: new Date().toISOString()
+    });
   };
 
   document.head.appendChild(script);
@@ -83,9 +90,15 @@ export function openTawkToChat() {
       try {
         if (typeof window.Tawk_API.maximize === 'function') {
           window.Tawk_API.maximize();
+
+          // Tracking: Chat abierto manualmente
+          analyticsService.trackChatInteraction('chat_opened');
         } else if (typeof window.Tawk_API.popup === 'function') {
           // Alternativa si maximize no está disponible
           window.Tawk_API.popup();
+
+          // Tracking: Chat abierto manualmente (popup)
+          analyticsService.trackChatInteraction('chat_popup_opened');
         }
       } catch (error) {
         console.warn('Error al maximizar el chat de Tawk.to:', error);

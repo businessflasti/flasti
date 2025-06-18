@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         },
       ],
       back_urls: {
-        success: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/secure-registration-portal-7f9a2b3c5d8e`,
+        success: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout/success`,
         failure: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout`,
         pending: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout`,
       },

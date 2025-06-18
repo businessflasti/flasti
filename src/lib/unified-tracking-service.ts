@@ -1,0 +1,294 @@
+/**
+ * Servicio unificado de tracking que integra Facebook Pixel y Yandex Metrica
+ */
+
+import facebookPixelService from './facebook-pixel-service';
+import analyticsService from './analytics-service';
+
+interface TrackingEventParams {
+  content_name?: string;
+  content_category?: string;
+  value?: number;
+  currency?: string;
+  payment_method?: string;
+  transaction_id?: string;
+  user_email?: string;
+  user_name?: string;
+  [key: string]: any;
+}
+
+interface PurchaseParams {
+  transaction_id: string;
+  value: number;
+  currency: string;
+  payment_method: string;
+  user_email?: string;
+  user_name?: string;
+  content_name?: string;
+}
+
+class UnifiedTrackingService {
+  /**
+   * Track página vista en ambas plataformas
+   */
+  public trackPageView(pageName: string, params?: TrackingEventParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackViewContent({
+      content_name: pageName,
+      content_category: 'page_view',
+      ...params
+    });
+
+    // Yandex Metrica
+    analyticsService.trackPageView();
+    analyticsService.trackEvent('page_view', {
+      page_name: pageName,
+      ...params
+    });
+
+    console.log(`📊 Página vista trackeada: ${pageName}`);
+  }
+
+  /**
+   * Track inicio de checkout en ambas plataformas
+   */
+  public trackInitiateCheckout(params: TrackingEventParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackInitiateCheckout({
+      content_name: params.content_name || 'Flasti Access',
+      content_category: params.content_category || 'platform_access',
+      value: params.value,
+      currency: params.currency,
+      num_items: 1
+    });
+
+    // Yandex Metrica
+    analyticsService.trackEvent('initiate_checkout', {
+      content_name: params.content_name,
+      value: params.value,
+      currency: params.currency,
+      payment_method: params.payment_method
+    });
+
+    console.log('📊 Inicio de checkout trackeado');
+  }
+
+  /**
+   * Track información de pago agregada en ambas plataformas
+   */
+  public trackAddPaymentInfo(params: TrackingEventParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackAddPaymentInfo({
+      content_name: params.content_name || 'Flasti Access',
+      content_category: params.content_category || 'platform_access',
+      value: params.value,
+      currency: params.currency
+    });
+
+    // Yandex Metrica
+    analyticsService.trackEvent('add_payment_info', {
+      content_name: params.content_name,
+      value: params.value,
+      currency: params.currency,
+      payment_method: params.payment_method
+    });
+
+    console.log('📊 Información de pago trackeada');
+  }
+
+  /**
+   * Track compra completada en ambas plataformas
+   */
+  public trackPurchase(params: PurchaseParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackPurchase({
+      value: params.value,
+      currency: params.currency,
+      content_ids: ['flasti-access'],
+      content_name: params.content_name || 'Acceso a Flasti',
+      content_type: 'product',
+      num_items: 1
+    });
+
+    // Yandex Metrica - Compra
+    analyticsService.trackPurchase(
+      params.transaction_id,
+      params.value,
+      params.currency,
+      [{
+        id: 'flasti-access',
+        name: params.content_name || 'Acceso a Flasti',
+        category: 'Platform Access',
+        price: params.value,
+        quantity: 1
+      }]
+    );
+
+    // Yandex Metrica - Objetivo de conversión
+    analyticsService.trackGoal('purchase_completed', {
+      order_price: params.value,
+      currency: params.currency,
+      payment_method: params.payment_method,
+      transaction_id: params.transaction_id,
+      customer_name: params.user_name,
+      customer_email: params.user_email
+    });
+
+    console.log(`📊 Compra trackeada: ${params.transaction_id} - ${params.value} ${params.currency}`);
+  }
+
+  /**
+   * Track lead generado (registro, suscripción)
+   */
+  public trackLead(params: TrackingEventParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackLead({
+      content_name: params.content_name,
+      content_category: params.content_category,
+      value: params.value,
+      currency: params.currency
+    });
+
+    // Yandex Metrica
+    analyticsService.trackEvent('lead_generated', {
+      content_name: params.content_name,
+      user_email: params.user_email,
+      user_name: params.user_name
+    });
+
+    console.log('📊 Lead trackeado');
+  }
+
+  /**
+   * Track registro completado
+   */
+  public trackCompleteRegistration(params: TrackingEventParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackCompleteRegistration({
+      content_name: params.content_name,
+      value: params.value,
+      currency: params.currency
+    });
+
+    // Yandex Metrica
+    analyticsService.trackEvent('complete_registration', {
+      user_email: params.user_email,
+      user_name: params.user_name,
+      registration_method: params.payment_method
+    });
+
+    console.log('📊 Registro completado trackeado');
+  }
+
+  /**
+   * Track eventos específicos de Flasti
+   */
+  public trackFlastiEvent(eventName: string, params?: TrackingEventParams): void {
+    // Facebook Pixel
+    facebookPixelService.trackFlastiEvent(eventName, params);
+
+    // Yandex Metrica
+    analyticsService.trackEvent(`flasti_${eventName}`, params);
+
+    console.log(`📊 Evento Flasti trackeado: ${eventName}`);
+  }
+
+  /**
+   * Track acceso al dashboard
+   */
+  public trackDashboardAccess(userEmail?: string): void {
+    this.trackFlastiEvent('dashboard_access', {
+      user_email: userEmail
+    });
+  }
+
+  /**
+   * Track microtrabajo completado
+   */
+  public trackMicrotaskCompleted(taskType: string, value?: number, userEmail?: string): void {
+    this.trackFlastiEvent('microtask_completed', {
+      content_name: taskType,
+      value: value,
+      currency: 'USD',
+      user_email: userEmail
+    });
+  }
+
+  /**
+   * Track signup de afiliado
+   */
+  public trackAffiliateSignup(userEmail?: string): void {
+    this.trackFlastiEvent('affiliate_signup', {
+      user_email: userEmail
+    });
+  }
+
+  /**
+   * Track referencia generada
+   */
+  public trackReferralGenerated(userEmail?: string): void {
+    this.trackFlastiEvent('referral_generated', {
+      user_email: userEmail
+    });
+  }
+
+  /**
+   * Track descuento aplicado
+   */
+  public trackDiscountApplied(discountType: string, discountValue: number, originalPrice: number): void {
+    this.trackFlastiEvent('discount_applied', {
+      content_name: discountType,
+      value: discountValue,
+      currency: 'USD',
+      original_price: originalPrice
+    });
+  }
+
+  /**
+   * Track método de pago seleccionado
+   */
+  public trackPaymentMethodSelected(paymentMethod: string, value: number, currency: string): void {
+    this.trackFlastiEvent('payment_method_selected', {
+      payment_method: paymentMethod,
+      value: value,
+      currency: currency
+    });
+  }
+
+  /**
+   * Track cuando se inicia el checkout de Hotmart
+   */
+  public trackHotmartCheckoutStarted(offerCode: string, value: number, currency: string): void {
+    this.trackFlastiEvent('hotmart_checkout_started', {
+      offer_code: offerCode,
+      value: value,
+      currency: currency,
+      content_name: 'Hotmart Checkout'
+    });
+  }
+
+  /**
+   * Track cuando se carga el formulario de Hotmart
+   */
+  public trackHotmartFormLoaded(offerCode: string): void {
+    this.trackFlastiEvent('hotmart_form_loaded', {
+      offer_code: offerCode,
+      content_name: 'Hotmart Form'
+    });
+  }
+
+  /**
+   * Track cuando hay un error en Hotmart
+   */
+  public trackHotmartError(errorType: string, errorMessage: string): void {
+    this.trackFlastiEvent('hotmart_error', {
+      error_type: errorType,
+      error_message: errorMessage
+    });
+  }
+}
+
+// Crear una instancia única del servicio
+const unifiedTrackingService = new UnifiedTrackingService();
+
+export default unifiedTrackingService;

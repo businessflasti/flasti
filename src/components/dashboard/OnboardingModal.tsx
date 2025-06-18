@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { X, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import analyticsService from '@/lib/analytics-service';
 
 export default function OnboardingModal() {
   const { user } = useAuth();
@@ -56,6 +57,12 @@ export default function OnboardingModal() {
         if (!hasSeenOnboarding) {
           console.log('Mostrando onboarding para nuevo usuario:', user.id);
           setIsVisible(true);
+
+          // Tracking: Onboarding iniciado
+          analyticsService.trackEvent('onboarding_started', {
+            user_id: user.id,
+            timestamp: new Date().toISOString()
+          });
         }
       } catch (error) {
         console.error('Error al verificar estado del onboarding:', error);
@@ -118,6 +125,14 @@ export default function OnboardingModal() {
       try {
         if (user) {
           localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
+
+          // Tracking: Onboarding completado
+          analyticsService.trackOnboardingComplete();
+          analyticsService.trackEvent('onboarding_completed', {
+            user_id: user.id,
+            steps_completed: steps.length,
+            completion_time: new Date().toISOString()
+          });
         }
       } catch (error) {
         console.error('Error al guardar el estado del onboarding:', error);

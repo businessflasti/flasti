@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import analyticsService from '@/lib/analytics-service';
 
 type AuthContextType = {
   user: User | null;
@@ -308,6 +309,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           };
 
           setProfile(basicProfile);
+
+          // Tracking: Usuario ya registrado intenta registrarse de nuevo
+          analyticsService.trackEvent('duplicate_registration_attempt', {
+            user_id: signInData.user.id,
+            email: email
+          });
+
           setLoading(false);
           return { error: { message: 'User already registered' } };
         }
@@ -363,6 +371,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Establecer perfil en el estado
       setProfile(profileData);
+
+      // Tracking: Registro exitoso
+      analyticsService.trackUserRegistration('email');
+      analyticsService.setUserParams({
+        user_id: data.user.id,
+        email: email,
+        phone: phone || '',
+        registration_date: new Date().toISOString()
+      });
 
       // Finalizar proceso
       console.log('Registro completado con éxito');
@@ -420,6 +437,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!profileError && profileData) {
           console.log('Perfil encontrado en tabla profiles');
           setProfile(profileData);
+
+          // Tracking: Login exitoso
+          analyticsService.trackUserLogin('email');
+          analyticsService.setUserParams({
+            user_id: data.user.id,
+            email: data.user.email || email,
+            last_login: new Date().toISOString()
+          });
+
           setLoading(false);
           return { error: null };
         }
@@ -444,6 +470,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             created_at: userProfileData.created_at || new Date().toISOString()
           };
           setProfile(mappedProfile);
+
+          // Tracking: Login exitoso desde user_profiles
+          analyticsService.trackUserLogin('email');
+          analyticsService.setUserParams({
+            user_id: data.user.id,
+            email: data.user.email || email,
+            last_login: new Date().toISOString()
+          });
+
           setLoading(false);
           return { error: null };
         }
@@ -465,6 +500,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Establecer el perfil en el estado
       setProfile(basicProfile);
+
+      // Tracking: Login exitoso con perfil básico creado
+      analyticsService.trackUserLogin('email');
+      analyticsService.setUserParams({
+        user_id: data.user.id,
+        email: data.user.email || email,
+        last_login: new Date().toISOString(),
+        profile_created: true
+      });
 
       // Finalizar proceso
       console.log('Inicio de sesión completado con éxito');

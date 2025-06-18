@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
 import { optimizeFAQs } from "@/utils/faq-optimizer";
-import { useLanguage as useTranslations } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/contexts/LanguageContext";
 import {
   inversionAnswerUSD_EN,
   inversionAnswerUSD_PT,
@@ -12,9 +12,9 @@ import {
 } from "./FAQSectionTranslations";
 
 // Definir las respuestas para la pregunta de inversión
-const inversionAnswerUSD = "Esta plataforma fue creada con el objetivo de cambiar la vida de nuestros miembros, brindándoles una oportunidad real de independencia laboral. Nuestro propósito es llegar a la mayor cantidad de personas posible, transformando la manera en que se trabaja en línea. Y hoy, solo por tiempo limitado, tenemos una oferta especial para ti, para que puedas unirte a Flasti y comenzar a generar ingresos desde ya.\n\n¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO!\n\nValor original: $50 USD | SOLO POR HOY $10 USD\n\n¡Paga una sola vez y accede a Flasti de por vida usando PayPal o tu moneda local!\n\nEL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE $50 USD EN CUALQUIER MOMENTO\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\nRecuerda: Este precio tiene un 80% de descuento y es solo por tiempo limitado. ¡Estás ahorrando $40 USD por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n⚠️ IMPORTANTE: El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
+const inversionAnswerUSD = "Hemos diseñado diferentes planes para adaptarnos a distintas necesidades y presupuestos. Nuestra opción más accesible comienza en un único pago de $10 USD (el equivalente en tu moneda local se mostrará al finalizar el pago), una inversión que muchos de nuestros usuarios recuperan en su primera semana de uso.\n\n⚡ ¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO!\n\nSolo $10 USD en lugar de $50 USD (80% OFF)\n\n💥 ¡Paga una sola vez y accede a Flasti de por vida usando PayPal o tu moneda local! 💥\n\n🚨 EL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE $50 USD EN CUALQUIER MOMENTO\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\n💡 Recuerda: Este precio tiene un 80% de descuento y es solo por tiempo limitado. ¡Estás ahorrando $40 USD por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n⚠️ IMPORTANTE: El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
 
-const inversionAnswerARS = "Esta plataforma fue creada con el objetivo de cambiar la vida de nuestros miembros, brindándoles una oportunidad real de independencia laboral. Nuestro propósito es llegar a la mayor cantidad de personas posible, transformando la manera en que se trabaja en línea. Y hoy, solo por tiempo limitado, tenemos una oferta especial para ti, para que puedas unirte a Flasti y comenzar a generar ingresos desde ya.\n\n¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO!\n\nValor original: AR$ 57.500 | SOLO POR HOY AR$ 11.500\n\n¡Paga una sola vez y accede a Flasti de por vida usando Mercado Pago, tarjeta de débito y crédito, Pago Fácil o Rapipago!\n\nEL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE AR$ 57.500 EN CUALQUIER MOMENTO\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\nRecuerda: Este precio tiene un 80% de descuento y es solo por tiempo limitado. ¡Estás ahorrando AR$ 46.000 por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n⚠️ IMPORTANTE: El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
+const inversionAnswerARS = "Hemos diseñado diferentes planes para adaptarnos a distintas necesidades y presupuestos. Nuestra opción más accesible comienza en un único pago de AR$ 11.500, una inversión que muchos de nuestros usuarios recuperan en su primera semana de uso.\n\n⚡ ¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO!\n\nSolo AR$ 11.500 en lugar de AR$ 57.500 (80% OFF)\n\n💥 ¡Paga una sola vez y accede a Flasti de por vida usando Mercado Pago o PayPal! 💥\n\n🚨 EL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE AR$ 57.500 EN CUALQUIER MOMENTO\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\n💡 Recuerda: Este precio tiene un 80% de descuento y es solo por tiempo limitado. ¡Estás ahorrando AR$ 46.000 por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n⚠️ IMPORTANTE: El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
 
 const faqs = [
   {
@@ -199,11 +199,11 @@ const FAQSection = () => {
                   {index === 8 ? (
                     isArgentina ? (
                       language === 'en' ? inversionAnswerARS_EN :
-                      language === 'pt-br' ? inversionAnswerARS_PT :
+                      language === 'pt' ? inversionAnswerARS_PT :
                       inversionAnswerARS
                     ) : (
                       language === 'en' ? inversionAnswerUSD_EN :
-                      language === 'pt-br' ? inversionAnswerUSD_PT :
+                      language === 'pt' ? inversionAnswerUSD_PT :
                       inversionAnswerUSD
                     )
                   ) : faq.answer}

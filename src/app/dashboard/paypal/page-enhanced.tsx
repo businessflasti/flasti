@@ -30,6 +30,7 @@ import Logo from "@/components/ui/logo";
 import PayPalLogo from "@/components/icons/PayPalLogo";
 import { toast } from "sonner";
 import { withdrawalServiceEnhanced } from "@/lib/withdrawal-service-enhanced";
+import analyticsService from "@/lib/analytics-service";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import {
@@ -134,6 +135,16 @@ export default function PayPalWithdrawalPageEnhanced() {
 
       if (result.success) {
         toast.success('Solicitud de retiro creada correctamente');
+
+        // Tracking: Solicitud de retiro creada
+        analyticsService.trackWithdrawalRequest(amountValue, 'paypal');
+        analyticsService.trackEvent('withdrawal_request_created', {
+          amount: amountValue,
+          payment_method: 'paypal',
+          user_id: user?.id,
+          request_id: result.requestId
+        });
+
         // Actualizar balance local
         setBalance(result.newBalance || 0);
         // Limpiar formulario

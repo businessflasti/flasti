@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
 import ClientLayout from "@/components/layout/ClientLayout";
+import YandexMetrica from "@/components/analytics/YandexMetrica";
+import FacebookPixel from "@/components/analytics/FacebookPixel";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -42,6 +44,12 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Yandex Metrica - Colocado lo más cerca posible del head */}
+        <YandexMetrica />
+
+        {/* Facebook Pixel - Colocado después de Yandex Metrica */}
+        <FacebookPixel />
+
         <script dangerouslySetInnerHTML={{ __html: `
           // Script adicional de protección contra copia
           document.addEventListener('DOMContentLoaded', function() {
@@ -72,7 +80,7 @@ export default function RootLayout({
           })();
         ` }} />
       </head>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

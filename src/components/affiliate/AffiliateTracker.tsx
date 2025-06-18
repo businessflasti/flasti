@@ -3,6 +3,7 @@
 import { useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import analyticsService from '@/lib/analytics-service';
 
 /**
  * Componente para rastrear y gestionar códigos de afiliados
@@ -81,6 +82,13 @@ function AffiliateTrackerContent() {
               console.error('Error al registrar clic (no crítico):', clickError.message);
             } else {
               console.log('Clic de afiliado registrado correctamente');
+
+              // Tracking: Clic de afiliado registrado en Yandex Metrica
+              analyticsService.trackAffiliateClick(
+                affiliateData.id,
+                'general',
+                'Flasti Platform'
+              );
             }
           } catch (error) {
             console.error('Error en el procesamiento en segundo plano:', error);
