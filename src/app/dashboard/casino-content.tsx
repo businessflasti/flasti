@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowRight,q
+  ArrowRight,
   Star,
   TrendingUp,
   Users,
