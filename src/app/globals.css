@@ -405,4 +405,35 @@
       transform: translateX(-50%) !important;
     }
   }
+
+  /* Estilos para feedback visual de validación de formularios */
+  .form-validation-error {
+    border: 2px solid #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+    animation: form-error-flash 0.5s ease-in-out;
+  }
+
+  @keyframes form-error-flash {
+    0% {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4);
+    }
+    50% {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.6);
+    }
+    100% {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+  }
+
+  /* Aplicar estilos a contenedores de formularios específicos */
+  .paypal-form-container.form-validation-error,
+  .mercadopago-form-container.form-validation-error {
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin: -1rem;
+    margin-bottom: 0;
+  }
 }

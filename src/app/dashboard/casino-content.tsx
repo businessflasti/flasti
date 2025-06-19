@@ -562,7 +562,7 @@ export default function CasinoContent() {
             <div className="inline-flex items-center gap-1.5 px-2 py-0.5 md:px-2.5 md:py-1 md:gap-2 rounded-md bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 backdrop-blur-sm">
               <CheckCircle size={10} className="text-blue-400 md:w-3 md:h-3 flex-shrink-0" />
               <span className="text-[10px] md:text-xs text-white/90 font-medium leading-tight whitespace-nowrap">
-                Completa los primeros microtrabajos para desbloquear
+                Haz los primeros para desbloquear
               </span>
             </div>
 
@@ -678,7 +678,7 @@ export default function CasinoContent() {
 
                 {/* Overlay de bloqueo - perfectamente contenido */}
                 {job.isLocked && (
-                  <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] z-5 group-hover:opacity-0 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-black/20 z-5 group-hover:opacity-0 transition-opacity duration-300"></div>
                 )}
 
                 <div className="flex flex-col items-center text-center space-y-4">
@@ -703,7 +703,7 @@ export default function CasinoContent() {
                   {job.isLocked && (
                     <div className="flex items-center gap-2 text-xs text-white/50 mt-4">
                       <CheckCircle size={12} />
-                      <span>Completa los primeros microtrabajos</span>
+                      <span>Haz los primeros para desbloquear</span>
                     </div>
                   )}
                 </div>
@@ -823,7 +823,7 @@ export default function CasinoContent() {
 
                   {/* Overlay de bloqueo - perfectamente contenido */}
                   {job.isLocked && (
-                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] z-5 group-hover:opacity-0 group-active:opacity-0 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-black/20 z-5 group-hover:opacity-0 group-active:opacity-0 transition-opacity duration-300"></div>
                   )}
 
                   <div className="flex flex-col items-center text-center h-full justify-between">
@@ -850,7 +850,7 @@ export default function CasinoContent() {
                     {job.isLocked && (
                       <div className="flex items-center gap-1.5 text-xs text-white/50 mt-2">
                         <CheckCircle size={10} />
-                        <span className="text-xs">Completa los primeros microtrabajos</span>
+                        <span className="text-xs">Haz los primeros para desbloquear</span>
                       </div>
                     )}
                   </div>
