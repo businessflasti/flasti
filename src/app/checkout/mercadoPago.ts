@@ -47,7 +47,12 @@ export function loadMercadoPago(cachedPreferenceId: string | null = null, cached
   mpContainer.innerHTML = '';
 
   // Mostrar mensaje de carga más elegante
-  const loadingDiv = document.createElement('div');
+  const loadingDiv = document.createElement('div');  // Mismo fondo oscuro del contenedor
+  loadingDiv.style.background = '#181824';
+  loadingDiv.style.minHeight = '60px';
+  loadingDiv.style.borderRadius = '8px';
+  loadingDiv.style.overflow = 'hidden';
+  loadingDiv.style.position = 'relative';
   loadingDiv.className = 'flex items-center justify-center py-4 text-white/70';
   loadingDiv.innerHTML = `
     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -114,6 +119,8 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     createFallbackButton(mpContainer, 11500);
     return;
   }
+
+  // El feedback visual de error del formulario ahora se maneja en page.tsx para consistencia con PayPal.
 
   try {
     console.log('🔧 Inicializando Mercado Pago...');
@@ -244,4 +251,12 @@ function createFallbackButton(container: HTMLElement, amount: number, initPoint?
   });
 
   container.appendChild(button);
+}
+
+// Nueva función para verificar si el formulario es válido (mismo criterio que en CheckoutContent)
+function isMercadoPagoFormValid(): boolean {
+  const fullName = (document.getElementById('mercadopago-fullname') as HTMLInputElement)?.value || '';
+  const email = (document.getElementById('mercadopago-email') as HTMLInputElement)?.value || '';
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return fullName.trim().length >= 2 && email.trim() !== '' && emailRegex.test(email);
 }

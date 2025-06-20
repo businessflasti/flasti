@@ -301,9 +301,31 @@ const CheckoutContent = () => {
     }));
   };
 
+  // Función para mostrar feedback visual del formulario
+  const showFormValidationFeedback = (formType: 'paypal' | 'mercadopago') => {
+    const formSelector = formType === 'paypal'
+      ? '.paypal-form-container'
+      : '.mercadopago-form-container';
+
+    const formElement = document.querySelector(formSelector);
+    if (formElement) {
+      // Agregar clase de error
+      formElement.classList.add('form-validation-error');
+
+      // Remover la clase después de 500ms
+      setTimeout(() => {
+        formElement.classList.remove('form-validation-error');
+      }, 500);
+    }
+  };
+
   // Función para manejar el pago con Mercado Pago
   const handleMercadoPagoPayment = async () => {
-    if (!isMercadoPagoFormValid) return;
+    // Validar formulario antes de proceder
+    if (!isMercadoPagoFormValid) {
+      showFormValidationFeedback('mercadopago');
+      return;
+    }
 
     try {
       // Deshabilitar el botón y mostrar loading
@@ -899,36 +921,34 @@ const CheckoutContent = () => {
 
   // Efecto para mostrar/ocultar el botón precargado cuando se selecciona la sección
   useEffect(() => {
-    if (selectedPaymentMethod === "hotmart" && isArgentina && isMercadoPagoPreloaded) {
-      console.log('📦 Clonando botón de Mercado Pago precargado al contenedor visible...');
+    const targetContainer = document.getElementById('mp-wallet-container');
 
-      const hiddenContainer = document.getElementById('mp-hidden-container');
-      const targetContainer = document.getElementById('mp-wallet-container');
-
-      if (hiddenContainer && targetContainer && hiddenContainer.children.length > 0) {
-        // Limpiar el contenedor objetivo
-        targetContainer.innerHTML = '';
-
-        // CLONAR (no mover) todo el contenido del contenedor oculto al visible
-        Array.from(hiddenContainer.children).forEach(child => {
-          const clonedChild = child.cloneNode(true);
-          targetContainer.appendChild(clonedChild);
-        });
-
-        console.log('✅ Botón de Mercado Pago clonado y visible INMEDIATAMENTE');
-      } else if (selectedPaymentMethod === "hotmart" && isArgentina) {
-        // Fallback: cargar normalmente si la precarga falló
-        console.log('⚠️ Precarga falló, cargando normalmente...');
-        loadMercadoPago();
+    if (selectedPaymentMethod === "hotmart" && isArgentina) {
+      if (!targetContainer) {
+        console.error('❌ Contenedor mp-wallet-container no encontrado en el DOM cuando se esperaba.');
+        return;
       }
-    } else if (selectedPaymentMethod !== "hotmart" && isArgentina) {
-      // Limpiar el contenedor cuando se cierra la sección
-      const targetContainer = document.getElementById('mp-wallet-container');
-      if (targetContainer) {
-        targetContainer.innerHTML = '';
-      }
+
+      // 1. Limpiar el contenedor visible.
+      targetContainer.innerHTML = '';
+      console.log('🧼 Contenedor mp-wallet-container limpiado.');
+
+      // 2. Mostrar el loader minimalista.
+      const minimalistLoader = document.createElement('div');
+      minimalistLoader.className = 'animate-pulse text-white/60 text-center py-3 text-xs font-light tracking-wide';
+      minimalistLoader.textContent = 'Conectando con MercadoPago...';
+      targetContainer.appendChild(minimalistLoader);
+      console.log('⏳ Loader minimalista mostrado en mp-wallet-container.');
+
+      // 3. Llamar a loadMercadoPago para que genere el botón funcional en el contenedor visible.
+      // Esta función se encargará de su propio loader y de reemplazar el contenido.
+      console.log('🚀 Llamando a loadMercadoPago para generar el botón en mp-wallet-container...');
+      loadMercadoPago(null, null, 'mp-wallet-container');
     }
-  }, [selectedPaymentMethod, isArgentina, isMercadoPagoPreloaded, loadMercadoPago]);
+    // Cuando selectedPaymentMethod !== "hotmart" (y esArgentina es true),
+    // el div mp-wallet-container es eliminado del DOM por la lógica del JSX,
+    // por lo que no es necesario limpiarlo explícitamente aquí.
+  }, [selectedPaymentMethod, isArgentina, loadMercadoPago]);
 
   // Efecto para mostrar/ocultar PayPal precargado cuando se selecciona la sección
   useEffect(() => {
@@ -1512,10 +1532,21 @@ const CheckoutContent = () => {
 
         // Calcular la dirección principal del deslizamiento
         const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+        const isVerticalSwipe = Math.abs(diffY) > Math.abs(diffX);
 
-        // Solo activar el popup si el usuario desliza horizontalmente hacia la derecha (gesto para ir hacia atrás)
-        // y el deslizamiento es principalmente horizontal (no vertical)
-        if (isHorizontalSwipe && diffX > 50) {
+        // SOLO activar el popup si:
+        // 1. Es un deslizamiento horizontal (no vertical)
+        // 2. El deslizamiento es hacia la derecha (gesto para ir hacia atrás)
+        // 3. El deslizamiento horizontal es significativo (>80px)
+        // 4. El deslizamiento vertical es mínimo (<30px) para evitar scroll
+        // 5. El toque inicia cerca del borde izquierdo de la pantalla (<50px)
+        if (
+          isHorizontalSwipe &&
+          diffX > 80 &&
+          Math.abs(diffY) < 30 &&
+          touchStartX < 50 &&
+          !isVerticalSwipe
+        ) {
           showPopup();
           document.removeEventListener('touchmove', handleTouchMove);
         }
@@ -2134,7 +2165,7 @@ const CheckoutContent = () => {
                           </div>
 
                           {/* Formulario de datos para Mercado Pago */}
-                          <div id="mercadopago-form-block" className="mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
+                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
                             <div className="flex items-center gap-2 mb-4">
                               <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2223,13 +2254,14 @@ const CheckoutContent = () => {
                             className="relative mb-1"
                             onClick={(e) => {
                               if (!isMercadoPagoFormValid) {
+                                // Prevenir la acción por defecto y la propagación del evento
                                 e.preventDefault();
                                 e.stopPropagation();
 
-                                // Marcar el formulario en rojo por 0.5 segundos
+                                // Replicar el efecto de PayPal para Mercado Pago
                                 const formBlock = document.querySelector('#mercadopago-form-block');
                                 if (formBlock) {
-                                  formBlock.classList.remove('border-[#2a2a4a]');
+                                  formBlock.classList.remove('border-[#2a2a4a]'); // Asume que esta es la clase de borde normal
                                   formBlock.classList.add('border-red-500', 'border-2');
 
                                   // Agregar animación de pulse
@@ -2238,11 +2270,9 @@ const CheckoutContent = () => {
                                   // Remover el efecto después de 0.5 segundos
                                   setTimeout(() => {
                                     formBlock.classList.remove('border-red-500', 'border-2', 'animate-pulse');
-                                    formBlock.classList.add('border-[#2a2a4a]');
+                                    formBlock.classList.add('border-[#2a2a4a]'); // Restaura el borde normal
                                   }, 500);
                                 }
-
-                                return false;
                               }
                             }}
                           >
@@ -2352,7 +2382,7 @@ const CheckoutContent = () => {
 
                     <div>
                       {/* Formulario de datos para PayPal */}
-                      <div id="paypal-form-block" className="mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
+                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                             <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2470,6 +2500,12 @@ const CheckoutContent = () => {
                           style={{ layout: "vertical", label: "pay", tagline: false, shape: "rect" }}
                           fundingSource="paypal"
                           createOrder={(_, actions) => {
+                            // Validar formulario antes de crear la orden
+                            if (!isPaypalFormValid) {
+                              showFormValidationFeedback('paypal');
+                              return Promise.reject(new Error("Formulario incompleto"));
+                            }
+
                             if (actions.order) {
                               return actions.order.create({
                                 intent: "CAPTURE",
@@ -2644,65 +2680,7 @@ const CheckoutContent = () => {
             </div>
           </div>
 
-          {/* PayPal SIEMPRE renderizado pero oculto - para carga instantánea */}
-          <div
-            id="paypal-preloaded-container"
-            style={{
-              position: 'absolute',
-              left: '-9999px',
-              top: '-9999px',
-              visibility: 'hidden',
-              pointerEvents: 'none'
-            }}
-          >
-            <PayPalScriptProvider options={paypalOptions}>
-              <PayPalButtons
-                style={{ layout: "vertical", label: "pay", tagline: false, shape: "rect" }}
-                fundingSource="paypal"
-                createOrder={(_, actions) => {
-                  if (actions.order) {
-                    return actions.order.create({
-                      intent: "CAPTURE",
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: price,
-                            currency_code: "USD"
-                          },
-                          description: "Acceso a Flasti",
-                        },
-                      ],
-                    });
-                  }
-                  return Promise.reject(new Error("No se pudo crear la orden"));
-                }}
-                onApprove={async (_, actions) => {
-                  if (actions.order) {
-                    try {
-                      setIsSubmittingPaypalForm(true);
-                      const details = await actions.order.capture();
-                      console.log("Pago completado. ID de transacción: " + details.id);
 
-                      // Track compra completada con servicio unificado
-                      unifiedTrackingService.trackPurchase({
-                        transaction_id: details.id || 'paypal_transaction',
-                        value: parseFloat(price),
-                        currency: 'USD',
-                        payment_method: 'paypal',
-                        content_name: 'Acceso a Flasti'
-                      });
-
-                      await saveCheckoutLead(details);
-                      window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
-                    } catch (error) {
-                      console.error('Error en el proceso de pago:', error);
-                      setIsSubmittingPaypalForm(false);
-                    }
-                  }
-                }}
-              />
-            </PayPalScriptProvider>
-          </div>
 
         </div>
       </div>
