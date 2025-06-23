@@ -33,8 +33,9 @@ interface FacebookPixelLeadParams {
 }
 
 class FacebookPixelService {
-  private pixelId: string = "2198693197269102";
+  private pixelId: string = "738700458549300";
   private isInitialized: boolean = false;
+  private excludedIp: string = "201.235.207.156";
 
   constructor() {
     // Verificar si Facebook Pixel está disponible
@@ -56,15 +57,45 @@ class FacebookPixelService {
     }
   }
 
+  private async getClientIp(): Promise<string | null> {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      return data.ip;
+    } catch {
+      return null;
+    }
+  }
+
+  private isLocalhost(): boolean {
+    if (typeof window === 'undefined') return false;
+    const hostname = window.location.hostname;
+    return (
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '::1' ||
+      // IPv6 localhost
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('10.')
+    );
+  }
+
+  private async shouldTrack(): Promise<boolean> {
+    if (typeof window === 'undefined') return true;
+    if (this.isLocalhost()) return false;
+    const ip = await this.getClientIp();
+    return ip !== this.excludedIp;
+  }
+
   /**
    * Envía un evento personalizado a Facebook Pixel
    */
-  public trackEvent(eventName: string, params?: FacebookPixelEventParams): void {
+  public async trackEvent(eventName: string, params?: FacebookPixelEventParams): Promise<void> {
     if (!this.isInitialized || typeof window === 'undefined' || !window.fbq) {
       console.warn('Facebook Pixel no está inicializado');
       return;
     }
-
+    if (!(await this.shouldTrack())) return;
     try {
       if (params) {
         window.fbq('track', eventName, params);
@@ -81,129 +112,29 @@ class FacebookPixelService {
   /**
    * Registra una vista de página
    */
-  public trackPageView(): void {
-    this.trackEvent('PageView');
-  }
-
-  /**
-   * Registra cuando un usuario ve contenido
-   */
-  public trackViewContent(params: FacebookPixelEventParams): void {
-    this.trackEvent('ViewContent', params);
-  }
-
-  /**
-   * Registra cuando un usuario busca algo
-   */
-  public trackSearch(searchString: string, params?: FacebookPixelEventParams): void {
-    this.trackEvent('Search', {
-      search_string: searchString,
-      ...params
-    });
-  }
-
-  /**
-   * Registra cuando un usuario agrega algo al carrito
-   */
-  public trackAddToCart(params: FacebookPixelEventParams): void {
-    this.trackEvent('AddToCart', params);
+  public async trackPageView(): Promise<void> {
+    await this.trackEvent('PageView');
   }
 
   /**
    * Registra cuando un usuario inicia el proceso de checkout
    */
-  public trackInitiateCheckout(params: FacebookPixelEventParams): void {
-    this.trackEvent('InitiateCheckout', params);
+  public async trackInitiateCheckout(params: FacebookPixelEventParams): Promise<void> {
+    await this.trackEvent('InitiateCheckout', params);
   }
 
   /**
    * Registra cuando un usuario agrega información de pago
    */
-  public trackAddPaymentInfo(params?: FacebookPixelEventParams): void {
-    this.trackEvent('AddPaymentInfo', params);
+  public async trackAddPaymentInfo(params?: FacebookPixelEventParams): Promise<void> {
+    await this.trackEvent('AddPaymentInfo', params);
   }
 
   /**
    * Registra una compra completada
    */
-  public trackPurchase(params: FacebookPixelPurchaseParams): void {
-    this.trackEvent('Purchase', params);
-  }
-
-  /**
-   * Registra un lead (registro, suscripción, etc.)
-   */
-  public trackLead(params?: FacebookPixelLeadParams): void {
-    this.trackEvent('Lead', params);
-  }
-
-  /**
-   * Registra cuando un usuario completa un registro
-   */
-  public trackCompleteRegistration(params?: FacebookPixelEventParams): void {
-    this.trackEvent('CompleteRegistration', params);
-  }
-
-  /**
-   * Registra cuando un usuario se suscribe
-   */
-  public trackSubscribe(params?: FacebookPixelEventParams): void {
-    this.trackEvent('Subscribe', params);
-  }
-
-  /**
-   * Registra cuando un usuario inicia una prueba gratuita
-   */
-  public trackStartTrial(params?: FacebookPixelEventParams): void {
-    this.trackEvent('StartTrial', params);
-  }
-
-  /**
-   * Registra cuando un usuario envía una aplicación
-   */
-  public trackSubmitApplication(params?: FacebookPixelEventParams): void {
-    this.trackEvent('SubmitApplication', params);
-  }
-
-  /**
-   * Registra eventos personalizados específicos de Flasti
-   */
-  public trackFlastiEvent(eventName: string, params?: FacebookPixelEventParams): void {
-    // Agregar prefijo para eventos personalizados
-    const customEventName = `Flasti_${eventName}`;
-    this.trackEvent(customEventName, params);
-  }
-
-  /**
-   * Registra cuando un usuario accede al dashboard
-   */
-  public trackDashboardAccess(): void {
-    this.trackFlastiEvent('DashboardAccess');
-  }
-
-  /**
-   * Registra cuando un usuario completa un microtrabajo
-   */
-  public trackMicrotaskCompleted(taskType: string, value?: number): void {
-    this.trackFlastiEvent('MicrotaskCompleted', {
-      content_name: taskType,
-      value: value,
-      currency: 'USD'
-    });
-  }
-
-  /**
-   * Registra cuando un usuario se convierte en afiliado
-   */
-  public trackAffiliateSignup(): void {
-    this.trackFlastiEvent('AffiliateSignup');
-  }
-
-  /**
-   * Registra cuando un usuario genera una referencia
-   */
-  public trackReferralGenerated(): void {
-    this.trackFlastiEvent('ReferralGenerated');
+  public async trackPurchase(params: FacebookPixelPurchaseParams): Promise<void> {
+    await this.trackEvent('Purchase', params);
   }
 }
 

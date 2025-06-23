@@ -46,13 +46,56 @@ interface FacebookPixelPurchaseEvent {
 }
 
 class HotmartTrackingService {
-  private pixelId: string = "2198693197269102";
+  private pixelId: string = "738700458549300";
+  private excludedIp: string = "201.235.207.156";
+  private conversionApiToken: string = process.env.FACEBOOK_CONVERSIONS_API_TOKEN || '';
+
+  private isLocalhostBackend(): boolean {
+    const host = process.env.HOST || process.env.NEXT_PUBLIC_BASE_URL || '';
+    return (
+      host.includes('localhost') ||
+      host.includes('127.0.0.1') ||
+      host.includes('::1') ||
+      host.startsWith('192.168.') ||
+      host.startsWith('10.')
+    );
+  }
+
+  private async shouldTrack(ip?: string): Promise<boolean> {
+    // Bloquear tracking si el backend está en local/red local
+    if (this.isLocalhostBackend()) {
+      console.log('[Meta API] Tracking bloqueado: entorno local/backend');
+      return false;
+    }
+    // Bloquear tracking si la IP es undefined, vacía o IP excluida
+    if (!ip) {
+      console.log('[Meta API] Tracking bloqueado: IP indefinida');
+      return false;
+    }
+    if (ip === this.excludedIp) {
+      console.log('[Meta API] Tracking bloqueado: IP excluida', ip);
+      return false;
+    }
+    // Bloquear si la IP es localhost o red local
+    if (
+      ip === '127.0.0.1' ||
+      ip === '::1' ||
+      /^192\.168\./.test(ip) ||
+      /^10\./.test(ip) ||
+      ip === 'localhost'
+    ) {
+      console.log('[Meta API] Tracking bloqueado: IP local/red local', ip);
+      return false;
+    }
+    return true;
+  }
 
   /**
    * Envía evento de compra a Facebook Pixel usando Conversions API
    * Esto es necesario porque el webhook de Hotmart se ejecuta en el servidor
    */
-  private async sendServerSidePixelEvent(eventName: string, eventData: any, userData: any): Promise<void> {
+  private async sendServerSidePixelEvent(eventName: string, eventData: any, userData: any, ip?: string): Promise<void> {
+    if (!(await this.shouldTrack(ip))) return;
     try {
       // Facebook Conversions API endpoint
       const url = `https://graph.facebook.com/v18.0/${this.pixelId}/events`;
@@ -67,14 +110,15 @@ class HotmartTrackingService {
             em: userData.email ? this.hashEmail(userData.email) : undefined,
             fn: userData.firstName ? this.hashString(userData.firstName) : undefined,
             ln: userData.lastName ? this.hashString(userData.lastName) : undefined,
+            client_ip_address: ip || undefined
           },
           custom_data: eventData
         }],
-        access_token: process.env.FACEBOOK_CONVERSIONS_API_TOKEN
+        access_token: this.conversionApiToken
       };
 
       // Solo enviar si tenemos el token de acceso
-      if (!process.env.FACEBOOK_CONVERSIONS_API_TOKEN) {
+      if (!this.conversionApiToken) {
         console.log('⚠️ Facebook Conversions API token no configurado');
         return;
       }
@@ -119,7 +163,7 @@ class HotmartTrackingService {
   /**
    * Procesa una compra completada de Hotmart
    */
-  public async trackHotmartPurchaseComplete(payload: HotmartPurchaseData): Promise<void> {
+  public async trackHotmartPurchaseComplete(payload: HotmartPurchaseData, ip?: string): Promise<void> {
     try {
       console.log('📊 Iniciando tracking de compra de Hotmart...');
 
@@ -165,7 +209,7 @@ class HotmartTrackingService {
       };
 
       // Enviar evento a Facebook Conversions API
-      await this.sendServerSidePixelEvent('Purchase', pixelEventData, userData);
+      await this.sendServerSidePixelEvent('Purchase', pixelEventData, userData, ip);
 
       // También podemos enviar a otros sistemas de tracking aquí
       await this.trackToYandexMetrica(transactionId, price, currency, productName);

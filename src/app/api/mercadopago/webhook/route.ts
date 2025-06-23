@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import crypto from 'crypto';
+import hotmartTrackingService from '@/lib/hotmart-tracking-service';
 
 // Configuración de Mercado Pago desde variables de entorno
 const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || 'APP_USR-1617533183479702-120313-16aa8293896b850ec41b7f267dac332e-224528502';
@@ -165,6 +166,28 @@ export async function POST(request: NextRequest) {
           }
         } catch (error) {
           console.error('Error al procesar pago aprobado:', error);
+        }
+
+        // Enviar evento a la API de conversiones de Meta
+        try {
+          const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || undefined;
+          const pixelEventData = {
+            value: paymentData.transaction_amount,
+            currency: paymentData.currency_id,
+            content_ids: [paymentData.id.toString()],
+            content_name: 'Compra MercadoPago',
+            content_type: 'product',
+            num_items: 1
+          };
+          const userData = {
+            email: paymentData.payer?.email || '',
+            firstName: paymentData.payer?.first_name || '',
+            lastName: paymentData.payer?.last_name || ''
+          };
+          await hotmartTrackingService['sendServerSidePixelEvent']('Purchase', pixelEventData, userData, ip);
+          console.log('Evento Purchase enviado a Meta Conversions API');
+        } catch (err) {
+          console.error('Error enviando evento Purchase a Meta:', err);
         }
       }
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Script from 'next/script';
 
 // Declarar tipos para Facebook Pixel
@@ -15,16 +15,47 @@ interface FacebookPixelProps {
   pixelId?: string;
 }
 
-const FacebookPixel = ({ pixelId = "2198693197269102" }: FacebookPixelProps) => {
+// Función para detectar si estamos en local o red local
+function isLocalOrPrivateNetworkOrExcludedIP() {
+  if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname;
+  // Hostnames locales y IP pública excluida
+  if (
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1' ||
+    hostname === '201.235.207.156' // IP pública excluida
+  ) {
+    return true;
+  }
+  // IPs privadas típicas
+  if (
+    /^192\.168\./.test(hostname) ||
+    /^10\./.test(hostname)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+const FacebookPixel = ({ pixelId = "738700458549300" }: FacebookPixelProps) => {
+  const [shouldLoadPixel, setShouldLoadPixel] = useState(false);
+
   useEffect(() => {
-    // Inicializar Facebook Pixel cuando el componente se monta
-    if (typeof window !== 'undefined' && window.fbq) {
-      // Pixel ya está cargado, solo inicializar
+    if (!isLocalOrPrivateNetworkOrExcludedIP()) {
+      setShouldLoadPixel(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (shouldLoadPixel && typeof window !== 'undefined' && window.fbq) {
       window.fbq('init', pixelId);
       window.fbq('track', 'PageView');
       console.log('Facebook Pixel inicializado:', pixelId);
     }
-  }, [pixelId]);
+  }, [pixelId, shouldLoadPixel]);
+
+  if (!shouldLoadPixel) return null;
 
   return (
     <>
@@ -42,7 +73,6 @@ const FacebookPixel = ({ pixelId = "2198693197269102" }: FacebookPixelProps) => 
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            
             fbq('init', '${pixelId}');
             fbq('track', 'PageView');
           `,

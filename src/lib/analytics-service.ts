@@ -24,15 +24,45 @@ class AnalyticsService {
     }
   }
 
+  private isLocalhost(): boolean {
+    if (typeof window === 'undefined') return false;
+    const hostname = window.location.hostname;
+    return (
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '::1' ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('10.')
+    );
+  }
+
+  private async getClientIp(): Promise<string | null> {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      return data.ip;
+    } catch {
+      return null;
+    }
+  }
+
+  private excludedIp: string = "201.235.207.156";
+
+  private async shouldTrack(): Promise<boolean> {
+    if (this.isLocalhost()) return false;
+    const ip = await this.getClientIp();
+    return ip !== this.excludedIp;
+  }
+
   /**
    * Envía un evento personalizado a Yandex Metrica
    */
-  public trackEvent(eventName: string, params?: YandexMetricaEventParams): void {
+  public async trackEvent(eventName: string, params?: YandexMetricaEventParams): Promise<void> {
     if (!this.isInitialized || typeof window === 'undefined' || !window.ym) {
       console.warn('Yandex Metrica no está inicializado');
       return;
     }
-
+    if (!(await this.shouldTrack())) return;
     try {
       window.ym(this.counterId, 'reachGoal', eventName, params);
       console.log(`Evento enviado a Yandex Metrica: ${eventName}`, params);
@@ -44,12 +74,12 @@ class AnalyticsService {
   /**
    * Registra un objetivo (goal) en Yandex Metrica
    */
-  public trackGoal(goalName: string, params?: YandexMetricaGoalParams): void {
+  public async trackGoal(goalName: string, params?: YandexMetricaGoalParams): Promise<void> {
     if (!this.isInitialized || typeof window === 'undefined' || !window.ym) {
       console.warn('Yandex Metrica no está inicializado');
       return;
     }
-
+    if (!(await this.shouldTrack())) return;
     try {
       window.ym(this.counterId, 'reachGoal', goalName, params);
       console.log(`Objetivo alcanzado en Yandex Metrica: ${goalName}`, params);
@@ -61,12 +91,12 @@ class AnalyticsService {
   /**
    * Envía datos de e-commerce a Yandex Metrica
    */
-  public trackEcommerce(action: string, params: YandexMetricaEcommerceParams): void {
+  public async trackEcommerce(action: string, params: YandexMetricaEcommerceParams): Promise<void> {
     if (!this.isInitialized || typeof window === 'undefined' || !window.ym) {
       console.warn('Yandex Metrica no está inicializado');
       return;
     }
-
+    if (!(await this.shouldTrack())) return;
     try {
       window.ym(this.counterId, 'ecommerce', action, params);
       console.log(`E-commerce enviado a Yandex Metrica: ${action}`, params);
@@ -78,17 +108,16 @@ class AnalyticsService {
   /**
    * Registra una página vista manualmente
    */
-  public trackPageView(url?: string, title?: string): void {
+  public async trackPageView(url?: string, title?: string): Promise<void> {
     if (!this.isInitialized || typeof window === 'undefined' || !window.ym) {
       console.warn('Yandex Metrica no está inicializado');
       return;
     }
-
+    if (!(await this.shouldTrack())) return;
     try {
       const params: any = {};
       if (url) params.url = url;
       if (title) params.title = title;
-      
       window.ym(this.counterId, 'hit', url || window.location.href, params);
       console.log('Página vista enviada a Yandex Metrica:', url || window.location.href);
     } catch (error) {
@@ -99,12 +128,12 @@ class AnalyticsService {
   /**
    * Envía parámetros de usuario
    */
-  public setUserParams(params: YandexMetricaEventParams): void {
+  public async setUserParams(params: YandexMetricaEventParams): Promise<void> {
     if (!this.isInitialized || typeof window === 'undefined' || !window.ym) {
       console.warn('Yandex Metrica no está inicializado');
       return;
     }
-
+    if (!(await this.shouldTrack())) return;
     try {
       window.ym(this.counterId, 'userParams', params);
       console.log('Parámetros de usuario enviados a Yandex Metrica:', params);

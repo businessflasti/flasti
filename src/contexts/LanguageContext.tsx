@@ -59,7 +59,7 @@ export const translations = {
     pagoSeguroLabel2: 'Pago seguro',
     monedaLocal2: 'Moneda local',
     pagoSeguroTarjeta: 'Pago seguro con tarjeta de crédito, débito o transferencia bancaria',
-    instruccionesInicioSesionSimple: 'Después de completar el pago, serás llevado automáticamente a la página de registro donde podrás crear tu cuenta y acceder de inmediato a tu panel personal.',
+    instruccionesInicioSesionSimple: 'Después de completar el pago, serás llevado automáticamente a la página de registro, donde podrás crear tu cuenta y acceder de inmediato a tu panel personal. También recibirás un correo de bienvenida en tu bandeja de entrada con todos los detalles de tu acceso.',
 
     // Footer
     plataformaSegura: 'Plataforma Segura',
@@ -304,7 +304,7 @@ export const translations = {
     pagoSeguroLabel2: 'Secure payment',
     monedaLocal2: 'Local currency',
     pagoSeguroTarjeta: 'Secure payment with credit card, debit card or bank transfer',
-    instruccionesInicioSesionSimple: 'After completing the payment, you will be automatically taken to the registration page where you can create your account and immediately access your personal dashboard.',
+    instruccionesInicioSesionSimple: 'After completing the payment, you will be automatically taken to the registration page where you can create your account and immediately access your personal dashboard. You will also receive a welcome email in your inbox with all the details of your access.',
 
     // Footer
     plataformaSegura: 'Secure Platform',
@@ -554,7 +554,7 @@ export const translations = {
     nuevasFuncionesSinCosto: 'Novas funções sem custo adicional',
     comoInicioSesion: 'Como faço login?',
     instruccionesInicioSesion: 'Após concluir o pagamento, você será automaticamente redirecionado para o seu painel de controle. Você também receberá um e-mail de confirmação com seus dados de acesso. Se por algum motivo você não conseguir acessar, basta ir para a página de login, inserir o e-mail que você usou para se registrar e sua senha. Se você esqueceu sua senha, pode redefini-la facilmente na mesma página.',
-    instruccionesInicioSesionSimple: 'Após concluir o pagamento, você será automaticamente levado à página de registro, onde poderá criar sua conta e acessar imediatamente seu painel pessoal.',
+    instruccionesInicioSesionSimple: 'Após concluir o pagamento, você será automaticamente levado à página de registro, onde poderá criar sua conta e acessar imediatamente seu painel pessoal. Também receberá um e-mail de boas-vindas na sua caixa de entrada com todos os detalhes do seu acesso.',
     accesoInmediato: 'Acesso imediato',
     comienzaGenerarIngresos: 'Comece a gerar renda agora mesmo',
     accesoPorVida: 'Acesso vitalício',

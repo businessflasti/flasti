@@ -29,22 +29,28 @@ interface PurchaseParams {
 
 class UnifiedTrackingService {
   /**
+   * Enviar evento a la API de conversiones
+   */
+  private async sendToMetaAPI(eventName: string, params: any) {
+    try {
+      await fetch('/api/tracking/meta-event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event: eventName, params })
+      });
+    } catch (e) {
+      console.error('Error enviando evento a API de conversiones:', e);
+    }
+  }
+
+  /**
    * Track página vista en ambas plataformas
    */
-  public trackPageView(pageName: string, params?: TrackingEventParams): void {
-    // Facebook Pixel
-    facebookPixelService.trackViewContent({
-      content_name: pageName,
-      content_category: 'page_view',
-      ...params
-    });
-
-    // Yandex Metrica
+  public async trackPageView(pageName: string, params?: TrackingEventParams) {
+    await facebookPixelService.trackPageView();
     analyticsService.trackPageView();
-    analyticsService.trackEvent('page_view', {
-      page_name: pageName,
-      ...params
-    });
+    analyticsService.trackEvent('page_view', { page_name: pageName, ...params });
+    await this.sendToMetaAPI('PageView', { content_name: pageName, ...params });
 
     console.log(`📊 Página vista trackeada: ${pageName}`);
   }
@@ -52,23 +58,21 @@ class UnifiedTrackingService {
   /**
    * Track inicio de checkout en ambas plataformas
    */
-  public trackInitiateCheckout(params: TrackingEventParams): void {
-    // Facebook Pixel
-    facebookPixelService.trackInitiateCheckout({
+  public async trackInitiateCheckout(params: TrackingEventParams) {
+    await facebookPixelService.trackInitiateCheckout({
       content_name: params.content_name || 'Flasti Access',
       content_category: params.content_category || 'platform_access',
       value: params.value,
       currency: params.currency,
       num_items: 1
     });
-
-    // Yandex Metrica
     analyticsService.trackEvent('initiate_checkout', {
       content_name: params.content_name,
       value: params.value,
       currency: params.currency,
       payment_method: params.payment_method
     });
+    await this.sendToMetaAPI('InitiateCheckout', params);
 
     console.log('📊 Inicio de checkout trackeado');
   }
@@ -76,22 +80,20 @@ class UnifiedTrackingService {
   /**
    * Track información de pago agregada en ambas plataformas
    */
-  public trackAddPaymentInfo(params: TrackingEventParams): void {
-    // Facebook Pixel
-    facebookPixelService.trackAddPaymentInfo({
+  public async trackAddPaymentInfo(params: TrackingEventParams) {
+    await facebookPixelService.trackAddPaymentInfo({
       content_name: params.content_name || 'Flasti Access',
       content_category: params.content_category || 'platform_access',
       value: params.value,
       currency: params.currency
     });
-
-    // Yandex Metrica
     analyticsService.trackEvent('add_payment_info', {
       content_name: params.content_name,
       value: params.value,
       currency: params.currency,
       payment_method: params.payment_method
     });
+    await this.sendToMetaAPI('AddPaymentInfo', params);
 
     console.log('📊 Información de pago trackeada');
   }
@@ -99,9 +101,8 @@ class UnifiedTrackingService {
   /**
    * Track compra completada en ambas plataformas
    */
-  public trackPurchase(params: PurchaseParams): void {
-    // Facebook Pixel
-    facebookPixelService.trackPurchase({
+  public async trackPurchase(params: PurchaseParams) {
+    await facebookPixelService.trackPurchase({
       value: params.value,
       currency: params.currency,
       content_ids: ['flasti-access'],
@@ -109,8 +110,6 @@ class UnifiedTrackingService {
       content_type: 'product',
       num_items: 1
     });
-
-    // Yandex Metrica - Compra
     analyticsService.trackPurchase(
       params.transaction_id,
       params.value,
@@ -123,8 +122,6 @@ class UnifiedTrackingService {
         quantity: 1
       }]
     );
-
-    // Yandex Metrica - Objetivo de conversión
     analyticsService.trackGoal('purchase_completed', {
       order_price: params.value,
       currency: params.currency,
@@ -133,6 +130,7 @@ class UnifiedTrackingService {
       customer_name: params.user_name,
       customer_email: params.user_email
     });
+    await this.sendToMetaAPI('Purchase', params);
 
     console.log(`📊 Compra trackeada: ${params.transaction_id} - ${params.value} ${params.currency}`);
   }

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AffiliateServiceEnhanced } from '@/lib/affiliate-service-enhanced';
 import { supabase } from '@/lib/supabase';
+import hotmartTrackingService from '@/lib/hotmart-tracking-service';
 
 // Instancia del servicio de afiliados
-const affiliateService = new AffiliateServiceEnhanced();
+const affiliateService = AffiliateServiceEnhanced.getInstance();
 
 /**
  * Webhook para recibir notificaciones de Hotmart
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
       purchase: {
         transaction: transactionCode,
         offer: { code: productCode },
-        buyer: { email: buyerEmail },
+        buyer: { email: buyerEmail, name: buyerName = '' },
         price: { value: amount }
       }
     } = data;
@@ -50,6 +51,39 @@ export async function POST(req: NextRequest) {
     // Buscar el afiliado asociado a esta venta
     const affiliateId = await findAffiliateForSale(data);
     
+    // Enviar evento Purchase a Meta (API de conversiones)
+    const pixelEventData = {
+      value: parseFloat(amount),
+      currency: 'USD',
+      content_ids: [transactionCode],
+      content_name: 'Compra Hotmart',
+      content_type: 'product',
+      num_items: 1
+    };
+    const userData = {
+      email: buyerEmail,
+      firstName: buyerName.split(' ')[0] || '',
+      lastName: buyerName.split(' ').slice(1).join(' ') || ''
+    };
+    // Obtener la IP del request correctamente
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || '0.0.0.0';
+    await hotmartTrackingService['sendServerSidePixelEvent']('Purchase', pixelEventData, userData, ip);
+
+    // Disparar correo de bienvenida
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/send-welcome-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: buyerEmail,
+          fullName: buyerName,
+          transactionId: transactionCode
+        })
+      });
+    } catch (err) {
+      console.error('Error enviando email de bienvenida:', err);
+    }
+
     // Si se encontró un afiliado, registrar la venta
     if (affiliateId) {
       const result = await affiliateService.registerSale(
@@ -58,7 +92,7 @@ export async function POST(req: NextRequest) {
         amount,
         affiliateId,
         buyerEmail,
-        req.ip || '0.0.0.0'
+        ip
       );
       
       if (result.success) {
@@ -75,7 +109,7 @@ export async function POST(req: NextRequest) {
         app_id: appId,
         amount: amount,
         buyer_email: buyerEmail,
-        ip_address: req.ip || '0.0.0.0',
+        ip_address: ip,
         status: 'completed'
       });
     }

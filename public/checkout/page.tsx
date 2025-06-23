@@ -584,25 +584,6 @@ const CheckoutContent = () => {
       }
     };
 
-    // Función para detectar cuando el usuario intenta cerrar la pestaña o navegar hacia atrás
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      showPopup();
-
-      // Mensaje estándar de confirmación (no personalizable en navegadores modernos)
-      e.preventDefault();
-      // Usar el método moderno para mostrar un diálogo de confirmación
-      return '';
-    };
-
-    // Función para detectar cuando el usuario presiona el botón de retroceso
-    const handlePopState = () => {
-      // Prevenir la navegación hacia atrás
-      window.history.pushState(null, '', window.location.pathname);
-
-      // Mostrar el popup
-      showPopup();
-    };
-
     // Función para detectar gestos de deslizamiento en dispositivos móviles
     const handleTouchStart = (e: TouchEvent) => {
       const touchStartX = e.touches[0].clientX;
@@ -620,8 +601,8 @@ const CheckoutContent = () => {
         // Solo activar el popup si el usuario desliza horizontalmente hacia la derecha (gesto para ir hacia atrás)
         // y el deslizamiento es principalmente horizontal (no vertical)
         if (isHorizontalSwipe && diffX > 50) {
-          showPopup();
-          document.removeEventListener('touchmove', handleTouchMove);
+          // showPopup(); // Se elimina la llamada al popup en el gesto de deslizamiento
+          // document.removeEventListener('touchmove', handleTouchMove); // Se elimina, ya se limpia en handleTouchEnd
         }
       };
 
@@ -638,25 +619,18 @@ const CheckoutContent = () => {
 
     // Asegurarse de que estamos en el cliente antes de agregar event listeners
     if (typeof window !== 'undefined') {
-      // Agregar un estado a la historia para poder detectar cuando el usuario intenta retroceder
-      window.history.pushState(null, '', window.location.pathname);
-
       // Configurar el temporizador para mostrar el popup automáticamente después de 10 minutos
       autoShowTimer = setTimeout(() => {
         showPopup();
       }, 10 * 60 * 1000); // 10 minutos en milisegundos
 
       // Agregar event listeners
-      document.addEventListener('mouseleave', handleMouseLeave);
-      window.addEventListener('beforeunload', handleBeforeUnload);
-      window.addEventListener('popstate', handlePopState);
+      document.addEventListener('mouseleave', handleMouseLeave); // Este listener se mantiene para el "exit intent" de ratón
       document.addEventListener('touchstart', handleTouchStart, { passive: true });
 
       // Limpiar event listeners y temporizador al desmontar
       return () => {
         document.removeEventListener('mouseleave', handleMouseLeave);
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-        window.removeEventListener('popstate', handlePopState);
         document.removeEventListener('touchstart', handleTouchStart);
 
         if (autoShowTimer) {
