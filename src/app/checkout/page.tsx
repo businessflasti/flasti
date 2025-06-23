@@ -1463,16 +1463,14 @@ const CheckoutContent = () => {
     setSelectedPaymentMethod(null);
   }, []);
 
-  // Efecto para detectar intento de salida y mostrar el popup automáticamente después de 10 minutos
+  // Efecto para detectar intento de salida, navegación hacia atrás y mostrar el popup
   useEffect(() => {
     // Verificar si el descuento final ya ha sido aplicado en una sesión anterior
     const savedFinalDiscount = localStorage.getItem('flastiFinalDiscountApplied');
     if (savedFinalDiscount === 'true') {
       setFinalDiscountApplied(true);
       setPrice("5.00");
-    }
-    // Si no hay descuento final, verificar si hay descuento normal
-    else {
+    } else { // Si no hay descuento final, verificar si hay descuento normal
       const savedDiscount = localStorage.getItem('flastiDiscountApplied');
       if (savedDiscount === 'true') {
         setDiscountApplied(true);
@@ -1480,85 +1478,56 @@ const CheckoutContent = () => {
       }
     }
 
-    // Referencia para el temporizador de 10 minutos
     let autoShowTimer: NodeJS.Timeout | null = null;
 
-    // Función para mostrar el popup
+    // Función unificada para mostrar el popup
     const showPopup = () => {
+      // Solo mostrar si no se ha visto antes y no hay descuentos aplicados
       if (!hasSeenPopup.current && !discountApplied && !finalDiscountApplied) {
         setShowExitPopup(true);
         hasSeenPopup.current = true;
       }
     };
 
-    // Función para detectar cuando el mouse sale de la ventana
+    // Función para detectar cuando el mouse sale de la ventana (exit intent en escritorio)
     const handleMouseLeave = (e: MouseEvent) => {
-      // Solo mostrar el popup si el mouse sale por la parte superior de la ventana
-      // y no se ha aplicado ningún descuento
       if (e.clientY <= 0) {
         showPopup();
       }
     };
 
-    // Función para detectar gestos de deslizamiento en dispositivos móviles
-    const handleTouchStart = (e: TouchEvent) => {
-      const touchStartX = e.touches[0].clientX;
-      const touchStartY = e.touches[0].clientY;
-
-      const handleTouchMove = (e: TouchEvent) => {
-        const touchEndX = e.touches[0].clientX;
-        const touchEndY = e.touches[0].clientY;
-        const diffX = touchEndX - touchStartX;
-        const diffY = touchEndY - touchStartY;
-
-        // Calcular la dirección principal del deslizamiento
-        const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
-        const isVerticalSwipe = Math.abs(diffY) > Math.abs(diffX);
-
-        // SOLO activar el popup si:
-        // 1. Es un deslizamiento horizontal (no vertical)
-        // 2. El deslizamiento es hacia la derecha (gesto para ir hacia atrás)
-        // 3. El deslizamiento horizontal es significativo (>80px)
-        // 4. El deslizamiento vertical es mínimo (<30px) para evitar scroll
-        // 5. El toque inicia cerca del borde izquierdo de la pantalla (<50px)
-        if (
-          isHorizontalSwipe &&
-          diffX > 80 &&
-          Math.abs(diffY) < 30 &&
-          touchStartX < 50 &&
-          !isVerticalSwipe
-        ) {
-          // showPopup(); // Se elimina la llamada al popup en el gesto de deslizamiento
-          // document.removeEventListener('touchmove', handleTouchMove); // Se elimina, ya se limpia en handleTouchEnd
-        }
-      };
-
-      document.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-      // Limpiar el event listener de touchmove cuando termina el toque
-      const handleTouchEnd = () => {
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);
-      };
-
-      document.addEventListener('touchend', handleTouchEnd, { passive: true });
+    // Función para manejar el evento de retroceso del navegador (botón "atrás" o gesto de swipe-back)
+    const handlePopState = () => {
+      // Si el popup no se ha mostrado y no hay descuentos, lo mostramos.
+      if (!hasSeenPopup.current && !discountApplied && !finalDiscountApplied) {
+        // Mostramos el popup
+        showPopup();
+        // Volvemos a empujar el estado en el historial para "cancelar" la navegación hacia atrás.
+        // El usuario permanecerá en la página actual.
+        window.history.pushState(null, '', window.location.href);
+      }
+      // Si el popup ya se mostró una vez, el evento 'popstate' se ejecutará
+      // sin entrar en este 'if', permitiendo la navegación hacia atrás en el segundo intento.
     };
 
-    // Asegurarse de que estamos en el cliente antes de agregar event listeners
     if (typeof window !== 'undefined') {
-      // Configurar el temporizador para mostrar el popup automáticamente después de 10 minutos
       autoShowTimer = setTimeout(() => {
         showPopup();
       }, 10 * 60 * 1000); // 10 minutos en milisegundos
 
-      // Agregar event listeners
-      document.addEventListener('mouseleave', handleMouseLeave);
-      document.addEventListener('touchstart', handleTouchStart, { passive: true });
+      // --- Lógica para interceptar la navegación hacia atrás ---
+      // 1. Empujamos un estado nulo al historial al cargar la página.
+      //    Esto nos permite interceptar el primer evento 'popstate' (cuando el usuario intenta volver).
+      window.history.pushState(null, '', window.location.href);
 
-      // Limpiar event listeners y temporizador al desmontar
+      // 2. Agregamos los listeners para los eventos de salida.
+      document.addEventListener('mouseleave', handleMouseLeave);
+      window.addEventListener('popstate', handlePopState);
+
+      // Limpiar listeners y temporizador al desmontar el componente
       return () => {
         document.removeEventListener('mouseleave', handleMouseLeave);
-        document.removeEventListener('touchstart', handleTouchStart);
+        window.removeEventListener('popstate', handlePopState);
 
         if (autoShowTimer) {
           clearTimeout(autoShowTimer);

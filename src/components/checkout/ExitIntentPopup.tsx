@@ -210,6 +210,10 @@ const ExitIntentPopup = ({ isOpen, onClose, onApplyCoupon, onApplyFinalDiscount,
           onEscapeKeyDown={(e) => e.preventDefault()} // Prevenir cierre con tecla Escape
           onPointerDownOutside={(e) => e.preventDefault()} // Prevenir cierre al hacer clic fuera
           onInteractOutside={(e) => e.preventDefault()} // Prevenir cualquier interacción externa
+          // NOTA IMPORTANTE: No se renderiza un botón de cierre 'X' en este Dialog.
+          // El cierre está estrictamente controlado por la lógica interna de onOpenChange
+          // y solo se permite después de que el usuario interactúa con las ofertas
+          // y el diálogo de confirmación final.
         >
           {/* Decorative elements */}
           <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#ec4899]/10 blur-3xl"></div>
