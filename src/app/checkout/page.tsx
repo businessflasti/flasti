@@ -1,4 +1,5 @@
-Se eliminaron los useEffect redundantes que disparaban AddPaymentInfo, simplificando la lógica de tracking en el componente."use client";
+/* Se eliminaron los useEffect redundantes que disparaban AddPaymentInfo, simplificando la lógica de tracking en el componente. */
+"use client";
 
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
