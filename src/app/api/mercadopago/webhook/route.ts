@@ -174,8 +174,8 @@ export async function POST(request: NextRequest) {
           const pixelEventData = {
             value: paymentData.transaction_amount,
             currency: paymentData.currency_id,
-            content_ids: [paymentData.id.toString()],
-            content_name: 'Compra MercadoPago',
+            content_ids: ['flasti-access'],
+            content_name: 'Flasti Access',
             content_type: 'product',
             num_items: 1
           };

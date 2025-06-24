@@ -1,4 +1,4 @@
-"use client";
+Se eliminaron los useEffect redundantes que disparaban AddPaymentInfo, simplificando la lógica de tracking en el componente."use client";
 
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -45,6 +45,7 @@ const CheckoutContent = () => {
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
   const [isHotmartPreloaded, setIsHotmartPreloaded] = useState(false);
   const [isArgentina, setIsArgentina] = useState(false);
+  const [isCountryKnown, setIsCountryKnown] = useState(false);
 
   // Estados para los popups
   const [showExitPopup, setShowExitPopup] = useState(false);
@@ -1359,39 +1360,51 @@ const CheckoutContent = () => {
     });
   }, []);
 
-  // Efecto para tracking inicial de la página
   useEffect(() => {
+    if (!isCountryKnown) return;
+
+    const currentPriceUSD = parseFloat(price);
+    let eventValue = currentPriceUSD;
+    let eventCurrency = 'USD';
+
+    if (isArgentina) {
+        eventCurrency = 'ARS';
+        if (finalDiscountApplied) {
+            eventValue = 5750;
+        } else if (discountApplied) {
+            eventValue = 9200;
+        } else {
+            eventValue = 11500;
+        }
+    }
+
     // Track página de checkout vista con servicio unificado
     unifiedTrackingService.trackPageView('Checkout Page', {
       content_category: 'checkout',
-      value: parseFloat(price),
-      currency: 'USD'
+      value: eventValue,
+      currency: eventCurrency
     });
-  }, [price]);
 
-  // Efecto para tracking cuando se completa información de pago
-  useEffect(() => {
-    if (isMercadoPagoFormValid) {
-      unifiedTrackingService.trackAddPaymentInfo({
-        content_name: 'Flasti Access',
-        content_category: 'platform_access',
-        value: parseFloat(price),
-        currency: isArgentina ? 'ARS' : 'USD',
-        payment_method: 'mercadopago'
-      });
-    }
-  }, [isMercadoPagoFormValid, price, isArgentina]);
+    // Disparar InitiateCheckout cada vez que cambien las dependencias (precio, país, etc.)
+    unifiedTrackingService.trackInitiateCheckout({
+      content_name: 'Flasti Access',
+      content_category: 'platform_access',
+      value: eventValue,
+      currency: eventCurrency,
+    });
+  }, [price, isArgentina, isCountryKnown, discountApplied, finalDiscountApplied]);
 
   // Efecto para tracking cuando se completa información de pago de PayPal
   useEffect(() => {
     if (isPaypalFormValid) {
-      unifiedTrackingService.trackAddPaymentInfo({
+      // Este evento ahora se dispara al seleccionar el método de pago
+      /* unifiedTrackingService.trackAddPaymentInfo({
         content_name: 'Flasti Access',
         content_category: 'platform_access',
         value: parseFloat(price),
         currency: 'USD',
         payment_method: 'paypal'
-      });
+      }); */
     }
   }, [isPaypalFormValid, price]);
 
@@ -1447,6 +1460,8 @@ const CheckoutContent = () => {
       } catch (error) {
         console.error('[Checkout] Error general al detectar el país:', error);
         setIsArgentina(false); // Por defecto, no es Argentina
+      } finally {
+        setIsCountryKnown(true);
       }
     };
 
@@ -1641,13 +1656,13 @@ const CheckoutContent = () => {
   }, []);
 
   const paypalOptions = {
-    "client-id": "ARoSv53ctY4XSQw6eGen9Mr44GkmEniwbNfhmQqIeD1YzgTjo2wYdazS7rMwgjrMhDO6eEx8dUq_L_yz",
+    "client-id": "Aa2g70kJsc_YkhVb6tRb-rI-Ot46EY1Jlt6fmVQeKmkUcZESdOpCHmjUEq7kg9vExa1hialDQadTH-oQ",
     currency: "USD",
     intent: "capture",
     components: "buttons",
     locale: "es_ES",
-    "disable-funding": "credit,card,sofort",
-    clientId: "ARoSv53ctY4XSQw6eGen9Mr44GkmEniwbNfhmQqIeD1YzgTjo2wYdazS7rMwgjrMhDO6eEx8dUq_L_yz", // Añadido para compatibilidad
+    "disable-funding": "credit,card,sofort", // Mantener si es necesario deshabilitar métodos específicos
+    clientId: "Aa2g70kJsc_YkhVb6tRb-rI-Ot46EY1Jlt6fmVQeKmkUcZESdOpCHmjUEq7kg9vExa1hialDQadTH-oQ", // Añadido para compatibilidad
   };
 
   return (
@@ -1963,12 +1978,26 @@ const CheckoutContent = () => {
                       // Cambiar el método de pago
                     } else {
                       setSelectedPaymentMethod("hotmart");
-                      // Track inicio de checkout con servicio unificado
-                      unifiedTrackingService.trackInitiateCheckout({
+                      const currentPriceUSD = parseFloat(price);
+                      let eventValue = currentPriceUSD;
+                      let eventCurrency = 'USD';
+
+                      if (isArgentina) {
+                        eventCurrency = 'ARS';
+                        if (finalDiscountApplied) {
+                          eventValue = 5750;
+                        } else if (discountApplied) {
+                          eventValue = 9200;
+                        } else {
+                          eventValue = 11500;
+                        }
+                      }
+
+                      unifiedTrackingService.trackAddPaymentInfo({
                         content_name: 'Flasti Access',
                         content_category: 'platform_access',
-                        value: parseFloat(price),
-                        currency: isArgentina ? 'ARS' : 'USD',
+                        value: eventValue,
+                        currency: eventCurrency,
                         payment_method: isArgentina ? 'mercadopago' : 'hotmart'
                       });
 
@@ -2262,8 +2291,8 @@ const CheckoutContent = () => {
                       setSelectedPaymentMethod(null);
                     } else {
                       setSelectedPaymentMethod("paypal");
-                      // Track inicio de checkout con PayPal usando servicio unificado
-                      unifiedTrackingService.trackInitiateCheckout({
+                      // Track AddPaymentInfo cuando se selecciona PayPal
+                      unifiedTrackingService.trackAddPaymentInfo({
                         content_name: 'Flasti Access',
                         content_category: 'platform_access',
                         value: parseFloat(price),
@@ -2479,7 +2508,8 @@ const CheckoutContent = () => {
                                   value: parseFloat(price),
                                   currency: 'USD',
                                   payment_method: 'paypal',
-                                  content_name: 'Acceso a Flasti'
+                                  content_name: 'Acceso a Flasti',
+                                  content_ids: ['flasti-access']
                                 });
 
                                 // Guardar datos en Supabase
