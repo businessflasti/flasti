@@ -14,7 +14,6 @@ import {
   Plus, 
   X 
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function FloatingMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,45 +35,29 @@ export default function FloatingMenu() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.3 }}
-            className="absolute bottom-16 right-0 mb-2 flex flex-col-reverse items-end gap-2"
-          >
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20, x: 20 }}
-                animate={{ opacity: 1, y: 0, x: 0 }}
-                exit={{ opacity: 0, y: 20, x: 20 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-              >
-                <Link href={item.href}>
-                  <div 
-                    className="flex items-center gap-2 px-3 py-2 rounded-full shadow-lg bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300"
-                    style={{ borderLeft: `3px solid ${item.color}` }}
-                  >
-                    <div 
-                      className="p-1 rounded-full" 
-                      style={{ color: item.color }}
-                    >
-                      {item.icon}
-                    </div>
-                    <span className="font-medium">{item.label}</span>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isOpen && (
+        <div className="absolute bottom-16 right-0 mb-2 flex flex-col-reverse items-end gap-2">
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 px-3 py-2 rounded-full shadow-lg bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300"
+              style={{ borderLeft: `3px solid ${item.color}`, opacity: 1, transform: 'translateY(0) translateX(0)' }}
+            >
+              <Link href={item.href}>
+                <div 
+                  className="p-1 rounded-full" 
+                  style={{ color: item.color }}
+                >
+                  {item.icon}
+                </div>
+                <span className="font-medium">{item.label}</span>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <motion.button
-        whileTap={{ scale: 0.9 }}
+      <button
         onClick={toggleMenu}
         className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           isOpen 
@@ -87,7 +70,7 @@ export default function FloatingMenu() {
         ) : (
           <Plus size={24} className="text-white" />
         )}
-      </motion.button>
+      </button>
     </div>
   );
 }

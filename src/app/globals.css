@@ -3,15 +3,22 @@
 @tailwind utilities;
 
 /* Importar fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Solitreo&display=swap');
+@import url('/fonts/noto-sans-display.css');
 
 /* Configurar fuente por defecto */
 @layer base {
   html {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Noto Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-weight: 400;
+  }
+  body, p, span, li, ul, ol, a, label, input, textarea, button, div, section, article, main, small, strong, em, b, i {
+    font-family: 'Noto Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 700;
   }
 
   .gradient-text {
@@ -119,7 +126,7 @@
   :root {
     --background: 220 33% 6%;
     --foreground: 230 10% 95%;
-    --card: 220 40% 8%;
+    --card: 0 0% 13%; /* #212121 en HSL */
     --card-foreground: 230 10% 95%;
     --popover: 220 40% 8%;
     --popover-foreground: 230 10% 95%;
@@ -320,11 +327,11 @@
   }
 
   .glass-card {
-    @apply bg-card shadow-xl;
+    @apply bg-card/70 shadow-xl backdrop-blur-md;
   }
 
   .dropdown-menu {
-    @apply bg-card shadow-lg;
+    @apply bg-card/70 shadow-lg backdrop-blur-md;
   }
 
   .neon-border {
@@ -435,5 +442,32 @@
     padding: 1rem;
     margin: -1rem;
     margin-bottom: 0;
+  }
+
+  /* Borde animado gradiente azul-violeta-magenta, transición suave, animación lenta, grosor fino */
+  .animated-gradient-border {
+    position: relative;
+    z-index: 1;
+    border-radius: 1rem;
+    padding: 1px; /* Fino */
+    background: linear-gradient(90deg, #3359b6 0%, #3a4e91 25%, #5a3e7b 45%, #d4386c 65%, #6a2340 80%);
+    background-size: 300% 100%;
+    animation: border-shine-ltr 14s linear infinite;
+  }
+  .animated-gradient-border-inner {
+    border-radius: 0.95rem;
+    background: #181028; /* Fondo oscuro, igual que el card */
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes border-shine-ltr {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  /* Utilidad global para efecto vidrio elegante */
+  .glass-bg {
+    @apply bg-card/30 backdrop-blur-md shadow-xl;
   }
 }

@@ -10,7 +10,6 @@ import {
   Zap,
   ArrowRight
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -76,23 +75,11 @@ export default function FloatingCards() {
           style={{ ...card.position }}
         >
           <Link href={card.href}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.1,
-                type: 'spring',
-                stiffness: 100
-              }}
-              whileHover={{ 
-                scale: 1.05,
-                rotate: '0deg',
-                transition: { duration: 0.2 }
-              }}
+            <div
+              className="w-64 p-4 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               style={{ rotate: card.rotation }}
             >
-              <Card className="w-64 p-4 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+              <Card>
                 <div className="absolute top-0 left-0 w-2 h-full" style={{ backgroundColor: card.color }}></div>
                 <div className="flex items-start gap-3">
                   <div 
@@ -140,7 +127,7 @@ export default function FloatingCards() {
                   </Badge>
                 )}
               </Card>
-            </motion.div>
+            </div>
           </Link>
         </div>
       ))}

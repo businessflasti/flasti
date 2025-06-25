@@ -13,7 +13,6 @@ import {
   Award,
   Medal
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 
 export default function TopToolbar() {
@@ -101,46 +100,37 @@ export default function TopToolbar() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 p-2">
-              {gamificationTools.map((tool, index) => (
-                <Link key={index} href={tool.href}>
-                  <motion.div 
-                    className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer text-center relative"
-                    whileHover={{ y: -5 }}
+      {isExpanded && (
+        <div className="overflow-hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 p-2">
+            {gamificationTools.map((tool, index) => (
+              <Link key={index} href={tool.href}>
+                <div 
+                  className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer text-center relative"
+                >
+                  <div 
+                    className="w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: `${tool.color}20`, color: tool.color }}
                   >
-                    <div 
-                      className="w-10 h-10 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: `${tool.color}20`, color: tool.color }}
+                    {tool.icon}
+                  </div>
+                  <div className="font-medium text-sm">{tool.label}</div>
+                  <div className="text-xs text-foreground/70 line-clamp-1">{tool.description}</div>
+                  
+                  {tool.count && (
+                    <Badge 
+                      className="absolute top-0 right-0 bg-red-500 text-[10px] px-1 py-0 h-4 min-w-[16px]"
+                      style={{ transform: 'translate(25%, -25%)' }}
                     >
-                      {tool.icon}
-                    </div>
-                    <div className="font-medium text-sm">{tool.label}</div>
-                    <div className="text-xs text-foreground/70 line-clamp-1">{tool.description}</div>
-                    
-                    {tool.count && (
-                      <Badge 
-                        className="absolute top-0 right-0 bg-red-500 text-[10px] px-1 py-0 h-4 min-w-[16px]"
-                        style={{ transform: 'translate(25%, -25%)' }}
-                      >
-                        {tool.count}
-                      </Badge>
-                    )}
-                  </motion.div>
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                      {tool.count}
+                    </Badge>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

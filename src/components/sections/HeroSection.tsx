@@ -56,7 +56,13 @@ const customStyles = `
 import LocationBadge from '@/components/dashboard/LocationBadge';
 
 // Componente de contador animado
-const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
+type AnimatedCounterProps = {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+};
+
+const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterProps) => {
   const [count, setCount] = useState(0);
   const animationRef = useRef<number | null>(null);
 
@@ -111,6 +117,9 @@ const RotatingText = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Forzar ancho mínimo para el gradiente en palabras cortas
+  const minWidth = 260; // px, ajusta según el diseño
+
   return (
     <div className="h-[50px] md:h-[60px] overflow-hidden relative w-full">
       <AnimatePresence mode="wait">
@@ -122,9 +131,18 @@ const RotatingText = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full text-center hardware-accelerated"
         >
-          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
-            {words[index].text}
-          </span>
+          {words[index].text === "ingresos" || words[index].text === "dinero extra" ? (
+            <span
+              className={`bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}
+              style={{ display: 'inline-block', minWidth: minWidth, textAlign: 'center' }}
+            >
+              {words[index].text}
+            </span>
+          ) : (
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
+              {words[index].text}
+            </span>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -171,18 +189,16 @@ const HeroSection = () => {
   }, []);
   return (
     <section className="pt-20 pb-24 relative overflow-hidden">
-      {/* Estilos personalizados */}
-      <style jsx global>{customStyles}</style>
-
-      {/* Fondo con efecto de gradiente */}
+      {/* Fondo negro absoluto debajo de todo */}
+      <div className="absolute inset-0 z-[-20] bg-black"></div>
+      {/* Efectos de luces */}
       <div className="absolute inset-0 gradient-background z-0">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid-pattern.svg')] bg-repeat opacity-10"></div>
+        <div className="absolute inset-0 opacity-60">
+          <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid-pattern.svg')] bg-repeat opacity-20"></div>
         </div>
       </div>
-
-      {/* Efectos de luz de fondo - posicionados detrás del título */}
-      <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10"></div>
+      {/* Efecto vidrio por arriba de las luces */}
+      {/* <div className="absolute inset-0 z-10 backdrop-blur-xl bg-white/5 pointer-events-none"></div> */}
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -196,7 +212,7 @@ const HeroSection = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               <span className="block">{t('genera')}</span>
               <RotatingText />
-              <span className="block mt-2">{t('con')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] animate-gradient-shift">Flasti</span></span>
+              <span className="block mt-2">{t('con')} <span>flasti</span></span>
             </h1>
 
             <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">
@@ -206,7 +222,7 @@ const HeroSection = () => {
 
           {/* Estadísticas */}
           <div className="flex flex-row justify-center gap-4 sm:gap-8 mb-10 mt-8 animate-entry animate-entry-delay-3 hardware-accelerated hero-stats-container">
-            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-3 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
+            <div className="bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-xl px-3 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 text-[#4CAF50] flex justify-center">
                 <AnimatedCounter value={stats.generatedAmount} prefix="$" />
               </p>
@@ -216,7 +232,7 @@ const HeroSection = () => {
               </p>
             </div>
 
-            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-3 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
+            <div className="bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-xl px-3 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 text-[#facc15] flex justify-center">
                 <AnimatedCounter value={stats.microtasksCompleted} />
               </p>
@@ -229,7 +245,7 @@ const HeroSection = () => {
 
           {/* Indicador de usuarios */}
           <div className="mt-6 flex justify-center animate-entry animate-entry-delay-4 hardware-accelerated">
-            <div className="flex items-center gap-2 bg-card/40 backdrop-blur-sm border border-white/5 rounded-full px-4 py-2">
+            <div className="flex items-center gap-2 bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-full px-4 py-2">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden transition-all duration-300 hover:scale-110 hover:border-foreground/80 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
                   <img src="/images/profiles/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" />
@@ -248,6 +264,10 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Efectos de luces decorativos: una violeta y otra rosa, con opacidad sutil */}
+      <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/15 blur-3xl hardware-accelerated z-0"></div>
+      <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#ec4899]/15 blur-3xl hardware-accelerated z-0"></div>
     </section>
   );
 };

@@ -12,7 +12,6 @@ import {
   Plus,
   X
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function QuickAccessMenu() {
@@ -70,53 +69,33 @@ export default function QuickAccessMenu() {
 
   return (
     <div className="fixed bottom-6 left-6 z-50">
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute bottom-0 left-0"
-          >
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 0, y: 0 }}
-                animate={{
-                  opacity: 1,
-                  x: item.position.x,
-                  y: item.position.y
-                }}
-                exit={{ opacity: 0, x: 0, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="absolute"
-                style={{ bottom: 0, left: 0 }}
-              >
-                <Link href={item.href}>
-                  <motion.div
-                    className="flex flex-col items-center gap-1"
-                    whileHover={{ scale: 1.1 }}
+      {isOpen && (
+        <div className="absolute bottom-0 left-0">
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              className="absolute"
+              style={{ bottom: 0, left: 0, opacity: 1, x: item.position.x, y: item.position.y }}
+            >
+              <Link href={item.href}>
+                <div className="flex flex-col items-center gap-1">
+                  <div
+                    className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center"
+                    style={{ backgroundColor: item.color, color: 'white' }}
                   >
-                    <div
-                      className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center"
-                      style={{ backgroundColor: item.color, color: 'white' }}
-                    >
-                      {item.icon}
-                    </div>
-                    <span className="text-xs font-medium px-2 py-1 bg-white dark:bg-gray-800 rounded-full shadow-md">
-                      {item.label}
-                    </span>
-                  </motion.div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    {item.icon}
+                  </div>
+                  <span className="text-xs font-medium px-2 py-1 bg-white dark:bg-gray-800 rounded-full shadow-md">
+                    {item.label}
+                  </span>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <motion.button
-        whileTap={{ scale: 0.9 }}
+      <button
         onClick={toggleMenu}
         className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           isOpen
@@ -129,7 +108,7 @@ export default function QuickAccessMenu() {
         ) : (
           <Plus size={24} className="text-white" />
         )}
-      </motion.button>
+      </button>
     </div>
   );
 }

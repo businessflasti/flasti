@@ -14,7 +14,6 @@ import {
   Star,
   Gift
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 
 export default function SideToolbar() {
@@ -88,13 +87,10 @@ export default function SideToolbar() {
   ];
 
   return (
-    <motion.div 
+    <div 
       className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-white dark:bg-gray-800 rounded-r-xl shadow-lg transition-all duration-300 ${
         isExpanded ? 'w-64' : 'w-16'
       }`}
-      initial={false}
-      animate={{ width: isExpanded ? 256 : 64 }}
-      transition={{ duration: 0.3 }}
     >
       <div className="p-2">
         <button 
@@ -111,9 +107,8 @@ export default function SideToolbar() {
         <div className="flex flex-col gap-4 py-2">
           {tools.map((tool, index) => (
             <Link key={index} href={tool.href}>
-              <motion.div 
+              <div 
                 className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer relative"
-                whileHover={{ x: 5 }}
               >
                 <div 
                   className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
@@ -146,11 +141,11 @@ export default function SideToolbar() {
                     HOT
                   </Badge>
                 )}
-              </motion.div>
+              </div>
             </Link>
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -181,17 +181,12 @@ const SimplePricingSection = () => {
 
   return (
     <div className="py-24 relative overflow-hidden">
-      {/* Elementos decorativos del fondo */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5ZDRlZGQiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djNjMCAxLjEtLjkgMi0yIDJoLTJ2MWgyYTMgMyAwIDAgMCAzLTN2LTNoLTF6bS04LTRoMXYyaC0xVjMwem0tNCAxOGg0djFoLTR6TTQ2IDQyaDJ2MWgtMnYxaC0xdi0yaDF6bS0yIDRoM3YxaC0zeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary/5 blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-accent/5 blur-3xl"></div>
-      </div>
+      {/* Elementos decorativos del fondo eliminados */}
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
-          <h2 className="text-3xl font-bold font-outfit mb-3"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">{t('unicoPago')}</span></h2>
+          <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">{t('unicoPago')}</span></h2>
           <p className="text-foreground/70 max-w-lg mx-auto">
             {t('accedeComienza')}
           </p>
@@ -199,7 +194,8 @@ const SimplePricingSection = () => {
 
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
-          <Card className="glass-card overflow-hidden relative group h-full border-primary/30 hover:border-primary/50 transition-colors">
+          <Card className="bg-card/30 backdrop-blur-md shadow-xl overflow-hidden relative group h-full border-primary/30 hover:border-primary/50 transition-colors">
+            {/* Animación eliminada: este bloque ya no tiene efecto motion ni animación de entrada */}
             <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
 
@@ -228,7 +224,7 @@ const SimplePricingSection = () => {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-2xl group-hover:text-gradient transition-all duration-300"
+                  <h3 className="text-2xl group-hover:text-gradient transition-all duration-300 title-google-sans"
                     style={{
                       fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                       fontWeight: 600,
@@ -366,10 +362,8 @@ const SimplePricingSection = () => {
 
               {/* Countdown Timer - Solo se muestra si showCountdown es true */}
               {showCountdown && (
-                <div className="mb-6 p-4 bg-gradient-to-r from-[#ec4899]/20 to-[#f97316]/20 backdrop-blur-sm rounded-xl border border-[#ec4899]/30 shadow-lg shadow-[#ec4899]/5 relative overflow-hidden">
-
-                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#ec4899]/10 blur-2xl"></div>
-                  <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-[#f97316]/10 blur-2xl"></div>
+                <div className="mb-6 p-4 rounded-xl border border-[#ec4899]/30 shadow-lg shadow-[#ec4899]/5 relative overflow-hidden bg-white/10 backdrop-blur-sm">
+                  {/* Luces decorativas eliminadas */}
                   <div className="relative z-10">
 
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -404,7 +398,7 @@ const SimplePricingSection = () => {
                       <Zap className="text-[#ec4899]" size={16} />
                     </div>
                     <div>
-                      <h4 className="font-medium text-sm">{t('accesoInmediato')}</h4>
+                      <h4 className="font-medium text-sm title-google-sans">{t('accesoInmediato')}</h4>
                       <p className="text-xs text-foreground/70">{t('comienzaGenerarIngresos')}</p>
                     </div>
                   </div>
@@ -549,44 +543,47 @@ const SimplePricingSection = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="mt-4 border-t border-white/10 pt-6">
-                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5">
-                  <button
-                    className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
-                    onClick={() => setIsLoginOpen(!isLoginOpen)}
-                  >
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
-                        <div className="text-[#ec4899]">
-                          <Lock className="h-4 w-4" />
+                    <div className="mt-4 border-t border-white/10 pt-6">
+                      <div className="bg-card/30 backdrop-blur-md shadow-xl overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5">
+                        <button
+                          className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
+                          onClick={() => setIsLoginOpen(!isLoginOpen)}
+                        >
+                          <div className="flex items-center">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
+                              <div className="text-[#ec4899]">
+                                <Lock className="h-4 w-4" />
+                              </div>
+                            </div>
+                            <span className="font-medium">{t('comoInicioSesion')}</span>
+                          </div>
+                          <div className="text-[#ec4899]">
+                            {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                          </div>
+                        </button>
+
+                        <div
+                          className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                        >
+                          <div className="pt-3 pb-1 border-t border-white/10 pl-11">
+                            {t('instruccionesInicioSesionSimple')}
+                          </div>
                         </div>
-                      </div>
-                      <span className="font-medium">{t('comoInicioSesion')}</span>
-                    </div>
-                    <div className="text-[#ec4899]">
-                      {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </div>
-                  </button>
 
-                  <div
-                    className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
-                  >
-                    <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                      {t('instruccionesInicioSesionSimple')}
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent"></div>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent"></div>
                 </div>
               </div>
             </div>
           </Card>
         </div>
       </div>
+
+      {/* Overlay decorativo amarillo ajustado para no expandirse tanto hacia abajo */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[340px] h-[120px] bg-[#facc15]/10 blur-2xl rounded-full z-0"></div>
     </div>
   );
 };
