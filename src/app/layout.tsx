@@ -50,6 +50,13 @@ export default function RootLayout({
         {/* Facebook Pixel - Colocado después de Yandex Metrica */}
         <FacebookPixel />
 
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289"
+          crossOrigin="anonymous"
+        ></script>
+
         <script dangerouslySetInnerHTML={{ __html: `
           // Script adicional de protección contra copia
           document.addEventListener('DOMContentLoaded', function() {

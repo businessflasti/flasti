@@ -30,8 +30,8 @@ const HowItWorksSection = () => {
     <section className="py-24 relative overflow-hidden">
       {/* Elementos decorativos del fondo */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
-        <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#ec4899]/10 blur-3xl"></div>
+        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#d4386c]/10 blur-3xl"></div>
+        <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#3359b6]/10 blur-3xl"></div>
       </div>
 
       <div className="container-custom relative z-10">
@@ -47,11 +47,11 @@ const HowItWorksSection = () => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-8 rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5 flex flex-col items-center text-center"
+              className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-8 rounded-xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/5 flex flex-col items-center text-center hardware-accelerated"
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
-              <div className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white text-sm font-medium py-1 px-3 rounded-full mb-6">
+              <div className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] text-white text-sm font-medium py-1 px-3 rounded-full mb-6">
                 {t('paso')} {step.number}
               </div>
 

@@ -20,8 +20,8 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 relative overflow-hidden">
       {/* Elementos decorativos del fondo */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl hardware-accelerated"></div>
+      <div className="absolute inset-0 z-0 hardware-accelerated">
+        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#d4386c]/10 blur-3xl"></div>
         {/* Overlay amarillo eliminado */}
       </div>
 
@@ -37,11 +37,11 @@ const BenefitsSection = () => {
         {/* Todos los bloques en una sola fila */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto animate-on-visible">
           {/* 1. Gana dinero real */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
                 <DollarSign className="text-blue-500" size={24} />
               </div>
             </div>
@@ -59,11 +59,11 @@ const BenefitsSection = () => {
 
           {/* 2. Sin experiencia */}
           {benefits.map((benefit) => (
-            <Card key={benefit.id} className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+            <Card key={benefit.id} className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
               <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
                   {benefit.icon}
                 </div>
               </div>
@@ -81,11 +81,11 @@ const BenefitsSection = () => {
           ))}
 
           {/* 3. Desde tu casa */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
                 <Home className="text-green-500" size={24} />
               </div>
             </div>
@@ -102,11 +102,11 @@ const BenefitsSection = () => {
           </Card>
 
           {/* 4. Horario flexible */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
                 <Clock className="text-purple-500" size={24} />
               </div>
             </div>

@@ -10,8 +10,8 @@ const CompaniesSection = () => {
 
       {/* Elementos decorativos futuristas */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
-      <div className="absolute -right-20 top-1/4 w-40 h-40 rounded-full bg-primary/5 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3359b6]/40 to-transparent"></div>
+      <div className="absolute -right-20 top-1/4 w-40 h-40 rounded-full bg-[#d4386c]/5 blur-3xl"></div>
       <div className="absolute -left-20 bottom-1/4 w-40 h-40 rounded-full bg-accent/5 blur-3xl"></div>
 
       <div className="container-custom relative z-10">
@@ -19,7 +19,7 @@ const CompaniesSection = () => {
           {/* Logos de empresa con efectos de resplandor */}
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
-            <Image
+            <Image 
               src="https://ext.same-assets.com/1330808718/2761605665.svg"
               alt="Company Logo"
               fill
@@ -28,7 +28,7 @@ const CompaniesSection = () => {
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
-            <Image
+            <Image 
               src="https://ext.same-assets.com/1330808718/616339271.svg"
               alt="Company Logo"
               fill
@@ -37,7 +37,7 @@ const CompaniesSection = () => {
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
-            <Image
+            <Image 
               src="https://ext.same-assets.com/1330808718/1617786510.svg"
               alt="Company Logo"
               fill
@@ -46,7 +46,7 @@ const CompaniesSection = () => {
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
-            <Image
+            <Image 
               src="https://ext.same-assets.com/1330808718/1416560932.svg"
               alt="Company Logo"
               fill
@@ -55,7 +55,7 @@ const CompaniesSection = () => {
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
-            <Image
+            <Image 
               src="https://ext.same-assets.com/1330808718/997317226.svg"
               alt="Company Logo"
               fill

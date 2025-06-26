@@ -20,14 +20,14 @@ const AudienceSection = () => {
     <section className="py-24 relative overflow-hidden">
       {/* Elementos decorativos del fondo */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
+        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#d4386c]/10 blur-3xl"></div>
         <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#facc15]/10 blur-3xl"></div>
         <div className="absolute top-40 right-[20%] w-3 h-3 rounded-full bg-[#ec4899] animate-pulse"></div>
         <div className="absolute bottom-40 left-[15%] w-2 h-2 rounded-full bg-[#f97316] animate-ping"></div>
       </div>
 
       <div className="container-custom relative z-10">
-        <div className="text-center mb-16 max-w-4xl mx-auto">
+        <div className="text-center mb-16 max-w-4xl mx-auto hardware-accelerated">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             <span className="text-gradient">+500,000 personas</span> ya están ganando dinero completando microtrabajos en línea
           </h2>
@@ -42,10 +42,10 @@ const AudienceSection = () => {
               key={index}
               className="glass-card group overflow-hidden relative p-6 rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#9333ea] to-[#ec4899] flex items-center justify-center mb-5 mx-auto">
-                {audience.icon}
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#d4386c] to-[#3359b6] flex items-center justify-center mb-5 mx-auto">
+                <div className="text-white">{audience.icon}</div>
               </div>
 
               <h3 className="text-lg font-bold mb-3 text-center group-hover:text-gradient transition-all duration-300">

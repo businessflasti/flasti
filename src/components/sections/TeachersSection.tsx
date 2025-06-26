@@ -57,7 +57,7 @@ const TeachersSection = () => {
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
           <span className="text-xs text-primary uppercase tracking-wider font-medium mb-2 inline-block">Expertos en tecnología</span>
-          <h2 className="text-3xl font-bold text-gradient mb-4">
+          <h2 className="text-3xl font-bold text-gradient mb-4 hardware-accelerated">
             Instructores de <span className="relative inline-block px-1">
               Flow State
               <div className="absolute bottom-1 left-0 w-full h-px bg-gradient-to-r from-primary to-accent opacity-50"></div>
@@ -73,7 +73,7 @@ const TeachersSection = () => {
             <Link href={teacher.courseUrl} key={teacher.id}>
               <Card className="glass-card group overflow-hidden h-full">
                 <div className="aspect-square w-full overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
                   <Image
                     src={teacher.image}
                     alt={teacher.name}
@@ -83,15 +83,15 @@ const TeachersSection = () => {
                   {/* Elementos futuristas decorativos */}
                   <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-card to-transparent z-20"></div>
                   <div className="absolute bottom-3 right-3 z-30">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/40 flex items-center justify-center">
-                      <Sparkles className="text-primary" size={12} />
+                    <div className="w-6 h-6 rounded-full bg-[#d4386c]/20 backdrop-blur-sm border border-[#d4386c]/40 flex items-center justify-center">
+                      <Sparkles className="text-[#d4386c]" size={12} />
                     </div>
                   </div>
                 </div>
                 <div className="p-5">
                   <h3 className="font-bold text-lg group-hover:text-gradient transition-all duration-300">{teacher.name}</h3>
                   <p className="text-sm text-foreground/70 mb-4">{teacher.role}</p>
-
+                  
                   <div className="pt-4 border-t border-white/10 flex items-center text-primary gap-2 text-sm">
                     <div className="w-8 h-1 bg-gradient-to-r from-primary/80 to-accent/80 rounded-full"></div>
                     <span className="font-medium flex-1 group-hover:text-accent transition-colors">{teacher.course}</span>

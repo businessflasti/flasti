@@ -9,37 +9,37 @@ const schools = [
   {
     id: 1,
     name: "Data Science & IA Avanzada",
-    icon: <Brain className="text-[#ec4899]" size={24} />,
+    icon: <Brain className="text-[#d4386c]" size={24} />,
     href: "/escuela/datos",
   },
   {
     id: 2,
     name: "Ciberseguridad Cuántica",
-    icon: <Lock className="text-[#f97316]" size={24} />,
+    icon: <Lock className="text-[#3359b6]" size={24} />,
     href: "/escuela/ciberseguridad",
   },
   {
     id: 3,
     name: "Liderazgo Digital",
-    icon: <Users className="text-[#9333ea]" size={24} />,
+    icon: <Users className="text-[#d4386c]" size={24} />,
     href: "/escuela/liderazgo-management",
   },
   {
     id: 4,
     name: "Comunicación Global",
-    icon: <Globe className="text-[#facc15]" size={24} />,
+    icon: <Globe className="text-[#3359b6]" size={24} />,
     href: "/escuela/ingles",
   },
   {
     id: 5,
     name: "Desarrollo Web 3.0",
-    icon: <Code className="text-[#ec4899]" size={24} />,
+    icon: <Code className="text-[#d4386c]" size={24} />,
     href: "/escuela/web",
   },
   {
     id: 6,
     name: "Marketing Inmersivo",
-    icon: <LineChart className="text-[#f97316]" size={24} />,
+    icon: <LineChart className="text-[#3359b6]" size={24} />,
     href: "/escuela/marketing",
   },
   {
@@ -51,11 +51,11 @@ const schools = [
   {
     id: 8,
     name: "Transformación Digital",
-    icon: <Zap className="text-[#facc15]" size={24} />,
+    icon: <Zap className="text-[#d4386c]" size={24} />,
     href: "/escuela/transformacion-digital-business",
   },
 ];
-
+//
 const SchoolsGrid = () => {
   return (
     <section className="py-16 relative overflow-hidden">
@@ -63,7 +63,7 @@ const SchoolsGrid = () => {
       <div className="absolute inset-0 z-0">
         <div className="absolute w-full h-px top-24 bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent"></div>
         <div className="absolute right-0 top-1/4 h-40 w-px bg-gradient-to-b from-transparent via-[#facc15]/30 to-transparent"></div>
-        <div className="absolute left-0 bottom-1/4 h-40 w-px bg-gradient-to-b from-transparent via-[#9333ea]/30 to-transparent"></div>
+        <div className="absolute left-0 bottom-1/4 h-40 w-px bg-gradient-to-b from-transparent via-[#d4386c]/30 to-transparent"></div>
       </div>
 
       <div className="container-custom relative z-10">
@@ -76,11 +76,11 @@ const SchoolsGrid = () => {
           {schools.map((school) => (
             <Link href={school.href} key={school.id}>
               <Card className="glass-card hover:neon-border transition-all duration-300 group overflow-hidden">
-                <div className="p-5 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#9333ea]/10 group-hover:bg-[#9333ea]/20 transition-colors">
+                <div className="p-5 flex items-center gap-4 hardware-accelerated">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#d4386c]/10 group-hover:bg-[#d4386c]/20 transition-colors">
                     {school.icon}
                   </div>
-                  <span className="flex-1 font-medium text-sm">{school.name}</span>
+                  <span className="flex-1 font-medium text-sm group-hover:text-gradient transition-all duration-300">{school.name}</span>
                 </div>
                 <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#9333ea]/30 to-transparent group-hover:via-[#f97316]/60 transition-colors"></div>
               </Card>

@@ -80,7 +80,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-background px-4 py-12 mobile-smooth-scroll">
+    <div className="min-h-screen w-full flex items-center justify-center bg-black px-4 py-12 mobile-smooth-scroll">
       <div className="w-full max-w-md relative">
         {/* Logo */}
         <div className="flex justify-center mb-8">
@@ -129,7 +129,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full py-5 h-auto bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback"
+              className="w-full py-5 h-auto bg-gradient-to-r from-[#d4386c] to-[#3359b6] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback"
               disabled={isLoading}
             >
               {isLoading ? "Conectando..." : "Continuar"}

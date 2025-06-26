@@ -307,8 +307,8 @@ export default function PreguntasFrecuentesPage() {
                   Nuestro equipo de soporte está disponible para ayudarte con cualquier pregunta
                 </p>
               </div>
-              <Button
-                className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90 transition-opacity"
+              <Button 
+                className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] hover:opacity-90 transition-opacity"
                 onClick={handleContactSupport}
               >
                 Hablar con soporte

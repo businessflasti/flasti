@@ -7,59 +7,59 @@ const FeatureCardsSection = () => {
   const { t } = useLanguage();
 
   const features = [
-  // 1. Sin mínimo de retiro
-  {
-    icon: <Wallet className="h-6 w-6" />,
-    iconColor: "text-[#9333ea]",
-    gradientFrom: "from-[#facc15]/20",
-    gradientTo: "to-[#9333ea]/20",
-    title: t('sinMinimoRetiro'),
-    description: t('retiraGananciasSegura')
-  },
-  // 2. Aprovecha Flasti AI
-  {
-    icon: <Zap className="h-6 w-6" />,
-    iconColor: "text-[#f97316]",
-    gradientFrom: "from-[#ec4899]/20",
-    gradientTo: "to-[#f97316]/20",
-    title: t('aprovechaFlastiAI'),
-    description: t('trabajaRapido')
-  },
-  // 3. Completa nuevos microtrabajos
-  {
-    icon: <DollarSign className="h-6 w-6" />,
-    iconColor: "text-[#ec4899]",
-    gradientFrom: "from-[#9333ea]/20",
-    gradientTo: "to-[#ec4899]/20",
-    title: t('microtrabajosEnLinea'),
-    description: t('generaIngresosTareas')
-  },
-  // 4. Soporte 24/7
-  {
-    icon: <HeadphonesIcon className="h-6 w-6" />,
-    iconColor: "text-[#06b6d4]",
-    gradientFrom: "from-[#9333ea]/20",
-    gradientTo: "to-[#06b6d4]/20",
-    title: t('soporte24_7'),
-    description: t('equipoListoAyudarte')
-  }
-  // Bloque "Nuevas funciones y mejoras" eliminado
-  // Los bloques "Gana dinero real", "Horario flexible" y "Desde tu casa" se movieron a BenefitsSection
+    // 1. Sin mínimo de retiro
+    {
+      icon: <Wallet className="h-6 w-6" />,
+      iconColor: "text-[#3359b6]",
+      gradientFrom: "from-[#d4386c]/20",
+      gradientTo: "to-[#3359b6]/20",
+      title: t('sinMinimoRetiro'),
+      description: t('retiraGananciasSegura')
+    },
+    // 2. Aprovecha Flasti AI
+    {
+      icon: <Zap className="h-6 w-6" />,
+      iconColor: "text-[#d4386c]",
+      gradientFrom: "from-[#d4386c]/20",
+      gradientTo: "to-[#3359b6]/20",
+      title: t('aprovechaFlastiAI'),
+      description: t('trabajaRapido')
+    },
+    // 3. Completa nuevos microtrabajos
+    {
+      icon: <DollarSign className="h-6 w-6" />,
+      iconColor: "text-[#3359b6]",
+      gradientFrom: "from-[#d4386c]/20",
+      gradientTo: "to-[#3359b6]/20",
+      title: t('microtrabajosEnLinea'),
+      description: t('generaIngresosTareas')
+    },
+    // 4. Soporte 24/7
+    {
+      icon: <HeadphonesIcon className="h-6 w-6" />,
+      iconColor: "text-[#d4386c]",
+      gradientFrom: "from-[#d4386c]/20",
+      gradientTo: "to-[#3359b6]/20",
+      title: t('soporte24_7'),
+      description: t('equipoListoAyudarte')
+    }
+    // Bloque "Nuevas funciones y mejoras" eliminado
+    // Los bloques "Gana dinero real", "Horario flexible" y "Desde tu casa" se movieron a BenefitsSection
   ];
   return (
     <section className="py-16 relative overflow-hidden">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full bg-[#ec4899]/5 blur-3xl"></div>
-        <div className="absolute top-1/3 left-1/3 w-3 h-3 rounded-full bg-[#ec4899] animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-2 h-2 rounded-full bg-[#9333ea] animate-ping"></div>
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-[#d4386c]/5 blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full bg-[#3359b6]/5 blur-3xl"></div>
+        <div className="absolute top-1/3 left-1/3 w-3 h-3 rounded-full bg-[#d4386c] animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-2 h-2 rounded-full bg-[#3359b6] animate-ping"></div>
       </div>
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           {/* Título superior eliminado */}
-          <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black">{t('ingresaMundo')}</h2>
+          <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black hardware-accelerated">{t('ingresaMundo')}</h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
             {t('accedeArea')}
           </p>
@@ -69,7 +69,7 @@ const FeatureCardsSection = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="glass-card group overflow-hidden relative p-4 md:p-5 rounded-xl flex flex-col items-center text-center"
+              className="glass-card group overflow-hidden relative p-4 md:p-5 rounded-xl flex flex-col items-center text-center hardware-accelerated"
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
 

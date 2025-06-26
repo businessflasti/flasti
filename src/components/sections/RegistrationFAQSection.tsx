@@ -40,7 +40,7 @@ const getFaqs = (t: any) => [
 // Definir las respuestas para la pregunta de inversión
 const inversionAnswerUSD = "Esta plataforma fue creada con el objetivo de cambiar la vida de nuestros miembros, brindándoles una oportunidad real de independencia laboral. Nuestro propósito es llegar a la mayor cantidad de personas posible, transformando la manera en que se trabaja en línea. Y hoy, solo por tiempo limitado, tenemos una oferta especial para ti, para que puedas unirte a Flasti y comenzar a generar ingresos desde ya.\n\n$$$OFERTA_VERDE$$$ ¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO! $$$FIN_VERDE$$$\n\nValor original: $$$PRECIO_TACHADO$$$ | SOLO POR HOY $$$PRECIO_OFERTA$$$ (el equivalente en tu moneda local se mostrará al finalizar el pago)\n\n¡Paga una sola vez y accede a Flasti de por vida usando PayPal o tu moneda local!\n\n$$$TEXTO_ROJO$$$ EL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE $50 USD EN CUALQUIER MOMENTO $$$FIN_ROJO$$$\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\n$$$RECUERDA_NEGRITA_SUBRAYADO$$$Recuerda$$$FIN_RECUERDA$$$: Este precio tiene un $$$AMARILLO$$$ 80% de descuento $$$FIN_AMARILLO$$$ y es solo por tiempo limitado. ¡Estás ahorrando $$$AHORRO_VERDE$$$ $40 USD $$$FIN_AHORRO_VERDE$$$ por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n$$$IMPORTANTE_NEGRITA$$$ ⚠️ IMPORTANTE: $$$FIN_IMPORTANTE$$$ El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
 
-const inversionAnswerARS = "Esta plataforma fue creada con el objetivo de cambiar la vida de nuestros miembros, brindándoles una oportunidad real de independencia laboral. Nuestro propósito es llegar a la mayor cantidad de personas posible, transformando la manera en que se trabaja en línea. Y hoy, solo por tiempo limitado, tenemos una oferta especial para ti, para que puedas unirte a Flasti y comenzar a generar ingresos desde ya.\n\n$$$OFERTA_VERDE$$$ ¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO! $$$FIN_VERDE$$$\n\nValor original: $$$PRECIO_TACHADO$$$ | SOLO POR HOY $$$PRECIO_OFERTA$$$\n\n¡Paga una sola vez y accede a Flasti de por vida usando Mercado Pago, tarjeta de débito y crédito, Pago Fácil o Rapipago!\n\n$$$TEXTO_ROJO$$$ EL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE AR$ 57.500 EN CUALQUIER MOMENTO $$$FIN_ROJO$$$\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\n$$$RECUERDA_NEGRITA_SUBRAYADO$$$Recuerda$$$FIN_RECUERDA$$$: Este precio tiene un $$$AMARILLO$$$ 80% de descuento $$$FIN_AMARILLO$$$ y es solo por tiempo limitado. ¡Estás ahorrando $$$AHORRO_VERDE$$$ AR$ 46.000 $$$FIN_AHORRO_VERDE$$$ por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n$$$IMPORTANTE_NEGRITA$$$ ⚠️ IMPORTANTE: $$$FIN_IMPORTANTE$$$ El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
+const inversionAnswerARS = "Esta plataforma fue creada con el objetivo de cambiar la vida de nuestros miembros, brindándoles una oportunidad real de independencia laboral. Nuestro propósito es llegar a la mayor cantidad de personas posible, transformando la manera en que se trabaja en línea. Y hoy, solo por tiempo limitado, tenemos una oferta especial para ti, para que puedas unirte a Flasti y comenzar a generar ingresos desde ya.\n\n$$$OFERTA_VERDE$$$ ¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO! $$$FIN_VERDE$$$\n\nValor original: $$$PRECIO_TACHADO$$$ | SOLO POR HOY $$$PRECIO_OFERTA$$$\n\n¡Paga una sola vez y accede a Flasti de por vida usando Mercado Pago, tarjeta de débito y crédito, Pago Fácil o Rapipago!\n\n$$$TEXTO_ROJO$$$ EL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE AR$ 57.500 EN CUALQUIER MOMENTO $$$FIN_ROJO$$$\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\n💡 Recuerda: Este precio tiene un $$$AMARILLO$$$ 80% de descuento $$$FIN_AMARILLO$$$ y es solo por tiempo limitado. ¡Estás ahorrando $$$AHORRO_VERDE$$$ AR$ 46.000 $$$FIN_AHORRO_VERDE$$$ por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n⚠️ IMPORTANTE: El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
 
 const RegistrationFAQSection = () => {
 	const { language, t } = useLanguage();
@@ -49,7 +49,7 @@ const RegistrationFAQSection = () => {
 
 	// Detectar si el usuario es de Argentina
 	useEffect(() => {
-		const detectCountry = async () => {
+		const detectCountry = async () => { 
 			try {
 				// Intentar obtener la ubicación del usuario desde localStorage primero
 				const savedCountry = localStorage.getItem('userCountry');
@@ -86,8 +86,8 @@ const RegistrationFAQSection = () => {
 		<section className="py-16 relative overflow-hidden">
 			{/* Elementos decorativos del fondo */}
 			<div className="absolute inset-0 z-0">
-				<div className="absolute top-20 right-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
-				<div className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-[#ec4899]/10 blur-3xl"></div>
+				<div className="absolute top-20 right-1/4 w-64 h-64 rounded-full bg-[#d4386c]/10 blur-3xl"></div>
+				<div className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-[#3359b6]/10 blur-3xl"></div>
 			</div>
 
 			<div className="container-custom relative z-10">
@@ -107,10 +107,10 @@ const RegistrationFAQSection = () => {
 							<button
 								className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
 								onClick={() => toggleFAQ(index)}
-							>
+							> 
 								<div className="flex items-center">
-									<div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
-										<div className="text-[#ec4899]">{faq.icon}</div>
+									<div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center mr-3 border border-white/10">
+										<div className="text-[#d4386c]">{faq.icon}</div>
 									</div>
 									<span className="font-medium">{faq.question}</span>
 								</div>

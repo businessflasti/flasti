@@ -86,7 +86,7 @@ const DashboardPreviewSection = () => {
                   <div className="mb-8 flex flex-col items-center mt-8">
                     <div className="inline-flex items-center gap-2 mb-4 bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-full px-4 py-2 dark:shadow-black/30 light:shadow-gray-400/30 hover:shadow-lg transition-shadow">
                       <span className="text-sm dark:text-foreground/80 text-foreground/90 font-medium">{t('metodosRetiroDisponibles')}</span>
-                      <ArrowUpRight className="h-4 w-4 dark:text-[#ec4899] text-[#9333ea]" />
+                      <ArrowUpRight className="h-4 w-4 dark:text-[#d4386c] text-[#3359b6]" />
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-4">
@@ -109,7 +109,7 @@ const DashboardPreviewSection = () => {
                   {/* Bloques de características */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#facc15]/20 to-[#9333ea]/20 flex items-center justify-center mr-3">
@@ -128,7 +128,7 @@ const DashboardPreviewSection = () => {
                     </div>
 
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ec4899]/20 to-[#f97316]/20 flex items-center justify-center mr-3">
@@ -147,7 +147,7 @@ const DashboardPreviewSection = () => {
                     </div>
 
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3">
@@ -166,7 +166,7 @@ const DashboardPreviewSection = () => {
                     </div>
 
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#06b6d4]/20 flex items-center justify-center mr-3">

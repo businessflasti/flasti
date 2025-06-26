@@ -62,8 +62,8 @@ const PricingCardsSection = () => {
     <section id="planes" className="py-20 relative overflow-hidden">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/3 right-1/4 w-72 h-72 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-72 h-72 rounded-full bg-[#ec4899]/5 blur-3xl"></div>
+        <div className="absolute top-1/3 right-1/4 w-72 h-72 rounded-full bg-[#d4386c]/5 blur-3xl"></div>
+        <div className="absolute bottom-1/3 left-1/4 w-72 h-72 rounded-full bg-[#3359b6]/5 blur-3xl"></div>
       </div>
 
       <div className="container-custom relative z-10">
@@ -81,7 +81,7 @@ const PricingCardsSection = () => {
               className={`glass-card p-8 rounded-xl border ${
                 plan.popular
                   ? "border-[#ec4899]/50 shadow-lg shadow-[#ec4899]/10"
-                  : "border-white/10 hover:border-[#ec4899]/30"
+                  : "border-white/10 hover:border-[#d4386c]/30"
               } transition-all relative`}
             >
               {plan.popular && (
@@ -100,18 +100,18 @@ const PricingCardsSection = () => {
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start">
-                    <Check className="h-5 w-5 text-[#ec4899] mr-2 shrink-0" />
+                    <Check className="h-5 w-5 text-[#d4386c] mr-2 shrink-0" />
                     <span className="text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Link href="/login" className="block">
-                <Button
+                <Button 
                   className={`w-full ${
                     plan.buttonVariant === "default"
-                      ? "glow-effect bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15] hover:opacity-90 transition-opacity text-white"
-                      : "border-[#ec4899]/30 hover:bg-[#ec4899]/10 transition-colors"
+                      ? "glow-effect bg-gradient-to-r from-[#d4386c] to-[#3359b6] hover:opacity-90 transition-opacity text-white"
+                      : "border-[#d4386c]/30 hover:bg-[#d4386c]/10 transition-colors"
                   }`}
                 >
                   {plan.buttonText}

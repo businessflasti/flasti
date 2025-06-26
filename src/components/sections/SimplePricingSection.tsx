@@ -187,7 +187,7 @@ const SimplePricingSection = () => {
         <div className="text-center mb-12">
           <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
           <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">{t('unicoPago')}</span></h2>
-          <p className="text-foreground/70 max-w-lg mx-auto">
+          <p className="text-foreground/70 max-w-lg mx-auto hardware-accelerated">
             {t('accedeComienza')}
           </p>
         </div>
@@ -200,7 +200,7 @@ const SimplePricingSection = () => {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
 
             <div className="absolute right-5 top-5">
-              <div className="bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1">
+              <div className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
@@ -238,7 +238,7 @@ const SimplePricingSection = () => {
               </div>
 
               <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10 relative">
-                {/* Banderita del país en la esquina superior derecha */}
+                {/* Banderita del país en la esquina superior derecha */} 
                 <div className="absolute top-4 right-5">
                   <div className="w-5 h-5 md:w-7 md:h-7 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10 shadow-sm">
                     {(() => {
@@ -277,7 +277,7 @@ const SimplePricingSection = () => {
                         <span className="text-xl font-bold">AR$ 11.500</span>
                         <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
                       </div>
-                      <div className="flex items-center mt-1">
+                      <div className="flex items-center mt-1 hardware-accelerated">
                         <span className="text-xs line-through text-red-500">AR$ 57.500</span>
                       </div>
                     </div>
@@ -288,7 +288,7 @@ const SimplePricingSection = () => {
                           <span className="text-2xl font-bold">$10</span>
                           <span className="text-foreground/70 text-xs ml-1">USD</span>
                         </div>
-                        <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                        <span className="text-xs text-[#d4386c] font-medium bg-[#d4386c]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
                       </div>
                       <div className="flex items-center mt-1">
                         <span className="text-xs line-through text-red-500">$50</span>
@@ -306,7 +306,7 @@ const SimplePricingSection = () => {
                           <span className="text-2xl font-bold">AR$ 11.500</span>
                           <div className="flex items-center gap-1 ml-3">
                             <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                            <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                            <span className="text-xs text-[#d4386c] font-medium bg-[#d4386c]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
                           </div>
                         </div>
                       </>
@@ -316,7 +316,7 @@ const SimplePricingSection = () => {
                           <div className="flex items-center">
                             <span className="text-4xl font-bold">$10</span>
                             <span className="text-foreground/70 text-sm ml-2">USD</span>
-                          </div>
+                          </div> 
                           <div className="flex items-center gap-1 ml-3">
                             <span className="text-sm line-through text-red-500">$50</span>
                             <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
@@ -332,7 +332,7 @@ const SimplePricingSection = () => {
                 </p>
 
                 {/* Etiqueta de ahorro - Versión móvil */}
-                <div className="md:hidden mt-2 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-1.5 px-2 rounded-lg border border-[#22c55e]/30 flex items-center gap-1 shadow-sm shadow-[#22c55e]/10">
+                <div className="md:hidden mt-2 bg-gradient-to-r from-[#d4386c]/20 to-[#3359b6]/20 py-1.5 px-2 rounded-lg border border-[#d4386c]/30 flex items-center gap-1 shadow-sm shadow-[#d4386c]/10">
                   <div className="w-4 h-4 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-2.5 w-2.5 text-[#22c55e]" />
                   </div>
@@ -346,7 +346,7 @@ const SimplePricingSection = () => {
                 </div>
 
                 {/* Etiqueta de ahorro - Versión desktop */}
-                <div className="hidden md:flex mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 items-center gap-2 shadow-sm shadow-[#22c55e]/10">
+                <div className="hidden md:flex mt-3 bg-gradient-to-r from-[#d4386c]/20 to-[#3359b6]/20 py-2 px-3 rounded-lg border border-[#d4386c]/30 items-center gap-2 shadow-sm shadow-[#d4386c]/10">
                   <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
                   </div>
@@ -362,7 +362,7 @@ const SimplePricingSection = () => {
 
               {/* Countdown Timer - Solo se muestra si showCountdown es true */}
               {showCountdown && (
-                <div className="mb-6 p-4 rounded-xl border border-[#ec4899]/30 shadow-lg shadow-[#ec4899]/5 relative overflow-hidden bg-white/10 backdrop-blur-sm">
+                <div className="mb-6 p-4 rounded-xl border border-[#d4386c]/30 shadow-lg shadow-[#d4386c]/5 relative overflow-hidden bg-white/10 backdrop-blur-sm">
                   {/* Luces decorativas eliminadas */}
                   <div className="relative z-10">
 
@@ -394,8 +394,8 @@ const SimplePricingSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Zap className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Zap className="text-[#d4386c]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm title-google-sans">{t('accesoInmediato')}</h4>
@@ -404,8 +404,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Infinity className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Infinity className="text-[#d4386c]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoPorVida')}</h4>
@@ -414,8 +414,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Shield className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Shield className="text-[#d4386c]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('garantia7Dias')}</h4>
@@ -426,8 +426,8 @@ const SimplePricingSection = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <HeadphonesIcon className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <HeadphonesIcon className="text-[#d4386c]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('soporte24_7')}</h4>
@@ -436,8 +436,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Sparkles className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Sparkles className="text-[#d4386c]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('suiteCompleta')}</h4>
@@ -446,8 +446,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Gift className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Gift className="text-[#d4386c]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('actualizacionesGratuitas')}</h4>
@@ -461,7 +461,7 @@ const SimplePricingSection = () => {
 
 
 
-              <Link href="/checkout">
+              <Link href="/checkout"> 
                 <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#22c55e] to-[#16a34a] hover:from-[#16a34a] hover:to-[#15803d] border-0 shadow-lg shadow-[#22c55e]/20 flex items-center justify-center gap-2">
                   {t('empiezaGanarBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -471,7 +471,7 @@ const SimplePricingSection = () => {
               </Link>
 
               <div className="flex justify-center mt-4 mb-2">
-                <div className="px-3 py-1 bg-[#22c55e]/10 backdrop-blur-sm rounded-full border border-[#22c55e]/20 shadow-sm flex items-center gap-1.5">
+                <div className="px-3 py-1 bg-[#d4386c]/10 backdrop-blur-sm rounded-full border border-[#d4386c]/20 shadow-sm flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -548,7 +548,7 @@ const SimplePricingSection = () => {
                       <div className="bg-card/30 backdrop-blur-md shadow-xl overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5">
                         <button
                           className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
-                          onClick={() => setIsLoginOpen(!isLoginOpen)}
+                          onClick={() => setIsLoginOpen(!isLoginOpen)} 
                         >
                           <div className="flex items-center">
                             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
