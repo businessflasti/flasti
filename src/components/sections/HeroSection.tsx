@@ -131,13 +131,18 @@ const RotatingText = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full text-center hardware-accelerated"
         >
-          {/* Simplificado para usar siempre el color definido en LanguageContext */}
-          <span
-            className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}
-            style={{ display: 'inline-block', minWidth: minWidth, textAlign: 'center' }}
-          >
+          {["ingresos", "dinero extra", "oportunidades"].includes(words[index].text) ? (
+            <span
+              className={`bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6] font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}
+              style={{ display: 'inline-block', minWidth: minWidth, textAlign: 'center' }}
+            >
               {words[index].text}
             </span>
+          ) : (
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
+              {words[index].text}
+            </span>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -207,7 +212,7 @@ const HeroSection = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               <span className="block">{t('genera')}</span>
               <RotatingText />
-              <span className="block mt-2">{t('con')} <span className="text-gradient">flasti</span></span>
+              <span className="block mt-2">{t('con')} <span>flasti</span></span>
             </h1>
 
             <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">

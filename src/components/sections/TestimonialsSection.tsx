@@ -46,7 +46,7 @@ const TestimonialCard = ({
 	testimonial: typeof testimonials[0];
 }) => {
 	return (
-		<Card className="bg-card/30 backdrop-blur-md shadow-xl p-6 rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5">
+		<Card className="bg-card/30 backdrop-blur-md shadow-xl p-6 rounded-xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/10">
 			<div className="flex flex-col md:flex-row md:items-start md:gap-6">
 				<div className="flex flex-col items-center mb-4 md:mb-0 md:flex-shrink-0 md:w-[180px]">
 					<div className="w-16 h-16 rounded-full border-2 border-white/20 overflow-hidden mb-3">
@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
 	// Referencias para el manejo de swipe
 	const touchStartX = useRef(0);
 	const touchEndX = useRef(0);
-	const isSwiping = useRef(false);
+	// const isSwiping = useRef(false);
 
 	const nextTestimonial = () => {
 		setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
@@ -119,16 +119,16 @@ const TestimonialsSection = () => {
 	// Funciones para manejar eventos táctiles
 	const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
 		touchStartX.current = e.touches[0].clientX;
-		isSwiping.current = true;
+		// isSwiping.current = true;
 	};
 
 	const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-		if (!isSwiping.current) return;
+		// if (!isSwiping.current) return;
 		touchEndX.current = e.touches[0].clientX;
 	};
 
 	const handleTouchEnd = () => {
-		if (!isSwiping.current) return;
+		// if (!isSwiping.current) return;
 
 		const swipeDistance = touchEndX.current - touchStartX.current;
 		const minSwipeDistance = 50; // Distancia mínima para considerar un swipe válido
@@ -142,7 +142,7 @@ const TestimonialsSection = () => {
 		}
 
 		// Reiniciar valores
-		isSwiping.current = false;
+		// isSwiping.current = false;
 	};
 
 	return (
@@ -208,7 +208,7 @@ const TestimonialsSection = () => {
 										onClick={() => setCurrentIndex(index)}
 										className={`w-3 h-3 rounded-full transition-all ${
 											index === currentIndex
-												? "bg-[#ec4899] scale-110"
+												? "bg-[#d4386c] scale-110"
 												: "bg-white/20"
 										}`}
 										aria-label={`Go to testimonial ${index + 1}`}
@@ -218,7 +218,7 @@ const TestimonialsSection = () => {
 
 							<button
 								onClick={prevTestimonial}
-								className="absolute top-1/2 -translate-y-1/2 -left-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
+								className="absolute top-1/2 -translate-y-1/2 -left-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
 								aria-label="Previous testimonial"
 							>
 								<ChevronLeft className="h-6 w-6" />
@@ -226,7 +226,7 @@ const TestimonialsSection = () => {
 
 							<button
 								onClick={nextTestimonial}
-								className="absolute top-1/2 -translate-y-1/2 -right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
+								className="absolute top-1/2 -translate-y-1/2 -right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
 								aria-label="Next testimonial"
 							>
 								<ChevronRight className="h-6 w-6" />
@@ -288,7 +288,7 @@ const TestimonialsSection = () => {
 									onClick={() => setCurrentIndex(index)}
 									className={`w-3 h-3 rounded-full transition-all ${
 										index === currentIndex
-											? "bg-[#ec4899] scale-110"
+											? "bg-[#d4386c] scale-110"
 											: "bg-white/20"
 									}`}
 									aria-label={`Go to testimonial ${index + 1}`}
@@ -298,7 +298,7 @@ const TestimonialsSection = () => {
 
 						<button
 							onClick={prevTestimonial}
-							className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
+							className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
 							aria-label="Previous testimonial"
 						>
 							<ChevronLeft className="h-6 w-6" />
@@ -306,7 +306,7 @@ const TestimonialsSection = () => {
 
 						<button
 							onClick={nextTestimonial}
-							className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
+							className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
 							aria-label="Next testimonial"
 						>
 							<ChevronRight className="h-6 w-6" />

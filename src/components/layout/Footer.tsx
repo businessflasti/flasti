@@ -163,7 +163,7 @@ const Footer = () => {
             <div className="space-y-4">
               <p className="text-foreground/60 dark:text-white text-sm">{t('ayudaInmediata')}</p>
               <ChatButton
-                className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2"
+                className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] text-white hover:opacity-90 transition-all flex items-center gap-2"
                 size="sm"
                 text={t('iniciarChat')}
               />
@@ -252,7 +252,7 @@ const Footer = () => {
                 {t('ayudaInmediata')}
               </p>
               <ChatButton
-                className="bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white hover:opacity-90 transition-all flex items-center gap-2 w-full justify-center"
+                className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] text-white hover:opacity-90 transition-all flex items-center gap-2 w-full justify-center"
                 size="sm"
                 text={t('iniciarChat')}
                 showIcon={true}
@@ -279,7 +279,7 @@ const Footer = () => {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-gradient-to-br from-[#9333ea] to-[#ec4899] flex items-center justify-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 z-50 animate-fade-in"
+          className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-gradient-to-br from-[#d4386c] to-[#3359b6] flex items-center justify-center transition-all duration-300 z-50 animate-fade-in"
           aria-label={t('volverArriba')}
         >
           <ArrowUp className="h-5 w-5 text-white" />

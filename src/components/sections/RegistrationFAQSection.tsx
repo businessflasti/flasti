@@ -82,6 +82,29 @@ const RegistrationFAQSection = () => {
 		setOpenIndex(openIndex === index ? null : index);
 	};
 
+	// Utilidad para reemplazar tokens por HTML
+	function parseInversionAnswer(answer: string, isArgentina: boolean) {
+		return answer
+			.replace(/\n/g, '<br/>')
+			.replace(/\$\$\$OFERTA_VERDE\$\$\$/g, '<span style="font-weight:bold;color:#22c55e">')
+			.replace(/\$\$\$FIN_VERDE\$\$\$/g, '</span>')
+			.replace(/\$\$\$PRECIO_TACHADO\$\$\$/g, '<span style="text-decoration:line-through;color:#ef4444">' + (isArgentina ? 'AR$ 57.500' : '$50 USD') + '</span>')
+			.replace(/\$\$\$PRECIO_OFERTA\$\$\$/g, '<span style="font-weight:bold;color:#22c55e">' + (isArgentina ? 'AR$ 11.500' : '$10 USD') + '</span>')
+			.replace(/\$\$\$TEXTO_ROJO\$\$\$/g, '<span style="color:#ef4444">')
+			.replace(/\$\$\$FIN_ROJO\$\$\$/g, '</span>')
+			.replace(/\$\$\$AMARILLO\$\$\$/g, '<span style="font-weight:bold;color:#eab308">')
+			.replace(/\$\$\$FIN_AMARILLO\$\$\$/g, '</span>')
+			.replace(/\$\$\$AHORRO_VERDE\$\$\$/g, '<span style="font-weight:bold;color:#22c55e">')
+			.replace(/\$\$\$FIN_AHORRO_VERDE\$\$\$/g, '</span>')
+			.replace(/\$\$\$RECUERDA_NEGRITA_SUBRAYADO\$\$\$/g, '<span style="font-weight:bold;text-decoration:underline">')
+			.replace(/\$\$\$FIN_RECUERDA\$\$\$/g, '</span>')
+			.replace(/\$\$\$IMPORTANTE_NEGRITA\$\$\$/g, '<span style="font-weight:bold">')
+			.replace(/\$\$\$FIN_IMPORTANTE\$\$\$/g, '</span>')
+			// Limpieza de cualquier token $$$ suelto
+			.replace(/\$\$\$[^\s<]*/g, '')
+			.replace(/\$\$\$/g, '');
+	}
+
 	return (
 		<section className="py-16 relative overflow-hidden">
 			{/* Elementos decorativos del fondo */}
@@ -121,136 +144,21 @@ const RegistrationFAQSection = () => {
 
 							<div
 								className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-500 ${
-									openIndex === index ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+									openIndex === index ? "max-h-none opacity-100" : "max-h-0 opacity-0 overflow-hidden"
 								}`}
 							>
 								<div className="pt-3 pb-6 border-t border-white/10 pl-11 whitespace-pre-line">
 									{index === 4 && faq.question === t('faq5Question') ? (
-										<React.Fragment key="answer-wrapper">
-											{(isArgentina ? inversionAnswerARS : inversionAnswerUSD)
-												// Primero procesamos el texto verde de la oferta
-												.split('$$$OFERTA_VERDE$$$')
-												.map((part, i) => {
-													if (i === 0) return part;
-
-													const verdePartes = part.split('$$$FIN_VERDE$$$');
-													return (
-														<React.Fragment key={`verde-${i}`}>
-															<span style={{ fontWeight: 'bold', color: '#22c55e' }}>{verdePartes[0]}</span>
-															{
-																// Procesamos el precio tachado
-																verdePartes[1].split('$$$PRECIO_TACHADO$$$').map((tachPart, j) => {
-																	if (j === 0) return tachPart;
-
-																	// Procesamos el precio de oferta
-																	const ofertaPartes = tachPart.split('$$$PRECIO_OFERTA$$$');
-																	return (
-																		<React.Fragment key={`tachado-${j}`}>
-																			<span style={{ textDecoration: 'line-through', color: '#ef4444' }}>
-																				{isArgentina ? 'AR$ 57.500' : '$50 USD'}
-																			</span>
-																			{ofertaPartes[0]}
-																			<span style={{ fontWeight: 'bold', color: '#22c55e' }}>
-																				{isArgentina ? 'AR$ 11.500' : '$10 USD'}
-																			</span>
-																			{
-																				// Procesamos el texto rojo
-																				ofertaPartes[1].split('$$$TEXTO_ROJO$$$').map((rojoPart, k) => {
-																					if (k === 0) return rojoPart;
-
-																					const rojoFinal = rojoPart.split('$$$FIN_ROJO$$$');
-
-																					// Procesamos el texto amarillo (80% de descuento)
-																					const amarilloPartes = rojoFinal[1].split('$$$AMARILLO$$$');
-																					const amarilloFinal = amarilloPartes.length > 1 ?
-																						amarilloPartes[1].split('$$$FIN_AMARILLO$$$') : ['', ''];
-
-																					// Procesamos el texto verde del ahorro
-																					const ahorroPartes = (amarilloPartes.length > 1 ? amarilloFinal[1] : amarilloPartes[0])
-																						.split('$$$AHORRO_VERDE$$$');
-																					const ahorroFinal = ahorroPartes.length > 1 ?
-																						ahorroPartes[1].split('$$$FIN_AHORRO_VERDE$$$') : ['', ''];
-
-																					// Procesamos Recuerda: en negrita y subrayado
-																					const recuerdaPartes = amarilloPartes[0].split('$$$RECUERDA_NEGRITA_SUBRAYADO$$$');
-																					const recuerdaFinal = recuerdaPartes.length > 1 ?
-																						recuerdaPartes[1].split('$$$FIN_RECUERDA$$$') : ['', ''];
-
-																					// Procesamos IMPORTANTE: en negrita
-																					const importantePartes = (recuerdaPartes.length > 1 ?
-																						(amarilloPartes.length > 1 ?
-																							ahorroFinal[1] : recuerdaFinal[1]) :
-																						amarilloPartes[0]).split('$$$IMPORTANTE_NEGRITA$$$');
-																					const importanteFinal = importantePartes.length > 1 ?
-																						importantePartes[1].split('$$$FIN_IMPORTANTE$$$') : ['', ''];
-
-																					return (
-																						<React.Fragment key={`rojo-${k}`}>
-																							<span style={{ color: '#ef4444' }}>{rojoFinal[0]}</span>
-																							{recuerdaPartes[0]}
-
-																							{/* Renderizar Recuerda: en negrita y subrayado */}
-																							{recuerdaPartes.length > 1 && (
-																								<React.Fragment key="recuerda">
-																									<span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{recuerdaFinal[0]}</span>
-
-																									{/* Continuar con el texto amarillo */}
-																									{amarilloPartes.length > 1 ? (
-																										<React.Fragment key="amarillo">
-																											{recuerdaFinal[1].split('$$$AMARILLO$$$')[0]}
-																											<span style={{ fontWeight: 'bold', color: '#eab308' }}>{amarilloFinal[0]}</span>
-
-																											{/* Continuar con el texto verde del ahorro */}
-																											{ahorroPartes[0]}
-																											{ahorroPartes.length > 1 && (
-																												<React.Fragment key="ahorro">
-																													<span style={{ fontWeight: 'bold', color: '#22c55e' }}>{ahorroFinal[0]}</span>
-
-																													{/* Continuar con IMPORTANTE: en negrita */}
-																													{importantePartes[0]}
-																													{importantePartes.length > 1 && (
-																														<React.Fragment key="importante">
-																															<span style={{ fontWeight: 'bold' }}>{importanteFinal[0]}</span>
-																															{importanteFinal[1]}
-																														</React.Fragment>
-																													)}
-																												</React.Fragment>
-																											)}
-																										</React.Fragment>
-																									) : (
-																										<React.Fragment key="no-amarillo">
-																											{recuerdaFinal[1]}
-																										</React.Fragment>
-																									)}
-																								</React.Fragment>
-																							)}
-
-																							{/* Si no hay Recuerda: pero hay IMPORTANTE: */}
-																							{recuerdaPartes.length <= 1 && importantePartes.length > 1 && (
-																								<React.Fragment key="solo-importante">
-																									{importantePartes[0]}
-																									<span style={{ fontWeight: 'bold' }}>{importanteFinal[0]}</span>
-																									{importanteFinal[1]}
-																								</React.Fragment>
-																							)}
-																						</React.Fragment>
-																					);
-																				})
-																			}
-																		</React.Fragment>
-																	);
-																})
-															}
-														</React.Fragment>
-													);
-												})
-											}
-										</React.Fragment>
+										<span
+											dangerouslySetInnerHTML={{
+												__html: parseInversionAnswer(isArgentina ? inversionAnswerARS : inversionAnswerUSD, isArgentina)
+											}}
+										/>
 									) : faq.answer}
 								</div>
 							</div>
 
-							<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent"></div>
+							{/* Línea decorativa inferior eliminada para evitar líneas de color en los costados */}
 						</div>
 					))}
 				</div>

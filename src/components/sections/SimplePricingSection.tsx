@@ -200,7 +200,7 @@ const SimplePricingSection = () => {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
 
             <div className="absolute right-5 top-5">
-              <div className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1">
+              <div className="bg-[#16a34a] text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-md shadow-[#16a34a]/20">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
@@ -224,7 +224,8 @@ const SimplePricingSection = () => {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-2xl group-hover:text-gradient transition-all duration-300 title-google-sans"
+                  <h3
+                    className="text-2xl text-white group-hover:text-white transition-all duration-300 title-google-sans"
                     style={{
                       fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                       fontWeight: 600,
@@ -288,7 +289,7 @@ const SimplePricingSection = () => {
                           <span className="text-2xl font-bold">$10</span>
                           <span className="text-foreground/70 text-xs ml-1">USD</span>
                         </div>
-                        <span className="text-xs text-[#d4386c] font-medium bg-[#d4386c]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                        <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">{t('descuento')}</span>
                       </div>
                       <div className="flex items-center mt-1">
                         <span className="text-xs line-through text-red-500">$50</span>
@@ -306,7 +307,7 @@ const SimplePricingSection = () => {
                           <span className="text-2xl font-bold">AR$ 11.500</span>
                           <div className="flex items-center gap-1 ml-3">
                             <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                            <span className="text-xs text-[#d4386c] font-medium bg-[#d4386c]/10 px-1 py-0.5 rounded-full">{t('descuento')}</span>
+                            <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">{t('descuento')}</span>
                           </div>
                         </div>
                       </>
@@ -319,7 +320,7 @@ const SimplePricingSection = () => {
                           </div> 
                           <div className="flex items-center gap-1 ml-3">
                             <span className="text-sm line-through text-red-500">$50</span>
-                            <span className="text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
+                            <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">{t('descuento')}</span>
                           </div>
                         </div>
                       </>
@@ -362,26 +363,27 @@ const SimplePricingSection = () => {
 
               {/* Countdown Timer - Solo se muestra si showCountdown es true */}
               {showCountdown && (
-                <div className="mb-6 p-4 rounded-xl border border-[#d4386c]/30 shadow-lg shadow-[#d4386c]/5 relative overflow-hidden bg-white/10 backdrop-blur-sm">
-                  {/* Luces decorativas eliminadas */}
-                  <div className="relative z-10">
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div className="flex items-center">
-                        <AlertTriangle className="text-[#ef4444] mr-2 h-5 w-5 animate-pulse" />
-                        <span className="text-sm font-medium">{t('ofertaTermina')}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.hours.toString().padStart(2, '0')}</span>
+                <div className="mb-6 p-1 rounded-xl border border-white/20 relative overflow-hidden backdrop-blur-md shadow-lg">
+                  {/* Fondo degradado solo en el interior para evitar que toque el borde */}
+                  <div className="w-full h-full rounded-[0.7rem] bg-gradient-to-r from-[#ef4444]/60 via-[#f97316]/60 to-[#f59e0b]/60 p-3">
+                    <div className="relative z-10">
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center">
+                          <AlertTriangle className="text-white mr-2 h-5 w-5 animate-pulse" />
+                          <span className="text-sm font-medium text-white">{t('ofertaTermina')}</span>
                         </div>
-                        <span className="text-xl font-bold text-white">:</span>
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.minutes.toString().padStart(2, '0')}</span>
-                        </div>
-                        <span className="text-xl font-bold text-white">:</span>
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.seconds.toString().padStart(2, '0')}</span>
+                        <div className="flex items-center space-x-2">
+                          <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
+                            <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.hours.toString().padStart(2, '0')}</span>
+                          </div>
+                          <span className="text-xl font-bold text-white">:</span>
+                          <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
+                            <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.minutes.toString().padStart(2, '0')}</span>
+                          </div>
+                          <span className="text-xl font-bold text-white">:</span>
+                          <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
+                            <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.seconds.toString().padStart(2, '0')}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -462,7 +464,7 @@ const SimplePricingSection = () => {
 
 
               <Link href="/checkout"> 
-                <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#22c55e] to-[#16a34a] hover:from-[#16a34a] hover:to-[#15803d] border-0 shadow-lg shadow-[#22c55e]/20 flex items-center justify-center gap-2">
+                <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 shadow-lg shadow-[#16a34a]/20 flex items-center justify-center gap-2">
                   {t('empiezaGanarBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>

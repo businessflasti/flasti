@@ -17,17 +17,17 @@ const CTASection = () => {
           <h2 className="text-2xl md:text-3xl font-bold mb-5 text-white dark:text-white light:text-black title-google-sans">
             {language === 'es' && (
               <>
-                Conoce a <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6]">Flasti</span>
+                Conoce a <span className="text-white dark:text-white light:text-black">flasti</span>
               </>
             )}
             {language === 'en' && (
               <>
-                Meet <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6]">Flasti</span>
+                Meet <span className="text-white dark:text-white light:text-black">flasti</span>
               </>
             )}
             {language === 'pt-br' && (
               <>
-                Conheça a <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6]">Flasti</span>
+                Conheça a <span className="text-white dark:text-white light:text-black">flasti</span>
               </>
             )}
           </h2>

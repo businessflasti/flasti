@@ -30,8 +30,8 @@ const FeaturesIconsSection = () => {
     <section className="py-16 relative overflow-hidden">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-[#d4386c]/5 blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-[#3359b6]/5 blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-[#ec4899]/5 blur-3xl"></div>
       </div>
 
       <div className="container-custom relative z-10">
@@ -46,10 +46,10 @@ const FeaturesIconsSection = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="glass-card group p-6 rounded-xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/5"
+              className="glass-card p-6 rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
             >
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#d4386c] to-[#3359b6] flex items-center justify-center mb-4">
-                <div className="text-white">{feature.icon}</div>
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea] to-[#ec4899] flex items-center justify-center mb-4">
+                {feature.icon}
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
               <p className="text-foreground/70 text-sm">{feature.description}</p>

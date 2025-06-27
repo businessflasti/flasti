@@ -1,4 +1,87 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import Reac--- a/Users/usuario/Documents/Copia de v2.2 (live)/src/components/sections/TestimonialsSection.tsx
++++ b/Users/usuario/Documents/Copia de v2.2 (live)/src/components/sections/TestimonialsSection.tsx
+@@ -82,7 +82,7 @@
+  return (
+    <section className="py-16 relative overflow-hidden">
+      {/* Elementos decorativos */}
+-			<div className="absolute inset-0 z-0">
++			<div className="absolute inset-0 z-0 hardware-accelerated">
+        <div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full bg-[#ec4899]/5 blur-3xl"></div>
+      </div>
+@@ -113,7 +113,7 @@
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${
+-											i < testimonial.rating
++											i < testimonial.rating 
+                        ? "text-[#facc15] fill-[#facc15]"
+                        : "text-foreground/30"
+                    }`}
+@@ -148,7 +148,7 @@
+                    key={index}
+                    onClick={() => setCurrentIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-all ${
+-											index === currentIndex
++											index === currentIndex 
+                        ? "bg-[#ec4899] scale-110"
+                        : "bg-white/20"
+                    }`}
+@@ -157,7 +157,7 @@
+ 
+              <button
+                onClick={prevTestimonial}
+-								className="absolute top-1/2 -translate-y-1/2 -left-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
++								className="absolute top-1/2 -translate-y-1/2 -left-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/70 transition-colors"
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeft className="h-6 w-6" />
+@@ -165,7 +165,7 @@
+ 
+              <button
+                onClick={nextTestimonial}
+-								className="absolute top-1/2 -translate-y-1/2 -right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
++								className="absolute top-1/2 -translate-y-1/2 -right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/70 transition-colors"
+                aria-label="Next testimonial"
+              >
+                <ChevronRight className="h-6 w-6" />
+@@ -194,7 +194,7 @@
+                <Star
+                  key={i}
+                  className="h-5 w-5 text-[#facc15] fill-[#facc15]"
+-								/>
++								/> 
+              ))}
+              {/* Last star with partial fill to represent 4.9 */}
+              <div className="relative overflow-hidden w-5 h-5">
+@@ -219,7 +219,7 @@
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-3 h-3 rounded-full transition-all ${
+-										index === currentIndex
++										index === currentIndex 
+                      ? "bg-[#ec4899] scale-110"
+                      : "bg-white/20"
+                  }`}
+@@ -228,7 +228,7 @@
+ 
+            <button
+              onClick={prevTestimonial}
+-							className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
++							className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/70 transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="h-6 w-6" />
+@@ -236,7 +236,7 @@
+ 
+            <button
+              onClick={nextTestimonial}
+-							className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#ec4899]/70 transition-colors"
++							className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/70 transition-colors"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="h-6 w-6" />
+t, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 // Definir traducciones para diferentes textos en la aplicación
 export const translations = {

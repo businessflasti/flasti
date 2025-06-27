@@ -1668,7 +1668,7 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll" style={{ background: "#000000" }}>
+      <div className="min-h-screen mobile-smooth-scroll" style={{ background: "linear-gradient(to bottom, #0f0f1a, #1a1a2e)" }}>
       <CheckoutHeader />
 
       {/* Exit Intent Popup */}

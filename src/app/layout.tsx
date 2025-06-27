@@ -57,6 +57,14 @@ export default function RootLayout({
           crossOrigin="anonymous"
         ></script>
 
+        {/* Configuración para AdSense: Deshabilitar anuncios superpuestos (vignettes) */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (window.adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-8330194041691289",
+            overlays: {bottom: false}
+          });
+        `}} />
+
         <script dangerouslySetInnerHTML={{ __html: `
           // Script adicional de protección contra copia
           document.addEventListener('DOMContentLoaded', function() {
