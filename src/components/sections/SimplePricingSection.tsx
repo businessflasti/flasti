@@ -364,26 +364,25 @@ const SimplePricingSection = () => {
               {/* Countdown Timer - Solo se muestra si showCountdown es true */}
               {showCountdown && (
                 <div className="mb-6 p-1 rounded-xl border border-white/20 relative overflow-hidden backdrop-blur-md shadow-lg">
-                  {/* Fondo degradado solo en el interior para evitar que toque el borde */}
-                  <div className="w-full h-full rounded-[0.7rem] bg-gradient-to-r from-[#ef4444]/60 via-[#f97316]/60 to-[#f59e0b]/60 p-3">
-                    <div className="relative z-10">
-                      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center">
-                          <AlertTriangle className="text-white mr-2 h-5 w-5 animate-pulse" />
-                          <span className="text-sm font-medium text-white">{t('ofertaTermina')}</span>
+                  {/* Fondo degradado rellena completamente el bloque */}
+                  <div className="absolute inset-0 w-full h-full rounded-[0.7rem] bg-gradient-to-r from-[#ef4444]/60 via-[#f97316]/60 to-[#f59e0b]/60 pointer-events-none" />
+                  <div className="relative z-10 p-3">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                      <div className="flex items-center">
+                        <AlertTriangle className="text-white mr-2 h-5 w-5 animate-pulse" />
+                        <span className="text-sm font-medium text-white">{t('ofertaTermina')}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
+                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.hours.toString().padStart(2, '0')}</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                            <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.hours.toString().padStart(2, '0')}</span>
-                          </div>
-                          <span className="text-xl font-bold text-white">:</span>
-                          <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                            <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.minutes.toString().padStart(2, '0')}</span>
-                          </div>
-                          <span className="text-xl font-bold text-white">:</span>
-                          <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                            <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.seconds.toString().padStart(2, '0')}</span>
-                          </div>
+                        <span className="text-xl font-bold text-white">:</span>
+                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
+                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.minutes.toString().padStart(2, '0')}</span>
+                        </div>
+                        <span className="text-xl font-bold text-white">:</span>
+                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
+                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.seconds.toString().padStart(2, '0')}</span>
                         </div>
                       </div>
                     </div>
