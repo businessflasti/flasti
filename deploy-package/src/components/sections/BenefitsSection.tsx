@@ -28,7 +28,7 @@ const BenefitsSection = () => {
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           {/* Etiqueta "Beneficios" eliminada */}
-          <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black">{t('accedeFlasti')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">Flasti</span> {t('comienzaGanar')}</h2>
+          <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black">{t('accedeFlasti')} <span className="text-white">Flasti</span> {t('comienzaGanar')}</h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
             {t('milesPersonas')}
           </p>

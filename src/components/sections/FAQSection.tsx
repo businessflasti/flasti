@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
 import { optimizeFAQs } from "@/utils/faq-optimizer";
-import { useTranslations } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   inversionAnswerUSD_EN,
   inversionAnswerUSD_PT,
@@ -81,7 +81,7 @@ const pulseAnimation = `
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { t, language } = useTranslations();
+  const { t, language } = useLanguage();
   const [isArgentina, setIsArgentina] = useState(false);
 
   // Detectar si el usuario es de Argentina
@@ -179,8 +179,8 @@ const FAQSection = () => {
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
-                    <div className="text-[#ec4899] transition-all duration-300 group-hover:scale-110 group-hover:text-[#f97316]">{faq.icon}</div>
+                  <div className="w-8 h-8 rounded-full bg-[#4a162a] flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
+                    <div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
                   </div>
                   <span className="font-medium">{faq.question}</span>
                 </div>
@@ -199,11 +199,11 @@ const FAQSection = () => {
                   {index === 8 ? (
                     isArgentina ? (
                       language === 'en' ? inversionAnswerARS_EN :
-                      language === 'pt' ? inversionAnswerARS_PT :
+                      language === 'pt-br' ? inversionAnswerARS_PT :
                       inversionAnswerARS
                     ) : (
                       language === 'en' ? inversionAnswerUSD_EN :
-                      language === 'pt' ? inversionAnswerUSD_PT :
+                      language === 'pt-br' ? inversionAnswerUSD_PT :
                       inversionAnswerUSD
                     )
                   ) : faq.answer}

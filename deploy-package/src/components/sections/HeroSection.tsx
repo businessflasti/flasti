@@ -226,7 +226,15 @@ const RotatingText = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full text-center hardware-accelerated"
         >
-          <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
+          <span
+            className={`font-bold text-5xl md:text-6xl lg:text-7xl`}
+            style={{
+              display: 'inline-block',
+              minWidth: '10ch',
+              textAlign: 'center',
+              color: '#3c66ce',
+            }}
+          >
             {words[index].text}
           </span>
         </motion.div>

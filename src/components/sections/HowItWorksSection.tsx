@@ -51,14 +51,13 @@ const HowItWorksSection = () => {
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
-              <div className="bg-gradient-to-r from-[#d4386c] to-[#3359b6] text-white text-sm font-medium py-1 px-3 rounded-full mb-6">
+              <div className="bg-[#111111] text-white text-sm font-medium py-1 px-3 rounded-full mb-6">
                 {t('paso')} {step.number}
               </div>
 
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mb-6 border border-white/10 relative">
+              <div className="w-24 h-24 rounded-full bg-[#1a1a1a] flex items-center justify-center mb-6 border border-white/10 relative">
                 <div className="w-20 h-20 rounded-full flex items-center justify-center">
-                  {/* Placeholder for actual icons */}
-                  <div className="text-[#ec4899]">
+                  <div className="text-white">
                     {step.number === 1 && <UserPlus size={32} />}
                     {step.number === 2 && <Smartphone size={32} />}
                     {step.number === 3 && <Wallet size={32} />}
@@ -66,7 +65,7 @@ const HowItWorksSection = () => {
                 </div>
               </div>
 
-              <h3 className="text-xl font-bold mb-3 group-hover:text-gradient transition-all duration-300">
+              <h3 className="text-xl font-bold mb-3 transition-all duration-300">
                 {step.title}
               </h3>
 

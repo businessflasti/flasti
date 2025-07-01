@@ -12,7 +12,7 @@ const BenefitsSection = () => {
     // Menú "Aprende a usar IA" eliminado
     {
       id: 4,
-      icon: <GraduationCap className="text-yellow-500" size={24} />,
+      icon: <GraduationCap className="text-white" size={24} />,
       title: t('sinExperiencia'),
       description: t('empiezaSin')
     }
@@ -28,7 +28,7 @@ const BenefitsSection = () => {
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           {/* Etiqueta "Beneficios" eliminada */}
-          <h2 className="text-3xl font-bold mb-4 text-white dark:text-white light:text-black">{t('accedeFlasti')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6]">flasti</span> {t('comienzaGanar')}</h2>
+          <h2 className="text-3xl font-bold mb-4 text-white dark:text-white light:text-black">{t('accedeFlasti')} <span className="text-white">flasti</span> {t('comienzaGanar')}</h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
             {t('milesPersonas')}
           </p>
@@ -41,12 +41,12 @@ const BenefitsSection = () => {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
-                <DollarSign className="text-blue-500" size={24} />
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+                <DollarSign className="text-white" size={24} />
               </div>
             </div>
 
-            <h3 className="text-base md:text-lg font-bold mb-2 group-hover:text-gradient transition-all duration-300 text-center">
+            <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
               {t('ganaDinero')}
             </h3>
 
@@ -63,12 +63,12 @@ const BenefitsSection = () => {
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
               <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
                   {benefit.icon}
                 </div>
               </div>
 
-              <h3 className="text-base md:text-lg font-bold mb-2 group-hover:text-gradient transition-all duration-300 text-center">
+              <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
                 {benefit.title}
               </h3>
 
@@ -85,12 +85,12 @@ const BenefitsSection = () => {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
-                <Home className="text-green-500" size={24} />
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+                <Home className="text-white" size={24} />
               </div>
             </div>
 
-            <h3 className="text-base md:text-lg font-bold mb-2 group-hover:text-gradient transition-all duration-300 text-center">
+            <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
               {t('desdeCasa')}
             </h3>
 
@@ -106,12 +106,12 @@ const BenefitsSection = () => {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center">
-                <Clock className="text-purple-500" size={24} />
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+                <Clock className="text-white" size={24} />
               </div>
             </div>
 
-            <h3 className="text-base md:text-lg font-bold mb-2 group-hover:text-gradient transition-all duration-300 text-center">
+            <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
               {t('sinHorarios')}
             </h3>
 

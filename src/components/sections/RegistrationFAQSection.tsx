@@ -132,13 +132,13 @@ const RegistrationFAQSection = () => {
 								onClick={() => toggleFAQ(index)}
 							> 
 								<div className="flex items-center">
-									<div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center mr-3 border border-white/10">
-										<div className="text-[#d4386c]">{faq.icon}</div>
+									<div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3 border border-white/10">
+										<div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
 									</div>
 									<span className="font-medium">{faq.question}</span>
 								</div>
 								<div className="text-[#ec4899]">
-									{openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+									{openIndex === index ? <ChevronUp size={20} color="white" /> : <ChevronDown size={20} color="white" />}
 								</div>
 							</button>
 

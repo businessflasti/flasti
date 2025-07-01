@@ -5,6 +5,7 @@ import Link from "next/link";
 import Logo from "@/components/ui/logo";
 import { Shield, Lock, CheckCircle, ArrowUp } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ChatButton from "@/components/ui/chat-button";
 
 const Footer = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -103,17 +104,15 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('empresa')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('informacion')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/nosotros" className="text-foreground/60 dark:text-foreground/60 light:text-foreground/80 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
-                  <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
+                <Link href="/nosotros" className="font-bold text-foreground/60 dark:text-white light:text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                   {t('sobreNosotros')}
                 </Link>
               </li>
               <li>
-                <Link href="/contacto" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
-                  <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
+                <Link href="/contacto" className="font-bold text-foreground/60 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                   {t('contacto')}
                 </Link>
               </li>
@@ -124,14 +123,12 @@ const Footer = () => {
             <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('legal')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/legal" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
-                  <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
+                <Link href="/legal" className="font-bold text-foreground/60 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                   {t('informacionLegal')}
                 </Link>
               </li>
               <li>
-                <Link href="/terminos" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
-                  <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
+                <Link href="/terminos" className="font-bold text-foreground/60 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                   {t('terminosCondiciones')}
                 </Link>
               </li>
@@ -142,14 +139,12 @@ const Footer = () => {
             <h4 className="font-bold mb-4 inline-block font-outfit dark:text-white text-black">{t('recursos')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/privacidad" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
-                  <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
+                <Link href="/privacidad" className="font-bold text-foreground/60 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                   {t('politicaPrivacidad')}
                 </Link>
               </li>
               <li>
-                <Link href="mailto:access@flasti.com" className="text-foreground/60 hover:text-accent transition-colors duration-200 text-sm inline-flex items-center">
-                  <span className="w-1 h-1 rounded-full bg-primary mr-2"></span>
+                <Link href="mailto:access@flasti.com" className="font-bold text-foreground/60 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                   access@flasti.com
                 </Link>
               </li>
@@ -177,12 +172,12 @@ const Footer = () => {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/nosotros" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/nosotros" className="font-bold dark:text-foreground/70 text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
                     {t('sobreNosotros')}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contacto" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/contacto" className="font-bold dark:text-foreground/70 text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
                     {t('contacto')}
                   </Link>
                 </li>
@@ -196,12 +191,12 @@ const Footer = () => {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/legal" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/legal" className="font-bold dark:text-foreground/70 text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
                     {t('informacionLegal')}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terminos" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
+                  <Link href="/terminos" className="font-bold dark:text-foreground/70 text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
                     {t('terminosCondiciones')}
                   </Link>
                 </li>
@@ -209,50 +204,40 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="dark:bg-black/20 bg-white/80 backdrop-blur-sm rounded-xl p-4 border dark:border-white/5 border-black/10 mb-6">
-            <h4 className="font-bold mb-3 text-sm font-outfit dark:text-white text-black inline-flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
-              {t('recursos')}
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/privacidad" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
-                  {t('politicaPrivacidad')}
-                </Link>
-              </li>
-              <li>
-                <Link href="mailto:access@flasti.com" className="dark:text-foreground/70 text-foreground/80 hover:dark:text-white hover:text-primary transition-colors duration-200 text-xs inline-block">
-                  access@flasti.com
-                </Link>
-              </li>
-            </ul>
+          <div className="flex justify-center mb-4">
+            <p className="font-bold text-foreground/60 dark:text-white text-sm">{t('ayudaInmediata')}</p>
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              onClick={scrollToTop}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md hover:bg-primary/90 transition-colors duration-200"
+              aria-label={t('volverArriba')}
+            >
+              <ArrowUp className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        {/* Copyright escritorio */}
-        <div className="hidden md:flex mt-10 pt-10 pb-4 border-t border-white/5 justify-center items-center">
-          <p className="text-sm dark:text-foreground/60 text-foreground/80 text-center relative">
-            <span className="relative z-10">© {new Date().getFullYear()} Flasti Inc. {t('derechosReservados')}</span>
-            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent -z-10"></span>
-          </p>
+        {/* Botón de chat - Versión escritorio */}
+        <div className="hidden md:flex justify-center mt-8">
+          <ChatButton
+            className="bg-[#3c66ce] text-white hover:bg-[#254a99] transition-all flex items-center gap-2"
+            size="sm"
+            text={t('iniciarChat')}
+          />
         </div>
 
-        {/* Copyright móvil */}
-        <div className="md:hidden mt-6 pt-6 border-t border-white/5 flex flex-col items-center">
-          <p className="text-xs font-medium dark:text-foreground/80 text-foreground/90 mb-1">© {new Date().getFullYear()} Flasti Inc.</p>
-          <p className="text-xs dark:text-foreground/60 text-foreground/80 text-center px-6 pb-2">{t('derechosReservados')}</p>
+        {/* Botón de chat - Versión móvil */}
+        <div className="md:hidden mt-4">
+          <ChatButton
+            className="bg-[#3c66ce] text-white hover:bg-[#254a99] transition-all flex items-center gap-2 w-full justify-center"
+            size="sm"
+            text={t('iniciarChat')}
+            showIcon={true}
+          />
         </div>
       </div>
-      {/* Botón Volver Arriba */}
-      {showBackToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-gradient-to-br from-[#9333ea] to-[#ec4899] flex items-center justify-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 z-50 animate-fade-in"
-          aria-label={t('volverArriba')}
-        >
-          <ArrowUp className="h-5 w-5 text-white" />
-        </button>
-      )}
     </footer>
   );
 };

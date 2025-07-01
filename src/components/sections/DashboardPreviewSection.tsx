@@ -112,10 +112,10 @@ const DashboardPreviewSection = () => {
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#facc15]/20 to-[#9333ea]/20 flex items-center justify-center mr-3">
-                          <div className="text-[#9333ea]"><Wallet className="h-5 w-5" /></div>
+                        <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
+                          <div className="text-white"><Wallet className="h-5 w-5" /></div>
                         </div>
-                        <h3 className="text-base sm:text-sm font-bold text-foreground group-hover:text-gradient transition-all duration-300">
+                        <h3 className="text-base sm:text-sm font-bold text-white">
                           {t('sinMinimoRetiro')}
                         </h3>
                       </div>
@@ -131,10 +131,10 @@ const DashboardPreviewSection = () => {
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ec4899]/20 to-[#f97316]/20 flex items-center justify-center mr-3">
-                          <div className="text-[#f97316]"><Zap className="h-5 w-5" /></div>
+                        <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
+                          <div className="text-white"><Zap className="h-5 w-5" /></div>
                         </div>
-                        <h3 className="text-base sm:text-sm font-bold text-foreground group-hover:text-gradient transition-all duration-300">
+                        <h3 className="text-base sm:text-sm font-bold text-white">
                           {t('aprovechaFlastiAI')}
                         </h3>
                       </div>
@@ -150,10 +150,10 @@ const DashboardPreviewSection = () => {
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3">
-                          <div className="text-[#ec4899]"><DollarSign className="h-5 w-5" /></div>
+                        <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
+                          <div className="text-white"><DollarSign className="h-5 w-5" /></div>
                         </div>
-                        <h3 className="text-base sm:text-sm font-bold text-foreground group-hover:text-gradient transition-all duration-300">
+                        <h3 className="text-base sm:text-sm font-bold text-white">
                           {t('microtrabajosEnLinea')}
                         </h3>
                       </div>
@@ -169,10 +169,10 @@ const DashboardPreviewSection = () => {
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#06b6d4]/20 flex items-center justify-center mr-3">
-                          <div className="text-[#06b6d4]"><HeadphonesIcon className="h-5 w-5" /></div>
+                        <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
+                          <div className="text-white"><HeadphonesIcon className="h-5 w-5" /></div>
                         </div>
-                        <h3 className="text-base sm:text-sm font-bold text-foreground group-hover:text-gradient transition-all duration-300">
+                        <h3 className="text-base sm:text-sm font-bold text-white">
                           {t('soporte24_7')}
                         </h3>
                       </div>

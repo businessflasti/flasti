@@ -131,18 +131,17 @@ const RotatingText = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full text-center hardware-accelerated"
         >
-          {["ingresos", "dinero extra", "oportunidades"].includes(words[index].text) ? (
-            <span
-              className={`bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6] font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}
-              style={{ display: 'inline-block', minWidth: minWidth, textAlign: 'center' }}
-            >
-              {words[index].text}
-            </span>
-          ) : (
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${words[index].color} font-bold text-5xl md:text-6xl lg:text-7xl animate-gradient-optimized`}>
-              {words[index].text}
-            </span>
-          )}
+          <span
+            className={`font-bold text-5xl md:text-6xl lg:text-7xl`}
+            style={{
+              display: 'inline-block',
+              minWidth: minWidth,
+              textAlign: 'center',
+              color: '#3c66ce',
+            }}
+          >
+            {words[index].text}
+          </span>
         </motion.div>
       </AnimatePresence>
     </div>

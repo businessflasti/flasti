@@ -43,7 +43,14 @@ const getTestimonials = (t: any) => [
 const TestimonialCard = ({
 	testimonial,
 }: {
-	testimonial: typeof testimonials[0];
+	testimonial: {
+		id: number;
+		name: string;
+		avatar: string;
+		content: string;
+		rating: number;
+		paymentMethod?: string;
+	};
 }) => {
 	return (
 		<Card className="bg-card/30 backdrop-blur-md shadow-xl p-6 rounded-xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/10">
@@ -208,8 +215,8 @@ const TestimonialsSection = () => {
 										onClick={() => setCurrentIndex(index)}
 										className={`w-3 h-3 rounded-full transition-all ${
 											index === currentIndex
-												? "bg-[#d4386c] scale-110"
-												: "bg-white/20"
+												? "bg-white scale-110"
+												: "bg-[#1A1A1A]"
 										}`}
 										aria-label={`Go to testimonial ${index + 1}`}
 									/>
@@ -218,7 +225,7 @@ const TestimonialsSection = () => {
 
 							<button
 								onClick={prevTestimonial}
-								className="absolute top-1/2 -translate-y-1/2 -left-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
+								className="absolute top-1/2 -translate-y-1/2 -left-4 w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-white hover:bg-[#333333] transition-colors"
 								aria-label="Previous testimonial"
 							>
 								<ChevronLeft className="h-6 w-6" />
@@ -226,7 +233,7 @@ const TestimonialsSection = () => {
 
 							<button
 								onClick={nextTestimonial}
-								className="absolute top-1/2 -translate-y-1/2 -right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
+								className="absolute top-1/2 -translate-y-1/2 -right-4 w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-white hover:bg-[#333333] transition-colors"
 								aria-label="Next testimonial"
 							>
 								<ChevronRight className="h-6 w-6" />
@@ -288,8 +295,8 @@ const TestimonialsSection = () => {
 									onClick={() => setCurrentIndex(index)}
 									className={`w-3 h-3 rounded-full transition-all ${
 										index === currentIndex
-											? "bg-[#d4386c] scale-110"
-											: "bg-white/20"
+											? "bg-white scale-110"
+											: "bg-[#1A1A1A]"
 									}`}
 									aria-label={`Go to testimonial ${index + 1}`}
 								/>
@@ -298,7 +305,7 @@ const TestimonialsSection = () => {
 
 						<button
 							onClick={prevTestimonial}
-							className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
+							className="absolute top-1/3 -translate-y-1/2 left-0 w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-white hover:bg-[#333333] transition-colors"
 							aria-label="Previous testimonial"
 						>
 							<ChevronLeft className="h-6 w-6" />
@@ -306,7 +313,7 @@ const TestimonialsSection = () => {
 
 						<button
 							onClick={nextTestimonial}
-							className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-[#d4386c]/80 transition-colors"
+							className="absolute top-1/3 -translate-y-1/2 right-0 w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-white hover:bg-[#333333] transition-colors"
 							aria-label="Next testimonial"
 						>
 							<ChevronRight className="h-6 w-6" />
