@@ -293,9 +293,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Efectos de luz de fondo - posicionados detrás del título */}
-      <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl hardware-accelerated -z-10"></div>
-
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Insignia de localización */}

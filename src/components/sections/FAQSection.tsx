@@ -153,11 +153,6 @@ const FAQSection = () => {
   return (
     <section className="py-24 relative overflow-hidden">
       <style jsx global>{pulseAnimation}</style>
-      {/* Elementos decorativos del fondo */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
-        <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#facc15]/10 blur-3xl"></div>
-      </div>
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
@@ -172,7 +167,7 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
+              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5"
             >
               <button
                 className="w-full p-6 flex items-center justify-between text-left group"

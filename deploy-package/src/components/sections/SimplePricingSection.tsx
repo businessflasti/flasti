@@ -174,17 +174,10 @@ const SimplePricingSection = () => {
 
   return (
     <div className="py-24 relative overflow-hidden">
-      {/* Elementos decorativos del fondo */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5ZDRlZGQiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djNjMCAxLjEtLjkgMi0yIDJoLTJ2MWgyYTMgMyAwIDAgMCAzLTN2LTNoLTF6bS04LTRoMXYyaC0xVjMwem0tNCAxOGg0djFoLTR6TTQ2IDQyaDJ2MWgtMnYxaC0xdi0yaDF6bS0yIDRoM3YxaC0zeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary/5 blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-accent/5 blur-3xl"></div>
-      </div>
-
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block dark:text-white text-black">{t('registrateAhoraBtn')}</span>
-          <h2 className="text-3xl font-bold font-outfit mb-3"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">{t('unicoPago')}</span></h2>
+          <h2 className="text-3xl font-bold font-outfit mb-3"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#3c66ce] to-[#facc15]">{t('unicoPago')}</span></h2>
           <p className="text-foreground/70 max-w-lg mx-auto">
             {t('accedeComienza')}
           </p>
@@ -207,8 +200,8 @@ const SimplePricingSection = () => {
 
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <Sparkles className="text-[#ec4899]" size={24} />
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
+                  <Sparkles className="text-[#3c66ce]" size={24} />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold group-hover:text-gradient transition-all duration-300">Flasti</h3>
@@ -218,7 +211,7 @@ const SimplePricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10">
+              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-xl border border-white/10">
                 <div className="flex items-baseline mb-2">
                   <span className="text-4xl font-bold">$10</span>
                   <span className="text-foreground/70 text-sm ml-2">USD</span>
@@ -232,10 +225,8 @@ const SimplePricingSection = () => {
 
               {/* Countdown Timer - Solo se muestra si showCountdown es true */}
               {showCountdown && (
-                <div className="mb-6 p-4 bg-gradient-to-r from-[#ec4899]/20 to-[#f97316]/20 backdrop-blur-sm rounded-xl border border-[#ec4899]/30 shadow-lg shadow-[#ec4899]/5 relative overflow-hidden">
+                <div className="mb-6 p-4 bg-gradient-to-r from-[#3c66ce]/20 to-[#f97316]/20 backdrop-blur-sm rounded-xl border border-[#3c66ce]/30 shadow-lg shadow-[#3c66ce]/5 relative overflow-hidden">
 
-                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#ec4899]/10 blur-2xl"></div>
-                  <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-[#f97316]/10 blur-2xl"></div>
                   <div className="relative z-10">
 
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -266,8 +257,8 @@ const SimplePricingSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Zap className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Zap className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoInmediato')}</h4>
@@ -276,8 +267,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Infinity className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Infinity className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoPorVida')}</h4>
@@ -286,8 +277,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Shield className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Shield className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('garantia7Dias')}</h4>
@@ -298,8 +289,8 @@ const SimplePricingSection = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <HeadphonesIcon className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <HeadphonesIcon className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('soporte24_7')}</h4>
@@ -308,8 +299,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Sparkles className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Sparkles className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('suiteCompleta')}</h4>
@@ -318,8 +309,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Gift className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Gift className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('actualizacionesGratuitas')}</h4>
@@ -362,7 +353,7 @@ const SimplePricingSection = () => {
               </Link>
 
               <div className="flex justify-center mt-4 mb-2">
-                <div className="px-3 py-1 bg-[#22c55e]/10 backdrop-blur-sm rounded-full border border-[#22c55e]/20 shadow-sm flex items-center gap-1.5">
+                <div className="px-3 py-1 bg-[#0A0A0A] rounded-full shadow-sm flex items-center gap-1.5 border border-white/10">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -373,75 +364,24 @@ const SimplePricingSection = () => {
               </div>
 
               <div className="mt-4 mb-2">
-                <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-b from-[#22c55e]/10 to-[#16a34a]/5 backdrop-blur-sm border border-[#22c55e]/20 shadow-lg shadow-[#22c55e]/5 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5"></div>
-                  <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-[#22c55e]/10 blur-xl"></div>
-                  <div className="absolute -bottom-10 -left-10 w-20 h-20 rounded-full bg-[#22c55e]/10 blur-xl"></div>
-
-                  <div className="flex flex-col items-center relative z-10">
-                    <div className="flex flex-col items-center justify-center gap-3">
-                      <div className="flex flex-row items-center justify-center gap-3 md:gap-4 flex-wrap">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium">PayPal</span>
-                          <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-3 h-3 ml-0.5" fill="#0070BA">
-                              <path d="M7.266 29.154l.523-3.322-1.165-.027H1.061L4.927 1.292a.316.316 0 0 1 .314-.268h9.38c3.114 0 5.263.648 6.385 1.927.526.6.861 1.227 1.023 1.917.17.724.173 1.589.007 2.644l-.012.077v.676l.526.298a3.69 3.69 0 0 1 1.065.812c.45.513.741 1.165.864 1.938.127.795.085 1.741-.123 2.812-.24 1.232-.628 2.305-1.152 3.183a6.547 6.547 0 0 1-1.825 2c-.696.494-1.523.869-2.458 1.109-.906.236-1.939.355-3.072.355h-.73c-.522 0-1.029.188-1.427.525a2.21 2.21 0 0 0-.744 1.328l-.055.299-.924 5.855-.042.215c-.011.068-.03.102-.058.125a.155.155 0 0 1-.096.035H7.266z" />
-                            </svg>
-                          </div>
-                        </div>
-                        <span className="inline text-foreground/40 mx-1">|</span>
-                        <div className="flex flex-row items-center gap-2">
-                          <span className="text-xs font-medium whitespace-nowrap">{t('monedaLocal')}</span>
-                          <div className="grid grid-cols-10 grid-rows-2 gap-x-1 gap-y-1 w-[140px] md:flex md:flex-row md:flex-nowrap md:gap-1 md:w-auto">
-                            {[
-                              "🇺🇸", // Estados Unidos
-                              "🇦🇷", // Argentina
-                              "🇨🇴", // Colombia
-                              "🇵🇪", // Perú
-                              "🇲🇽", // México
-                              "🇵🇦", // Panamá
-                              "🇬🇹", // Guatemala
-                              "🇸🇻", // El Salvador
-                              "🇩🇴", // República Dominicana
-                              "🇵🇷", // Puerto Rico
-                              "🇪🇨", // Ecuador
-                              "🇵🇾", // Paraguay
-                              "🇪🇸", // España
-                              "🇨🇷", // Costa Rica
-                              "🇨🇱", // Chile
-                              "🇺🇾", // Uruguay
-                              "🇧🇴", // Bolivia
-                              "🇭🇳", // Honduras
-                              "🇻🇪", // Venezuela
-                              "🇧🇷" // Brasil
-                            ].map((flag, index) => (
-                              <span key={index} className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-sm">
-                                <span className="text-[8px] md:text-[9px] font-bold">{flag}</span>
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* Bloque de banderitas eliminado */}
               </div>
 
               <div className="mt-4 border-t border-white/10 pt-6">
-                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5">
+                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3C66CE]/30 transition-all hover:shadow-lg hover:shadow-[#3C66CE]/5 bg-[#0A0A0A]">
                   <button
                     className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
                     onClick={() => setIsLoginOpen(!isLoginOpen)}
                   >
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
-                        <div className="text-[#ec4899]">
-                          <Lock className="h-4 w-4" />
+                      <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mr-3 border border-white/10">
+                        <div className="text-white">
+                          <Lock className="h-4 w-4 text-white" />
                         </div>
                       </div>
                       <span className="font-medium">{t('comoInicioSesion')}</span>
                     </div>
-                    <div className="text-[#ec4899]">
+                    <div className="text-white">
                       {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </div>
                   </button>
@@ -454,7 +394,7 @@ const SimplePricingSection = () => {
                     </div>
                   </div>
 
-                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#3C66CE]/30 to-transparent"></div>
                 </div>
               </div>
             </div>

@@ -20,7 +20,7 @@ const FeatureCardsSection = () => {
   {
     icon: <Zap className="h-6 w-6" />,
     iconColor: "text-[#f97316]",
-    gradientFrom: "from-[#ec4899]/20",
+    gradientFrom: "from-[#3c66ce]/20",
     gradientTo: "to-[#f97316]/20",
     title: t('aprovechaFlastiAI'),
     description: t('trabajaRapido')
@@ -28,9 +28,9 @@ const FeatureCardsSection = () => {
   // 3. Completa nuevos microtrabajos
   {
     icon: <DollarSign className="h-6 w-6" />,
-    iconColor: "text-[#ec4899]",
+    iconColor: "text-[#3c66ce]",
     gradientFrom: "from-[#9333ea]/20",
-    gradientTo: "to-[#ec4899]/20",
+    gradientTo: "to-[#3c66ce]/20",
     title: t('microtrabajosEnLinea'),
     description: t('generaIngresosTareas')
   },

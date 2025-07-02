@@ -20,8 +20,8 @@ const DashboardPreviewSection = () => {
         </div>
 
         <div className="max-w-5xl mx-auto">
-          <div className="animated-gradient-border rounded-xl">
-            <div className="animated-gradient-border-inner p-0 rounded-xl">
+          <div className="rounded-xl">
+            <div className="p-0 rounded-xl">
               <div className="bg-[#0a0a0a] backdrop-blur-md shadow-xl p-6 rounded-xl border border-white/10 overflow-hidden relative">
                 <div className="relative z-10">
                   <div className="rounded-lg overflow-hidden border border-white/10 shadow-xl">
@@ -45,7 +45,7 @@ const DashboardPreviewSection = () => {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <div className="bg-[#d4386c] border border-white/10 p-2 sm:p-3 rounded-xl">
+                          <div className="bg-[#3C66CE] border border-white/10 p-2 sm:p-3 rounded-xl">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                                 <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
@@ -66,7 +66,7 @@ const DashboardPreviewSection = () => {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <div className="bg-[#3359b6] border border-white/10 p-2 sm:p-3 rounded-xl">
+                          <div className="bg-[#3C8841] border border-white/10 p-2 sm:p-3 rounded-xl">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                                 <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
@@ -86,7 +86,7 @@ const DashboardPreviewSection = () => {
                   <div className="mb-8 flex flex-col items-center mt-8">
                     <div className="inline-flex items-center gap-2 mb-4 bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-full px-4 py-2 dark:shadow-black/30 light:shadow-gray-400/30 hover:shadow-lg transition-shadow">
                       <span className="text-sm dark:text-foreground/80 text-foreground/90 font-medium">{t('metodosRetiroDisponibles')}</span>
-                      <ArrowUpRight className="h-4 w-4 dark:text-[#d4386c] text-[#3359b6]" />
+                      <ArrowUpRight className="h-4 w-4 text-white" />
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-4">

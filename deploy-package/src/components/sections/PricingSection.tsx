@@ -11,14 +11,14 @@ const LoginAccordion = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all">
+    <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all">
       <button
         className="w-full p-4 flex items-center justify-between text-left"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
-            <div className="text-[#ec4899]">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-3 border border-white/10">
+            <div className="text-[#3c66ce]">
               <Lock className="h-4 w-4" />
             </div>
           </div>
@@ -124,8 +124,8 @@ const PricingSection = () => {
 
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <Sparkles className="text-[#ec4899]" size={24} />
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
+                  <Sparkles className="text-[#3c66ce]" size={24} />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold group-hover:text-gradient transition-all duration-300">Flasti</h3>
@@ -135,7 +135,7 @@ const PricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10">
+              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-xl border border-white/10">
                 <div className="flex items-baseline mb-2">
                   <span className="text-4xl font-bold">$10</span>
                   <span className="text-foreground/70 text-sm ml-2">USD</span>
@@ -150,8 +150,8 @@ const PricingSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Zap className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Zap className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoInmediato')}</h4>
@@ -160,8 +160,8 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Infinity className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Infinity className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoPorVida')}</h4>
@@ -170,8 +170,8 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Shield className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Shield className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('garantia7Dias')}</h4>
@@ -182,8 +182,8 @@ const PricingSection = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <HeadphonesIcon className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <HeadphonesIcon className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('soporte24_7')}</h4>
@@ -192,8 +192,8 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Sparkles className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Sparkles className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('suiteCompleta')}</h4>
@@ -202,8 +202,8 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Gift className="text-[#ec4899]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Gift className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('actualizacionesGratuitas')}</h4>

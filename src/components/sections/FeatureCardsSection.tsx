@@ -11,7 +11,7 @@ const FeatureCardsSection = () => {
     {
       icon: <Wallet className="h-6 w-6" />,
       iconColor: "text-[#3359b6]",
-      gradientFrom: "from-[#d4386c]/20",
+      gradientFrom: "from-[#3c66ce]/20",
       gradientTo: "to-[#3359b6]/20",
       title: t('sinMinimoRetiro'),
       description: t('retiraGananciasSegura')
@@ -20,7 +20,7 @@ const FeatureCardsSection = () => {
     {
       icon: <Zap className="h-6 w-6" />,
       iconColor: "text-[#d4386c]",
-      gradientFrom: "from-[#d4386c]/20",
+      gradientFrom: "from-[#3c66ce]/20",
       gradientTo: "to-[#3359b6]/20",
       title: t('aprovechaFlastiAI'),
       description: t('trabajaRapido')
@@ -29,7 +29,7 @@ const FeatureCardsSection = () => {
     {
       icon: <DollarSign className="h-6 w-6" />,
       iconColor: "text-[#3359b6]",
-      gradientFrom: "from-[#d4386c]/20",
+      gradientFrom: "from-[#3c66ce]/20",
       gradientTo: "to-[#3359b6]/20",
       title: t('microtrabajosEnLinea'),
       description: t('generaIngresosTareas')
@@ -38,7 +38,7 @@ const FeatureCardsSection = () => {
     {
       icon: <HeadphonesIcon className="h-6 w-6" />,
       iconColor: "text-[#d4386c]",
-      gradientFrom: "from-[#d4386c]/20",
+      gradientFrom: "from-[#3c66ce]/20",
       gradientTo: "to-[#3359b6]/20",
       title: t('soporte24_7'),
       description: t('equipoListoAyudarte')
@@ -50,10 +50,6 @@ const FeatureCardsSection = () => {
     <section className="py-16 relative overflow-hidden">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-[#d4386c]/5 blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full bg-[#3359b6]/5 blur-3xl"></div>
-        <div className="absolute top-1/3 left-1/3 w-3 h-3 rounded-full bg-[#d4386c] animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-2 h-2 rounded-full bg-[#3359b6] animate-ping"></div>
       </div>
 
       <div className="container-custom relative z-10">

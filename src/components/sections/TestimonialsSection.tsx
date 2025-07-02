@@ -154,11 +154,7 @@ const TestimonialsSection = () => {
 
 	return (
 		<section className="py-16 relative overflow-hidden">
-			{/* Elementos decorativos */}
-			<div className="absolute inset-0 z-0">
-				<div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
-				<div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full bg-[#ec4899]/5 blur-3xl"></div>
-			</div>
+			{/* Elementos decorativos eliminados completamente */}
 
 			<div className="container-custom relative z-10">
 				{/* Versión para escritorio */}

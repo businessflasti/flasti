@@ -181,12 +181,12 @@ const SimplePricingSection = () => {
 
   return (
     <div className="py-24 relative overflow-hidden">
-      {/* Elementos decorativos del fondo eliminados */}
-
+      {/* Overlays decorativos ELIMINADOS */}
+      {/* <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[340px] h-[120px] bg-[#facc15]/10 blur-2xl rounded-full z-0"></div> */}
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
-          <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#ec4899] to-[#facc15]">{t('unicoPago')}</span></h2>
+          <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#3c66ce] to-[#facc15]">{t('unicoPago')}</span></h2>
           <p className="text-foreground/70 max-w-lg mx-auto hardware-accelerated">
             {t('accedeComienza')}
           </p>
@@ -210,18 +210,8 @@ const SimplePricingSection = () => {
 
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <div className="flex items-center justify-center w-6 h-6">
-                    <Image
-                      src="/logo/isotipo.png"
-                      alt="flasti logo"
-                      width={24}
-                      height={24}
-                      className="object-contain"
-                      priority
-                      unoptimized={true}
-                    />
-                  </div>
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
+                  <Sparkles className="text-[#3c66ce]" size={24} />
                 </div>
                 <div>
                   <h3
@@ -238,38 +228,7 @@ const SimplePricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#ec4899]/10 p-6 rounded-xl border border-white/10 relative">
-                {/* Banderita del país en la esquina superior derecha */} 
-                <div className="absolute top-4 right-5">
-                  <div className="w-5 h-5 md:w-7 md:h-7 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10 shadow-sm">
-                    {(() => {
-                      // Obtener el código de país desde localStorage
-                      const countryCode = typeof window !== 'undefined' ? localStorage.getItem('flastiUserCountry') : null;
-
-                      // Si tenemos un código de país válido, mostrar la bandera correspondiente
-                      if (countryCode && countryCode.length === 2) {
-                        return (
-                          <img
-                            src={`https://flagcdn.com/w20/${countryCode.toLowerCase()}.png`}
-                            alt={countryCode.toUpperCase()}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              // Verificar que parentElement no sea null antes de modificar innerHTML
-                              if (e.currentTarget.parentElement) {
-                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
-                              }
-                            }}
-                          />
-                        );
-                      } else {
-                        // Si no hay código de país o no es válido, mostrar el icono de globo
-                        return <Globe className="h-3 w-3 md:h-4 md:w-4 text-[#9333ea]" />;
-                      }
-                    })()}
-                  </div>
-                </div>
-
+              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-xl border border-white/10 relative">
                 {/* Versión móvil - Diseño más compacto */}
                 <div className="md:hidden">
                   {isArgentina ? (
@@ -395,8 +354,8 @@ const SimplePricingSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Zap className="text-[#d4386c]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Zap className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm title-google-sans">{t('accesoInmediato')}</h4>
@@ -405,8 +364,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Infinity className="text-[#d4386c]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Infinity className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoPorVida')}</h4>
@@ -415,8 +374,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Shield className="text-[#d4386c]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Shield className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('garantia7Dias')}</h4>
@@ -427,8 +386,8 @@ const SimplePricingSection = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <HeadphonesIcon className="text-[#d4386c]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <HeadphonesIcon className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('soporte24_7')}</h4>
@@ -437,8 +396,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Sparkles className="text-[#d4386c]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Sparkles className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('suiteCompleta')}</h4>
@@ -447,8 +406,8 @@ const SimplePricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Gift className="text-[#d4386c]" size={16} />
+                    <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
+                      <Gift className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('actualizacionesGratuitas')}</h4>
@@ -472,7 +431,7 @@ const SimplePricingSection = () => {
               </Link>
 
               <div className="flex justify-center mt-4 mb-2">
-                <div className="px-3 py-1 bg-[#d4386c]/10 backdrop-blur-sm rounded-full border border-[#d4386c]/20 shadow-sm flex items-center gap-1.5">
+                <div className="px-3 py-1 bg-[#0A0A0A] rounded-full shadow-sm flex items-center gap-1.5 border border-white/10">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -483,108 +442,43 @@ const SimplePricingSection = () => {
               </div>
 
               <div className="mt-4 mb-2">
-                <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-b from-[#22c55e]/10 to-[#16a34a]/5 backdrop-blur-sm border border-[#22c55e]/20 shadow-lg shadow-[#22c55e]/5 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5"></div>
-                  <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full bg-[#22c55e]/10 blur-xl"></div>
-                  <div className="absolute -bottom-10 -left-10 w-20 h-20 rounded-full bg-[#22c55e]/10 blur-xl"></div>
+                {/* Bloque de banderitas eliminado */}
+              </div>
 
-                  <div className="flex flex-col items-center relative z-10">
-                    <div className="flex flex-col items-center justify-center gap-3">
-                      <div className="flex flex-row items-center justify-center gap-3 md:gap-4 flex-wrap">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium">PayPal</span>
-                          <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-3 h-3 ml-0.5" fill="#0070BA">
-                              <path d="M7.266 29.154l.523-3.322-1.165-.027H1.061L4.927 1.292a.316.316 0 0 1 .314-.268h9.38c3.114 0 5.263.648 6.385 1.927.526.6.861 1.227 1.023 1.917.17.724.173 1.589.007 2.644l-.012.077v.676l.526.298a3.69 3.69 0 0 1 1.065.812c.45.513.741 1.165.864 1.938.127.795.085 1.741-.123 2.812-.24 1.232-.628 2.305-1.152 3.183a6.547 6.547 0 0 1-1.825 2c-.696.494-1.523.869-2.458 1.109-.906.236-1.939.355-3.072.355h-.73c-.522 0-1.029.188-1.427.525a2.21 2.21 0 0 0-.744 1.328l-.055.299-.924 5.855-.042.215c-.011.068-.03.102-.058.125a.155.155 0 0 1-.096.035H7.266z" />
-                            </svg>
-                          </div>
-                        </div>
-                        <span className="inline text-foreground/40 mx-1">|</span>
-                        <div className="flex flex-row items-center gap-2">
-                          <span className="text-xs font-medium whitespace-nowrap">{t('monedaLocal')}</span>
-                          <div className="grid grid-cols-10 grid-rows-2 gap-x-1 gap-y-1 w-[140px] md:flex md:flex-row md:flex-nowrap md:gap-1 md:w-auto">
-                            {[
-                              {code: "us", flag: "🇺🇸"}, // Estados Unidos
-                              {code: "ar", flag: "🇦🇷"}, // Argentina
-                              {code: "co", flag: "🇨🇴"}, // Colombia
-                              {code: "pe", flag: "🇵🇪"}, // Perú
-                              {code: "mx", flag: "🇲🇽"}, // México
-                              {code: "pa", flag: "🇵🇦"}, // Panamá
-                              {code: "gt", flag: "🇬🇹"}, // Guatemala
-                              {code: "sv", flag: "🇸🇻"}, // El Salvador
-                              {code: "do", flag: "🇩🇴"}, // República Dominicana
-                              {code: "pr", flag: "🇵🇷"}, // Puerto Rico
-                              {code: "ec", flag: "🇪🇨"}, // Ecuador
-                              {code: "py", flag: "🇵🇾"}, // Paraguay
-                              {code: "es", flag: "🇪🇸"}, // España
-                              {code: "cr", flag: "🇨🇷"}, // Costa Rica
-                              {code: "cl", flag: "🇨🇱"}, // Chile
-                              {code: "uy", flag: "🇺🇾"}, // Uruguay
-                              {code: "bo", flag: "🇧🇴"}, // Bolivia
-                              {code: "hn", flag: "🇭🇳"}, // Honduras
-                              {code: "ve", flag: "🇻🇪"}, // Venezuela
-                              {code: "br", flag: "🇧🇷"}  // Brasil
-                            ].map((country, index) => (
-                              <span key={index} className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full overflow-hidden flex items-center justify-center bg-[#0f0f1a] border border-white/10">
-                                <img
-                                  src={`https://flagcdn.com/w20/${country.code}.png`}
-                                  alt={country.code.toUpperCase()}
-                                  className="w-full h-full object-cover"
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
-                                    // Verificar que parentElement no sea null antes de modificar innerHTML
-                                    if (e.currentTarget.parentElement) {
-                                      e.currentTarget.parentElement.innerHTML = `<span class="text-[8px] md:text-[9px] font-bold">${country.flag}</span>`;
-                                    }
-                                  }}
-                                />
-                              </span>
-                            ))}
-                          </div>
+              <div className="mt-4 border-t border-white/10 pt-6">
+                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3C66CE]/30 transition-all hover:shadow-lg hover:shadow-[#3C66CE]/5 bg-[#0A0A0A]">
+                  <button
+                    className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
+                    onClick={() => setIsLoginOpen(!isLoginOpen)}
+                  >
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mr-3 border border-white/10">
+                        <div className="text-white">
+                          <Lock className="h-4 w-4 text-white" />
                         </div>
                       </div>
+                      <span className="font-medium">{t('comoInicioSesion')}</span>
                     </div>
+                    <div className="text-white">
+                      {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </div>
+                  </button>
 
-                    <div className="mt-4 border-t border-white/10 pt-6">
-                      <div className="bg-card/30 backdrop-blur-md shadow-xl overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5">
-                        <button
-                          className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
-                          onClick={() => setIsLoginOpen(!isLoginOpen)} 
-                        >
-                          <div className="flex items-center">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mr-3 border border-white/10">
-                              <div className="text-[#ec4899]">
-                                <Lock className="h-4 w-4" />
-                              </div>
-                            </div>
-                            <span className="font-medium">{t('comoInicioSesion')}</span>
-                          </div>
-                          <div className="text-[#ec4899]">
-                            {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                          </div>
-                        </button>
-
-                        <div
-                          className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
-                        >
-                          <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                            {t('instruccionesInicioSesionSimple')}
-                          </div>
-                        </div>
-
-                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent"></div>
-                      </div>
+                  <div
+                    className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  >
+                    <div className="pt-3 pb-1 border-t border-white/10 pl-11">
+                      {t('instruccionesInicioSesionSimple')}
                     </div>
                   </div>
+
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#3C66CE]/30 to-transparent"></div>
                 </div>
               </div>
             </div>
           </Card>
         </div>
       </div>
-
-      {/* Overlay decorativo amarillo ajustado para no expandirse tanto hacia abajo */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[340px] h-[120px] bg-[#facc15]/10 blur-2xl rounded-full z-0"></div>
     </div>
   );
 };

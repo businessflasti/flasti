@@ -128,7 +128,7 @@ const FAQSection = () => {
 					{faqs.map((faq, index) => (
 						<div
 							key={index}
-							className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
+							className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5"
 						>
 							<button
 								className="w-full p-6 flex items-center justify-between text-left group"

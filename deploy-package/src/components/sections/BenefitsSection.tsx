@@ -54,7 +54,7 @@ const BenefitsSection = () => {
               {t('generaIngresosMicrotrabajos')}
             </p>
 
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
           </Card>
 
           {/* 2. Sin experiencia */}
@@ -76,7 +76,7 @@ const BenefitsSection = () => {
                 {benefit.description}
               </p>
 
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
             </Card>
           ))}
 
@@ -98,7 +98,7 @@ const BenefitsSection = () => {
               {t('usaCelularComputadora')}
             </p>
 
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
           </Card>
 
           {/* 4. Horario flexible */}
@@ -119,7 +119,7 @@ const BenefitsSection = () => {
               {t('trabajaCualquierHora')}
             </p>
 
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
           </Card>
         </div>
       </div>

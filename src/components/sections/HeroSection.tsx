@@ -263,10 +263,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Efectos de luces decorativos: una violeta y otra rosa, con opacidad sutil */}
-      <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/15 blur-3xl hardware-accelerated z-0"></div>
-      <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#ec4899]/15 blur-3xl hardware-accelerated z-0"></div>
     </section>
   );
 };

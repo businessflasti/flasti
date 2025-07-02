@@ -123,7 +123,7 @@
     --card-foreground: 230 10% 95%;
     --popover: 220 40% 8%;
     --popover-foreground: 230 10% 95%;
-    --primary: 280 85% 65%;
+    --primary: 221 56% 62%; /* #3C66CE */
     --primary-foreground: 230 10% 95%;
     --secondary: 220 40% 12%;
     --secondary-foreground: 230 10% 95%;
@@ -135,7 +135,7 @@
     --destructive-foreground: 220 10% 95%;
     --border: 220 40% 10%;
     --input: 220 40% 12%;
-    --ring: 280 85% 65%;
+    --ring: 221 56% 62%; /* #3C66CE */
     --radius: 0.6rem;
   }
 
@@ -147,7 +147,7 @@
     --card-foreground: 220 30% 10%;   /* Texto de tarjetas más oscuro */
     --popover: 220 20% 97%;           /* Popovers ligeramente más claros */
     --popover-foreground: 220 30% 10%;
-    --primary: 280 85% 60%;           /* Color primario ligeramente más oscuro */
+    --primary: 221 56% 62%;           /* #3C66CE */
     --primary-foreground: 0 0% 100%;  /* Texto sobre primario en blanco */
     --secondary: 220 15% 85%;         /* Secundario más oscuro para mejor contraste */
     --secondary-foreground: 220 30% 10%;
@@ -159,7 +159,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 220 20% 75%;            /* Bordes más oscuros para mejor definición */
     --input: 220 20% 90%;             /* Inputs ligeramente más oscuros */
-    --ring: 280 85% 60%;              /* Ring ligeramente más oscuro */
+    --ring: 221 56% 62%;              /* #3C66CE */
   }
 }
 
@@ -241,14 +241,12 @@
 
   /* Fondos para modo oscuro y claro */
   .gradient-background {
-    background: radial-gradient(circle at 50% 50%, rgba(140, 50, 250, 0.15) 0%, rgba(140, 50, 250, 0) 70%),
-                linear-gradient(180deg, var(--background) 0%, hsl(220, 40%, 3%) 100%);
+    background: none !important;
   }
 
   .light .gradient-background {
-    background: radial-gradient(circle at 50% 50%, rgba(140, 50, 250, 0.2) 0%, rgba(140, 50, 250, 0.05) 70%),
-                linear-gradient(180deg, hsl(220, 30%, 96%) 0%, hsl(220, 25%, 88%) 100%);
-    background-attachment: fixed;
+    background: none !important;
+    background-attachment: unset;
   }
 
   .card-school {
