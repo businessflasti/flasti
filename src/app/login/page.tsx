@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect, useRef } from "react";
 import { AuthError, useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
@@ -31,6 +31,18 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isAdVisible, setIsAdVisible] = useState(true);
+  const adInsRef = useRef<HTMLModElement>(null);
+
+  useEffect(() => {
+    // Asegura que el fondo del body sea negro en esta página para evitar
+    // que se vea un color diferente si el contenido no llena toda la pantalla.
+    document.body.classList.add('bg-black');
+    // Limpia la clase cuando el componente se desmonta.
+    return () => {
+      document.body.classList.remove('bg-black');
+    };
+  }, []);
 
   useEffect(() => {
     try {
@@ -38,6 +50,23 @@ export default function LoginPage() {
     } catch (err) {
       console.error("AdSense error:", err);
     }
+
+    // Comprobar si el anuncio se ha cargado después de un tiempo
+    const adCheckTimeout = setTimeout(() => {
+      if (adInsRef.current) {
+        // Google AdSense añade data-ad-status="unfilled" si no puede cargar un anuncio.
+        // También comprobamos si el elemento está vacío y no tiene altura como respaldo.
+        const isUnfilled = adInsRef.current.dataset.adStatus === 'unfilled';
+        const isEmpty = adInsRef.current.innerHTML.trim() === '' && adInsRef.current.clientHeight === 0;
+
+        if (isUnfilled || isEmpty) {
+          console.log("Anuncio no cargado, ocultando el bloque.");
+          setIsAdVisible(false);
+        }
+      }
+    }, 3500); // Esperar 3.5 segundos para dar tiempo a AdSense a cargar.
+
+    return () => clearTimeout(adCheckTimeout);
   }, []);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -77,31 +106,34 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-black px-4 py-12">
-      <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-x-24 gap-y-12">
+      <div className={`container mx-auto flex justify-center gap-x-24 gap-y-12 ${isAdVisible ? 'flex-col lg:flex-row lg:items-stretch' : 'flex-col items-center'}`}>
         
-        {/* Columna Izquierda: Publicidad */}
-        <div className="w-full max-w-md lg:w-1/3 lg:max-w-sm order-2 lg:order-1">
-          <div className="border border-dashed border-border/40 rounded-lg p-4 text-center">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-              Publicidad
-            </p>
-            <Script
-              async
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289"
-              crossOrigin="anonymous"
-              strategy="afterInteractive"
-            />
-            <ins className="adsbygoogle"
-              style={{ display: 'block', textAlign: 'center' }}
-              data-ad-layout="in-article"
-              data-ad-format="fluid"
-              data-ad-client="ca-pub-8330194041691289"
-              data-ad-slot="9339785426"></ins>
+        {isAdVisible && (
+          <div className="w-full max-w-md lg:w-1/3 lg:max-w-sm order-2 lg:order-1 animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center lg:mt-16">
+            <div className="bg-[#141414] rounded-lg w-full overflow-hidden shadow-lg p-4 relative">
+              <p className="absolute top-2 right-3 text-[10px] text-muted-foreground/40 uppercase tracking-wider">
+                Publicidad
+              </p>
+              <Script
+                async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289"
+                crossOrigin="anonymous"
+                strategy="afterInteractive"
+              />
+              <ins 
+                ref={adInsRef}
+                className="adsbygoogle"
+                style={{ display: 'block', textAlign: 'center' }}
+                data-ad-layout="in-article"
+                data-ad-format="fluid"
+                data-ad-client="ca-pub-8330194041691289"
+                data-ad-slot="9339785426"></ins>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Columna Derecha: Formulario de Login */}
-        <div className="w-full max-w-md order-1 lg:order-2">
+        <div className={`w-full max-w-md ${isAdVisible ? 'order-1 lg:order-2' : 'order-1'} flex flex-col justify-center`}>
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <Logo size="lg" />

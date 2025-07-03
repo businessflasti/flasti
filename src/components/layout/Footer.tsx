@@ -8,6 +8,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import ChatButton from "@/components/chat/ChatButton";
 import HomepageChatWidget from "@/components/chat/HomepageChatWidget";
+import FeedbackTab from "@/components/ui/FeedbackTab";
+import LanguageSelector from "@/components/ui/language-selector";
+import SocialIcons from "@/components/ui/SocialIcons";
 
 const Footer = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -45,24 +48,24 @@ const Footer = () => {
       <div className="container-custom">
         {/* Sello de seguridad elegante - Versión escritorio */}
         <div className="hidden md:block mb-10 pb-6 border-b border-white/5">
-          <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl bg-black/20 backdrop-blur-sm border border-white/5">
+          <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl bg-black/20 backdrop-blur-sm">
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
               <div className="flex items-center">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2 border border-green-400/20">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2">
                   <Shield className="h-3.5 w-3.5 text-green-400" />
                 </div>
                 <span className="text-xs text-foreground/70">{t('pagosProtegidos')}</span>
               </div>
               <div className="hidden md:block h-3 w-px bg-white/10"></div>
               <div className="flex items-center">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2 border border-green-400/20">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2">
                   <Lock className="h-3.5 w-3.5 text-green-400" />
                 </div>
                 <span className="text-xs text-foreground/70">{t('cifradoSSL')}</span>
               </div>
               <div className="hidden md:block h-3 w-px bg-white/10"></div>
               <div className="flex items-center">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2 border border-green-400/20">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2">
                   <CheckCircle className="h-3.5 w-3.5 text-green-400" />
                 </div>
                 <span className="text-xs text-foreground/70">{t('retirosVerificados')}</span>
@@ -73,20 +76,20 @@ const Footer = () => {
 
         {/* Sello de seguridad elegante - Versión móvil */}
         <div className="md:hidden mb-8 pb-4 border-b border-white/5">
-          <div className="mx-auto px-4 py-3 rounded-lg bg-gradient-to-r from-black/40 via-black/60 to-black/40 backdrop-blur-md">
+          <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#121212' }}>
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center border border-green-400/30 shadow-inner shadow-green-400/10">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center">
                   <Shield className="h-4 w-4 text-green-400" />
                 </div>
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center border border-green-400/30 shadow-inner shadow-green-400/10">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center">
                   <Lock className="h-4 w-4 text-green-400" />
                 </div>
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center border border-green-400/30 shadow-inner shadow-green-400/10">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center">
                   <CheckCircle className="h-4 w-4 text-green-400" />
                 </div>
               </div>
-              <div className="text-xs font-medium text-green-400 bg-green-400/10 px-3 py-1 rounded-full border border-green-400/20">
+              <div className="text-xs font-medium text-green-400 bg-green-400/10 px-3 py-1 rounded-full">
                 {t('retirosVerificados')}
               </div>
             </div>
@@ -102,10 +105,11 @@ const Footer = () => {
                 {t('gananciaColectiva')}
               </p>
             </div>
+            {/* SocialIcons solo en móvil, no en escritorio debajo del lema */}
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('informacion')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('empresa').toUpperCase()}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/nosotros" className="font-bold text-foreground/60 dark:text-white light:text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
@@ -114,14 +118,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link href="/contacto" className="font-bold text-foreground/60 dark:text-white hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
-                  {t('contacto')}
+                  Contáctanos
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('legal')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('legal').toUpperCase()}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/legal" className="font-bold text-foreground/60 dark:text-white hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
@@ -137,7 +141,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('recursos')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('recursos').toUpperCase()}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/privacidad" className="font-bold text-foreground/60 dark:text-white hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
@@ -153,11 +157,11 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('soporte')}</h4>
+            <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('soporte').toUpperCase()}</h4>
             <div className="space-y-4">
               <p className="font-bold text-foreground/60 dark:text-white text-sm">{t('ayudaInmediata')}</p>
               <ChatButton
-                className="bg-[#3c66ce] text-white hover:bg-[#254a99] transition-all flex items-center gap-2"
+                className="bg-[#9A9A9B] hover:bg-white text-[#121212] hover:text-[#121212] transition-all flex items-center gap-2 border border-[#9A9A9B]"
                 size="sm"
                 text={t('iniciarChat')}
               />
@@ -168,19 +172,22 @@ const Footer = () => {
         {/* Enlaces de móvil - Diseño moderno */}
         <div className="md:hidden mobile-footer-blocks">
           <div className="flex justify-center mb-6">
-            <Logo size="md" />
+            <Logo size="md" showTextWhenExpanded={false} />
           </div>
 
           <div className="flex justify-center mb-4">
-            <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 px-4 py-1 rounded-full border border-primary/20">
+            <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 px-4 py-1 rounded-full" style={{ background: '#121212' }}>
               {t('gananciaColectiva')}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 backdrop-blur-sm rounded-xl p-4 border border-primary/20">
-              <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
+          <div className="flex justify-center mb-4">
+            {/* <SocialIcons /> Eliminado en móvil, solo en tarjeta nueva */}
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="backdrop-blur-sm rounded-xl p-4" style={{ background: '#121212' }}>
+              <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                 {t('empresa')}
               </h4>
               <ul className="space-y-3">
@@ -191,15 +198,14 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link href="/contacto" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
-                    {t('contacto')}
+                    Contáctanos
                   </Link>
                 </li>
               </ul>
             </div>
 
-            <div className="bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 backdrop-blur-sm rounded-xl p-4 border border-primary/20">
-              <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
+            <div className="backdrop-blur-sm rounded-xl p-4" style={{ background: '#121212' }}>
+              <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                 {t('legal')}
               </h4>
               <ul className="space-y-3">
@@ -215,30 +221,33 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
+
+            <div className="backdrop-blur-sm rounded-xl p-3" style={{ background: '#121212' }}>
+              <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
+                {t('recursos')}
+              </h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/privacidad" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
+                    {t('politicaPrivacidad')}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="mailto:access@flasti.com" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
+                    access@flasti.com
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="backdrop-blur-sm rounded-xl p-3 flex flex-col items-center justify-center gap-3" style={{ background: '#121212' }}>
+              <SocialIcons />
+              <FeedbackTab />
+            </div>
           </div>
 
-          <div className="bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 backdrop-blur-sm rounded-xl p-4 border border-primary/20 mb-6">
-            <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
-              {t('recursos')}
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/privacidad" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
-                  {t('politicaPrivacidad')}
-                </Link>
-              </li>
-              <li>
-                <Link href="mailto:access@flasti.com" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
-                  access@flasti.com
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 backdrop-blur-sm rounded-xl p-4 border border-primary/20 mb-6">
-            <h4 className="font-bold mb-3 text-sm font-outfit text-white inline-flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] mr-2"></span>
+          <div className="backdrop-blur-sm rounded-xl p-4 mb-6" style={{ background: '#121212' }}>
+            <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
               {t('soporte')}
             </h4>
             <div className="flex flex-col items-center">
@@ -246,7 +255,7 @@ const Footer = () => {
                 {t('ayudaInmediata')}
               </p>
               <ChatButton
-                className="bg-[#3c66ce] text-white hover:bg-[#254a99] transition-all flex items-center gap-2 w-full justify-center"
+                className="bg-[#9A9A9B] hover:bg-white text-[#121212] hover:text-[#121212] transition-all flex items-center gap-2 w-full justify-center"
                 size="sm"
                 text={t('iniciarChat')}
                 showIcon={true}
@@ -255,12 +264,18 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright escritorio */}
-        <div className="hidden md:flex mt-10 pt-10 pb-4 border-t border-white/5 justify-center items-center">
-          <p className="text-sm dark:text-foreground/60 text-foreground/80 text-center relative">
-            <span className="relative z-10">© {new Date().getFullYear()} Flasti Inc. {t('derechosReservados')}</span>
-            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent -z-10"></span>
-          </p>
+        {/* Copyright escritorio con feedback extremos */}
+        <div className="hidden md:block w-full border-t border-white/10 mt-10"></div>
+        <div className="hidden md:flex pt-12 pb-4 justify-between items-center w-full px-0 max-w-none">
+          <div className="flex items-center gap-6 ml-6">
+            <p className="text-sm dark:text-foreground/60 text-foreground/80 text-left flex items-center h-8">
+              <span className="relative z-10">© {new Date().getFullYear()} Flasti Inc. {t('derechosReservados')}</span>
+            </p>
+          </div>
+          <div className="flex items-center gap-4 mr-6 h-8">
+            <SocialIcons className="gap-4" />
+            <FeedbackTab />
+          </div>
         </div>
 
         {/* Copyright móvil */}

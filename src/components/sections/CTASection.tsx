@@ -43,42 +43,42 @@ const CTASection = () => {
               <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mx-auto mb-2 border border-white/10">
                 <Shield className="text-white h-4 w-4" />
               </div>
-              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans title-hover-gradient">{t('confianza')}</h3>
+              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans">{t('confianza')}</h3>
               <p className="text-[10px] text-foreground/70">{t('relacionesTransparentes')}</p>
             </div>
             <div className="bg-card/30 backdrop-blur-md shadow-xl p-3 rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5 text-center group">
               <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mx-auto mb-2 border border-white/10">
                 <Lightbulb className="text-white h-4 w-4" />
               </div>
-              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans title-hover-gradient">{t('innovacion')}</h3>
+              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans">{t('innovacion')}</h3>
               <p className="text-[10px] text-foreground/70">{t('mejoraConstante')}</p>
             </div>
             <div className="bg-card/30 backdrop-blur-md shadow-xl p-3 rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5 text-center group">
               <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mx-auto mb-2 border border-white/10">
                 <Lock className="text-white h-4 w-4" />
               </div>
-              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans title-hover-gradient">{t('seguridad')}</h3>
+              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans">{t('seguridad')}</h3>
               <p className="text-[10px] text-foreground/70">{t('proteccionDatos')}</p>
             </div>
             <div className="bg-card/30 backdrop-blur-md shadow-xl p-3 rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5 text-center group">
               <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mx-auto mb-2 border border-white/10">
                 <TrendingUp className="text-white h-4 w-4" />
               </div>
-              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans title-hover-gradient">{t('crecimiento')}</h3>
+              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans">{t('crecimiento')}</h3>
               <p className="text-[10px] text-foreground/70">{t('plataformaGlobal')}</p>
             </div>
             <div className="bg-card/30 backdrop-blur-md shadow-xl p-3 rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5 text-center group">
               <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mx-auto mb-2 border border-white/10">
                 <Target className="text-white h-4 w-4" />
               </div>
-              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans title-hover-gradient">{t('resultados')}</h3>
+              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans">{t('resultados')}</h3>
               <p className="text-[10px] text-foreground/70">{t('beneficiosTangibles')}</p>
             </div>
             <div className="bg-card/30 backdrop-blur-md shadow-xl p-3 rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5 text-center group">
               <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mx-auto mb-2 border border-white/10">
                 <Rocket className="text-white h-4 w-4" />
               </div>
-              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans title-hover-gradient">{t('oportunidad')}</h3>
+              <h3 className="text-xs font-bold mb-1 text-white dark:text-white light:text-black title-google-sans">{t('oportunidad')}</h3>
               <p className="text-[10px] text-foreground/70">{t('futuroProspero')}</p>
             </div>
           </div>

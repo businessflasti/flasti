@@ -45,7 +45,7 @@ export default function ChatButton({
   return (
     <Button
       onClick={handleOpenChat}
-      className={`${className}`}
+      className={`bg-[#9A9A9B] hover:bg-[#6e6e70] text-white ${className}`}
       {...props}
     >
       {showIcon && <MessageCircle size={16} className="mr-2" />}

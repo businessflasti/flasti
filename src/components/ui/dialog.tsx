@@ -45,7 +45,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       <DialogPrimitive.Close asChild>
-        <button className="absolute right-4 top-4 rounded-full p-2 bg-black/20 backdrop-blur-sm opacity-90 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:text-white touch-manipulation z-50">
+        <button className="absolute right-2 top-2 p-0 bg-transparent shadow-none border-none hover:bg-transparent focus:outline-none focus:ring-0" style={{borderRadius:0}}>
           <X className="h-5 w-5" />
           <span className="sr-only">Close</span>
         </button>

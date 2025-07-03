@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import AdBlock from "@/components/ui/AdBlock";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
 import { optimizeFAQs } from "@/utils/faq-optimizer";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -208,6 +209,14 @@ const FAQSection = () => {
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
             </div>
           ))}
+        </div>
+
+        {/* Bloque de anuncio 1 */}
+        <div className="max-w-5xl mx-auto mt-16">
+          <AdBlock
+            adClient="ca-pub-8330194041691289"
+            adSlot="9339785426"
+          />
         </div>
       </div>
     </section>
