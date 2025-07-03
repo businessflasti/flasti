@@ -48,7 +48,7 @@ export default function ChatButton({
       className={`bg-[#9A9A9B] hover:bg-[#6e6e70] text-white ${className}`}
       {...props}
     >
-      {showIcon && <MessageCircle size={16} className="mr-2" />}
+      {showIcon && <MessageCircle size={16} className="mr-2 font-bold text-black" />}
       {text || t('iniciarChat')}
     </Button>
   );

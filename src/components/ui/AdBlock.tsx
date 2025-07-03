@@ -27,7 +27,7 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "" }) =
           setIsAdVisible(false);
         }
       }
-    }, 3500);
+    }, 10000); // 10 segundos
     return () => clearTimeout(adCheckTimeout);
   }, []);
 
@@ -35,8 +35,8 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "" }) =
 
   return (
     <div className={`w-full max-w-md mx-auto animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center ${className}`}>
-      <div className="bg-[#141414] rounded-lg w-full overflow-hidden shadow-lg p-4 relative">
-        <p className="absolute top-2 right-3 text-[10px] text-muted-foreground/40 uppercase tracking-wider">
+      <div className="bg-[#141414] rounded-lg w-full overflow-hidden shadow-lg p-6 pt-8 relative">
+        <p className="absolute top-2 right-3 text-[10px] text-muted-foreground/40 uppercase tracking-wider z-10 bg-transparent">
           Publicidad
         </p>
         <Script
@@ -48,7 +48,7 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "" }) =
         <ins
           ref={adInsRef}
           className="adsbygoogle"
-          style={{ display: 'block', textAlign: 'center' }}
+          style={{ display: 'block', textAlign: 'center', minHeight: 120 }}
           data-ad-layout="in-article"
           data-ad-format="fluid"
           data-ad-client={adClient}

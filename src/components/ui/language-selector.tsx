@@ -20,7 +20,7 @@ const LanguageSelector = () => {
 
   const flagSrc = (code: string) => {
     switch (code) {
-      case "es": return "/banderas/españa.png";
+      case "es": return "/banderas/espana.png";
       case "en": return "/banderas/usa.png";
       case "pt-br": return "/banderas/brasil.png";
       default: return "";

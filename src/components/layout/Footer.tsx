@@ -161,7 +161,7 @@ const Footer = () => {
             <div className="space-y-4">
               <p className="font-bold text-foreground/60 dark:text-white text-sm">{t('ayudaInmediata')}</p>
               <ChatButton
-                className="bg-[#9A9A9B] hover:bg-white text-[#121212] hover:text-[#121212] transition-all flex items-center gap-2 border border-[#9A9A9B]"
+                className="bg-white hover:bg-[#ededed] text-black font-bold transition-all flex items-center gap-2 border border-white"
                 size="sm"
                 text={t('iniciarChat')}
               />
@@ -255,7 +255,7 @@ const Footer = () => {
                 {t('ayudaInmediata')}
               </p>
               <ChatButton
-                className="bg-[#9A9A9B] hover:bg-white text-[#121212] hover:text-[#121212] transition-all flex items-center gap-2 w-full justify-center"
+                className="bg-white hover:bg-[#ededed] text-black font-bold transition-all flex items-center gap-2 w-full justify-center"
                 size="sm"
                 text={t('iniciarChat')}
                 showIcon={true}
