@@ -123,8 +123,8 @@
     --card-foreground: 230 10% 95%;
     --popover: 220 40% 8%;
     --popover-foreground: 230 10% 95%;
-    --primary: 221 56% 62%; /* #3C66CE */
-    --primary-foreground: 230 10% 95%;
+    --primary: 222 61% 52%; /* #3c66ce */
+    --primary-foreground: 0 0% 100%;
     --secondary: 220 40% 12%;
     --secondary-foreground: 230 10% 95%;
     --muted: 220 40% 14%;
@@ -278,49 +278,6 @@
     animation: glow 2s infinite alternate;
   }
 
-  /* Efecto de brillo especial para botones */
-  .pink-glow-button {
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 0 20px 5px rgba(236, 72, 153, 0.7);
-    animation: pinkPulse 2s infinite alternate;
-  }
-
-  .pink-glow-button::before {
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: linear-gradient(45deg, #9333ea, #ec4899);
-    border-radius: 9999px;
-    z-index: -1;
-    opacity: 0.5;
-    filter: blur(8px);
-    animation: pinkPulse 2s infinite alternate;
-  }
-
-  @keyframes pinkPulse {
-    0% {
-      opacity: 0.5;
-      box-shadow: 0 0 15px 5px rgba(236, 72, 153, 0.5);
-    }
-    100% {
-      opacity: 0.8;
-      box-shadow: 0 0 25px 8px rgba(236, 72, 153, 0.8);
-    }
-  }
-
-  @keyframes glow {
-    0% {
-      filter: drop-shadow(0 0 10px rgba(140, 50, 250, 0.5));
-    }
-    100% {
-      filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.7));
-    }
-  }
-
   .glass-card {
     @apply bg-card/60 backdrop-blur-md shadow-xl;
   }
@@ -414,4 +371,11 @@
   .light table tr:hover {
     @apply bg-secondary/30;
   }
+
+  .glass-card:hover {
+    border-color: #3c66ce !important;
+    box-shadow: 0 0 0 2px #3c66ce22;
+  }
+
+  .pink-glow-button, .pink-glow-button::before, @keyframes pinkPulse { display: none !important; }
 }

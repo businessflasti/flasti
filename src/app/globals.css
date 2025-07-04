@@ -22,7 +22,7 @@
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#3c66ce] to-[#3359b6];
     background-size: 300% 100%;
     animation: gradient-shift 20s linear infinite;
   }
@@ -130,8 +130,8 @@
     --card-foreground: 230 10% 95%;
     --popover: 220 40% 8%;
     --popover-foreground: 230 10% 95%;
-    --primary: 341 65% 52%;
-    --primary-foreground: 341 65% 98%;
+    --primary: 222 61% 52%; /* #3c66ce */
+    --primary-foreground: 0 0% 100%;
     --secondary: 220 40% 12%;
     --secondary-foreground: 230 10% 95%;
     --muted: 220 40% 14%;
@@ -264,7 +264,7 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#d4386c] to-[#3359b6];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#3c66ce] to-[#3359b6];
   }
 
   /* Estilos para títulos */
@@ -284,36 +284,15 @@
 
   /* Efecto de brillo especial para botones */
   .pink-glow-button {
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 0 20px 5px rgba(212, 56, 108, 0.7);
-    animation: pinkPulse 2s infinite alternate;
+    display: none !important;
   }
 
   .pink-glow-button::before {
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: linear-gradient(45deg, #d4386c, #3359b6);
-    border-radius: 9999px;
-    z-index: -1;
-    opacity: 0.5;
-    filter: blur(8px);
-    animation: pinkPulse 2s infinite alternate;
+    display: none !important;
   }
 
   @keyframes pinkPulse {
-    0% {
-      opacity: 0.5;
-      box-shadow: 0 0 15px 5px rgba(212, 56, 108, 0.5);
-    }
-    100% {
-      opacity: 0.8;
-      box-shadow: 0 0 25px 8px rgba(212, 56, 108, 0.8);
-    }
+    display: none !important;
   }
 
   @keyframes glow {
@@ -449,7 +428,7 @@
     z-index: 1;
     border-radius: 1rem;
     padding: 1px; /* Fino */
-    background: linear-gradient(90deg, #3359b6 0%, #3a4e91 25%, #5a3e7b 45%, #d4386c 65%, #6a2340 80%);
+    background: linear-gradient(90deg, #3359b6 0%, #3a4e91 25%, #5a3e7b 45%, #3c66ce 65%, #6a2340 80%);
     background-size: 300% 100%;
     animation: border-shine-ltr 14s linear infinite;
   }
@@ -472,6 +451,6 @@
 
   /* Utilidad para aplicar degradado en hover a los títulos de las secciones */
   .title-hover-gradient {
-    @apply group-hover:bg-gradient-to-r group-hover:from-[#d4386c] group-hover:to-[#3359b6] group-hover:bg-clip-text group-hover:text-transparent;
+    @apply group-hover:bg-gradient-to-r group-hover:from-[#3c66ce] group-hover:to-[#3359b6] group-hover:bg-clip-text group-hover:text-transparent;
   }
 }

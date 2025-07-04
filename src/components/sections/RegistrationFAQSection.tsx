@@ -107,11 +107,7 @@ const RegistrationFAQSection = () => {
 
 	return (
 		<section className="py-16 relative overflow-hidden">
-			{/* Elementos decorativos del fondo */}
-			<div className="absolute inset-0 z-0">
-				<div className="absolute top-20 right-1/4 w-64 h-64 rounded-full bg-[#d4386c]/10 blur-3xl"></div>
-				<div className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-[#3359b6]/10 blur-3xl"></div>
-			</div>
+			{/* Elementos decorativos del fondo eliminados para fondo negro puro */}
 
 			<div className="container-custom relative z-10">
 				<div className="text-center mb-8">
@@ -125,7 +121,7 @@ const RegistrationFAQSection = () => {
 					{getFaqs(t).map((faq, index) => (
 						<div
 							key={index}
-							className="bg-card/30 backdrop-blur-md shadow-xl overflow-hidden relative rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
+							className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all bg-[#0A0A0A]"
 						>
 							<button
 								className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"

@@ -107,7 +107,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtrabajos completados',
     microtrabajos: 'Microtrabajos',
     completados: 'completados',
-    personasFormanParte: '+100.000 personas ya forman parte de Flasti',
+    personasFormanParte: 'Más de 100.000 ya son parte de nuestra comunidad',
     detectandoUbicacion: 'Detectando ubicación...',
     accesoGlobal: 'Acceso Global',
     errorCargarEstadisticas: 'Error al cargar estadísticas:',
@@ -246,7 +246,7 @@ export const translations = {
 
     // Pricing Section
     registrateAhoraBtn: 'Registrate ahora',
-    unicoPago: 'Un único pago, acceso de por vida',
+    unicoPago: 'Único pago, acceso de por vida',
     accedeComienza: 'Accede a la plataforma y comienza a generar ingresos con Flasti',
     pagoUnico: 'Pago único - Sin suscripciones ni cargos recurrentes',
     terminandoseRapido: '¡Terminándose rápido! Últimos cupos',
@@ -346,7 +346,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtasks completed',
     microtrabajos: 'Microtasks',
     completados: 'completed',
-    personasFormanParte: '+100,000 people are already part of Flasti',
+    personasFormanParte: 'More than 100,000 are already part of our community',
     detectandoUbicacion: 'Detecting location...',
     accesoGlobal: 'Global Access',
     errorCargarEstadisticas: 'Error loading statistics:',
@@ -486,7 +486,7 @@ export const translations = {
 
     // Pricing Section
     registrateAhoraBtn: 'Register now',
-    unicoPago: 'One-time payment, lifetime access',
+    unicoPago: 'Single payment, lifetime access',
     accedeComienza: 'Access the platform and start generating income with Flasti',
     pagoUnico: 'One-time payment - No subscriptions or recurring charges',
     terminandoseRapido: 'Last spots!',
@@ -522,94 +522,70 @@ export const translations = {
     faq1Answer: "Joining Flasti is the decision that will transform how you earn money. It's ideal for those with no experience who want to start generating income online. Our platform was designed to guide you step by step with proven strategies. And if you already have knowledge, Flasti will take you to the next level with advanced tools.\n\nDiscover how thousands of people around the world are already using our platform to create new sources of income from the comfort of their home.\n\nFlasti is more than a platform, it's your opportunity to be one step ahead and be part of the new digital era. Are you ready to take the leap? 😎",
 
     faq2Question: 'What are online microtasks?',
-    faq2Answer: "Online microtasks are quick and simple tasks that you can complete from any device with an internet connection. At Flasti, we've optimized this process so that anyone can start without prior knowledge or long working hours, taking advantage of this new way of earning money.\n\n💰 Opportunities available at all times\n\nEarn money at your own pace, without fixed schedules or commitments. You can generate a stable income for your day-to-day or simply get extra in your free time.\n\n🚀 No experience or long hours\n\nFlasti is designed for you to make the most of it and convert digital tasks into real money easily and quickly.\n\nStart now and discover how easy it is to generate income with Flasti!",
+    faq2Answer: "Online microtasks are quick and simple tasks that you can complete from any device with an internet connection. At Flasti, we've optimized this process so that anyone can start without prior knowledge or long working hours, taking advantage of this new way of earning money.\n\n💰 Opportunities available at all times\n\nEarn money at your own pace, without fixed schedules or commitments. You can generate a stable income for your day-to-day or simply get an extra in your free time.\n\n🚀 No experience or long hours required\n\nFlasti is designed for you to make the most of it and turn digital tasks into real money easily and quickly.\n\nStart now and discover how easy it is to generate income with Flasti!",
 
-    faq3Question: 'How much money can I earn?',
-    faq3Answer: "This is where you come in! 💎\n\nYou have total control: you can generate a stable income for your day-to-day or simply earn extra in your free time.\n\n💥 Choose how and how much to earn\n\nComplete short, medium, or long-term microtasks depending on your available time and how much money you want to generate. You decide how far to go.\n\nChoose your path and start earning! 🚀",
+    faq3Question: 'How much money can I make?',
+    faq3Answer: "This is where you come in! 💎\n\nYou have total control: you can generate a stable income for your day-to-day or simply earn an extra in your free time.\n\n💥 Choose how and how much to earn\n\nComplete microtasks short, medium, or long term according to your available time and how much money you want to generate. You decide how far to go.\n\nChoose your path and start earning! 🚀",
 
     faq4Question: 'Do I need previous experience to start?',
-    faq4Answer: "No! Most success stories in Flasti are from people who had never worked on the Internet before or had experience generating income online.\n\nOur platform is designed to guide you step by step from scratch, with proven strategies that anyone can follow.\n\nIf they did it, you can also start earning money with Flasti today.",
+    faq4Answer: "No! Most success stories on Flasti are from people who had never worked on the Internet before or had experience generating income online.\n\nOur platform is designed to guide you step by step from scratch, with proven strategies that anyone can follow.\n\nIf they could do it, you can also start making money with Flasti today.",
 
     faq5Question: 'What is the investment to access Flasti?',
-    faq5Answer: "This platform was created with the goal of changing the lives of our members, giving them a real opportunity for work independence. Our purpose is to reach as many people as possible, transforming the way people work online. And today, for a limited time only, we have a special offer for you, so you can join Flasti and start generating income right away.  \n\n⚡ EXCLUSIVE SUPER OFFER FOR A LIMITED TIME!  \n\nOnly $10 USD (the equivalent in your local currency will be shown at checkout)  \n\n💥 Pay once and access Flasti for life using PayPal or your local currency! 💥  \n\n🚨 THE PRICE WILL RETURN TO ITS ORIGINAL VALUE OF $50 USD AT ANY TIME  \n\nIf you think about it, this small investment is minimal compared to the income potential you can obtain starting today.  \n\n💡 Remember: This price has a 80% discount and is only for a limited time. You're saving $40 USD one time, right now! Only the most determined and committed will have the opportunity to take advantage of this offer. This is your moment! ✅ Don't let this opportunity escape. Take advantage now before it's too late!  \n\n⚠️ IMPORTANT: The price will return to its original value at any time. This exclusive offer is unique and registrations are running out.",
+    faq5Answer: "This platform was created with the aim of changing the lives of our members, providing them with a real opportunity for job independence. Our purpose is to reach as many people as possible, transforming the way people work online. And today, only for a limited time, we have a special offer for you, so you can join Flasti and start generating income right away.  \n\n⚡ EXCLUSIVE SUPER OFFER FOR A LIMITED TIME!  \n\nOnly $10 USD (the equivalent in your local currency will be shown at checkout)  \n\n💥 Pay once and access Flasti for life using PayPal or your local currency! 💥  \n\n🚨 THE PRICE WILL RETURN TO ITS ORIGINAL VALUE OF $50 USD AT ANY MOMENT  \n\nIf you think about it, this small investment is minimal compared to the potential income you can obtain from today.  \n\n💡 Remember: This price has an 80% discount and is only for a limited time. You are saving $40 USD for a one-time payment, right now! Only the most determined and committed will have the opportunity to take advantage of this offer. This is your moment! ✅ Don't miss this opportunity. Take advantage now before it's too late!  \n\n⚠️ IMPORTANT: The price will return to its original value at any moment. This exclusive offer is unique and registrations are about to run out.",
 
-    faq6Question: 'What if I don\'t like it, do I have any guarantee?',
-    faq6Answer: "At Flasti, your satisfaction is our priority. That's why you have an unconditional 7-day guarantee. We're so confident you'll love our platform that we assume all the risk. If, for any reason, it doesn't meet your expectations or you're not completely satisfied, you can request a 100% refund of your money, without having to provide justifications or fill out endless forms with uncomfortable questions.\n\nJoin without worries. Your investment is completely protected!",
+    faq6Question: 'And if I don\'t like it, do I have any guarantee?',
+    faq6Answer: "At Flasti, your satisfaction is our priority. That's why you have an unconditional 7-day guarantee. We are so sure that you will love our platform that we take all the risk. If, for any reason, it does not meet your expectations or you are not completely satisfied, you can request a 100% refund of your money, without having to give justifications or fill out endless forms with uncomfortable questions.\n\nJoin worry-free. Your investment is completely protected.",
 
     // Dashboard
     balance: 'BALANCE',
-    misEnlaces: 'My Links',
-    estadisticas: 'Statistics',
+    misEnlaces: 'Mis Enlaces',
+    estadisticas: 'Estadísticas',
     apps: 'Apps',
-    recursos: 'Resources',
-    retiros: 'Withdrawals',
-    soporte: 'Support',
-    reciente: 'RECENT',
-    verActividad: 'View Activity',
+    recursos: 'Recursos',
+    retiros: 'Retiros',
+    soporte: 'Soporte',
+    reciente: 'RECIENTE',
+    verActividad: 'Ver actividad',
     // Tabla de transacciones
-    transaccion: 'TRANSACTION',
-    cantidad: 'AMOUNT',
+    transaccion: 'TRANSACCIÓN',
+    cantidad: 'CANTIDAD',
     balance_tabla: 'BALANCE',
-    compañero: 'PARTNER',
-    fecha: 'DATE',
-    estado: 'STATUS',
-    completada: 'Completed',
+    compañero: 'COMPAÑERO',
+    fecha: 'FECHA',
+    estado: 'ESTADO',
+    completada: 'Completada',
     // Retiros
-    volverDashboard: 'Back to Home',
-    canjearRecompensas: 'Redeem Rewards',
-    eligeOpciones: 'Choose from our withdrawal options to convert your points into real rewards.',
-    redimible: 'Redeemable:',
-    misRecompensas: 'My rewards',
-    ofertasExclusivas: 'Exclusive offers for you',
-    retiroRapidoPaypal: 'Quick withdrawal with PayPal',
+    volverDashboard: 'Volver al Inicio',
+    canjearRecompensas: 'Canjear recompensas',
+    eligeOpciones: 'Elige entre nuestras opciones de retiro para convertir tus puntos en recompensas reales.',
+    redimible: 'Redimible:',
+    misRecompensas: 'Mis recompensas',
+    ofertasExclusivas: 'Ofertas exclusivas para ti',
+    retiroRapidoPaypal: 'Retiro rápido con PayPal',
   },
-  'pt-br': {
+  pt: {
     // Navbar
-    iniciarSesion: 'Iniciar sessão',
+    iniciarSesion: 'Entrar',
     modoClaro: 'Claro',
     modoOscuro: 'Escuro',
 
     // Hero Section
     genera: 'Gere',
     con: 'com',
-    aprovechaPoder: 'Aproveite o poder da internet e comece a gerar renda agora mesmo',
+    aprovechaPoder: 'Aproveite o poder da internet e comece a ganhar dinheiro agora mesmo',
     empiezaGanar: 'Comece a ganhar',
     rotatingWords: [
       { text: "renda", color: "from-[#d4386c] to-[#3359b6]" }, 
       { text: "dinheiro extra", color: "from-[#d4386c] to-[#3359b6]" }, 
       { text: "oportunidades", color: "from-[#d4386c] to-[#3359b6]" } 
     ],
-
-    // Benefits Section
-    accedeFlasti: 'Acesse a',
-    comienzaGanar: 'e comece a ganhar',
-    milesPersonas: 'Milhares de pessoas em todo o mundo já estão ganhando dinheiro com nossa plataforma',
-    sinExperiencia: 'Sem experiência',
-    empiezaSin: 'Comece sem nenhum tipo de experiência ou estudos prévios',
-    ganaDinero: 'Ganhe dinheiro',
-    generaIngresosMicrotrabajos: 'Gere renda todos os dias completando microtrabalhos',
-    desdeCasa: 'De casa',
-    usaCelularComputadora: 'Use seu celular ou computador, sem downloads ou instalações',
-    sinHorarios: 'Sem horários',
-    trabajaCualquierHora: 'Trabalhe a qualquer hora e em qualquer lugar, sem horários fixos',
-
-    // How It Works Section
-    comoFunciona: 'Como funciona?',
-    soloNecesitas: 'Você só precisa de 3 passos para começar a gerar renda com a Flasti',
-    paso: 'Passo',
-    registrateAhora: 'Registre-se agora',
-    registrateDesc: 'No seu painel de membro, ensinamos passo a passo como começar a completar microtrabalhos de forma fácil e rápida',
-    microtrabajosEnLinea: 'Microtrabalhos online',
-    microtrabajosDesc: 'Aproveite e receba dinheiro por cada novo microtrabalho completado e gere renda todos os dias',
-    recogeTusRecompensas: 'Receba suas recompensas',
-    recogeTusRecompensasDesc: 'Retire seus ganhos com segurança através do PayPal ou conta bancária sem valor mínimo para saque',
-    generadosPorUsuarios: 'Gerados por usuários',
-    generadosPor: 'Gerados por',
+    generadosPorUsuarios: 'Gerado por usuários',
+    generadosPor: 'Gerado por',
     usuarios: 'usuários',
     microtrabajosCompletados: 'Microtrabalhos completados',
     microtrabajos: 'Microtrabalhos',
     completados: 'completados',
-    personasFormanParte: '+100.000 pessoas já fazem parte da Flasti',
+    personasFormanParte: 'Mais de 100.000 já fazem parte da nossa comunidade',
     detectandoUbicacion: 'Detectando localização...',
     accesoGlobal: 'Acesso Global',
     errorCargarEstadisticas: 'Erro ao carregar estatísticas:',
@@ -624,26 +600,26 @@ export const translations = {
     accesoFuncionesPremium: 'Acesso a todas as funções premium',
     actualizacionesGratuitas: 'Atualizações gratuitas',
     nuevasFuncionesSinCosto: 'Novas funções sem custo adicional',
-    comoInicioSesion: 'Como faço login?',
-    instruccionesInicioSesion: 'Após concluir o pagamento, você será automaticamente redirecionado para o seu painel de controle. Você também receberá um e-mail de confirmação com seus dados de acesso. Se por algum motivo você não conseguir acessar, basta ir para a página de login, inserir o e-mail que você usou para se registrar e sua senha. Se você esqueceu sua senha, pode redefini-la facilmente na mesma página.',
-    instruccionesInicioSesionSimple: 'Após concluir o pagamento, você será automaticamente levado à página de registro, onde poderá criar sua conta e acessar imediatamente seu painel pessoal.',
+    comoInicioSesion: 'Como faço para entrar?',
+    instruccionesInicioSesion: 'Assim que o pagamento for concluído, você será redirecionado automaticamente para o seu painel de controle. Você também receberá um e-mail de confirmação com seus dados de acesso. Se por algum motivo você não conseguir acessar, basta ir para a página de login, inserir o e-mail que você usou para se registrar e sua senha. Se você esqueceu sua senha, pode redefini-la facilmente na mesma página.',
     accesoInmediato: 'Acesso imediato',
     comienzaGenerarIngresos: 'Comece a gerar renda agora mesmo',
     accesoPorVida: 'Acesso vitalício',
     sinLimitesRenovaciones: 'Sem limites de tempo ou renovações',
     garantia7Dias: 'Garantia de 7 dias',
-    devolucion100: 'Devolução de 100% se você não estiver satisfeito',
-    loQueObtienes: 'O que você obtém:',
+    devolucion100: 'Reembolso de 100% se você não estiver satisfeito',
+    loQueObtienes: 'O que você recebe:',
     accesoCompletoPlataforma: 'Acesso completo à plataforma de microtrabalhos assistidos por IA',
     herramientasAutomatizacion: 'Ferramentas de automação para maximizar seus ganhos',
     tutorialesGuias: 'Tutoriais e guias passo a passo para começar do zero',
-    accesoComunidad: 'Acesso à comunidade exclusiva de usuários da Flasti',
+    accesoComunidad: 'Acesso à comunidade exclusiva de usuários do Flasti',
     actualizacionesSinCosto: 'Atualizações e novas funcionalidades sem custo adicional',
-    terminandoseRapidoDisponibles: 'Últimas vagas!',
+    terminandoseRapidoDisponibles: 'Acabando rápido! Últimas vagas disponíveis',
     empiezaGanarMayus: 'COMECE A GANHAR',
     pagoSeguroLabel2: 'Pagamento seguro',
     monedaLocal2: 'Moeda local',
     pagoSeguroTarjeta: 'Pagamento seguro com cartão de crédito, débito ou transferência bancária',
+    instruccionesInicioSesionSimple: 'Após concluir o pagamento, você será levado automaticamente para a página de registro onde poderá criar sua conta e acessar imediatamente seu painel pessoal.',
 
     // Footer
     plataformaSegura: 'Plataforma Segura',
@@ -652,12 +628,12 @@ export const translations = {
     pagosProtegidos: 'Pagamentos Protegidos',
     transaccionesSeguras: 'Transações 100% seguras',
     retirosVerificados: 'Saques Verificados',
-    gananciaColectiva: 'Ganho coletivo',
+    gananciaColectiva: 'Ganhos coletivos',
     empresa: 'Empresa',
     sobreNosotros: 'Sobre nós',
     contacto: 'Contato',
     legal: 'Legal',
-    informacionLegal: 'Informação legal',
+    informacionLegal: 'Informações legais',
     terminosCondiciones: 'Termos e condições',
     recursos: 'Recursos',
     politicaPrivacidad: 'Política de privacidade',
@@ -665,92 +641,35 @@ export const translations = {
     volverArriba: 'Voltar ao topo',
 
     // Testimonials Section
-    experienciasUsuarios: 'Conheça as experiências daqueles que já estão<br />gerando renda com a Flasti',
-    experienciasUsuariosMobile: 'Conheça as experiências<br />daqueles que já estão<br />gerando renda com a Flasti',
-    loQueSiempre: 'O que você sempre sonhou, agora é possível',
-    testimonial1Name: 'Juan Rodríguez',
-    testimonial1Content: 'Excelente serviço, já consegui meu primeiro saque em quase 3 horas!! É difícil esconder a emoção, estou muito feliz! Foi fácil e rápido se registrar e as tarefas são fáceis de completar, muito obrigado!',
-    testimonial2Name: 'Ana González',
-    testimonial2Content: 'É 100% real. Estou fazendo trabalhos há algumas semanas e já recebi várias vezes. Estou realmente feliz porque eles sempre resolvem minhas dúvidas rapidamente e com muita gentileza. Até convenci meu marido a tentar e os resultados foram melhores do que esperávamos. Obrigada',
-    testimonial3Name: 'Luis López',
-    testimonial3Content: 'Não pensei que isso funcionaria tão bem, recuperei meu investimento no mesmo dia e até ganhei um extra, posso dizer com total honestidade que nunca imaginei que fazendo isso poderia ganhar dinheiro pela internet, é um alívio saber que ainda é possível ter um trabalho digno apesar da difícil situação econômica que estamos passando no país, o site é confiável e seguro, recomendo totalmente',
-    testimonial4Name: 'Santiago Hernández',
-    testimonial4Content: 'Acabei de começar e já entrei na minha conta, eu amo, passei meses procurando algo assim.',
-    calificacionPromedio: 'Classificação média de 4.9',
-    calificacion: '4.9 de classificação',
+    experienciasUsuarios: 'Descubra as experiências daqueles que já estão<br />gerando renda com Flasti',
+    experienciasUsuariosMobile: 'Descubra as experiências<br />daqueles que já estão<br />gerando renda com Flasti',
 
-    // Pricing Section
-    registrateAhoraBtn: 'Registre-se agora',
-    unicoPago: 'Pagamento único, acesso vitalício',
-    accedeComienza: 'Acesse a plataforma e comece a gerar renda com a Flasti',
-    pagoUnico: 'Pagamento único - Sem assinaturas ou cobranças recorrentes',
-    terminandoseRapido: 'Últimas vagas!',
-    ultimosCupos: 'Últimas vagas!',
-    empiezaGanarBtn: 'Comece a ganhar',
-    pagoSeguro: 'Pagamento seguro com',
-    monedaLocal: 'Moeda local',
-    descuento: '80% OFF',
-    ofertaTermina: 'A oferta termina em:',
+    // Dashboard Preview Section
+    metodosRetiroDisponibles: 'Métodos de retirada disponíveis',
+    cuentaBancaria: 'Conta bancária',
+    sinMinimoRetiro: 'Sem mínimo de retirada',
+    retiraGananciasSegura: 'Retire seus ganhos com segurança',
+    microtrabajosEnLinea: 'Microtrabalhos online',
+    generaIngresosTareas: 'Gere renda com tarefas digitais',
+    soporte24_7: 'Suporte 24/7',
+    equipoListoAyudarte: 'Nossa equipe está pronta para ajudá-lo passo a passo',
 
-    // CTA Section
-    conoceFlasti: 'Conheça a Flasti',
-    confianza: 'Confiança',
-    relacionesTransparentes: 'Relações transparentes',
-    resultados: 'Resultados',
-    beneficiosTangibles: 'Benefícios tangíveis',
-    innovacion: 'Inovação',
-    mejoraConstante: 'Melhoria constante da plataforma',
-    seguridad: 'Segurança',
-    proteccionDatos: 'Proteção de dados e renda',
-    crecimiento: 'Crescimento',
-    plataformaGlobal: 'Plataforma global em expansão',
-    oportunidad: 'Oportunidade',
-    futuroProspero: 'Futuro próspero e conectado',
-    ctaDescription: 'Nascidos da paixão por capacitar as pessoas, projetamos um ecossistema inteligente que simplifica processos, potencializa oportunidades e otimiza a geração de renda. Nossa visão vai além da tecnologia: construímos relacionamentos sustentáveis baseados na confiança, segurança e inovação constante, gerando resultados tangíveis para nossos usuários. A Flasti não é apenas uma empresa, é uma plataforma global em crescimento que impulsiona milhares de pessoas para um futuro próspero, conectado e cheio de oportunidades.',
-
-    // FAQ Section
-    faqTitle: 'Perguntas frequentes',
-    faqSubtitle: 'Tudo o que você precisa saber',
-    todoLoQueNecesitasSaber: 'Tudo o que você precisa saber',
-
-    // FAQ Questions
-    faq1Question: 'Por que devo me juntar à Flasti?',
-    faq1Answer: "Juntar-se à Flasti é a decisão que transformará sua forma de ganhar dinheiro. É ideal para quem não tem experiência e deseja começar a gerar renda online. Nossa plataforma foi projetada para guiá-lo passo a passo com estratégias comprovadas. E se você já tem conhecimento, a Flasti o levará ao próximo nível com ferramentas avançadas.\n\nDescubra como milhares de pessoas em todo o mundo já estão usando nossa plataforma para criar novas fontes de renda no conforto de suas casas.\n\nA Flasti é mais do que uma plataforma, é sua oportunidade de estar um passo à frente e fazer parte da nova era digital. Você está pronto para dar o salto? 😎",
-
-    faq2Question: 'O que são microtrabalhos online?',
-    faq2Answer: "Os microtrabalhos online são tarefas rápidas e simples que você pode completar de qualquer dispositivo com conexão à internet. Na Flasti, otimizamos esse processo para que qualquer pessoa possa começar sem necessidade de conhecimentos prévios ou longas jornadas de trabalho, aproveitando essa nova forma de ganhar dinheiro.\n\n💰 Oportunidades disponíveis a todo momento\n\nGanhe dinheiro no seu ritmo, sem horários fixos ou compromissos. Você pode gerar uma renda estável para o seu dia a dia ou simplesmente obter um extra no seu tempo livre.\n\n🚀 Sem experiência ou longas jornadas\n\nA Flasti foi projetada para que você aproveite ao máximo e converta tarefas digitais em dinheiro real de forma simples e rápida.\n\nComece agora e descubra como é fácil gerar renda com a Flasti!",
-
-    faq3Question: 'Quanto dinheiro posso ganhar?',
-    faq3Answer: "É aqui que você entra! 💎\n\nVocê tem controle total: pode gerar uma renda estável para o seu dia a dia ou simplesmente ganhar um extra no seu tempo livre.\n\n💥 Escolha como e quanto ganhar\n\nComplete microtrabalhos de curto, médio ou longo prazo de acordo com seu tempo disponível e quanto dinheiro você quer gerar. Você decide até onde chegar.\n\nEscolha seu caminho e comece a ganhar! 🚀",
-
-    faq4Question: 'Preciso de experiência prévia para começar?',
-    faq4Answer: "Não! A maioria dos casos de sucesso na Flasti são de pessoas que nunca haviam trabalhado na Internet ou tinham experiência em gerar renda online.\n\nNossa plataforma foi projetada para guiá-lo passo a passo desde o início, com estratégias comprovadas que qualquer pessoa pode seguir.\n\nSe eles conseguiram, você também pode começar a ganhar dinheiro com a Flasti hoje mesmo.",
-
-    faq5Question: 'Qual é o investimento para acessar a Flasti?',
-    faq5Answer: "Esta plataforma foi criada com o objetivo de mudar a vida de nossos membros, oferecendo-lhes uma oportunidade real de independência de trabalho. Nosso propósito é alcançar o maior número possível de pessoas, transformando a maneira como se trabalha online. E hoje, apenas por tempo limitado, temos uma oferta especial para você, para que possa se juntar à Flasti e começar a gerar renda desde já.  \n\n⚡ SUPER OFERTA EXCLUSIVA POR TEMPO LIMITADO!  \n\nApenas $10 USD (o equivalente em sua moeda local será mostrado ao finalizar o pagamento)  \n\n💥 Pague apenas uma vez e acesse a Flasti para toda a vida usando PayPal ou sua moeda local! 💥  \n\n🚨 O PREÇO VOLTARÁ AO SEU VALOR ORIGINAL DE $50 USD A QUALQUER MOMENTO  \n\nSe você pensar bem, este pequeno investimento é mínimo comparado com o potencial de renda que você pode obter a partir de hoje mesmo.  \n\n💡 Lembre-se: Este preço tem 80% de desconto e é apenas por tempo limitado. Você está economizando $40 USD de uma só vez, agora mesmo! Apenas os mais decididos e comprometidos terão a oportunidade de aproveitar esta oferta. Este é o seu momento! ✅ Não deixe escapar esta oportunidade. Aproveite agora antes que seja tarde!  \n\n⚠️ IMPORTANTE: O preço voltará ao seu valor original a qualquer momento. Esta oferta exclusiva é única e as inscrições estão se esgotando.",
-
-    faq6Question: 'E se eu não gostar, tenho alguma garantia?',
-    faq6Answer: "Na Flasti, sua satisfação é nossa prioridade. Por isso, você conta com uma garantia incondicional de 7 dias. Estamos tão seguros de que você vai adorar nossa plataforma, que assumimos todo o risco. Se, por algum motivo, ela não atender às suas expectativas ou você não estiver completamente satisfeito, poderá solicitar um reembolso de 100% do seu dinheiro, sem ter que dar justificativas ou preencher formulários intermináveis com perguntas desconfortáveis.\n\nJunte-se sem preocupações. Seu investimento está completamente protegido!",
+    // Benefits Section
+    ganaDinero: 'Ganhe dinheiro',
+    generaIngresosMicrotrabajos: 'Gere renda todos os dias completando microtrabalhos',
+    desdeCasa: 'De casa',
+    usaCelularComputadora: 'Use seu celular ou computador, sem downloads ou instalações',
+    sinHorarios: 'Sem horários',
+    trabajaCualquierHora: 'Trabalhe a qualquer hora e em qualquer lugar, sem horários fixos',
 
     // Notifications
-    bienvenidoFlasti: 'Bem-vindo à Flasti!',
-    emocionadosTenerte: 'Estamos animados em tê-lo conosco. Explore seu painel pessoal e comece a gerar renda.',
+    bienvenidoFlasti: 'Bem-vindo ao Flasti!',
+    emocionadosTenerte: 'Estamos emocionados em tê-lo conosco. Explore seu painel pessoal e comece a gerar renda.',
     todasNotificacionesLeidas: 'Todas as notificações marcadas como lidas',
     notificaciones: 'Notificações',
     marcarTodasLeidas: 'Marcar todas como lidas',
     noTienesNotificaciones: 'Você não tem notificações',
     verTodasNotificaciones: 'Ver todas as notificações',
-
-    // Dashboard
-    balance: 'SALDO',
-    misEnlaces: 'Meus Links',
-    estadisticas: 'Estatísticas',
-    apps: 'Apps',
-    recursos: 'Recursos',
-    retiros: 'Saques',
-    soporte: 'Suporte',
-    reciente: 'RECENTE',
-    verActividad: 'Ver Atividade',
 
     // Dashboard Notifications
     gananciasTotal: 'Ganhos totais',
@@ -758,94 +677,127 @@ export const translations = {
 
     // Dashboard Preview Section
     ingresaMundo: 'Entre em um mundo de oportunidades',
-    accedeArea: 'Acesse a área exclusiva de membros',
-    aprovechaFlastiAI: 'Aproveite o Flasti AI',
-    trabajaRapido: 'Trabalhe rápido e sem limites com inteligência artificial',
-    metodosRetiroDisponibles: 'Métodos de saque disponíveis',
+    accedeArea: 'Acesse a área exclusiva para membros',
+    metodosRetiroDisponibles: 'Métodos de retirada disponíveis',
     cuentaBancaria: 'Conta bancária',
-    sinMinimoRetiro: 'Sem valor mínimo para saque',
+    sinMinimoRetiro: 'Sem mínimo de retirada',
     retiraGananciasSegura: 'Retire seus ganhos com segurança',
     generaIngresosTareas: 'Gere renda com tarefas digitais',
     equipoListoAyudarte: 'Nossa equipe está pronta para ajudá-lo passo a passo',
+
+    // Benefits Section
+    accedeFlasti: 'Acesse',
+    comienzaGanar: 'e comece a ganhar',
+    milesPersonas: 'Milhares de pessoas em todo o mundo já estão ganhando dinheiro com nossa plataforma',
+    sinExperiencia: 'Sem experiência',
+    empiezaSin: 'Comece sem nenhum tipo de experiência ou estudos anteriores',
+
+    // How It Works Section
+    comoFunciona: 'Como funciona?',
+    soloNecesitas: 'Você só precisa de 3 passos para começar a gerar renda com Flasti',
+    paso: 'Passo',
+    registrateAhora: 'Registre-se agora',
+    registrateDesc: 'No seu painel de membro, mostramos passo a passo como começar a completar microtrabalhos de forma fácil e rápida',
+    microtrabajosEnLinea: 'Microtrabalhos online',
+    microtrabajosDesc: 'Aproveite e receba dinheiro por cada novo microtrabalho completado e gere renda todos os dias',
+    recogeTusRecompensas: 'Colete suas recompensas',
+    recogeTusRecompensasDesc: 'Retire seus ganhos com segurança através do PayPal ou conta bancária sem mínimo de retirada',
+
+    // Dashboard Preview Section
+    ingresaMundo: 'Entre em um mundo de oportunidades',
+    accedeArea: 'Acesse a área exclusiva para membros',
+    aprovechaFlastiAI: 'Aproveite a IA do Flasti',
+    trabajaRapido: 'Trabalhe rápido e sem limites com inteligência artificial passo a passo',
+
+    // Testimonials Section
+    loQueSiempre: 'O que você sempre sonhou, agora é possível',
+    testimonial1Name: 'Juan Rodríguez',
+    testimonial1Content: 'Excelente serviço, já consegui meu primeiro saque em quase 3 horas!! É difícil esconder minha emoção, estou muito feliz! Foi fácil e rápido me registrar e as tarefas são fáceis de completar, muito obrigado!',
+    testimonial2Name: 'Ana González',
+    testimonial2Content: 'É 100% real. Estou há algumas semanas fazendo trabalhos e já recebi várias vezes. Estou muito feliz porque sempre resolvem minhas dúvidas rapidamente e com muita gentileza. Até convenci meu marido a tentar e os resultados foram melhores do que esperávamos. Obrigado',
+    testimonial3Name: 'Luis López',
+    testimonial3Content: 'Não pensei que isso funcionasse tão bem, recuperei meu investimento no mesmo dia e ainda ganhei um extra, posso dizer com total honestidade que nunca imaginei que fazendo isso poderia ganhar dinheiro pela internet, é um alívio saber que ainda é possível ter um trabalho digno apesar da situação econômica difícil que estamos enfrentando no país, o site é confiável e seguro, recomendo totalmente',
+    testimonial4Name: 'Santiago Hernández',
+    testimonial4Content: 'Acabei de começar e já entrei na minha conta, adoro, passei meses procurando algo assim.',
+    calificacionPromedio: '4.9 de avaliação média',
+    calificacion: '4.9 de avaliação',
+
+    // Pricing Section
+    registrateAhoraBtn: 'Registre-se agora',
+    unicoPago: 'Pagamento único, acesso vitalício',
+    accedeComienza: 'Acesse a plataforma e comece a gerar renda com Flasti',
+    pagoUnico: 'Pagamento único - Sem assinaturas ou cobranças recorrentes',
+    terminandoseRapido: 'Acabando rápido! Últimas vagas',
+    empiezaGanarBtn: 'Comece a ganhar',
+    pagoSeguro: 'Pagamento seguro com',
+    monedaLocal: 'Moeda local',
+    descuento: '80% DESCONTO',
+    ofertaTermina: 'A oferta termina em:',
+
+    // CTA Section
+    conoceFlasti: 'Conheça o Flasti',
+    confianza: 'Confiança',
+    relacionesTransparentes: 'Relações transparentes',
+    resultados: 'Resultados',
+    beneficiosTangibles: 'Benefícios tangíveis',
+    innovacion: 'Inovação',
+    mejoraConstante: 'Melhoria constante da plataforma',
+    seguridad: 'Segurança',
+    proteccionDatos: 'Proteção de dados e rendimentos',
+    crecimiento: 'Crescimento',
+    plataformaGlobal: 'Plataforma global em expansão',
+    oportunidad: 'Oportunidade',
+    futuroProspero: 'Futuro próspero e conectado',
+    ctaDescription: 'Nascidos da paixão por empoderar pessoas, projetamos um ecossistema inteligente que simplifica processos, potencia oportunidades e otimiza a geração de renda. Nossa visão vai além da tecnologia: construímos relações sustentáveis baseadas na confiança, segurança e inovação constante, gerando resultados tangíveis para nossos usuários. Flasti não é apenas uma empresa, é uma plataforma global em crescimento que impulsiona milhares de pessoas em direção a um futuro próspero, conectado e cheio de oportunidades.',
+
+    // FAQ Section
+    faqTitle: 'Perguntas frequentes',
+    faqSubtitle: 'Tudo o que você precisa saber',
+    todoLoQueNecesitasSaber: 'Tudo o que você precisa saber',
+
+    // FAQ Questions
+    faq1Question: 'Por que devo me juntar ao Flasti?',
+    faq1Answer: "Juntar-se ao Flasti é a decisão que transformará a sua forma de ganhar dinheiro. É ideal para quem não tem experiência e deseja começar a gerar renda online. Nossa plataforma foi projetada para guiá-lo passo a passo com estratégias comprovadas. E se você já tem conhecimento, o Flasti o levará ao próximo nível com ferramentas avançadas.\n\nDescubra como milhares de pessoas em todo o mundo já estão usando nossa plataforma para criar novas fontes de renda no conforto de suas casas.\n\nFlasti é mais do que uma plataforma, é a sua oportunidade de estar um passo à frente e fazer parte da nova era digital. Você está pronto para dar o salto? 😎",
+
+    faq2Question: 'O que são microtrabalhos online?',
+    faq2Answer: "Microtrabalhos online são tarefas rápidas e simples que você pode completar de qualquer dispositivo com conexão à internet. No Flasti, otimizamos esse processo para que qualquer pessoa possa começar sem necessidade de conhecimentos prévios ou longas jornadas de trabalho, aproveitando essa nova forma de ganhar dinheiro.\n\n💰 Oportunidades disponíveis o tempo todo\n\nGanhe dinheiro no seu ritmo, sem horários fixos ou compromissos. Você pode gerar uma renda estável para o seu dia a dia ou simplesmente obter um extra no seu tempo livre.\n\n🚀 Sem experiência ou longas jornadas necessárias\n\nO Flasti foi projetado para que você aproveite ao máximo e transforme tarefas digitais em dinheiro real de forma simples e rápida.\n\nComece agora e descubra como é fácil gerar renda com o Flasti!",
+
+    faq3Question: 'Quanto dinheiro posso ganhar?',
+    faq3Answer: "Aqui é onde você entra! 💎\n\nVocê tem total controle: pode gerar uma renda estável para o seu dia a dia ou simplesmente ganhar um extra no seu tempo livre.\n\n💥 Escolha como e quanto ganhar\n\nComplete microtrabalhos de curto, médio ou longo prazo conforme seu tempo disponível e quanto dinheiro deseja gerar. Você decide até onde quer chegar.\n\nEscolha seu caminho e comece a ganhar! 🚀",
+
+    faq4Question: 'Preciso de experiência prévia para começar?',
+    faq4Answer: "Não! A maioria dos casos de sucesso no Flasti são de pessoas que nunca haviam trabalhado na Internet ou tinham experiência em gerar renda online.\n\nNossa plataforma é projetada para guiá-lo passo a passo desde o início, com estratégias comprovadas que qualquer um pode seguir.\n\nSe eles conseguiram, você também pode começar a ganhar dinheiro com o Flasti hoje mesmo.",
+
+    faq5Question: 'Qual é o investimento para acessar o Flasti?',
+    faq5Answer: "Esta plataforma foi criada com o objetivo de mudar a vida de nossos membros, oferecendo uma oportunidade real de independência financeira. Nosso propósito é alcançar o maior número possível de pessoas, transformando a maneira como se trabalha online. E hoje, apenas por tempo limitado, temos uma oferta especial para você, para que possa se juntar ao Flasti e começar a gerar renda agora mesmo.  \n\n⚡ SUPER OFERTA EXCLUSIVA POR TEMPO LIMITADO!  \n\nApenas $10 USD (o equivalente na sua moeda local será exibido ao finalizar o pagamento)  \n\n💥 Pague uma única vez e tenha acesso vitalício ao Flasti usando PayPal ou sua moeda local! 💥  \n\n🚨 O PREÇO VOLTARÁ AO SEU VALOR ORIGINAL DE $50 USD A QUALQUER MOMENTO  \n\nSe você pensar bem, esse pequeno investimento é mínimo comparado ao potencial de renda que você pode obter a partir de hoje.  \n\n💡 Lembre-se: Este preço tem 80% de desconto e é apenas por tempo limitado. Você está economizando $40 USD por uma única vez, agora mesmo! Apenas os mais decididos e comprometidos terão a oportunidade de aproveitar essa oferta. Este é o seu momento! ✅ Não deixe escapar essa oportunidade. Aproveite agora antes que seja tarde!  \n\n⚠️ IMPORTANTE: O preço voltará ao seu valor original a qualquer momento. Esta oferta exclusiva é única e as inscrições estão prestes a se esgotar.",
+
+    faq6Question: 'E se eu não gostar, tenho alguma garantia?',
+    faq6Answer: "No Flasti, sua satisfação é nossa prioridade. Por isso, você tem uma garantia incondicional de 7 dias. Estamos tão confiantes de que você vai adorar nossa plataforma que assumimos todo o risco. Se, por algum motivo, não atender às suas expectativas ou você não estiver completamente satisfeito, poderá solicitar um reembolso de 100% do seu dinheiro, sem precisar justificar ou preencher formulários intermináveis com perguntas desconfortáveis.\n\nJunte-se sem preocupações. Seu investimento está completamente protegido.",
+
+    // Dashboard
+    balance: 'BALANCE',
+    misEnlaces: 'Mis Enlaces',
+    estadisticas: 'Estadísticas',
+    apps: 'Apps',
+    recursos: 'Recursos',
+    retiros: 'Retiros',
+    soporte: 'Soporte',
+    reciente: 'RECIENTE',
+    verActividad: 'Ver actividad',
     // Tabla de transacciones
-    transaccion: 'TRANSAÇÃO',
-    cantidad: 'QUANTIDADE',
-    balance_tabla: 'SALDO',
-    compañero: 'PARCEIRO',
-    fecha: 'DATA',
-    estado: 'STATUS',
-    completada: 'Concluída',
+    transaccion: 'TRANSACCIÓN',
+    cantidad: 'CANTIDAD',
+    balance_tabla: 'BALANCE',
+    compañero: 'COMPAÑERO',
+    fecha: 'FECHA',
+    estado: 'ESTADO',
+    completada: 'Completada',
     // Retiros
-    volverDashboard: 'Voltar ao Início',
-    canjearRecompensas: 'Resgatar Recompensas',
-    eligeOpciones: 'Escolha entre nossas opções de saque para converter seus pontos em recompensas reais.',
-    redimible: 'Resgatável:',
-    misRecompensas: 'Minhas recompensas',
-    ofertasExclusivas: 'Ofertas exclusivas para você',
-    retiroRapidoPaypal: 'Saque rápido com PayPal',
-  }
-};
-
-// Definir tipo para el contexto
-interface LanguageContextType {
-  language: 'es' | 'en' | 'pt-br';
-  setLanguage: (lang: 'es' | 'en' | 'pt-br') => void;
-  t: (key: keyof typeof translations.es) => string | any;
-}
-
-// Crear contexto
-export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
-// Proveedor del contexto
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  // Estado para el idioma actual
-  const [language, setLanguage] = useState<'es' | 'en' | 'pt-br'>('es');
-
-  // Cargar preferencia de idioma al iniciar
-  useEffect(() => {
-    try {
-      const savedLanguage = localStorage.getItem('language');
-      if (savedLanguage === 'es' || savedLanguage === 'en' || savedLanguage === 'pt-br') {
-        setLanguage(savedLanguage);
-      }
-    } catch (e) {
-      console.error('Error reading from localStorage:', e);
-    }
-  }, []);
-
-  // Guardar preferencia de idioma cuando cambia
-  useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('language', language);
-      }
-    } catch (e) {
-      console.error('Error writing to localStorage:', e);
-    }
-  }, [language]);
-
-  // Función para obtener traducción por clave
-  const t = (key: keyof typeof translations.es): string | any => {
-    // Verificar si la clave existe en el idioma actual
-    if (translations[language] && translations[language][key]) {
-      return translations[language][key];
-    }
-    // Si no existe, devolver la clave original
-    return key;
-  };
-
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
-};
-
-// Hook personalizado para usar el contexto de idioma
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
-};
+    volverDashboard: 'Volver al Inicio',
+    canjearRecompensas: 'Canjear recompensas',
+    eligeOpciones: 'Elige entre nuestras opciones de retiro para convertir tus puntos en recompensas reales.',
+    redimible: 'Redimible:',
+    misRecompensas: 'Mis recompensas',
+    ofertasExclusivas: 'Ofertas exclusivas para ti',
+    retiroRapidoPaypal: 'Retiro rápido con PayPal',
+  },

@@ -53,7 +53,7 @@ const TestimonialCard = ({
 	};
 }) => {
 	return (
-		<Card className="bg-card/30 backdrop-blur-md shadow-xl p-6 rounded-xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/10">
+		<Card className="bg-card/30 backdrop-blur-md shadow-xl p-6 rounded-xl border border-white/10 hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10">
 			<div className="flex flex-col md:flex-row md:items-start md:gap-6">
 				<div className="flex flex-col items-center mb-4 md:mb-0 md:flex-shrink-0 md:w-[180px]">
 					<div className="w-16 h-16 rounded-full border-2 border-white/20 overflow-hidden mb-3">

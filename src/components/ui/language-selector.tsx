@@ -27,6 +27,9 @@ const LanguageSelector = () => {
     }
   };
 
+  // Forzar minúsculas en el src para evitar problemas en producción
+  const safeFlagSrc = (code: string) => flagSrc(code).toLowerCase();
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -47,7 +50,7 @@ const LanguageSelector = () => {
         className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors px-3 py-2 rounded-lg border border-border/30 bg-card/50 shadow-sm backdrop-blur-md font-semibold min-w-[120px] focus:ring-2 focus:ring-primary/40 focus:outline-none"
         aria-label="Select language"
       >
-        <Image src={flagSrc(currentLanguage.code)} alt={currentLanguage.label} width={22} height={22} className="rounded-full object-cover" />
+        <Image src={safeFlagSrc(currentLanguage.code)} alt={currentLanguage.label} width={22} height={22} className="rounded-full object-cover" />
         <span className="hidden sm:inline font-medium">{currentLanguage.label}</span>
         <span className="sm:hidden font-medium">{currentLanguage.code === "pt-br" ? "PT" : currentLanguage.code.toUpperCase()}</span>
         <ChevronDown size={16} className={`ml-1 transition-transform ${isOpen ? "rotate-180" : ""}`} />
@@ -65,7 +68,7 @@ const LanguageSelector = () => {
                 }}
                 className={`flex items-center gap-2 w-full px-4 py-2 text-base rounded-lg transition-all font-medium ${lang.code === language ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-primary/5 hover:text-primary"}`}
               >
-                <Image src={flagSrc(lang.code)} alt={lang.label} width={22} height={22} className="rounded-full object-cover" />
+                <Image src={safeFlagSrc(lang.code)} alt={lang.label} width={22} height={22} className="rounded-full object-cover" />
                 <span>{lang.label}</span>
                 {lang.code === language && <Check size={16} className="text-primary ml-auto" />}
               </button>

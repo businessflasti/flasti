@@ -118,7 +118,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link href="/contacto" className="font-bold text-foreground/60 dark:text-white hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
-                  Contáctanos
+                  {t('contactanos')}
                 </Link>
               </li>
             </ul>
@@ -198,7 +198,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link href="/contacto" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
-                    Contáctanos
+                    {t('contactanos')}
                   </Link>
                 </li>
               </ul>

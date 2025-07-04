@@ -45,10 +45,10 @@ export default function ChatButton({
   return (
     <Button
       onClick={handleOpenChat}
-      className={`bg-[#9A9A9B] hover:bg-[#6e6e70] text-white ${className}`}
+      className={`bg-[#3c66ce] hover:bg-[#3359b6] text-white ${className}`}
       {...props}
     >
-      {showIcon && <MessageCircle size={16} className="mr-2 font-bold text-black" />}
+      {showIcon && <MessageCircle size={16} className="mr-2 font-bold" style={{ color: 'currentColor' }} />}
       {text || t('iniciarChat')}
     </Button>
   );

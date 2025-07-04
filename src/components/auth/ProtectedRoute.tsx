@@ -81,7 +81,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-background p-4">
         <div className="max-w-md w-full">
-          <div className="glass-card rounded-xl p-8 space-y-6 text-center border border-primary/10">
+          <div className="glass-card rounded-xl p-8 space-y-6 text-center border border-[#3c66ce]/30">
             <h2 className="text-3xl font-bold text-gradient">Problema de conexión</h2>
             <p className="text-muted-foreground">
               La conexión con el servidor está tardando demasiado. Por favor, verifica tu conexión a internet e intenta de nuevo.

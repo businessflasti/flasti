@@ -139,7 +139,7 @@ const CardGame: React.FC<CardGameProps> = ({ onCardSelected, isArgentina = false
               style={{ transform: 'rotateY(0deg)' }}
             >
               {/* Cuerpo principal del sobre vertical */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#d4386c] to-[#3359b6] rounded-xl shadow-lg overflow-hidden z-10">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#3c66ce] to-[#3359b6] rounded-xl shadow-lg overflow-hidden z-10">
                 {/* Textura de papel mejorada */}
                 <div className="absolute inset-0 opacity-15 mix-blend-overlay">
                   <div className="absolute inset-0" style={{ backgroundImage: 'url("/textures/paper-fine.png")', backgroundSize: 'cover' }}></div>
@@ -151,8 +151,8 @@ const CardGame: React.FC<CardGameProps> = ({ onCardSelected, isArgentina = false
                   className="absolute top-0 left-0 right-0 h-1/4 origin-bottom shadow-xl"
                   style={{
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%)',
-                    backgroundColor: '#d4386c',
-                    backgroundImage: 'linear-gradient(135deg, #d4386c 0%, #3359b6 100%)',
+                    backgroundColor: '#3c66ce',
+                    backgroundImage: 'linear-gradient(135deg, #3c66ce 0%, #3359b6 100%)',
                     transformOrigin: 'bottom',
                     zIndex: 30,
                     boxShadow: envelopeOpening ? '0 8px 32px 0 #9333ea55' : '0 2px 8px 0 #9333ea33',
@@ -312,7 +312,7 @@ const CardGame: React.FC<CardGameProps> = ({ onCardSelected, isArgentina = false
                   style={{ transformStyle: 'preserve-3d' }}
                 >
                   {/* Cara trasera */}
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center backface-hidden">
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-[#3c66ce]/20 to-[#3359b6]/20 flex items-center justify-center backface-hidden">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#9333ea]/30 to-[#ec4899]/30 flex items-center justify-center">
                       <div className="w-6 h-6 flex items-center justify-center">
                         <img

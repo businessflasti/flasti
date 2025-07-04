@@ -22,7 +22,7 @@ const AudienceSection = () => {
 		<section className="py-24 relative overflow-hidden">
 			{/* Elementos decorativos del fondo */}
 			<div className="absolute inset-0 z-0">
-				<div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#d4386c]/10 blur-3xl"></div>
+				<div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#3c66ce]/10 blur-3xl"></div>
 				<div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#facc15]/10 blur-3xl"></div>
 				<div className="absolute top-40 right-[20%] w-3 h-3 rounded-full bg-[#ec4899] animate-pulse"></div>
 				<div className="absolute bottom-40 left-[15%] w-2 h-2 rounded-full bg-[#f97316] animate-ping"></div>
@@ -49,11 +49,11 @@ const AudienceSection = () => {
 					{audiences.map((audience, index) => (
 						<div
 							key={index}
-							className="glass-card group overflow-hidden relative p-6 rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5"
+							className="glass-card group overflow-hidden relative p-6 rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10"
 						>
-							<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+							<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
 
-							<div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#d4386c] to-[#3359b6] flex items-center justify-center mb-5 mx-auto">
+							<div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#3c66ce] to-[#3359b6] flex items-center justify-center mb-5 mx-auto">
 								<div className="text-white">{audience.icon}</div>
 							</div>
 

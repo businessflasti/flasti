@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, Lock, Gift, Wallet, Globe } from "lucide-react";
+import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, LogIn, Gift, Wallet, Globe, UserRound } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -186,7 +186,7 @@ const SimplePricingSection = () => {
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
-          <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9333ea] via-[#3c66ce] to-[#facc15]">{t('unicoPago')}</span></h2>
+          <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="text-white">{t('unicoPago')}</span></h2>
           <p className="text-foreground/70 max-w-lg mx-auto hardware-accelerated">
             {t('accedeComienza')}
           </p>
@@ -292,7 +292,7 @@ const SimplePricingSection = () => {
                 </p>
 
                 {/* Etiqueta de ahorro - Versión móvil */}
-                <div className="md:hidden mt-2 bg-gradient-to-r from-[#d4386c]/20 to-[#3359b6]/20 py-1.5 px-2 rounded-lg border border-[#d4386c]/30 flex items-center gap-1 shadow-sm shadow-[#d4386c]/10">
+                <div className="md:hidden mt-2 bg-gradient-to-r from-[#3c66ce]/20 to-[#3359b6]/20 py-1.5 px-2 rounded-lg border border-[#3c66ce]/30 flex items-center gap-1 shadow-sm shadow-[#3c66ce]/10">
                   <div className="w-4 h-4 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-2.5 w-2.5 text-[#22c55e]" />
                   </div>
@@ -306,7 +306,7 @@ const SimplePricingSection = () => {
                 </div>
 
                 {/* Etiqueta de ahorro - Versión desktop */}
-                <div className="hidden md:flex mt-3 bg-gradient-to-r from-[#d4386c]/20 to-[#3359b6]/20 py-2 px-3 rounded-lg border border-[#d4386c]/30 items-center gap-2 shadow-sm shadow-[#d4386c]/10">
+                <div className="hidden md:flex mt-3 bg-gradient-to-r from-[#3c66ce]/20 to-[#3359b6]/20 py-2 px-3 rounded-lg border border-[#3c66ce]/30 items-center gap-2 shadow-sm shadow-[#3c66ce]/10">
                   <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
                   </div>
@@ -355,7 +355,7 @@ const SimplePricingSection = () => {
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Zap className="text-[#3c66ce]" size={16} />
+                      <Zap className="text-white" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm title-google-sans">{t('accesoInmediato')}</h4>
@@ -365,7 +365,7 @@ const SimplePricingSection = () => {
 
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Infinity className="text-[#3c66ce]" size={16} />
+                      <Infinity className="text-white" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('accesoPorVida')}</h4>
@@ -375,7 +375,7 @@ const SimplePricingSection = () => {
 
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Shield className="text-[#3c66ce]" size={16} />
+                      <Shield className="text-white" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('garantia7Dias')}</h4>
@@ -387,7 +387,7 @@ const SimplePricingSection = () => {
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <HeadphonesIcon className="text-[#3c66ce]" size={16} />
+                      <HeadphonesIcon className="text-white" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('soporte24_7')}</h4>
@@ -397,7 +397,7 @@ const SimplePricingSection = () => {
 
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Sparkles className="text-[#3c66ce]" size={16} />
+                      <Sparkles className="text-white" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('suiteCompleta')}</h4>
@@ -407,7 +407,7 @@ const SimplePricingSection = () => {
 
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center flex-shrink-0 border border-white/10">
-                      <Gift className="text-[#3c66ce]" size={16} />
+                      <Gift className="text-white" size={16} />
                     </div>
                     <div>
                       <h4 className="font-medium text-sm">{t('actualizacionesGratuitas')}</h4>
@@ -432,7 +432,7 @@ const SimplePricingSection = () => {
 
               <div className="flex justify-center mt-4 mb-2">
                 <div className="px-3 py-1 bg-[#0A0A0A] rounded-full shadow-sm flex items-center gap-1.5 border border-white/10">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <p className="text-[10px] text-foreground/70">
@@ -446,7 +446,7 @@ const SimplePricingSection = () => {
               </div>
 
               <div className="mt-4 border-t border-white/10 pt-6">
-                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3C66CE]/30 transition-all hover:shadow-lg hover:shadow-[#3C66CE]/5 bg-[#0A0A0A]">
+                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all bg-[#0A0A0A]">
                   <button
                     className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
                     onClick={() => setIsLoginOpen(!isLoginOpen)}
@@ -454,7 +454,7 @@ const SimplePricingSection = () => {
                     <div className="flex items-center">
                       <div className="w-8 h-8 rounded-full bg-[#1A1A1A] flex items-center justify-center mr-3 border border-white/10">
                         <div className="text-white">
-                          <Lock className="h-4 w-4 text-white" />
+                          <UserRound className="h-4 w-4 text-white" />
                         </div>
                       </div>
                       <span className="font-medium">{t('comoInicioSesion')}</span>

@@ -11,6 +11,7 @@ import { FormEvent, useState, useEffect, useRef } from "react";
 import { AuthError, useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
+import AdBlock from "@/components/ui/AdBlock";
 
 const getLoginErrorMessage = (error: AuthError): string => {
   const defaultMessage = 'Error al iniciar sesión';
@@ -106,42 +107,18 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-black px-4 py-12">
-      <div className={`container mx-auto flex justify-center gap-x-24 gap-y-12 ${isAdVisible ? 'flex-col lg:flex-row lg:items-stretch' : 'flex-col items-center'}`}>
-        
-        {isAdVisible && (
-          <div className="w-full max-w-md lg:w-1/3 lg:max-w-sm order-2 lg:order-1 animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center lg:mt-16">
-            <div className="bg-[#141414] rounded-lg w-full overflow-hidden shadow-lg p-4 relative">
-              <p className="absolute top-2 right-3 text-[10px] text-muted-foreground/40 uppercase tracking-wider">
-                Publicidad
-              </p>
-              <Script
-                async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289"
-                crossOrigin="anonymous"
-                strategy="afterInteractive"
-              />
-              <ins 
-                ref={adInsRef}
-                className="adsbygoogle"
-                style={{ display: 'block', textAlign: 'center' }}
-                data-ad-client="ca-pub-8330194041691289"
-                data-ad-slot="2159902041"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              ></ins>
-            </div>
-          </div>
-        )}
-
+      <div className={`container mx-auto flex justify-center gap-x-24 gap-y-12 flex-col lg:flex-row lg:items-stretch`}>
+        {/* Bloque de anuncio SIEMPRE visible, con animación si no hay anuncio */}
+        <div className="w-full max-w-md lg:w-1/3 lg:max-w-sm order-2 lg:order-1 animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center lg:mt-16">
+          <AdBlock adClient="ca-pub-8330194041691289" adSlot="9339785426" alwaysVisible />
+        </div>
         {/* Columna Derecha: Formulario de Login */}
-        <div className={`w-full max-w-md ${isAdVisible ? 'order-1 lg:order-2' : 'order-1'} flex flex-col justify-center`}>
+        <div className={`w-full max-w-md order-1 lg:order-2 flex flex-col justify-center`}>
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <Logo size="lg" />
           </div>
-
           <h1 className="text-center text-2xl font-bold mb-8">Iniciar sesión</h1>
-
           <div className="bg-card/60 backdrop-blur-md rounded-lg border border-border/40 shadow-xl p-6">
             {/* Email login form */}
             <form className="space-y-4 mobile-form" onSubmit={handleSubmit}>
@@ -182,14 +159,13 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full py-5 h-auto bg-gradient-to-r from-[#d4386c] to-[#3359b6] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback"
+                className="w-full py-5 h-auto bg-gradient-to-r from-[#3c66ce] to-[#3359b6] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback"
                 disabled={isLoading}
               >
                 {isLoading ? "Conectando..." : "Continuar"}
               </Button>
             </form>
           </div>
-
           <div className="mt-6 text-center">
             <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors py-2 px-4 mobile-touch-friendly mobile-touch-feedback inline-block">
               &larr; Volver a inicio

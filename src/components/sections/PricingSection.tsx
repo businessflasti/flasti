@@ -11,7 +11,7 @@ const LoginAccordion = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all">
+    <div className="glass-card overflow-hidden relative rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all">
       <button
         className="w-full p-4 flex items-center justify-between text-left"
         onClick={() => setIsOpen(!isOpen)}
@@ -109,7 +109,7 @@ const PricingSection = () => {
 
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
-          <Card className="glass-card overflow-hidden relative group h-full border-primary/30 hover:border-primary/50 transition-colors">
+          <Card className="glass-card overflow-hidden relative group h-full border-[#3c66ce]/30 hover:border-[#3c66ce] transition-colors">
             <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
 

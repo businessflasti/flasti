@@ -32,7 +32,7 @@ const BenefitsSection = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto animate-on-visible">
           {/* 1. Gana dinero real */}
           <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
               <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
@@ -54,7 +54,7 @@ const BenefitsSection = () => {
           {/* 2. Sin experiencia */}
           {benefits.map((benefit) => (
             <Card key={benefit.id} className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
 
               <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
                 <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
@@ -76,7 +76,7 @@ const BenefitsSection = () => {
 
           {/* 3. Desde tu casa */}
           <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
               <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
@@ -97,7 +97,7 @@ const BenefitsSection = () => {
 
           {/* 4. Horario flexible */}
           <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
 
             <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
               <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">

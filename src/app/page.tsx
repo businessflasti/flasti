@@ -39,16 +39,7 @@ export default function Home() {
 
         {/* Bloque de anuncio 1 */}
         <div className="container-custom py-0">
-          {/* Inicio/faq */}
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289" crossOrigin="anonymous"></script>
-          <ins className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client="ca-pub-8330194041691289"
-            data-ad-slot="1375086377"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-          <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
+          <AdBlock adClient="ca-pub-8330194041691289" adSlot="1375086377" />
         </div>
 
         {/* Sección 7: Un único pago, acceso de por vida */}
@@ -63,16 +54,7 @@ export default function Home() {
 
         {/* Bloque de anuncio 2 */}
         <div className="container-custom py-6">
-          {/* Inicio/cta */}
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289" crossOrigin="anonymous"></script>
-          <ins className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client="ca-pub-8330194041691289"
-            data-ad-slot="8886744888"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-          <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
+          <AdBlock adClient="ca-pub-8330194041691289" adSlot="8886744888" />
         </div>
       </div>
     </MainLayout>

@@ -9,7 +9,7 @@ const CTASection = () => {
     <section className="py-12 relative overflow-hidden">
       {/* Overlays decorativos ELIMINADOS */}
       {/* <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[320px] h-[160px] bg-[#facc15]/10 blur-3xl rounded-full z-0"></div>
-      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 w-[180px] h-[90px] bg-[#d4386c]/20 blur-2xl rounded-full z-0"></div>
+      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 w-[180px] h-[90px] bg-[#3c66ce]/20 blur-2xl rounded-full z-0"></div>
       <div className="absolute top-1/2 right-1/4 w-[140px] h-[70px] bg-[#ec4899]/20 blur-2xl rounded-full z-0"></div> */}
 
       <div className="container-custom relative z-10">
@@ -17,17 +17,17 @@ const CTASection = () => {
           <h2 className="text-2xl md:text-3xl font-bold mb-5 text-white dark:text-white light:text-black title-google-sans">
             {language === 'es' && (
               <>
-                Conoce a <span className="text-white dark:text-white light:text-black">flasti</span>
+                Sobre nosotros
               </>
             )}
             {language === 'en' && (
               <>
-                Meet <span className="text-white dark:text-white light:text-black">flasti</span>
+                About us
               </>
             )}
             {language === 'pt-br' && (
               <>
-                Conheça a <span className="text-white dark:text-white light:text-black">flasti</span>
+                Sobre nós
               </>
             )}
           </h2>

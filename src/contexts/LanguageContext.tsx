@@ -25,7 +25,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtrabajos completados',
     microtrabajos: 'Microtrabajos',
     completados: 'completados',
-    personasFormanParte: '+100.000 personas ya forman parte de Flasti',
+    personasFormanParte: 'Más de 100.000 ya son parte de nuestra comunidad',
     detectandoUbicacion: 'Detectando ubicación...',
     accesoGlobal: 'Acceso Global',
     errorCargarEstadisticas: 'Error al cargar estadísticas:',
@@ -167,7 +167,7 @@ export const translations = {
 
     // Pricing Section
     registrateAhoraBtn: 'Registrate ahora',
-    unicoPago: 'Un único pago, acceso de por vida',
+    unicoPago: 'Único pago, acceso de por vida',
     accedeComienza: 'Accede a la plataforma y comienza a generar ingresos con Flasti',
     pagoUnico: 'Pago único - Sin suscripciones ni cargos recurrentes',
     terminandoseRapido: '¡Últimos cupos!',
@@ -245,6 +245,7 @@ export const translations = {
     misRecompensas: 'Mis recompensas',
     ofertasExclusivas: 'Ofertas exclusivas para ti',
     retiroRapidoPaypal: 'Retiro rápido con PayPal',
+    publicidad: 'Publicidad',
   },
   en: {
     // Navbar
@@ -269,7 +270,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtasks completed',
     microtrabajos: 'Microtasks',
     completados: 'completed',
-    personasFormanParte: '+100,000 people are already part of Flasti',
+    personasFormanParte: 'More than 100,000 are already part of our community',
     detectandoUbicacion: 'Detecting location...',
     accesoGlobal: 'Global Access',
     errorCargarEstadisticas: 'Error loading statistics:',
@@ -324,7 +325,7 @@ export const translations = {
     politicaPrivacidad: 'Privacy policy',
     derechosReservados: 'All rights reserved.',
     volverArriba: 'Back to top',
-    contactanos: 'Contact Us',
+    contactanos: 'Contact us',
     ayudaInmediata: 'Need help?',
     iniciarChat: 'Start chat',
 
@@ -412,7 +413,7 @@ export const translations = {
 
     // Pricing Section
     registrateAhoraBtn: 'Register now',
-    unicoPago: 'One-time payment, lifetime access',
+    unicoPago: 'Single payment, lifetime access',
     accedeComienza: 'Access the platform and start generating income with Flasti',
     pagoUnico: 'One-time payment - No subscriptions or recurring charges',
     terminandoseRapido: 'Last spots!',
@@ -489,6 +490,7 @@ export const translations = {
     misRecompensas: 'My rewards',
     ofertasExclusivas: 'Exclusive offers for you',
     retiroRapidoPaypal: 'Quick withdrawal with PayPal',
+    publicidad: 'Advertisement',
   },
   'pt-br': {
     // Navbar
@@ -537,7 +539,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtrabalhos completados',
     microtrabajos: 'Microtrabalhos',
     completados: 'completados',
-    personasFormanParte: '+100.000 pessoas já fazem parte da Flasti',
+    personasFormanParte: 'Mais de 100.000 já fazem parte da nossa comunidade',
     detectandoUbicacion: 'Detectando localização...',
     accesoGlobal: 'Acesso Global',
     errorCargarEstadisticas: 'Erro ao carregar estatísticas:',
@@ -591,7 +593,7 @@ export const translations = {
     politicaPrivacidad: 'Política de privacidade',
     derechosReservados: 'Todos os direitos reservados.',
     volverArriba: 'Voltar ao topo',
-    contactanos: 'Contate-nos',
+    contactanos: 'Fale conosco',
     ayudaInmediata: 'Precisa de ajuda?',
     iniciarChat: 'Iniciar chat',
 
@@ -715,6 +717,7 @@ export const translations = {
     misRecompensas: 'Minhas recompensas',
     ofertasExclusivas: 'Ofertas exclusivas para você',
     retiroRapidoPaypal: 'Saque rápido com PayPal',
+    publicidad: 'Publicidade',
   }
 };
 

@@ -81,10 +81,10 @@ const PricingCardsSection = () => {
 					{plans.map((plan, index) => (
 						<div
 							key={index}
-							className={`glass-card p-8 rounded-xl border ${
+							className={`glass-card p-8 rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 ${
 								plan.popular
 									? "border-[#3c66ce]/50 shadow-lg shadow-[#3c66ce]/10"
-									: "border-white/10 hover:border-[#d4386c]/30"
+									: "border-white/10"
 							} transition-all relative`}
 						>
 							{plan.popular && (
@@ -105,7 +105,7 @@ const PricingCardsSection = () => {
 							<ul className="space-y-3 mb-8">
 								{plan.features.map((feature, i) => (
 									<li key={i} className="flex items-start">
-										<Check className="h-5 w-5 text-[#d4386c] mr-2 shrink-0" />
+										<Check className="h-5 w-5 text-[#3c66ce] mr-2 shrink-0" />
 										<span className="text-sm">{feature}</span>
 									</li>
 								))}
@@ -115,8 +115,8 @@ const PricingCardsSection = () => {
 								<Button
 									className={`w-full ${
 										plan.buttonVariant === "default"
-											? "glow-effect bg-gradient-to-r from-[#d4386c] to-[#3359b6] hover:opacity-90 transition-opacity text-white"
-											: "border-[#d4386c]/30 hover:bg-[#d4386c]/10 transition-colors"
+											? "glow-effect bg-gradient-to-r from-[#3c66ce] to-[#3359b6] hover:opacity-90 transition-opacity text-white"
+											: "border-[#3c66ce]/30 hover:bg-[#3c66ce]/10 transition-colors"
 									}`}
 								>
 									{plan.buttonText}

@@ -40,12 +40,18 @@ const DashboardPreviewSection = () => {
                         {/* Bloque flotante 1 - Estadísticas */}
                         <motion.div
                           className="absolute top-4 right-4 sm:top-8 sm:right-8 backdrop-blur-xl rounded-lg sm:rounded-xl shadow-xl z-30 animate-float scale-75 sm:scale-100"
-                          style={{ animationDelay: '0.3s', animationDuration: '4s' }}
+                          style={{ 
+                            animationDelay: '0.3s', 
+                            animationDuration: '4s', 
+                            background: 'linear-gradient(135deg, #3c66ce 95%, #3359b6 100%) !important',
+                            borderRadius: '1rem',
+                            border: '1px solid rgba(255,255,255,0.1)'
+                          }}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <div className="bg-[#3C66CE] border border-white/10 p-2 sm:p-3 rounded-xl">
+                          <div className="p-2 sm:p-3 rounded-xl transition-all duration-300">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                                 <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
@@ -61,12 +67,18 @@ const DashboardPreviewSection = () => {
                         {/* Bloque flotante 2 - Retiro */}
                         <motion.div
                           className="absolute bottom-4 right-4 sm:bottom-8 sm:right-1/4 sm:translate-y-1/4 backdrop-blur-xl rounded-lg sm:rounded-xl shadow-xl z-30 animate-float scale-75 sm:scale-100"
-                          style={{ animationDelay: '1s', animationDuration: '4.5s' }}
+                          style={{ 
+                            animationDelay: '1s', 
+                            animationDuration: '4.5s', 
+                            background: 'linear-gradient(135deg, #22c55e 95%, #15803d 100%) !important',
+                            borderRadius: '1rem',
+                            border: '1px solid rgba(255,255,255,0.1)'
+                          }}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <div className="bg-[#3C8841] border border-white/10 p-2 sm:p-3 rounded-xl">
+                          <div className="p-2 sm:p-3 rounded-xl transition-all duration-300">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                                 <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
@@ -84,20 +96,21 @@ const DashboardPreviewSection = () => {
 
                   {/* Métodos de retiro disponibles */}
                   <div className="mb-8 flex flex-col items-center mt-8">
-                    <div className="inline-flex items-center gap-2 mb-4 bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-full px-4 py-2 dark:shadow-black/30 light:shadow-gray-400/30 hover:shadow-lg transition-shadow">
-                      <span className="text-sm dark:text-foreground/80 text-foreground/90 font-medium">{t('metodosRetiroDisponibles')}</span>
-                      <ArrowUpRight className="h-4 w-4 text-white" />
+                    <div className="inline-flex items-center gap-2 mb-4 bg-card/30 backdrop-blur-md shadow-xl rounded-full px-4 py-2 dark:shadow-black/30 light:shadow-gray-400/30 group overflow-hidden relative transition-all">
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent rounded-full"></div>
+                      <span className="text-sm dark:text-foreground/80 text-foreground/90 font-medium relative z-10">{t('metodosRetiroDisponibles')}</span>
+                      <ArrowUpRight className="h-4 w-4 text-white relative z-10" />
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-4">
-                      <div className="bg-card/30 backdrop-blur-md shadow-xl border border-white/10 px-4 py-2 rounded-full flex items-center gap-2 hover:border-[#ec4899]/30 transition-all dark:shadow-black/30 light:shadow-gray-400/30 hover:shadow-lg hover:shadow-[#ec4899]/5">
+                      <div className="bg-card/30 backdrop-blur-md shadow-xl border border-primary/60 px-4 py-2 rounded-full flex items-center gap-2 dark:shadow-black/30 light:shadow-gray-400/30 shadow-primary/10">
                         <div className="w-6 h-6 rounded-full dark:bg-black/30 bg-gray-200 flex items-center justify-center">
                           <PayPalIcon className="h-4 w-4 dark:text-white text-gray-700 pl-0.5" />
                         </div>
                         <span className="text-sm font-medium">PayPal</span>
                       </div>
 
-                      <div className="bg-card/30 backdrop-blur-md shadow-xl border border-white/10 px-4 py-2 rounded-full flex items-center gap-2 hover:border-[#ec4899]/30 transition-all dark:shadow-black/30 light:shadow-gray-400/30 hover:shadow-lg hover:shadow-[#ec4899]/5">
+                      <div className="bg-card/30 backdrop-blur-md shadow-xl border border-primary/60 px-4 py-2 rounded-full flex items-center gap-2 dark:shadow-black/30 light:shadow-gray-400/30 shadow-primary/10">
                         <div className="w-6 h-6 rounded-full dark:bg-black/30 bg-gray-200 flex items-center justify-center">
                           <Landmark className="h-3.5 w-3.5 dark:text-white text-gray-700" />
                         </div>
@@ -109,7 +122,7 @@ const DashboardPreviewSection = () => {
                   {/* Bloques de características */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
@@ -128,7 +141,7 @@ const DashboardPreviewSection = () => {
                     </div>
 
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
@@ -147,7 +160,7 @@ const DashboardPreviewSection = () => {
                     </div>
 
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">
@@ -166,7 +179,7 @@ const DashboardPreviewSection = () => {
                     </div>
 
                     <div className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-5 sm:p-4 rounded-lg">
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
 
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3">

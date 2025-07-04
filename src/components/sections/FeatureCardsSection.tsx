@@ -65,7 +65,7 @@ const FeatureCardsSection = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="glass-card group overflow-hidden relative p-4 md:p-5 rounded-xl flex flex-col items-center text-center hardware-accelerated"
+              className="glass-card group overflow-hidden relative p-4 md:p-5 rounded-xl flex flex-col items-center text-center border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 hardware-accelerated"
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
 

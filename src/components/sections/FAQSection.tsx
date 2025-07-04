@@ -154,6 +154,16 @@ const FAQSection = () => {
   return (
     <section className="py-24 relative overflow-hidden">
       <style jsx global>{pulseAnimation}</style>
+      {/* Forzar borde azul en hover de acordeones FAQ */}
+      <style jsx global>{`
+        .glass-card {
+          border-color: #3c66ce !important;
+        }
+        .glass-card:hover, .glass-card:focus, .glass-card.active, .glass-card.open {
+          border-color: #3c66ce !important;
+          box-shadow: 0 0 0 2px #3c66ce33 !important;
+        }
+      `}</style>
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
@@ -168,17 +178,17 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-[#3c66ce]/30 transition-all hover:shadow-lg hover:shadow-[#3c66ce]/5"
+              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all bg-[#0A0A0A]"
             >
               <button
                 className="w-full p-6 flex items-center justify-between text-left group"
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-[#4a162a] flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
+                  <div className="w-8 h-8 rounded-full bg-[#4a162a] flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 group-hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
                     <div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
                   </div>
-                  <span className="font-medium">{faq.question}</span>
+                  <span className="font-medium group-hover:text-primary transition-colors duration-200">{faq.question}</span>
                 </div>
                 <div className="text-primary">
                   {openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -206,7 +216,7 @@ const FAQSection = () => {
                 </div>
               </div>
 
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+              {/* <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div> */}
             </div>
           ))}
         </div>
