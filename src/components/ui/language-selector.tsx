@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronDown, Check } from "lucide-react";
 import Image from "next/image";
 
-const LanguageSelector = () => {
+const LanguageSelector = (props: { mobile?: boolean }) => {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,18 +44,18 @@ const LanguageSelector = () => {
   }, []);
 
   return (
-    <div className="relative hidden md:block" ref={dropdownRef}>
+    <div className={`relative ${props.mobile ? 'block md:hidden' : 'hidden md:block'}`} ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors px-3 py-2 rounded-lg border border-border/30 bg-card/50 shadow-sm backdrop-blur-md font-semibold min-w-[120px] focus:ring-2 focus:ring-primary/40 focus:outline-none"
+        className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-border/30 shadow-sm backdrop-blur-md font-semibold min-w-[90px] h-8 focus:ring-2 focus:ring-primary/40 focus:outline-none w-full justify-center"
         aria-label="Select language"
+        style={{ minWidth: 90, height: 32, background: '#121212' }}
       >
         <Image src={safeFlagSrc(currentLanguage.code)} alt={currentLanguage.label} width={22} height={22} className="rounded-full object-cover" />
         <span className="hidden sm:inline font-medium">{currentLanguage.label}</span>
         <span className="sm:hidden font-medium">{currentLanguage.code === "pt-br" ? "PT" : currentLanguage.code.toUpperCase()}</span>
         <ChevronDown size={16} className={`ml-1 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
-
       {isOpen && (
         <div className="absolute right-0 mt-2 w-40 rounded-xl shadow-xl bg-background/95 border border-border/30 z-50 animate-fade-in">
           <div className="py-2">

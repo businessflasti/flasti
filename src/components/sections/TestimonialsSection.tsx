@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, TouchEvent } from "react";
+import React, { useState, useRef, useEffect, TouchEvent } from "react";
 import { Card } from "@/components/ui/card";
 import { Star, User, ChevronLeft, ChevronRight, Landmark } from "lucide-react";
 import PayPalIcon from "@/components/icons/PayPalIcon";
@@ -103,7 +103,7 @@ const TestimonialCard = ({
 	);
 };
 
-const TestimonialsSection = () => {
+const TestimonialsSection = React.memo(() => {
 	const { language, t } = useLanguage();
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const testimonials = getTestimonials(t);
@@ -319,6 +319,6 @@ const TestimonialsSection = () => {
 			</div>
 		</section>
 	);
-};
+});
 
 export default TestimonialsSection;

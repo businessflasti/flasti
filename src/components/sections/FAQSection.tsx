@@ -222,10 +222,13 @@ const FAQSection = () => {
         </div>
 
         {/* Bloque de anuncio 1 */}
-        <div className="max-w-5xl mx-auto mt-16">
+        <div className="max-w-5xl mx-auto mt-16 flex justify-center">
           <AdBlock
             adClient="ca-pub-8330194041691289"
-            adSlot="9339785426"
+            adSlot="1375086377"
+            className="flex justify-center"
+            style={{ width: 300, height: 250 }}
+            fixedSize
           />
         </div>
       </div>

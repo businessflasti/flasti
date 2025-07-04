@@ -40,10 +40,10 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
   if (!isAdVisible && !alwaysVisible) return null;
 
   return (
-    <div className={`w-full max-w-md mx-auto animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center ${className}`}>
-      <div className="w-full overflow-hidden shadow-lg p-0 relative bg-[#141414] rounded-lg border border-[#222] flex flex-col">
+    <div className={`w-full max-w-md mx-auto animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center ${className}`} style={{color: '#0A0A0A'}}>
+      <div className="w-full overflow-hidden shadow-lg p-0 relative bg-[#0A0A0A] rounded-lg border border-[#222] flex flex-col">
         {/* Banda superior para 'Publicidad' */}
-        <div className="w-full px-4 py-2 bg-[#141414] rounded-t-lg border-b border-[#222] flex items-center justify-center" style={{minHeight: 32}}>
+        <div className="w-full px-4 py-2 bg-[#0A0A0A] rounded-t-lg border-b border-[#222] flex items-center justify-center" style={{minHeight: 32}}>
           <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold select-none">{t('publicidad')}</span>
         </div>
         {/* Área del anuncio o animación minimalista */}

@@ -30,7 +30,7 @@ const Navbar = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className={`whitespace-nowrap border-0 transition-all ${theme === 'dark'
+                className={`px-3 py-2.1 min-w-[120px] min-h-[38px] rounded-lg flex items-center justify-center border-0 transition-all h-auto ${theme === 'dark'
                   ? 'bg-white text-black hover:bg-white hover:text-black hover:shadow-md hover:shadow-white/20 hover:translate-y-[-1px]'
                   : 'bg-black text-white hover:bg-black hover:text-white hover:shadow-md hover:shadow-black/20 hover:translate-y-[-1px]'}`}
               >
@@ -47,3 +47,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+// (Archivo eliminado: este era el header antiguo, ahora reemplazado por el nuevo header global)

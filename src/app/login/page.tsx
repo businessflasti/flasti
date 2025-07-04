@@ -110,7 +110,7 @@ export default function LoginPage() {
       <div className={`container mx-auto flex justify-center gap-x-24 gap-y-12 flex-col lg:flex-row lg:items-stretch`}>
         {/* Bloque de anuncio SIEMPRE visible, con animación si no hay anuncio */}
         <div className="w-full max-w-md lg:w-1/3 lg:max-w-sm order-2 lg:order-1 animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center lg:mt-16">
-          <AdBlock adClient="ca-pub-8330194041691289" adSlot="9339785426" alwaysVisible />
+          <AdBlock adClient="ca-pub-8330194041691289" adSlot="2159902041" alwaysVisible />
         </div>
         {/* Columna Derecha: Formulario de Login */}
         <div className={`w-full max-w-md order-1 lg:order-2 flex flex-col justify-center`}>

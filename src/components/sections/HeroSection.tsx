@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Clock, Shield, CheckCircle, Activity, CreditCard, Wallet, ArrowUpRight, Gift, Globe } from "lucide-react";
 import Link from "next/link";
@@ -148,23 +148,30 @@ const RotatingText = () => {
   );
 };
 
+// Detectar si es móvil de gama baja (userAgent simple)
+function isLowEndMobile() {
+  if (typeof window === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  // Heurística simple: Android antiguo, Chrome <80, iPhone antiguo
+  return /Android [1-7]|iPhone OS [1-9]|Mobi|Opera Mini|UCBrowser|KaiOS/i.test(ua);
+}
 
-
-const HeroSection = () => {
+const HeroSection = React.memo(function HeroSection() {
   const { language, t } = useLanguage();
-  // Estado para los contadores
   const [stats, setStats] = useState({
     generatedAmount: 24962460,
     microtasksCompleted: 1290418
   });
+  const [lowEnd, setLowEnd] = useState(false);
 
-  // Cargar estadísticas desde Supabase
+  useEffect(() => {
+    setLowEnd(isLowEndMobile());
+  }, []);
+
   useEffect(() => {
     async function loadStats() {
       try {
-        // Intentar obtener estadísticas de la API
         const response = await fetch('/api/stats');
-
         if (response.ok) {
           const data = await response.json();
           setStats({
@@ -174,55 +181,51 @@ const HeroSection = () => {
         }
       } catch (error) {
         console.error(`${t('errorCargarEstadisticas')}`, error);
-        // Si hay un error, mantener los valores predeterminados
       }
     }
-
     loadStats();
-
-    // Configurar un intervalo para actualizar las estadísticas cada 5 minutos
-    // Esto asegura que los usuarios vean los valores actualizados sin necesidad de recargar la página
     const interval = setInterval(loadStats, 5 * 60 * 1000);
-
     return () => clearInterval(interval);
   }, []);
+
   return (
     <section className="pt-20 pb-24 relative overflow-hidden">
       {/* Fondo negro absoluto debajo de todo */}
       <div className="absolute inset-0 z-[-20] bg-black"></div>
-      {/* Efectos de luces */}
-      <div className="absolute inset-0 gradient-background z-0">
-        <div className="absolute inset-0 opacity-60">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid-pattern.svg')] bg-repeat opacity-20"></div>
+      {/* Efectos de luces y gradientes solo si no es móvil de gama baja */}
+      {!lowEnd && (
+        <div className="absolute inset-0 gradient-background z-0">
+          <div className="absolute inset-0 opacity-60">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid-pattern.svg')] bg-repeat opacity-20"></div>
+          </div>
         </div>
-      </div>
-      {/* Efecto vidrio por arriba de las luces */}
+      )}
+      {/* Efecto vidrio por arriba de las luces (solo desktop) */}
       {/* <div className="absolute inset-0 z-10 backdrop-blur-xl bg-white/5 pointer-events-none"></div> */}
-
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Insignia de localización */}
           <div className="flex justify-center mb-6 animate-entry animate-entry-delay-1 hardware-accelerated">
             <LocationBadge />
           </div>
-
           {/* Título principal */}
           <div className="text-center mb-6 animate-entry animate-entry-delay-2 hardware-accelerated">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
-              <span className="block">{t('genera')}</span>
+              <span className="block bg-gradient-to-t from-[#444] via-[#b0b0b0] to-white bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #444 0%, #b0b0b0 55%, #fff 100%)'}}>{t('genera')}</span>
               <RotatingText />
-              <span className="block mt-2">{t('con')} <span>flasti</span></span>
+              <span className="block mt-2 bg-gradient-to-t from-[#444] via-[#b0b0b0] to-white bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #444 0%, #b0b0b0 55%, #fff 100%)'}}>{t('con')} <span>flasti</span></span>
             </h1>
-
             <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">
               {t('aprovechaPoder')}
             </p>
           </div>
-
           {/* Estadísticas */}
           <div className="flex flex-row justify-center gap-4 sm:gap-8 mb-10 mt-8 animate-entry animate-entry-delay-3 hardware-accelerated hero-stats-container">
-            <div className="bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-xl px-3 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
-              <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 text-[#3E8C42] flex justify-center">
+            <div className={
+              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 ` +
+              (lowEnd ? 'bg-[#181818]' : 'bg-card/30 shadow-xl backdrop-blur-md')
+            }>
+              <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.generatedAmount} prefix="$" />
               </p>
               <p className="text-[10px] sm:text-sm text-foreground/60 whitespace-normal">
@@ -230,9 +233,11 @@ const HeroSection = () => {
                 <span className="sm:inline block">{t('usuarios')}</span>
               </p>
             </div>
-
-            <div className="bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-xl px-3 sm:px-6 py-3 sm:py-4 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px]">
-              <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 text-[#EC4184] flex justify-center">
+            <div className={
+              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 ` +
+              (lowEnd ? 'bg-[#181818]' : 'bg-card/30 shadow-xl backdrop-blur-md')
+            }>
+              <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.microtasksCompleted} />
               </p>
               <p className="text-[10px] sm:text-sm text-foreground/60 whitespace-normal">
@@ -241,10 +246,12 @@ const HeroSection = () => {
               </p>
             </div>
           </div>
-
           {/* Indicador de usuarios */}
           <div className="mt-6 flex justify-center animate-entry animate-entry-delay-4 hardware-accelerated">
-            <div className="flex items-center gap-2 bg-card/30 backdrop-blur-md shadow-xl border border-white/5 rounded-full px-4 py-2">
+            <div className={
+              `flex items-center gap-2 rounded-full border border-white/5 px-4 py-2 ` +
+              (lowEnd ? 'bg-[#181818]' : 'bg-card/30 shadow-xl backdrop-blur-md')
+            }>
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden transition-all duration-300 hover:scale-110 hover:border-foreground/80 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
                   <img src="/images/profiles/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" />
@@ -265,6 +272,6 @@ const HeroSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default HeroSection;

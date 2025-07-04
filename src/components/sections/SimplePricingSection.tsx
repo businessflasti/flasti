@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,8 +9,9 @@ import Image from "next/image";
 import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, LogIn, Gift, Wallet, Globe, UserRound } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import Logo from "@/components/ui/logo";
 
-const SimplePricingSection = () => {
+const SimplePricingSection = React.memo(() => {
   const { t } = useLanguage();
   const { theme } = useTheme();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -18,17 +20,13 @@ const SimplePricingSection = () => {
   const countdownInterval = useRef<NodeJS.Timeout | null>(null);
   const [isArgentina, setIsArgentina] = useState(false);
 
-  // Efecto para detectar si el usuario es de Argentina
   useEffect(() => {
     // Detectar si el usuario es de Argentina
     const detectCountry = async () => {
       try {
-        // Intentar obtener la ubicación del usuario desde localStorage primero
-        // Usar la misma clave que en checkout/page.tsx para consistencia
         const savedCountry = localStorage.getItem('flastiUserCountry');
         if (savedCountry) {
           setIsArgentina(savedCountry === 'AR');
-          console.log(`[SimplePricingSection] País detectado desde localStorage: ${savedCountry}`);
           return;
         }
 
@@ -211,7 +209,7 @@ const SimplePricingSection = () => {
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <Sparkles className="text-[#3c66ce]" size={24} />
+                  <Logo size="sm" showTextWhenExpanded={false} className="mx-auto scale-95" />
                 </div>
                 <div>
                   <h3
@@ -481,6 +479,6 @@ const SimplePricingSection = () => {
       </div>
     </div>
   );
-};
+});
 
 export default SimplePricingSection;

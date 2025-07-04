@@ -1,11 +1,12 @@
 "use client";
 
+import React from "react";
 import { DollarSign, Wallet, Zap, HeadphonesIcon, ArrowUpRight, Landmark } from "lucide-react";
 import PayPalIcon from "@/components/icons/PayPalIcon";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const DashboardPreviewSection = () => {
+const DashboardPreviewSection = React.memo(() => {
   const { t } = useLanguage();
   return (
     <section className="py-20 relative overflow-hidden">
@@ -18,7 +19,6 @@ const DashboardPreviewSection = () => {
             {t('accedeArea')}
           </p>
         </div>
-
         <div className="max-w-5xl mx-auto">
           <div className="rounded-xl">
             <div className="p-0 rounded-xl">
@@ -205,6 +205,6 @@ const DashboardPreviewSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default DashboardPreviewSection;

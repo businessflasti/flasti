@@ -3,20 +3,12 @@
 import { Card } from "@/components/ui/card";
 import { DollarSign, GraduationCap, Clock, Home } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { FocusCards } from "@/components/ui/focus-cards";
+import React from "react";
 
-const BenefitsSection = () => {
+const BenefitsSection = React.memo(() => {
   const { t } = useLanguage();
 
-  const benefits = [
-    // Los bloques "Completa nuevos microtrabajos" y "Aprovecha Flasti AI" se movieron a FeatureCardsSection
-    // Menú "Aprende a usar IA" eliminado
-    {
-      id: 4,
-      icon: <GraduationCap className="text-white" size={24} />,
-      title: t('sinExperiencia'),
-      description: t('empiezaSin')
-    }
-  ];
   return (
     <section className="py-16 relative overflow-hidden">
       <div className="container-custom relative z-10">
@@ -28,97 +20,16 @@ const BenefitsSection = () => {
           </p>
         </div>
 
-        {/* Todos los bloques en una sola fila */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto animate-on-visible">
-          {/* 1. Gana dinero real */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
-
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
-                <DollarSign className="text-white" size={24} />
-              </div>
-            </div>
-
-            <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
-              {t('ganaDinero')}
-            </h3>
-
-            <p className="text-foreground/70 text-xs md:text-sm text-center">
-              {t('generaIngresosMicrotrabajos')}
-            </p>
-
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
-          </Card>
-
-          {/* 2. Sin experiencia */}
-          {benefits.map((benefit) => (
-            <Card key={benefit.id} className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
-
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
-                  {benefit.icon}
-                </div>
-              </div>
-
-              <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
-                {benefit.title}
-              </h3>
-
-              <p className="text-foreground/70 text-xs md:text-sm text-center">
-                {benefit.description}
-              </p>
-
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
-            </Card>
-          ))}
-
-          {/* 3. Desde tu casa */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
-
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
-                <Home className="text-white" size={24} />
-              </div>
-            </div>
-
-            <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
-              {t('desdeCasa')}
-            </h3>
-
-            <p className="text-foreground/70 text-xs md:text-sm text-center">
-              {t('usaCelularComputadora')}
-            </p>
-
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
-          </Card>
-
-          {/* 4. Horario flexible */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl group overflow-hidden relative p-4 md:p-5 hardware-accelerated">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
-
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1a1a] flex items-center justify-center">
-                <Clock className="text-white" size={24} />
-              </div>
-            </div>
-
-            <h3 className="text-base md:text-lg font-bold mb-2 transition-all duration-300 text-center">
-              {t('sinHorarios')}
-            </h3>
-
-            <p className="text-foreground/70 text-xs md:text-sm text-center">
-              {t('trabajaCualquierHora')}
-            </p>
-
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#3c66ce]/60 to-transparent"></div>
-          </Card>
+        {/* NUEVO: FocusCards visual destacado */}
+        <div className="mb-12">
+          <FocusCards />
         </div>
+
+        {/* Todos los bloques en una sola fila */}
+        {/* BLOQUES DE BENEFICIOS ELIMINADOS POR SOLICITUD */}
       </div>
     </section>
   );
-};
+});
 
 export default BenefitsSection;

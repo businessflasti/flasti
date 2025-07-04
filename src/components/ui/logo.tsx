@@ -1,7 +1,6 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
-import Link from "next/link";
 import Image from "next/image";
 
 interface LogoProps {
@@ -41,7 +40,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   const logoPath = "/logo/isotipo.png";
 
   return (
-    <Link href="/" className={`${className}`}>
+    <div className={`${className}`} tabIndex={-1} style={{ cursor: "default" }}>
       <div className="flex items-center gap-2">
         {/* Logo SVG */}
         <div className="relative flex items-center justify-center" style={{ height: logoHeight, width: logoWidth }}>
@@ -70,7 +69,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
           </span>
         )}
       </div>
-    </Link>
+    </div>
   );
 };
 
