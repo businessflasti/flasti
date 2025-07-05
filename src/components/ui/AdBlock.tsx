@@ -57,11 +57,11 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
                 strategy="afterInteractive"
               />
               {/* Renderizar <ins> solo si hay anuncios */}
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div style={{ width: 320, height: 270, display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
                 <ins
                   ref={adInsRef}
                   className="adsbygoogle"
-                  style={{ display: 'block', textAlign: 'center', width: '100%', height: 'auto', margin: '0 auto' }}
+                  style={{ display: 'block', textAlign: 'center', width: 320, height: 270, margin: '0 auto' }}
                   data-ad-layout="in-article"
                   data-ad-format="fluid"
                   data-ad-client={adClient}
