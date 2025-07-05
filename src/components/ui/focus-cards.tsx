@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { DollarSign, GraduationCap, Clock, Home } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export const FocusCards = React.memo(function FocusCards() {
+export function FocusCards() {
   const { t } = useLanguage();
   const cards = [
     {
@@ -33,7 +33,7 @@ export const FocusCards = React.memo(function FocusCards() {
       src: "https://images.unsplash.com/photo-1486915309851-b0cc1f8a0084?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [hovered, setHovered] = React.useState<number | null>(null);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-10 w-full" style={{maxWidth: '2200px'}}>
@@ -70,5 +70,5 @@ export const FocusCards = React.memo(function FocusCards() {
       ))}
     </div>
   );
-});
+}
 
