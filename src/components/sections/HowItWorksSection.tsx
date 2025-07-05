@@ -4,7 +4,7 @@ import React from "react";
 import { ArrowRight, UserPlus, Smartphone, Wallet } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const HowItWorksSection = () => {
+const HowItWorksSection = React.memo(() => {
   const { language, t } = useLanguage();
 
   const steps = [
@@ -78,6 +78,6 @@ const HowItWorksSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default HowItWorksSection;

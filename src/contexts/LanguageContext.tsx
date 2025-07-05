@@ -103,7 +103,7 @@ export const translations = {
     desdeCasa: 'Desde casa',
     usaCelularComputadora: 'Usa tu celular o computadora, sin descargas ni instalaciones',
     sinHorarios: 'Sin horarios',
-    trabajaCualquierHora: 'Trabaja a cualquier hora y en cualquier lugar, sin horarios fijos',
+    trabajaCualquierHora: 'Trabaja a cualquier hora y en cualquier lugar, sin horarios',
 
     // Notifications
     bienvenidoFlasti: '¡Bienvenido a Flasti!',
@@ -349,7 +349,7 @@ export const translations = {
     desdeCasa: 'From home',
     usaCelularComputadora: 'Use your phone or computer, no downloads or installations',
     sinHorarios: 'No schedules',
-    trabajaCualquierHora: 'Work at any time and from anywhere, without fixed schedules',
+    trabajaCualquierHora: 'Work at any time and from anywhere, without schedules',
 
     // Notifications
     bienvenidoFlasti: 'Welcome to Flasti!',
@@ -521,7 +521,7 @@ export const translations = {
     desdeCasa: 'De casa',
     usaCelularComputadora: 'Use seu celular ou computador, sem downloads ou instalações',
     sinHorarios: 'Sem horários',
-    trabajaCualquierHora: 'Trabalhe a qualquer hora e em qualquer lugar, sem horários fixos',
+    trabajaCualquierHora: 'Trabalhe a qualquer hora e em qualquer lugar, sem horários',
 
     // How It Works Section
     comoFunciona: 'Como funciona?',

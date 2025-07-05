@@ -6,7 +6,7 @@ import PayPalIcon from "@/components/icons/PayPalIcon";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const DashboardPreviewSection = () => {
+const DashboardPreviewSection = React.memo(() => {
   const { t } = useLanguage();
   return (
     <section className="py-20 relative overflow-hidden">
@@ -205,6 +205,6 @@ const DashboardPreviewSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default DashboardPreviewSection;

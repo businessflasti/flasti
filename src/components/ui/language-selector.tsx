@@ -20,9 +20,9 @@ const LanguageSelector = (props: { mobile?: boolean }) => {
 
   const flagSrc = (code: string) => {
     switch (code) {
-      case "es": return "/banderas/espana.png";
-      case "en": return "/banderas/usa.png";
-      case "pt-br": return "/banderas/brasil.png";
+      case "es": return "https://raw.githubusercontent.com/businessflasti/images/03c12e76a6065203aae90f745dc054005efeeb2e/banderas/espana.svg";
+      case "en": return "https://raw.githubusercontent.com/businessflasti/images/03c12e76a6065203aae90f745dc054005efeeb2e/banderas/usa.svg";
+      case "pt-br": return "https://raw.githubusercontent.com/businessflasti/images/03c12e76a6065203aae90f745dc054005efeeb2e/banderas/brasil.svg";
       default: return "";
     }
   };

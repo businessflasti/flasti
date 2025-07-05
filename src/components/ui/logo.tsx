@@ -37,7 +37,9 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
 
   // Determinar el color basado en el tema y la ruta del logo
   const textColor = isDark ? "text-white" : "text-gray-900";
-  const logoPath = "/logo/isotipo.png";
+  // Si el logo se usa en el footer, usar isoblanco.svg
+  const logoPath = typeof window !== "undefined" && window.location && window.location.pathname ?
+    (window.location.pathname.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.png") : "/logo/isotipo.png";
 
   return (
     <div className={`${className}`} tabIndex={-1} style={{ cursor: "default" }}>

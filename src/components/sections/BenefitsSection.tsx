@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { FocusCards } from "@/components/ui/focus-cards";
 import React from "react";
 
-const BenefitsSection = () => {
+const BenefitsSection = React.memo(() => {
   const { t } = useLanguage();
 
   return (
@@ -30,6 +30,6 @@ const BenefitsSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default BenefitsSection;

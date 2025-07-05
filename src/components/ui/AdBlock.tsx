@@ -47,7 +47,7 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
           <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold select-none">{t('publicidad')}</span>
         </div>
         {/* Área del anuncio o animación minimalista */}
-        <div className="w-full px-4 pb-4 pt-4 flex flex-col items-center min-h-[90px]">
+        <div className="w-full flex flex-col items-center justify-center px-4 pb-4 pt-4" style={{ minHeight: 0 }}>
           {isAdVisible ? (
             <>
               <Script
@@ -57,15 +57,17 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
                 strategy="afterInteractive"
               />
               {/* Renderizar <ins> solo si hay anuncios */}
-              <ins
-                ref={adInsRef}
-                className="adsbygoogle"
-                style={{ display: 'block', textAlign: 'center', minHeight: 80, width: '100%' }}
-                data-ad-layout="in-article"
-                data-ad-format="fluid"
-                data-ad-client={adClient}
-                data-ad-slot={adSlot}
-              ></ins>
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <ins
+                  ref={adInsRef}
+                  className="adsbygoogle"
+                  style={{ display: 'block', textAlign: 'center', width: '100%', height: 'auto', margin: '0 auto' }}
+                  data-ad-layout="in-article"
+                  data-ad-format="fluid"
+                  data-ad-client={adClient}
+                  data-ad-slot={adSlot}
+                ></ins>
+              </div>
             </>
           ) : (
             adTried && alwaysVisible && (

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Logo from "@/components/ui/logo";
+import Image from "next/image";
 import { Shield, Lock, CheckCircle, ArrowUp, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -101,7 +101,27 @@ const FooterComponent = () => {
           {/* Enlaces de escritorio */}
           <div className="hidden md:grid grid-cols-5 gap-8">
             <div>
-              <Logo size="md" />
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/logo/isoblanco.svg"
+                  alt="flasti logo"
+                  width={28}
+                  height={28}
+                  className="object-contain"
+                  priority
+                  unoptimized={true}
+                />
+                <span
+                  className="text-white text-2xl transform -translate-y-px"
+                  style={{
+                    fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontWeight: 600,
+                    letterSpacing: '-0.01em'
+                  }}
+                >
+                  flasti
+                </span>
+              </div>
               <div className="mt-4">
                 <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 py-0.5">
                   {t('gananciaColectiva')}
@@ -174,7 +194,15 @@ const FooterComponent = () => {
           {/* Enlaces de móvil - Diseño moderno */}
           <div className="md:hidden mobile-footer-blocks">
             <div className="flex justify-center mb-6">
-              <Logo size="md" showTextWhenExpanded={false} />
+              <Image
+                src="/logo/isoblanco.svg"
+                alt="flasti logo"
+                width={28}
+                height={28}
+                className="object-contain"
+                priority
+                unoptimized={true}
+              />
             </div>
 
             <div className="flex justify-center mb-4">

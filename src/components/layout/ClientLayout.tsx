@@ -12,6 +12,7 @@ import { Toaster as HotToaster } from "@/components/ui/Toaster";
 import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
 import HydrationFix from "@/components/utils/HydrationFix";
+import PageLoader from "@/components/ui/PageLoader";
 
 export default function ClientLayout({
   children,
@@ -19,24 +20,27 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <LanguageProvider>
-          <BalanceVisibilityProvider>
-            {/* Activado el onboarding para nuevos usuarios */}
-            <OnboardingProvider>
-              <EnhancedNotificationProvider>
-                <Toaster position="top-right" richColors />
-                <HotToaster />
-                <CopyProtection />
-                <AffiliateClickRecorder />
-                <HydrationFix />
-                {children}
-              </EnhancedNotificationProvider>
-            </OnboardingProvider>
-          </BalanceVisibilityProvider>
-        </LanguageProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <>
+      <PageLoader />
+      <ThemeProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <BalanceVisibilityProvider>
+              {/* Activado el onboarding para nuevos usuarios */}
+              <OnboardingProvider>
+                <EnhancedNotificationProvider>
+                  <Toaster position="top-right" richColors />
+                  <HotToaster />
+                  <CopyProtection />
+                  <AffiliateClickRecorder />
+                  <HydrationFix />
+                  {children}
+                </EnhancedNotificationProvider>
+              </OnboardingProvider>
+            </BalanceVisibilityProvider>
+          </LanguageProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </>
   );
 }
