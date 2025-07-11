@@ -1,0 +1,9 @@
+src/app/dashboard/niveles/page.tsx
+src/app/dashboard/niveles/error.tsx
+src/app/dashboard/logros/page.tsx
+src/app/dashboard/analisis/page.tsx
+src/app/dashboard/editor-enlaces/page.tsx
+src/app/dashboard/simulador/page.tsx
+src/app/dashboard/apps/page.tsx
+src/app/dashboard/apps/flasti-ai/page.tsx
+src/app/dashboard/apps/flasti-images/page.tsx

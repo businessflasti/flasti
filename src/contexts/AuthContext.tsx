@@ -284,6 +284,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+    // Suscripción en tiempo real a cambios en el balance del usuario
+    const channel = supabase
+      .channel('realtime:user_profiles_balance')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_profiles',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          if (payload.new && typeof payload.new.balance !== 'undefined') {
+            setProfile((prev: any) => ({
+              ...prev,
+              balance: payload.new.balance,
+              level: payload.new.level || prev?.level || 1,
+            }));
+          }
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   // Registrar un nuevo usuario - Solución ultra básica
   const signUp = async (email: string, password: string, phone: string = '') => {
     setLoading(true);

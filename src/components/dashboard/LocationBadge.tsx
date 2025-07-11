@@ -116,14 +116,15 @@ const LocationBadge = () => {
 
     // Limpiar intervalos cuando el componente se desmonte
     return () => {
-      if (cleanup && typeof cleanup === 'function') {
+      // Solo llamar cleanup si es una función
+      if (typeof cleanup === 'function') {
         cleanup();
       }
     };
   }, [language]);
 
   return (
-    <div className="flex items-center justify-center gap-2 bg-card/40 backdrop-blur-sm border border-white/5 rounded-full px-4 py-1.5 text-sm">
+    <div className="flex items-center justify-center gap-2 bg-[#282828] border border-white/5 rounded-full px-4 py-1.5 text-sm">
       {locationData.loading ? (
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-foreground/20 animate-pulse"></div>

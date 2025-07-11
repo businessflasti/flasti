@@ -1,36 +1,33 @@
 import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-
 import { cn } from "@/lib/utils"
 
-const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
-
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
-
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
-  )
+const badgeVariants = {
+  default: "bg-[#232323] text-white border border-[#101010]",
+  success: "bg-green-600 text-white",
+  warning: "bg-yellow-600 text-white",
+  danger: "bg-red-600 text-white",
 }
 
-export { Badge, badgeVariants }
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  color?: "default" | "success" | "warning" | "danger"
+  className?: string
+}
+
+const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+  ({ color = "default", className, ...props }, ref) => (
+    <span
+      ref={ref}
+      className={cn(
+        "inline-block px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 will-change-transform",
+        "data-[pop=true]:scale-110 data-[pop=true]:shadow-lg",
+        badgeVariants[color],
+        className
+      )}
+      data-pop={props['data-pop'] || undefined}
+      {...props}
+    />
+  )
+)
+Badge.displayName = "Badge"
+
+export { Badge }

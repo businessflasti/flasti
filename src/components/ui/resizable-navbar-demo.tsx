@@ -14,9 +14,18 @@ import { useState } from "react";
 import LanguageSelector from "@/components/ui/language-selector";
 import Logo from "@/components/ui/logo";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Bell, User } from 'lucide-react';
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/contexts/AuthContext';
+import Image from 'next/image';
 
 export function NavbarDemo() {
   const { t } = useLanguage();
+  const { profile } = useAuth();
+  const avatar = profile?.avatar_url || '/images/profiles/profile1.jpg';
+  const color = profile?.accent_color || '#9333ea';
+
   const navItems = [
     {
       name: "Features",
@@ -49,6 +58,8 @@ export function NavbarDemo() {
           )}
           <div className="flex items-center gap-4 w-full justify-end">
             <LanguageSelector />
+            {/* Acceso rápido a notificaciones */}
+            {/* Eliminado: Notificaciones y avatar de perfil */}
             <NavbarButton
               href="/login"
               variant="primary"
@@ -64,6 +75,7 @@ export function NavbarDemo() {
             <Logo size="md" showTextWhenExpanded={true} />
             <div className="flex items-center gap-2 ml-auto">
               <LanguageSelector mobile />
+              {/* Eliminado: Notificaciones y avatar de perfil en mobile */}
               <NavbarButton
                 href="/login"
                 variant="primary"

@@ -29,7 +29,7 @@ export default function BalanceCard() {
   };
 
   return (
-    <Card className="glass-effect p-6 relative overflow-hidden hardware-accelerated hover-lift">
+    <Card className="glass-effect p-6 relative overflow-hidden hardware-accelerated hover-lift" style={{ background: '#101010' }}>
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#ec4899]/10 rounded-full blur-3xl -mr-10 -mt-10 hardware-accelerated"></div>
 
       <div className="flex items-start justify-between mb-4 relative z-10">

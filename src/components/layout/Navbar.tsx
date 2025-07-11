@@ -15,7 +15,7 @@ const Navbar = () => {
   const { t } = useLanguage();
 
   return (
-    <header className="w-full py-3 border-b border-border/20 bg-card/70 backdrop-blur-md fixed top-0 z-50">
+    <header className="w-full py-3 border-b border-border/20 bg-card/70 fixed top-0 z-50">
       <div className="container-custom flex items-center justify-between">
         <div className="flex items-center">
           <Logo />

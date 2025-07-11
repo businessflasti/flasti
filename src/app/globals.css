@@ -454,3 +454,16 @@
     @apply group-hover:bg-gradient-to-r group-hover:from-[#3c66ce] group-hover:to-[#3359b6] group-hover:bg-clip-text group-hover:text-transparent;
   }
 }
+
+@layer utilities {
+  .container {
+    @apply w-full max-w-[105rem] my-0 mx-auto py-0 sm:px-7 px-5;
+  }
+
+  .large-heading {
+    @apply text-7xl md:text-[10rem] 2xl:text-[320px] leading-none font-extrabold tracking-tight;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+  }
+}

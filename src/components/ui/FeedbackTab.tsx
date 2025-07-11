@@ -44,7 +44,7 @@ const FeedbackTab: React.FC = () => {
   return (
     <>
       <button
-        className="flex items-center gap-2 bg-[#121212] hover:bg-[#0a0a0a] text-white px-3 py-1.5 rounded-lg shadow-lg transition-all border border-white/10 text-sm"
+        className="flex items-center gap-2 bg-[#101010] hover:bg-[#080808] text-white px-3 py-1.5 rounded-lg shadow-none transition-all border border-white/10 text-sm"
         style={{ borderRadius: 8 }}
         onClick={() => setOpen(true)}
         aria-label="Feedback"
@@ -54,8 +54,8 @@ const FeedbackTab: React.FC = () => {
       </button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent 
-          className="max-w-xs p-6 pt-10 bg-[#121212] text-white border-none shadow-xl rounded-2xl sm:rounded-2xl"
-          style={{ background: '#121212', color: '#fff', borderRadius: 18 }}
+          className="max-w-xs p-6 pt-10 bg-[#232323] text-white border-none shadow-none rounded-2xl sm:rounded-2xl"
+          style={{ background: '#232323', color: '#fff', borderRadius: 18 }}
         >
           <DialogHeader>
             <DialogTitle className="text-center text-base font-semibold mb-2">{t.title}</DialogTitle>
@@ -63,14 +63,14 @@ const FeedbackTab: React.FC = () => {
           <StarRating value={rating} onChange={setRating} />
           {!submitted ? (
             <button
-              className="mt-5 w-full bg-primary text-white py-2 rounded-lg font-semibold disabled:opacity-60 transition-all"
+              className="mt-5 w-full bg-[#101010] text-white py-2 rounded-lg font-semibold disabled:opacity-60 transition-all border border-white/10"
               disabled={rating === 0}
               onClick={handleSubmit}
             >
               {t.submit}
             </button>
           ) : (
-            <div className="mt-5 text-center text-green-500 font-semibold">{t.thanks}</div>
+            <div className="mt-5 text-center text-green-400 font-semibold">{t.thanks}</div>
           )}
         </DialogContent>
       </Dialog>

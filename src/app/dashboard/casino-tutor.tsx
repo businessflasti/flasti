@@ -12,24 +12,19 @@ export default function CasinoTutor() {
   
   return (
     <div className="mb-6">
-      <Card className="glass-card p-6 relative overflow-hidden hardware-accelerated">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#3b82f6]/10 rounded-full blur-3xl -mr-10 -mt-10 hardware-accelerated"></div>
-        
+      <Card className="bg-[#232323] p-6 relative">
         <h2 className="text-sm text-foreground/60 uppercase font-medium mb-4 relative z-10">Tu Tutora Asignada</h2>
-        
         <div className="flex items-center gap-6 relative z-10">
-          <div className="w-20 h-20 rounded-full overflow-hidden relative shadow-[0_0_10px_rgba(59,130,246,0.3)] border-2 border-[#3b82f6]/20 animate-scale">
+          <div className="w-20 h-20 rounded-full overflow-hidden relative border-2 border-[#3b82f6]/20">
             <img
               src="/images/tutors/soporte-maria.png"
               alt="Tutora María"
               className="w-full h-full object-cover"
             />
           </div>
-          
           <div>
-            <h3 className="text-xl font-bold mb-1 animate-fadeInUp delay-400">María</h3>
-            <p className="text-foreground/70 mb-3 animate-fadeInUp delay-500">Equipo de Flasti</p>
-            
+            <h3 className="text-xl font-bold mb-1">María</h3>
+            <p className="text-foreground/70 mb-3">Equipo de Flasti</p>
             <Button
               className="bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] hover:opacity-90 transition-opacity mobile-touch-friendly mobile-touch-feedback button-hover-effect"
               onClick={() => {
@@ -39,7 +34,7 @@ export default function CasinoTutor() {
               }}
             >
               <MessageSquare className="mr-2 h-4 w-4" />
-              <span className="animate-fadeInUp delay-600">Iniciar chat</span>
+              <span>Iniciar chat</span>
             </Button>
           </div>
         </div>

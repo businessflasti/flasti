@@ -6,6 +6,9 @@ import Footer from "@/components/layout/Footer";
 import AffiliateTracker from "@/components/affiliate/AffiliateTracker";
 import { usePathname } from 'next/navigation';
 import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
+import { ToastProvider } from "@/contexts/ToastContext";
+import { Sidebar } from "@/components/ui/sidebar";
+import { Logo } from "@/components/ui/logo";
 
 // Cargar el componente de notificaciones FOMO de forma diferida
 // Solo se cargará en páginas que no sean de checkout, ya que allí se maneja por separado
@@ -37,40 +40,52 @@ const MainLayoutComponent = ({ children, showHeader = false, disableChat = false
   const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
 
   return (
-    <div className="min-h-screen flex flex-col relative gradient-background overflow-hidden mobile-app-container">
-      {/* Elementos decorativos futuristas solo en desktop */}
-      {isDesktop && (
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl animate-float decorative-element hardware-accelerated"></div>
-          <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#9333ea]/10 blur-3xl animate-float delay-300 decorative-element hardware-accelerated"></div>
-        </div>
-      )}
+    <ToastProvider>
+      <div className="min-h-screen flex flex-col relative overflow-hidden mobile-app-container" style={{ background: '#101010' }}>
+        {/* Sidebar colapsable solo en dashboard */}
+        {isInternalPage && (
+          <div className="fixed top-0 left-0 z-40 h-full">
+            <Sidebar />
+          </div>
+        )}
 
-      {/* Header con carga optimizada */}
-      {showHeader && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-card/60 backdrop-blur-md border-b border-white/10 hardware-accelerated">
-          {/* <Navbar /> */}
-        </div>
-      )}
+        {/* Header con logo y fondo #101010 */}
+        {showHeader && !isInternalPage && (
+          <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 hardware-accelerated flex items-center px-4" style={{ background: '#101010', height: 64 }}>
+            <Logo size="md" showTextWhenExpanded={true} />
+            {/* ...otros elementos del header si los hay... */}
+          </div>
+        )}
 
-      {/* Contenido principal */}
-      <main className="flex-grow relative z-10 hardware-accelerated">{children}</main>
+        {/* Elementos decorativos futuristas solo en desktop */}
+        {isDesktop && !isInternalPage && (
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl animate-float decorative-element hardware-accelerated"></div>
+            <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#9333ea]/10 blur-3xl animate-float delay-300 decorative-element hardware-accelerated"></div>
+          </div>
+        )}
 
-      {/* Footer y componentes adicionales */}
-      <Footer />
-      <Suspense fallback={null}>
-        <AffiliateTracker />
-      </Suspense>
+        {/* Contenido principal */}
+        <main className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all' : ''}`}>
+          {children}
+        </main>
 
-      {/* Chat widget - cargado de forma diferida solo cuando es necesario */}
-      {shouldShowChat && <DashboardChatWidget />}
+        {/* Footer y componentes adicionales */}
+        <Footer />
+        <Suspense fallback={null}>
+          <AffiliateTracker />
+        </Suspense>
 
-      {/* Tawk.to chat script */}
-      <DirectTawkToScript showBubble={isContactPage} />
+        {/* Chat widget - cargado de forma diferida solo cuando es necesario */}
+        {shouldShowChat && <DashboardChatWidget />}
 
-      {/* Notificaciones FOMO - No mostrar en la página de checkout */}
-      {!isCheckoutPage && <FomoNotifications />}
-    </div>
+        {/* Tawk.to chat script */}
+        <DirectTawkToScript showBubble={isContactPage} />
+
+        {/* Notificaciones FOMO - No mostrar en la página de checkout */}
+        {!isCheckoutPage && <FomoNotifications />}
+      </div>
+    </ToastProvider>
   );
 };
 

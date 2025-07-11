@@ -1,22 +1,8 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import { AchievementsProvider } from '@/contexts/AchievementsContext';
-import { LeaderboardProvider } from '@/contexts/LeaderboardContext';
-import { GoalsProvider } from '@/contexts/GoalsContext';
+import React from 'react';
 
-interface GamificationProvidersProps {
-  children: ReactNode;
-}
-
-export default function GamificationProviders({ children }: GamificationProvidersProps) {
-  return (
-    <AchievementsProvider>
-      <LeaderboardProvider>
-        <GoalsProvider>
-          {children}
-        </GoalsProvider>
-      </LeaderboardProvider>
-    </AchievementsProvider>
-  );
+// Provider desactivado por eliminación de gamificación y afiliados
+export default function GamificationProviders({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
 }

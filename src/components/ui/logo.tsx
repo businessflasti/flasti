@@ -2,6 +2,7 @@
 
 import { useTheme } from "@/contexts/ThemeContext";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 interface LogoProps {
   className?: string;
@@ -11,6 +12,7 @@ interface LogoProps {
 
 const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: LogoProps) => {
   const { theme } = useTheme();
+  const pathname = typeof window !== "undefined" ? window.location.pathname : undefined;
   const isDark = theme === "dark";
 
   // Tamaños basados en el prop size
@@ -41,14 +43,17 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   const logoPath = typeof window !== "undefined" && window.location && window.location.pathname ?
     (window.location.pathname.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.png") : "/logo/isotipo.png";
 
+  // Mostrar texto solo si no estamos en la página de login
+  const showText = pathname !== "/login";
+
   return (
-    <div className={`${className}`} tabIndex={-1} style={{ cursor: "default" }}>
-      <div className="flex items-center gap-2">
+    <div className={`${className} flex justify-center`} tabIndex={-1} style={{ cursor: "default" }}>
+      <div className="flex items-center justify-center">
         {/* Logo SVG */}
         <div className="relative flex items-center justify-center" style={{ height: logoHeight, width: logoWidth }}>
           <Image
             src={logoPath}
-            alt="flasti logo"
+            alt="logo"
             width={logoWidth}
             height={logoHeight}
             className="object-contain"
@@ -56,15 +61,16 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
             unoptimized={true}
           />
         </div>
-
         {/* Texto del logo */}
-        {showTextWhenExpanded && (
+        {showText && (
           <span
-            className={`${textColor} ${textClass} transform -translate-y-px`}
+            className={`ml-2 font-bold ${textClass} ${textColor}`}
             style={{
               fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
               fontWeight: 600,
-              letterSpacing: '-0.01em'
+              letterSpacing: '-0.01em',
+              userSelect: 'none',
+              lineHeight: 1
             }}
           >
             flasti

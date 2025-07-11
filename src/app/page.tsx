@@ -2,10 +2,11 @@
 
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
-import HeroSection from "@/components/sections/HeroSection";
 import BenefitsSection from "@/components/sections/BenefitsSection";
 import AdBlock from "@/components/ui/AdBlock";
 import MainLayout from "@/components/layout/MainLayout";
+import StudiovaHeroSection from "@/components/sections/StudiovaHeroSection";
+import StatsSection from "@/components/sections/StatsSection";
 
 // Lazy load de secciones pesadas
 const HowItWorksSection = dynamic(
@@ -33,17 +34,16 @@ const CTASection = dynamic(() => import("@/components/sections/CTASection"), {
 });
 
 // Memoización de componentes principales
-const MemoHeroSection = React.memo(HeroSection);
 const MemoBenefitsSection = React.memo(BenefitsSection);
 
 export default function Home() {
   return (
     <MainLayout showHeader={true} disableChat={true}>
-      <div style={{ minHeight: "100vh", background: "#000000" }}>
-        {/* Sección 1: Hero (actual) */}
-        <div style={{ background: "#000000" }}>
-          <MemoHeroSection />
-        </div>
+      <div style={{ minHeight: "100vh", background: "#101010" }}>
+        {/* Sección Studiova Hero (nueva) */}
+        <StudiovaHeroSection />
+        {/* Sección Stats (nueva) */}
+        <StatsSection />
         {/* Sección 2: Accede a Flasti y comienza a ganar */}
         <MemoBenefitsSection />
         {/* Sección 3: ¿Cómo funciona? */}

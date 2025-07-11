@@ -1,0 +1,7 @@
+src/components/affiliate/AffiliateClickRecorder.tsx
+src/components/affiliate/AffiliateTracker.tsx
+src/components/affiliate/AffiliateApps.tsx
+src/components/affiliate/AffiliatePayments.tsx
+src/components/affiliate/AffiliateAppsSimple.tsx
+src/components/affiliate/AffiliateHowItWorks.tsx
+src/components/affiliate/AffiliateCheckoutButton.tsx

@@ -1,0 +1,6 @@
+src/app/dashboard/links/page.tsx
+src/app/dashboard/links/page.tsx.new
+src/app/dashboard/stats/page.tsx
+src/app/dashboard/aplicaciones/page.tsx
+src/app/dashboard/recursos/page.tsx
+src/app/dashboard/recursos/error.tsx

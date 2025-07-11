@@ -1,0 +1,13 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" width="40" height="42">
+	<title>primary-leaf</title>
+	<defs>
+		<image  width="24" height="21" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVAQMAAABmJ7xlAAAAAXNSR0IB2cksfwAAAAZQTFRFwf9y////dD/9VwAAAAJ0Uk5TAP9bkSK1AAAASUlEQVR4nGNkYPvFyGDvyMjw/yEj85+PjPwf/jLaH/jL+J/hPxzXNwBxFSuj/RJpRvkl1ozyKdWMfF9/M/J8/8PIwAzF7D9gGABAkh5GFx0BjQAAAABJRU5ErkJggg=="/>
+		<image  width="18" height="28" id="img2" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcAQMAAABWCn1kAAAAAXNSR0IB2cksfwAAAAZQTFRFwf9y////dD/9VwAAAAJ0Uk5TAP9bkSK1AAAAXUlEQVR4nCWNwQ1AQBRE/+PAQaIBCZXQGbsqsyohUYCDA4n4/HWYZDKZeYNUG9LOSD/CA+kN2empF083BQYXUPmkCXrl6Nqg3v0yb5kQO9a1Tbn7yDCWKJEdP4rjBSjDKZ2zwGj/AAAAAElFTkSuQmCC"/>
+		<image  width="24" height="21" id="img3" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVAgMAAAAhh8a1AAAAAXNSR0IB2cksfwAAAAxQTFRFwf9y////////////G0Zp2AAAAAR0Uk5TAP8DBVZM9TsAAABYSURBVHicbc2xAYAgEEPRpGAD3cIhHOEKmJIGC0dwA7bADSgwXGOh1avyQwDrDn4I9mLFSTnYIGO7RLB+OuMQGt2LAwwm/KAE0FURjTOMzHnXi2DM/rdVPB1+HpjzX2EBAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use  href="#img1" x="0" y="21"/>
+	<use  href="#img2" x="22" y="7"/>
+	<use  href="#img3" x="0" y="0"/>
+</svg>

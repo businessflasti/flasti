@@ -222,8 +222,7 @@ const HeroSection = React.memo(function HeroSection() {
           {/* Estadísticas */}
           <div className="flex flex-row justify-center gap-4 sm:gap-8 mb-10 mt-8 animate-entry animate-entry-delay-3 hardware-accelerated hero-stats-container">
             <div className={
-              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 ` +
-              (lowEnd ? 'bg-[#181818]' : 'bg-card/30 shadow-xl backdrop-blur-md')
+              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
             }>
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.generatedAmount} prefix="$" />
@@ -234,8 +233,7 @@ const HeroSection = React.memo(function HeroSection() {
               </p>
             </div>
             <div className={
-              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 ` +
-              (lowEnd ? 'bg-[#181818]' : 'bg-card/30 shadow-xl backdrop-blur-md')
+              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
             }>
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.microtasksCompleted} />
@@ -249,8 +247,7 @@ const HeroSection = React.memo(function HeroSection() {
           {/* Indicador de usuarios */}
           <div className="mt-6 flex justify-center animate-entry animate-entry-delay-4 hardware-accelerated">
             <div className={
-              `flex items-center gap-2 rounded-full border border-white/5 px-4 py-2 ` +
-              (lowEnd ? 'bg-[#181818]' : 'bg-card/30 shadow-xl backdrop-blur-md')
+              `flex items-center gap-2 rounded-full border border-white/5 px-4 py-2 bg-[#282828]`
             }>
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden transition-all duration-300 hover:scale-110 hover:border-foreground/80 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">

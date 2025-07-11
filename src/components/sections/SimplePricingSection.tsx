@@ -192,7 +192,7 @@ const SimplePricingSection = React.memo(() => {
 
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
-          <Card className="bg-card/30 backdrop-blur-md shadow-xl overflow-hidden relative group h-full border-primary/30 hover:border-primary/50 transition-colors">
+          <Card className="bg-[#232323] overflow-hidden relative h-full border border-white/10">
             {/* Animación eliminada: este bloque ya no tiene efecto motion ni animación de entrada */}
             <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
@@ -420,7 +420,7 @@ const SimplePricingSection = React.memo(() => {
 
 
               <Link href="/checkout"> 
-                <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 shadow-lg shadow-[#16a34a]/20 flex items-center justify-center gap-2">
+                <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-2 focus:outline-none focus:ring-0 focus:border-white/10">
                   {t('empiezaGanarBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>
@@ -429,7 +429,7 @@ const SimplePricingSection = React.memo(() => {
               </Link>
 
               <div className="flex justify-center mt-4 mb-2">
-                <div className="px-3 py-1 bg-[#0A0A0A] rounded-full shadow-sm flex items-center gap-1.5 border border-white/10">
+                <div className="px-3 py-1 rounded-full flex items-center gap-1.5 border border-white/10" style={{ background: '#1A1A1A' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -444,9 +444,9 @@ const SimplePricingSection = React.memo(() => {
               </div>
 
               <div className="mt-4 border-t border-white/10 pt-6">
-                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all bg-[#0A0A0A]">
+                <div className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all" style={{ background: '#1A1A1A' }}>
                   <button
-                    className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
+                    className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 focus:border-white/10 hover:border-white/10"
                     onClick={() => setIsLoginOpen(!isLoginOpen)}
                   >
                     <div className="flex items-center">

@@ -1,14 +1,14 @@
 /* Estilos para el tema de casino */
 :root {
   /* Colores principales - Modo oscuro (por defecto) */
-  --casino-primary: #8b5cf6;
-  --casino-secondary: #a855f7;
-  --casino-accent: #ec4899;
-  --casino-background: #0f0f12;
-  --casino-card-bg: #1a1a22;
+  --casino-primary: #101010;
+  --casino-secondary: #232323;
+  --casino-accent: #3c66ce;
+  --casino-background: #101010;
+  --casino-card-bg: #232323;
   --casino-text: #ffffff;
   --casino-text-muted: rgba(255, 255, 255, 0.7);
-  --casino-border: rgba(139, 92, 246, 0.2);
+  --casino-border: #232323;
 
   /* Tamaños */
   --sidebar-width: 240px;
@@ -17,22 +17,22 @@
   --card-radius: 16px;
 
   /* Colores de tarjetas */
-  --casino-card-1: #ec4899;
-  --casino-card-2: #9333ea;
-  --casino-card-3: #0ea5e9;
-  --casino-card-4: #22c55e;
-  --casino-card-5: #f59e0b;
-  --casino-card-6: #8b5cf6;
+  --casino-card-1: #232323;
+  --casino-card-2: #232323;
+  --casino-card-3: #232323;
+  --casino-card-4: #232323;
+  --casino-card-5: #232323;
+  --casino-card-6: #232323;
 }
 
 /* Layout principal */
 .casino-layout {
   display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-columns: 1fr; /* Usar todo el ancho, sin sidebar */
   grid-template-rows: var(--header-height) 1fr;
   grid-template-areas:
-    "sidebar header"
-    "sidebar main";
+    "header"
+    "main";
   min-height: 100vh;
   background-color: var(--casino-background);
   background-image: none;
@@ -68,8 +68,8 @@
 /* Sidebar */
 .casino-sidebar {
   grid-area: sidebar;
-  background-color: #1E1B2E;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #101010 !important;
+  border-right: 1px solid #232323;
   padding: 1rem 0;
   display: flex;
   flex-direction: column;
@@ -224,8 +224,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 3rem;
-  background-color: #1E1B2E;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #101010 !important;
+  border-bottom: 1px solid #232323;
   z-index: 40;
   transition: background-color 0.3s ease, border-color 0.3s ease;
   height: var(--header-height);
@@ -1137,6 +1137,33 @@
     right: auto;
     height: 150px;
   }
+}
+
+/* Eliminar gradientes, sombras, blur y drop-shadow */
+:root {
+  /* ...colores y variables... */
+}
+
+/* ...existing code... */
+
+/* Eliminar gradientes y sombras de sidebar, header, tarjetas, botones, etc. */
+.casino-layout, .casino-sidebar, .casino-header, .app-card, .carousel-nav-button, .user-balance, .main-banner, .coming-soon-image, .app-logo-image, .active-app-image {
+  box-shadow: none !important;
+  background: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Eliminar gradientes de líneas específicas */
+.sidebar-nav-item.active::before,
+.banner-title,
+.coming-soon-overlay {
+  background: none !important;
+}
+
+/* Eliminar transiciones innecesarias */
+* {
+  transition: none !important;
 }
 
 /* Animaciones y efectos */

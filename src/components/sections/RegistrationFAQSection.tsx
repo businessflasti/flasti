@@ -121,14 +121,14 @@ const RegistrationFAQSection = React.memo(() => {
 					{getFaqs(t).map((faq, index) => (
 						<div
 							key={index}
-							className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all bg-[#0A0A0A]"
+							className="bg-[#232323] overflow-hidden relative rounded-xl border border-white/10"
 						>
 							<button
 								className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
 								onClick={() => toggleFAQ(index)}
 							> 
 								<div className="flex items-center">
-									<div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center mr-3 border border-white/10">
+									<div className="w-8 h-8 rounded-full bg-[#232323] flex items-center justify-center mr-3 border border-white/10">
 										<div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
 									</div>
 									<span className="font-medium">{faq.question}</span>

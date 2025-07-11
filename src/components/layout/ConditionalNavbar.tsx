@@ -5,8 +5,8 @@ import { NavbarDemo } from "@/components/ui/resizable-navbar-demo";
 
 export default function ConditionalNavbar() {
   const pathname = usePathname();
-  // Oculta el header en /login y cualquier ruta bajo /checkout
-  const hideNavbar = pathname === "/login" || pathname.startsWith("/checkout");
+  // Oculta el header en /login, cualquier ruta bajo /checkout y dashboard
+  const hideNavbar = !pathname || pathname === "/login" || pathname.startsWith("/checkout") || pathname.startsWith("/dashboard");
   if (hideNavbar) return null;
   return <NavbarDemo />;
 }

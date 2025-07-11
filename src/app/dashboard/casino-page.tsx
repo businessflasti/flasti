@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { UserLevelProvider } from '@/contexts/UserLevelContext';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
-import OnboardingModal from '@/components/dashboard/OnboardingModal';
+// import OnboardingModal from '@/components/dashboard/OnboardingModal';
 import analyticsService from '@/lib/analytics-service';
 
 // Importar estilos
@@ -34,7 +34,7 @@ export default function CasinoDashboardPage() {
   // Mostrar pantalla de carga mientras se verifica la autenticación
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#13111C]">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#101010]">
         <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
         <h2 className="text-xl font-semibold">Cargando dashboard</h2>
         <p className="text-foreground/60 mt-2">Preparando todo para ti...</p>
@@ -51,9 +51,11 @@ export default function CasinoDashboardPage() {
     <BalanceVisibilityProvider>
       <UserLevelProvider>
         <CasinoLayout>
+          {/* <ChangelogBanner /> eliminado */}
+          {/* <TipsBanner /> eliminado */}
           <CasinoContent />
         </CasinoLayout>
-        <OnboardingModal />
+        {/* <OnboardingModal /> eliminado */}
       </UserLevelProvider>
     </BalanceVisibilityProvider>
   );
