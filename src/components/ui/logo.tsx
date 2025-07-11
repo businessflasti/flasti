@@ -81,4 +81,5 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   );
 };
 
+export { Logo };
 export default Logo;
