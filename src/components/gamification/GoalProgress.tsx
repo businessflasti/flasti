@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGoals } from '@/contexts/GoalsContext';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -25,53 +24,18 @@ export default function GoalProgress() {
     description: string;
     type: 'sales' | 'clicks' | 'earnings' | 'custom';
     target_value: number;
-    deadline: string;
-  }>({
-    name: '',
-    description: '',
-    type: 'sales',
-    target_value: 10,
-    deadline: ''
-  });
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await refreshGoals();
-    setRefreshing(false);
-  };
-
-  const handleCreateGoal = async () => {
-    const goal = await createGoal({
-      name: newGoal.name,
-      description: newGoal.description,
-      type: newGoal.type,
-      target_value: newGoal.target_value,
-      current_value: 0,
-      deadline: newGoal.deadline ? new Date(newGoal.deadline).toISOString() : null
-    });
-
-    if (goal) {
-      setDialogOpen(false);
-      setNewGoal({
-        name: '',
-        description: '',
-        type: 'sales',
-        target_value: 10,
-        deadline: ''
-      });
-    }
-  };
-
-  const handleDeleteGoal = async (goalId: number) => {
-    if (confirm('¿Estás seguro de que deseas eliminar este objetivo?')) {
-      await deleteGoal(goalId);
-    }
-  };
-
-  const getGoalTypeLabel = (type: string) => {
-    switch (type) {
-      case 'sales':
+  return (
+    <div className="p-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Sistema de objetivos desactivado</CardTitle>
+          <CardDescription>
+            El sistema de metas y seguimiento personalizado ha sido desactivado temporalmente. Si tienes dudas, contacta soporte.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </div>
+  );
         return 'Ventas';
       case 'clicks':
         return 'Clics';
