@@ -26,13 +26,10 @@
 }
 
 /* Layout principal */
+
 .casino-layout {
-  display: grid;
-  grid-template-columns: 1fr; /* Usar todo el ancho, sin sidebar */
-  grid-template-rows: var(--header-height) 1fr;
-  grid-template-areas:
-    "header"
-    "main";
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: var(--casino-background);
   background-image: none;
@@ -318,7 +315,7 @@
 
 /* Banner principal */
 .main-banner {
-  background: #1E1B2E;
+background: #E8CA44;
   border-radius: var(--card-radius);
   padding: 2rem;
   margin-bottom: 1.5rem;

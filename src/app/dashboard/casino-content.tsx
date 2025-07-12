@@ -13,7 +13,7 @@ import {
   Users,
   DollarSign,
   Clock,
-  Sparkles,
+  ArrowDownToLine,
   Gift,
   Zap,
   Image as ImageIcon,
@@ -210,7 +210,17 @@ export default function CasinoContent() {
   };
 
   return (
-    <div className="w-full px-0">
+    <div className="w-full px-0 relative">
+      <motion.div
+        initial={{ opacity: 0, y: -24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="fixed top-4 left-4 z-[60] bg-yellow-300 text-black rounded-lg shadow-lg px-4 py-2 flex items-center gap-2 text-base font-semibold"
+        style={{ minWidth: 240 }}
+      >
+        <ArrowDownToLine size={22} className="mr-2" style={{ color: 'var(--casino-primary)' }} />
+        <span>Microtrabajos del día</span>
+      </motion.div>
       {/* Offerwall MyLead Rewards */}
       {user?.id && (
         <motion.div
