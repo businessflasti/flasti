@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
+import ClientLayout from "@/components/layout/ClientLayout";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -42,10 +43,10 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         {/* Yandex Metrica - Colocado lo más cerca posible del head */}
-        <YandexMetrica />
+        {/* <YandexMetrica /> */}
 
         {/* Facebook Pixel - Colocado después de Yandex Metrica */}
-        <FacebookPixel />
+        {/* <FacebookPixel /> */}
 
         {/* Google AdSense */}
         <script
