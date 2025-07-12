@@ -197,11 +197,10 @@ export default function AvatarUpload() {
               </div>
             )}
           </div>
-          <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#10b981] border border-background shadow-sm translate-x-1/4 translate-y-1/2"></span>
         </div>
 
         <button
-          className="absolute bottom-0 right-0 bg-gradient-to-r from-[#9333ea] to-[#ec4899] text-white p-2 rounded-full shadow-md hover:opacity-90 transition-opacity"
+          className="absolute bottom-0 right-0 bg-[#ec3f7c] text-white p-2 rounded-full shadow-md hover:opacity-90 transition-opacity"
           onClick={handleSelectFile}
           aria-label="Cambiar foto de perfil"
         >

@@ -311,6 +311,7 @@
   grid-area: main;
   padding: 1.5rem;
   overflow-y: auto;
+  background: #fff !important;
 }
 
 /* Eliminados los estilos para modo claro */

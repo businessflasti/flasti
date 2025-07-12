@@ -5,10 +5,27 @@ import { FiChevronRight, FiHome } from 'react-icons/fi';
 import { Tooltip } from 'react-tooltip';
 
 // Utilidad para formatear los segmentos de la ruta
+
+// Diccionario de traducción para los segmentos
+const segmentTranslations: Record<string, string> = {
+  dashboard: 'Inicio',
+  balance: 'Balance',
+  'withdrawals-history': 'Historial de Retiros',
+  'rewards-history': 'Historial de Recompensas',
+  withdrawals: 'Retiros',
+  profile: 'Perfil',
+  notifications: 'Notificaciones',
+  contacto: 'Soporte',
+  admin: 'Admin',
+  'test-user': 'Test User',
+  'terminos': 'Términos',
+  'privacidad': 'Privacidad',
+  legal: 'Legal',
+  // Agrega más según tus rutas
+};
+
 function formatSegment(seg: string) {
-  return seg
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, l => l.toUpperCase());
+  return segmentTranslations[seg] || seg.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 }
 
 export function Breadcrumbs() {
@@ -29,9 +46,9 @@ export function Breadcrumbs() {
             data-tooltip-content="Ir al inicio del panel"
           >
             <FiHome className="inline-block text-lg mb-[2px]" aria-hidden="true" />
-            <span className="sr-only">Dashboard</span>
+            <span className="sr-only">Inicio</span>
           </Link>
-          <Tooltip id="breadcrumb-dashboard" place="bottom" />
+          <Tooltip id="breadcrumb-dashboard" place="bottom" content="Ir al inicio del panel" />
         </li>
         {segments.slice(1).map((seg, i) => {
           path += '/' + seg;

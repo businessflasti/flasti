@@ -1,11 +1,6 @@
-import MainLayout from "@/components/layout/MainLayout";
-import { Metadata } from "next";
-import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Flasti | Información Legal",
-  description: "Información legal y marco normativo de la plataforma Flasti.",
-};
+import MainLayout from "@/components/layout/MainLayout";
+import Link from "next/link";
 
 export default function LegalPage() {
   return (

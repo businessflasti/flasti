@@ -222,14 +222,19 @@ export default function CasinoContent() {
           {loading ? (
             <Skeleton className="h-[400px] w-full mb-6" />
           ) : (
-            <iframe
-              title="Offerwall MyLead Rewards"
-              src={`https://offerwall.mylead.global/offerwall/ed3a45f2-5d7d-11f0-a77f-8a5fb7be40ea?player_id=${user.id}`}
-              className="w-full h-[700px] rounded-xl border border-[#232323] bg-[#232323]"
-              frameBorder="0"
-              allow="fullscreen"
-              style={{ minHeight: 500 }}
-            />
+            <div
+              className="w-full max-w-full lg:max-w-[calc(100vw-224px)] mx-auto flex-1 flex flex-col p-0 m-0"
+              style={{ minHeight: 'calc(100vh - 48px)', background: '#ffffff', border: 'none', boxShadow: 'none', margin: 0, padding: 0 }}
+            >
+              <iframe
+                title="Offerwall RewardMe"
+                src="https://reward-me.eu/ed3a45f2-5d7d-11f0-a77f-8a5fb7be40ea?player_id=e07290e6-8b42-4ef8-a733-7d588c4f17c8"
+                sandbox="allow-top-navigation allow-scripts allow-same-origin allow-popups allow-forms"
+                style={{ width: '100%', height: '100%', minHeight: 'calc(100vh - 48px)', border: 'none', margin: 0, padding: 0, display: 'block', overflow: 'hidden' }}
+                frameBorder="0"
+                allow="fullscreen"
+              />
+            </div>
           )}
         </motion.div>
       )}

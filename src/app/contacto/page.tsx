@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import MainLayout from "@/components/layout/MainLayout";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +16,7 @@ import TawkToWidget from "@/components/chat/TawkToWidget";
 import ChatButton from "@/components/chat/ChatButton";
 
 export default function ContactoPage() {
+  const router = useRouter();
 
   const [formState, setFormState] = useState({
     name: "",
@@ -95,7 +97,7 @@ export default function ContactoPage() {
     <MainLayout showHeader={true} disableChat={true}>
       {/* Widget de chat para la página de contacto (visible) */}
       <TawkToWidget showBubble={true} />
-      <div className="container-custom py-16 md:py-24">
+      <div className="container-custom py-16 md:py-24" style={{ background: '#101010', minHeight: '100vh' }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-5xl font-bold mb-4 text-gradient">
@@ -130,8 +132,9 @@ export default function ContactoPage() {
               <ChatButton
                 variant="default"
                 size="sm"
-                className="bg-gradient-to-r from-[#ec4899] to-[#9333ea] text-white hover:opacity-90 transition-all"
+                className="flex items-center justify-center gap-2 bg-[#3c66ce] hover:bg-[#3359b6] text-white px-4 py-2 rounded-lg shadow-md transition-all"
                 text="Iniciar chat"
+                showIcon={true}
               />
             </div>
 

@@ -39,7 +39,7 @@ const BenefitsSection = () => {
           {/* 1. Gana dinero real */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
             <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/promo1.jpg" alt="Gana dinero" className="object-cover w-full h-full" />
+              <img src="/promos/ben1.webp" alt="Gana dinero" className="object-cover w-full h-full" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('ganaDinero')}</h3>
@@ -50,7 +50,7 @@ const BenefitsSection = () => {
           {/* 2. Sin experiencia */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
             <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/promo2.jpg" alt="Sin experiencia" className="object-cover w-full h-full" />
+              <img src="/promos/ben2.webp" alt="Sin experiencia" className="object-cover w-full h-full" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinExperiencia')}</h3>
@@ -61,7 +61,7 @@ const BenefitsSection = () => {
           {/* 3. Desde tu casa */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
             <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/promo3.jpg" alt="Desde tu casa" className="object-cover w-full h-full" />
+              <img src="/promos/ben3.webp" alt="Desde casa" className="object-cover w-full h-full" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('desdeCasa')}</h3>
@@ -72,7 +72,7 @@ const BenefitsSection = () => {
           {/* 4. Horario flexible */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
             <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/examples/flasti-images/enchanted-forest-mushrooms.jpg" alt="Horario flexible" className="object-cover w-full h-full" />
+              <img src="/promos/ben4.webp" alt="Sin horarios" className="object-cover w-full h-full" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinHorarios')}</h3>

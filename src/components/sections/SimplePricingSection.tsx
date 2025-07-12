@@ -195,7 +195,7 @@ const SimplePricingSection = React.memo(() => {
           <Card className="bg-[#232323] overflow-hidden relative h-full border border-white/10">
             {/* Animación eliminada: este bloque ya no tiene efecto motion ni animación de entrada */}
             <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
+            {/* Efecto hover eliminado */}
 
             <div className="absolute right-5 top-5">
               <div className="bg-[#16a34a] text-white text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-md shadow-[#16a34a]/20">
@@ -209,7 +209,7 @@ const SimplePricingSection = React.memo(() => {
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
-                  <Logo size="sm" showTextWhenExpanded={false} className="mx-auto scale-95" />
+                  <Image src="/logo/isotipo.svg" alt="logo flasti" width={22} height={22} className="mx-auto" />
                 </div>
                 <div>
                   <h3
@@ -420,7 +420,7 @@ const SimplePricingSection = React.memo(() => {
 
 
               <Link href="/checkout"> 
-                <Button className="w-full py-6 text-lg font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-2 focus:outline-none focus:ring-0 focus:border-white/10">
+                <Button className="w-full py-3 text-base font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-2 focus:outline-none focus:ring-0 focus:border-white/10">
                   {t('empiezaGanarBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>

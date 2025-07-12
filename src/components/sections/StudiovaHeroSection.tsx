@@ -1,15 +1,16 @@
 "use client";
 
+
 import Image from "next/image";
 import { ParallaxProvider } from "react-scroll-parallax";
 import LocationBadge from '@/components/dashboard/LocationBadge';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function StudiovaHeroSection() {
+    const { t } = useLanguage();
     return (
         <ParallaxProvider>
-            {/* Parallax eliminado para evitar que la sección baje al hacer scroll */}
             <section className="relative flex items-end text-white bg-black h-full min-h-screen">
-                {/* Background Video */}
                 <video
                     className="absolute top-0 left-0 w-full h-full object-cover"
                     loop
@@ -17,15 +18,10 @@ function StudiovaHeroSection() {
                     muted
                     playsInline
                 >
-                    <source src="/video/banner-video.mp4" type="video/mp4" />
+                    <source src="/video/video-dem.mp4" type="video/mp4" />
                 </video>
-
-                {/* Overlay to improve text readability */}
                 <div className="absolute inset-0 bg-black/50"></div>
-
-                {/* Content */}
                 <div className="relative z-10 container text-left">
-                    {/* Location Badge (ubicación) */}
                     <div className="flex justify-start mb-10 mt-4 animate-entry animate-entry-delay-1 hardware-accelerated">
                         <LocationBadge />
                     </div>
@@ -41,8 +37,7 @@ function StudiovaHeroSection() {
                                 />
                             </div>
                             <p className="text-white/70 max-w-md text-lg md:text-xl font-normal">
-                                Aprovecha el{" "}
-                                <span style={{ color: "#3C66CE" }}>poder de internet</span> y empieza ahora mismo a generar ingresos
+                                {t('aprovechaPoder')}
                             </p>
                         </div>
                         <div className="flex flex-col lg:flex-row items-start lg:items-end gap-4">

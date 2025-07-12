@@ -3,12 +3,12 @@
 import React, { memo, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Footer from "@/components/layout/Footer";
+import DashboardHeader from "@/components/layout/DashboardHeader";
 import AffiliateTracker from "@/components/affiliate/AffiliateTracker";
 import { usePathname } from 'next/navigation';
 import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { Sidebar } from "@/components/ui/sidebar";
-import { Logo } from "@/components/ui/logo";
 
 // Cargar el componente de notificaciones FOMO de forma diferida
 // Solo se cargará en páginas que no sean de checkout, ya que allí se maneja por separado
@@ -38,22 +38,29 @@ const MainLayoutComponent = ({ children, showHeader = false, disableChat = false
 
   // Renderizado optimizado de decorativos solo en desktop
   const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  // Detectar si es móvil
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   return (
     <ToastProvider>
-      <div className="min-h-screen flex flex-col relative overflow-hidden mobile-app-container" style={{ background: '#101010' }}>
+      <div
+        className={`min-h-screen flex flex-col relative overflow-hidden mobile-app-container${(isInternalPage || isContactPage) ? '' : ' gradient-background'}`}
+        style={(isInternalPage || isContactPage) ? { background: '#101010' } : {}}
+      >
         {/* Sidebar colapsable solo en dashboard */}
         {isInternalPage && (
           <div className="fixed top-0 left-0 z-40 h-full">
-            <Sidebar />
-          </div>
-        )}
-
-        {/* Header con logo y fondo #101010 */}
-        {showHeader && !isInternalPage && (
-          <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 hardware-accelerated flex items-center px-4" style={{ background: '#101010', height: 64 }}>
-            <Logo size="md" showTextWhenExpanded={true} />
-            {/* ...otros elementos del header si los hay... */}
+            <Sidebar open={isMobile ? mobileMenuOpen : undefined} setOpen={isMobile ? setMobileMenuOpen : undefined} />
           </div>
         )}
 
@@ -65,13 +72,29 @@ const MainLayoutComponent = ({ children, showHeader = false, disableChat = false
           </div>
         )}
 
+        {/* Nuevo encabezado para dashboard y todas las páginas con sidebar */}
+        {isInternalPage && (
+          <div className="w-full z-30 sticky top-0">
+            <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
+          </div>
+        )}
+        {/* Header con carga optimizada para páginas externas */}
+        {showHeader && !isInternalPage && (
+          <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 hardware-accelerated" style={{ background: '#101010' }}>
+            {/* <Navbar /> */}
+          </div>
+        )}
+
         {/* Contenido principal */}
-        <main className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all' : ''}`}>
+        <main
+          className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all' : ''}`}
+          style={isInternalPage ? { background: '#101010' } : {}}
+        >
           {children}
         </main>
 
-        {/* Footer y componentes adicionales */}
-        <Footer />
+        {/* Footer solo fuera del dashboard */}
+        {!isInternalPage && <Footer />}
         <Suspense fallback={null}>
           <AffiliateTracker />
         </Suspense>

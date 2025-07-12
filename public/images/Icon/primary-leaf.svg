@@ -1,5 +1,13 @@
-<svg width="40" height="42" viewBox="0 0 40 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 27.8928L13.9269 21.6025L21.943 26.3203L23.5624 41.7978L13.684 41.7148L15.1415 30.9551L13.4411 29.9619L5.10111 36.5836L0 27.8928Z" fill="#C1FF72"/>
-<path d="M22.8342 25.6576L35.1419 34.8446L40 25.9887L30.1213 21.933V19.9466L40 15.8082L35.1419 7.03488L22.8342 16.2221V25.6576Z" fill="#C1FF72"/>
-<path d="M21.943 15.4775L23.5624 0L13.684 0.165487L15.1415 10.9253L13.4411 11.9185L5.02015 5.29708L0 13.9049L13.9269 20.1952L21.943 15.4775Z" fill="#C1FF72"/>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" width="40" height="42">
+	<title>primary-leaf</title>
+	<defs>
+		<image  width="24" height="21" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVAQMAAABmJ7xlAAAAAXNSR0IB2cksfwAAAAZQTFRFwf9y////dD/9VwAAAAJ0Uk5TAP9bkSK1AAAASUlEQVR4nGNkYPvFyGDvyMjw/yEj85+PjPwf/jLaH/jL+J/hPxzXNwBxFSuj/RJpRvkl1ozyKdWMfF9/M/J8/8PIwAzF7D9gGABAkh5GFx0BjQAAAABJRU5ErkJggg=="/>
+		<image  width="18" height="28" id="img2" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcAQMAAABWCn1kAAAAAXNSR0IB2cksfwAAAAZQTFRFwf9y////dD/9VwAAAAJ0Uk5TAP9bkSK1AAAAXUlEQVR4nCWNwQ1AQBRE/+PAQaIBCZXQGbsqsyohUYCDA4n4/HWYZDKZeYNUG9LOSD/CA+kN2empF083BQYXUPmkCXrl6Nqg3v0yb5kQO9a1Tbn7yDCWKJEdP4rjBSjDKZ2zwGj/AAAAAElFTkSuQmCC"/>
+		<image  width="24" height="21" id="img3" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVAgMAAAAhh8a1AAAAAXNSR0IB2cksfwAAAAxQTFRFwf9y////////////G0Zp2AAAAAR0Uk5TAP8DBVZM9TsAAABYSURBVHicbc2xAYAgEEPRpGAD3cIhHOEKmJIGC0dwA7bADSgwXGOh1avyQwDrDn4I9mLFSTnYIGO7RLB+OuMQGt2LAwwm/KAE0FURjTOMzHnXi2DM/rdVPB1+HpjzX2EBAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use  href="#img1" x="0" y="21"/>
+	<use  href="#img2" x="22" y="7"/>
+	<use  href="#img3" x="0" y="0"/>
 </svg>
