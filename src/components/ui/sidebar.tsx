@@ -100,7 +100,7 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
             {/* Etiqueta de usuario premium */}
             <div className="w-full flex justify-center mb-2">
               <span className="inline-block bg-[#ec3f7c] text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md border border-[#232323] uppercase tracking-wide animate-pulse-slow">
-                Cuenta Ilimitada
+                Cuenta Premium
               </span>
             </div>
             <div className="text-xs text-[#b0b0b0] opacity-60 mt-8" aria-label="Copyright">© {new Date().getFullYear()} Flasti Inc.</div>

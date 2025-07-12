@@ -2,6 +2,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
 import ClientLayout from "@/components/layout/ClientLayout";
+import YandexMetrica from "@/components/analytics/YandexMetrica";
+import FacebookPixel from "@/components/analytics/FacebookPixel";
+import { NavbarDemo } from "@/components/ui/resizable-navbar-demo";
+import ConditionalNavbar from "@/components/layout/ConditionalNavbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,10 +47,10 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         {/* Yandex Metrica - Colocado lo más cerca posible del head */}
-        {/* <YandexMetrica /> */}
+        <YandexMetrica />
 
         {/* Facebook Pixel - Colocado después de Yandex Metrica */}
-        {/* <FacebookPixel /> */}
+        <FacebookPixel />
 
         {/* Google AdSense */}
         <script
@@ -94,7 +98,10 @@ export default function RootLayout({
         ` }} />
       </head>
       <body className={inter.className} suppressHydrationWarning={true}>
-        {children}
+        <ClientLayout>
+          <ConditionalNavbar />
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
