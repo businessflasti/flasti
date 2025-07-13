@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, LogIn, Gift, Wallet, Globe, UserRound } from "lucide-react";
+import { CheckIcon, Sparkles, Zap, Shield, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, LogIn, Gift, Wallet, Globe, UserRound } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import Logo from "@/components/ui/logo";
@@ -15,167 +15,7 @@ const SimplePricingSection = React.memo(() => {
   const { t } = useLanguage();
   const { theme } = useTheme();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [showCountdown, setShowCountdown] = useState(true);
-  const countdownInterval = useRef<NodeJS.Timeout | null>(null);
   const [isArgentina, setIsArgentina] = useState(false);
-
-  useEffect(() => {
-    // Detectar si el usuario es de Argentina
-    const detectCountry = async () => {
-      try {
-        const savedCountry = localStorage.getItem('flastiUserCountry');
-        if (savedCountry) {
-          setIsArgentina(savedCountry === 'AR');
-          return;
-        }
-
-        // Si no hay información en localStorage, intentar detectar por IP
-        console.log('[SimplePricingSection] Detectando país mediante API...');
-        try {
-          const response = await fetch('https://ipapi.co/json/');
-          if (!response.ok) {
-            throw new Error(`Error en la respuesta: ${response.status}`);
-          }
-
-          const data = await response.json();
-          console.log('[SimplePricingSection] Datos de geolocalización:', data);
-
-          if (data && data.country_code) {
-            const isAR = data.country_code === 'AR';
-
-            // Guardar el resultado en localStorage para futuras visitas
-            // Usar la misma clave que en checkout/page.tsx
-            localStorage.setItem('flastiUserCountry', data.country_code);
-            setIsArgentina(isAR);
-            console.log(`[SimplePricingSection] País detectado: ${data.country_code}, isArgentina: ${isAR}`);
-          } else {
-            console.error('[SimplePricingSection] No se pudo obtener el código de país:', data);
-            setIsArgentina(false);
-          }
-        } catch (apiError) {
-          console.error('[SimplePricingSection] Error al consultar la API de geolocalización:', apiError);
-          // En caso de error con la API, intentar con un servicio alternativo o mostrar el globo
-          setIsArgentina(false);
-        }
-      } catch (error) {
-        console.error('[SimplePricingSection] Error general al detectar país:', error);
-        // En caso de error, asumir que no es de Argentina
-        setIsArgentina(false);
-      }
-    };
-
-    detectCountry();
-  }, []);
-
-  useEffect(() => {
-    // Inicializar el contador desde localStorage o crear uno nuevo
-    const initializeCountdown = () => {
-      // Verificar si hay un contador guardado en localStorage
-      const savedCountdown = localStorage.getItem('flastiCountdown');
-      const savedExpiry = localStorage.getItem('flastiCountdownExpiry');
-
-      if (savedCountdown && savedExpiry) {
-        const expiryTime = parseInt(savedExpiry, 10);
-        const now = Date.now();
-
-        // Si el contador aún no ha expirado
-        if (expiryTime > now) {
-          const remainingMs = expiryTime - now;
-          const remainingHours = Math.floor(remainingMs / (1000 * 60 * 60));
-          const remainingMinutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-          const remainingSeconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
-
-          setCountdown({
-            hours: remainingHours,
-            minutes: remainingMinutes,
-            seconds: remainingSeconds
-          });
-
-
-
-          setShowCountdown(true);
-        } else {
-          // El contador ha expirado
-          setShowCountdown(false);
-        }
-      } else {
-        // No hay contador guardado, crear uno nuevo (17 horas y 47 minutos)
-        const expiryTime = Date.now() + (17 * 60 * 60 * 1000) + (47 * 60 * 1000);
-        localStorage.setItem('flastiCountdownExpiry', expiryTime.toString());
-        localStorage.setItem('flastiCountdown', 'active');
-
-        setCountdown({
-          hours: 17,
-          minutes: 47,
-          seconds: 0
-        });
-
-        setShowCountdown(true);
-      }
-    };
-
-    // Inicializar el contador (solo en el cliente)
-    if (typeof window !== 'undefined') {
-      initializeCountdown();
-    }
-
-    // Configurar el intervalo para actualizar el contador cada segundo (solo en el cliente)
-    if (typeof window !== 'undefined') {
-      countdownInterval.current = setInterval(() => {
-      setCountdown(prev => {
-        // Si el contador llega a cero
-        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
-          // Limpiar el intervalo
-          if (countdownInterval.current) {
-            clearInterval(countdownInterval.current);
-          }
-          // Ocultar el contador
-          setShowCountdown(false);
-          return prev;
-        }
-
-        // Actualizar el contador
-        let newHours = prev.hours;
-        let newMinutes = prev.minutes;
-        let newSeconds = prev.seconds - 1;
-
-        if (newSeconds < 0) {
-          newSeconds = 59;
-          newMinutes -= 1;
-        }
-
-        if (newMinutes < 0) {
-          newMinutes = 59;
-          newHours -= 1;
-        }
-
-        // Actualizar el tiempo de expiración en localStorage
-        const remainingSeconds = newHours * 3600 + newMinutes * 60 + newSeconds;
-        const remainingMs = remainingSeconds * 1000;
-        const newExpiryTime = Date.now() + remainingMs;
-        localStorage.setItem('flastiCountdownExpiry', newExpiryTime.toString());
-
-
-
-        return {
-          hours: newHours,
-          minutes: newMinutes,
-          seconds: newSeconds
-        };
-      });
-    }, 1000);
-    }
-
-
-
-    // Limpiar al desmontar
-    return () => {
-      if (typeof window !== 'undefined' && countdownInterval.current) {
-        clearInterval(countdownInterval.current);
-      }
-    };
-  }, []);
 
   return (
     <div className="py-24 relative overflow-hidden">
@@ -186,7 +26,7 @@ const SimplePricingSection = React.memo(() => {
           <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
           <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="text-white">{t('unicoPago')}</span></h2>
           <p className="text-foreground/70 max-w-lg mx-auto hardware-accelerated">
-            {t('accedeComienza')}
+            {t('subtituloSimplePricing', 'Comienza a generar ingresos con flasti')}
           </p>
         </div>
 
@@ -318,37 +158,6 @@ const SimplePricingSection = React.memo(() => {
                 </div>
               </div>
 
-              {/* Countdown Timer - Solo se muestra si showCountdown es true */}
-              {showCountdown && (
-                <div className="mb-6 p-1 rounded-xl border border-white/20 relative overflow-hidden backdrop-blur-md shadow-lg">
-                  {/* Fondo degradado rellena completamente el bloque */}
-                  <div className="absolute inset-0 w-full h-full rounded-[0.7rem] bg-gradient-to-r from-[#ef4444]/60 via-[#f97316]/60 to-[#f59e0b]/60 pointer-events-none" />
-                  <div className="relative z-10 p-3">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div className="flex items-center">
-                        <AlertTriangle className="text-white mr-2 h-5 w-5 animate-pulse" />
-                        <span className="text-sm font-medium text-white">{t('ofertaTermina')}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.hours.toString().padStart(2, '0')}</span>
-                        </div>
-                        <span className="text-xl font-bold text-white">:</span>
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.minutes.toString().padStart(2, '0')}</span>
-                        </div>
-                        <span className="text-xl font-bold text-white">:</span>
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.seconds.toString().padStart(2, '0')}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
@@ -420,8 +229,8 @@ const SimplePricingSection = React.memo(() => {
 
 
               <Link href="/checkout"> 
-                <Button className="w-full py-3 text-base font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-2 focus:outline-none focus:ring-0 focus:border-white/10">
-                  {t('empiezaGanarBtn').toUpperCase()}
+                <Button className="w-full py-6 text-xl font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-3 focus:outline-none focus:ring-0 focus:border-white/10">
+                  {t('registrateAhoraBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>
                   </svg>
@@ -434,7 +243,7 @@ const SimplePricingSection = React.memo(() => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <p className="text-[10px] text-foreground/70">
-                    {t('pagoSeguro')} PayPal {useLanguage().language === 'en' ? 'or' : useLanguage().language === 'pt-br' ? 'ou' : 'o'} {t('monedaLocal')}
+                    {t('pagoSeguro')} paypal {useLanguage().language === 'en' ? 'or' : useLanguage().language === 'pt-br' ? 'ou' : 'o'} {t('monedaLocal').charAt(0).toLowerCase() + t('monedaLocal').slice(1)}
                   </p>
                 </div>
               </div>

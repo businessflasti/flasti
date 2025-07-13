@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import { Menu, X, AppWindow, User, Trophy, LogOut, Sun, Moon, Monitor, Bell } from 'lucide-react';
+
+import { Menu, X, AppWindow, User, Trophy, LogOut, Bell, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,7 +12,6 @@ import { useAuth } from '@/contexts/AuthContext';
 export const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
-  const { theme, setTheme } = useTheme();
   const { user, profile } = useAuth();
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -46,12 +45,12 @@ export const MobileMenu = () => {
             <div className="relative">
               <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-background">
                 {profile?.avatar_url ? (
-                  <div className="h-full w-full flex items-center justify-center overflow-hidden">
+                  <div className="h-full w-full flex items-center justify-center">
                     <img
                       src={profile.avatar_url}
                       alt="Avatar"
-                      className="min-h-full min-w-full object-cover"
-                      style={{ objectFit: 'cover', objectPosition: 'center' }}
+                      className="rounded-full"
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   </div>
                 ) : (
@@ -79,14 +78,14 @@ export const MobileMenu = () => {
               <span>Apps Promocionables</span>
             </Link>
 
-            <Link
+            <a
               href="/dashboard/perfil"
               className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
               onClick={toggleMenu}
             >
               <User size={20} />
               <span>Perfil</span>
-            </Link>
+            </a>
 
             <Link
               href="/dashboard/niveles"
@@ -96,57 +95,33 @@ export const MobileMenu = () => {
               <Trophy size={20} />
               <span>Niveles</span>
             </Link>
-          </nav>
 
-          {/* Theme selector */}
-          <div className="mt-8 border-t border-border/20 pt-6">
-            <h4 className="text-sm font-medium text-foreground/70 mb-3 px-4">Tema</h4>
-            <div className="space-y-1">
-              <button
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${theme === 'light' ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-foreground/60 hover:text-primary'}`}
-                onClick={() => {
-                  setTheme('light');
-                  toggleMenu();
-                }}
-              >
-                <Sun size={20} />
-                <span>Claro</span>
-              </button>
-
-              <button
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${theme === 'dark' ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-foreground/60 hover:text-primary'}`}
-                onClick={() => {
-                  setTheme('dark');
-                  toggleMenu();
-                }}
-              >
-                <Moon size={20} />
-                <span>Oscuro</span>
-              </button>
-
-              <button
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${theme === 'system' ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-foreground/60 hover:text-primary'}`}
-                onClick={() => {
-                  setTheme('system');
-                  toggleMenu();
-                }}
-              >
-                <Monitor size={20} />
-                <span>Sistema</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Logout */}
-          <div className="mt-auto">
-            <Link
-              href="/login"
+            <a
+              href="/dashboard/paypal"
               className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
               onClick={toggleMenu}
             >
+              <Wallet size={20} />
+              <span>Retiros</span>
+            </a>
+          </nav>
+
+          {/* Logout */}
+          <div className="mt-auto">
+            <a
+              href="/login"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleMenu();
+                // Importamos la función signOut del contexto de autenticación
+                const { signOut } = useAuth();
+                signOut();
+              }}
+            >
               <LogOut size={20} />
               <span>Cerrar sesión</span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

@@ -238,9 +238,22 @@ export default function CasinoContent() {
             >
               <iframe
                 title="Offerwall RewardMe"
-                src="https://reward-me.eu/ed3a45f2-5d7d-11f0-a77f-8a5fb7be40ea?player_id=e07290e6-8b42-4ef8-a733-7d588c4f17c8"
+                src="https://reward-me.eu/ed3a45f2-5d7d-11f0-a77f-8a5fb7be40ea?player_id=e07290e6-8b42-4ef8-a733-7d588c4f17c8&lang=es"
                 sandbox="allow-top-navigation allow-scripts allow-same-origin allow-popups allow-forms"
-                style={{ width: '100%', height: '100%', minHeight: 'calc(100vh - 48px)', border: 'none', margin: 0, padding: 0, display: 'block', overflow: 'hidden' }}
+                className="w-full h-[calc(100vh-48px)] min-h-[400px] border-none m-0 p-0 block overflow-hidden bg-white"
+                style={{
+                  border: 'none',
+                  margin: 0,
+                  padding: 0,
+                  display: 'block',
+                  overflow: 'hidden',
+                  background: '#fff',
+                  width: '100%',
+                  minHeight: '400px',
+                  height: 'calc(100vh - 48px)',
+                  maxWidth: '100vw',
+                  maxHeight: '100vh',
+                }}
                 frameBorder="0"
                 allow="fullscreen"
               />

@@ -3,6 +3,8 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 // Definir traducciones para diferentes textos en la aplicación
 export const translations = {
   es: {
+      testimonialsTitle: "Ahora es posible",
+      ctaSectionSubtitle: "Tecnología al servicio del crecimiento en la economía digital",
     // Navbar
     iniciarSesion: 'Iniciar sesión',
     modoClaro: 'Claro',
@@ -25,7 +27,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtrabajos completados',
     microtrabajos: 'Microtrabajos',
     completados: 'completados',
-    personasFormanParte: 'Más de 100.000 ya son parte de nuestra comunidad',
+    personasFormanParte: 'Ya son parte de nuestra comunidad',
     detectandoUbicacion: 'Detectando ubicación...',
     accesoGlobal: 'Acceso Global',
     errorCargarEstadisticas: 'Error al cargar estadísticas:',
@@ -129,7 +131,7 @@ export const translations = {
     equipoListoAyudarte: 'Nuestro equipo está listo para ayudarte paso a paso',
 
     // Benefits Section
-    accedeFlasti: 'Accede a',
+    accedeFlasti: 'Comienza a ganar',
     comienzaGanar: 'y comienza a ganar',
     milesPersonas: 'Miles de personas en todo el mundo ya están ganando dinero con nuestra plataforma',
     sinExperiencia: 'Sin experiencia',
@@ -137,7 +139,7 @@ export const translations = {
 
     // How It Works Section
     comoFunciona: '¿Cómo funciona?',
-    soloNecesitas: 'Solo necesitas 3 pasos para empezar a generar ingresos con Flasti',
+    soloNecesitas: 'Solo necesitas 3 pasos para empezar',
     paso: 'Paso',
     registrateAhora: 'Registrate ahora',
     registrateDesc: 'En tu panel de miembro, te enseñamos paso a paso cómo comenzar a completar microtrabajos de forma fácil y rápida',
@@ -168,7 +170,7 @@ export const translations = {
     // Pricing Section
     registrateAhoraBtn: 'Registrate ahora',
     unicoPago: 'Único pago, acceso de por vida',
-    accedeComienza: 'Accede a la plataforma y comienza a generar ingresos con Flasti',
+    accedeComienza: 'Accede a la plataforma y comienza a generar ingresos con flasti',
     pagoUnico: 'Pago único - Sin suscripciones ni cargos recurrentes',
     terminandoseRapido: '¡Últimos cupos!',
     ultimosCupos: '¡Últimos cupos!',
@@ -178,6 +180,7 @@ export const translations = {
     descuento: '80% OFF',
     ofertaTermina: 'La oferta termina en:',
     ahorras: 'Ahorras',
+    subtituloSimplePricing: 'Comienza a generar ingresos con flasti',
 
     // CTA Section
     conoceFlasti: 'Conoce a Flasti',
@@ -248,6 +251,8 @@ export const translations = {
     publicidad: 'Publicidad',
   },
   en: {
+      testimonialsTitle: "Now it’s possible",
+      ctaSectionSubtitle: "Technology at the service of growth in the digital economy",
     // Navbar
     iniciarSesion: 'Log in',
     modoClaro: 'Light',
@@ -270,7 +275,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtasks completed',
     microtrabajos: 'Microtasks',
     completados: 'completed',
-    personasFormanParte: 'More than 100,000 are already part of our community',
+    personasFormanParte: 'Are already part of our community',
     detectandoUbicacion: 'Detecting location...',
     accesoGlobal: 'Global Access',
     errorCargarEstadisticas: 'Error loading statistics:',
@@ -375,7 +380,7 @@ export const translations = {
     equipoListoAyudarte: 'Our team is ready to help you step by step',
 
     // Benefits Section
-    accedeFlasti: 'Access',
+    accedeFlasti: 'Start earning',
     comienzaGanar: 'and start earning',
     milesPersonas: 'Thousands of people worldwide are already making money with our platform',
     sinExperiencia: 'No experience needed',
@@ -383,7 +388,7 @@ export const translations = {
 
     // How It Works Section
     comoFunciona: 'How does it work?',
-    soloNecesitas: 'You only need 3 steps to start generating income with Flasti',
+    soloNecesitas: 'You only need 3 steps to start',
     paso: 'Step',
     registrateAhora: 'Register now',
     registrateDesc: 'In your member dashboard, we show you step by step how to start completing microtasks easily and quickly',
@@ -414,7 +419,7 @@ export const translations = {
     // Pricing Section
     registrateAhoraBtn: 'Register now',
     unicoPago: 'Single payment, lifetime access',
-    accedeComienza: 'Access the platform and start generating income with Flasti',
+    accedeComienza: 'Access the platform and start generating income with flasti',
     pagoUnico: 'One-time payment - No subscriptions or recurring charges',
     terminandoseRapido: 'Last spots!',
     empiezaGanarBtn: 'Start earning',
@@ -423,6 +428,7 @@ export const translations = {
     descuento: '80% OFF',
     ofertaTermina: 'The offer ends in:',
     ahorras: 'You save',
+    subtituloSimplePricing: 'Start generating income with flasti',
 
     // CTA Section
     conoceFlasti: 'Meet Flasti',
@@ -493,6 +499,8 @@ export const translations = {
     publicidad: 'Advertisement',
   },
   'pt-br': {
+      testimonialsTitle: "Agora é possível",
+      ctaSectionSubtitle: "Tecnologia a serviço do crescimento na economia digital",
     // Navbar
     iniciarSesion: 'Iniciar sessão',
     modoClaro: 'Claro',
@@ -511,7 +519,7 @@ export const translations = {
     ],
 
     // Benefits Section
-    accedeFlasti: 'Acesse a',
+    accedeFlasti: 'Comece a ganhar',
     comienzaGanar: 'e comece a ganhar',
     milesPersonas: 'Milhares de pessoas em todo o mundo já estão ganhando dinheiro com nossa plataforma',
     sinExperiencia: 'Sem experiência',
@@ -525,7 +533,7 @@ export const translations = {
 
     // How It Works Section
     comoFunciona: 'Como funciona?',
-    soloNecesitas: 'Você só precisa de 3 passos para começar a gerar renda com a Flasti',
+    soloNecesitas: 'Você só precisa de 3 passos para começar',
     paso: 'Passo',
     registrateAhora: 'Registre-se agora',
     registrateDesc: 'No seu painel de membro, ensinamos passo a passo como começar a completar microtrabalhos de forma fácil e rápida',
@@ -539,7 +547,7 @@ export const translations = {
     microtrabajosCompletados: 'Microtrabalhos completados',
     microtrabajos: 'Microtrabalhos',
     completados: 'completados',
-    personasFormanParte: 'Mais de 100.000 já fazem parte da nossa comunidade',
+    personasFormanParte: 'Já fazem parte da nossa comunidade',
     detectandoUbicacion: 'Detectando localização...',
     accesoGlobal: 'Acesso Global',
     errorCargarEstadisticas: 'Erro ao carregar estatísticas:',
@@ -615,7 +623,7 @@ export const translations = {
     // Pricing Section
     registrateAhoraBtn: 'Registre-se agora',
     unicoPago: 'Pagamento único, acesso vitalício',
-    accedeComienza: 'Acesse a plataforma e comece a gerar renda com a Flasti',
+    accedeComienza: 'Acesse a plataforma e comece a gerar renda com a flasti',
     pagoUnico: 'Pagamento único - Sem assinaturas ou cobranças recorrentes',
     terminandoseRapido: 'Últimas vagas!',
     ultimosCupos: 'Últimas vagas!',
@@ -625,6 +633,7 @@ export const translations = {
     descuento: '80% OFF',
     ofertaTermina: 'A oferta termina em:',
     ahorras: 'Você economiza',
+    subtituloSimplePricing: 'Comece a gerar renda com a flasti',
 
     // CTA Section
     conoceFlasti: 'Conheça a Flasti',

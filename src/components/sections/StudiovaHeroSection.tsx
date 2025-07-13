@@ -22,9 +22,7 @@ function StudiovaHeroSection() {
                 </video>
                 <div className="absolute inset-0 bg-black/50"></div>
                 <div className="relative z-10 container text-left">
-                    <div className="flex justify-start mb-10 mt-4 animate-entry animate-entry-delay-1 hardware-accelerated">
-                        <LocationBadge />
-                    </div>
+                    {/* Badge de ubicación eliminado */}
                     <div className="flex flex-col gap-6 Xxl:pb-20 pb-10">
                         <div className="flex items-start gap-2 md:gap-6">
                             <div className="w-11 h-11 flex-shrink-0">

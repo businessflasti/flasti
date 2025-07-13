@@ -69,8 +69,13 @@ const StatsSection = () => {
           <h2 className="text-3xl font-bold leading-tight">
             {t('gananciaColectiva')}
           </h2>
-          <p className="text-gray-400 mt-4 text-lg md:text-xl">
-            {t('accedeComienza')}
+          <p className="text-foreground/70 max-w-2xl mx-auto text-center mt-4 text-base md:text-lg font-normal">
+            {(() => {
+              const { language } = useLanguage();
+              if (language === 'es') return 'Un microtrabajo suma, hacerlo juntos multiplica';
+              if (language === 'en') return 'One microtask adds up, doing it together multiplies';
+              return 'Uma microtarefa soma, fazer juntos multiplica';
+            })()}
           </p>
         </div>
       </div>
@@ -78,7 +83,7 @@ const StatsSection = () => {
         {stats.map((stat, i) => (
           <div key={i}>
             <div
-              ref={el => statsRef.current[i] = el}
+              ref={(el) => { statsRef.current[i] = el; }}
               data-target={stat.number}
               className="text-5xl md:text-6xl font-extrabold text-white mx-auto"
             >

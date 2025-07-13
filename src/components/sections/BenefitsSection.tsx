@@ -5,7 +5,7 @@ import { DollarSign, GraduationCap, Clock, Home } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const BenefitsSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const benefits = [
     // Los bloques "Completa nuevos microtrabajos" y "Aprovecha Flasti AI" se movieron a FeatureCardsSection
@@ -28,7 +28,11 @@ const BenefitsSection = () => {
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
           {/* Etiqueta "Beneficios" eliminada */}
-          <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black text-center">{t('accedeFlasti')} <span className="text-white">Flasti</span> {t('comienzaGanar')}</h2>
+          <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black text-center">
+            {language === 'es' ? 'Comienza a trabajar' :
+             language === 'en' ? 'Start working' :
+             'Comece a trabalhar'}
+          </h2>
           <p className="text-foreground/70 max-w-2xl mx-auto text-center">
             {t('milesPersonas')}
           </p>
@@ -37,9 +41,9 @@ const BenefitsSection = () => {
         {/* Todos los bloques en una sola fila */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto animate-on-visible text-left">
           {/* 1. Gana dinero real */}
-          <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
-            <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/ben1.webp" alt="Gana dinero" className="object-cover w-full h-full" />
+          <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
+            <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
+              <img src="/promos/ben1.webp" alt="Gana dinero" className="object-cover object-top w-full h-full rounded-t-3xl" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('ganaDinero')}</h3>
@@ -48,9 +52,9 @@ const BenefitsSection = () => {
           </Card>
 
           {/* 2. Sin experiencia */}
-          <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
-            <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/ben2.webp" alt="Sin experiencia" className="object-cover w-full h-full" />
+          <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
+            <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
+              <img src="/promos/ben2.webp" alt="Sin experiencia" className="object-cover object-top w-full h-full rounded-t-3xl" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinExperiencia')}</h3>
@@ -59,9 +63,9 @@ const BenefitsSection = () => {
           </Card>
 
           {/* 3. Desde tu casa */}
-          <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
-            <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/ben3.webp" alt="Desde casa" className="object-cover w-full h-full" />
+          <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
+            <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
+              <img src="/promos/ben3.webp" alt="Desde casa" className="object-cover object-top w-full h-full rounded-t-3xl" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('desdeCasa')}</h3>
@@ -70,9 +74,9 @@ const BenefitsSection = () => {
           </Card>
 
           {/* 4. Horario flexible */}
-          <Card className="flex flex-col items-start bg-[#232323] border border-white/5 rounded-2xl overflow-hidden shadow-none p-0">
-            <div className="w-full h-48 bg-[#232323] flex items-center justify-center overflow-hidden">
-              <img src="/promos/ben4.webp" alt="Sin horarios" className="object-cover w-full h-full" />
+          <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
+            <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
+              <img src="/promos/ben4.webp" alt="Sin horarios" className="object-cover object-top w-full h-full rounded-t-3xl" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinHorarios')}</h3>

@@ -54,4 +54,6 @@ const AccordionContent = React.forwardRef<
 ))
 AccordionContent.displayName = "AccordionContent"
 
+// Asegurar que no hay color antiguo ni clases de borde heredadas
+
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

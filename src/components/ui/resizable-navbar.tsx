@@ -64,7 +64,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
 
   return (
-    <motion.div
+    <div
       ref={ref}
       className={cn("fixed inset-x-0 top-0 z-40 w-full", className)}
     >
@@ -76,32 +76,15 @@ export const Navbar = ({ children, className }: NavbarProps) => {
             )
           : child,
       )}
-    </motion.div>
+    </div>
   );
 };
 
 export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
-    <motion.div
-      animate={{
-        backdropFilter: visible ? "blur(18px)" : "none",
-        WebkitBackdropFilter: visible ? "blur(18px)" : "none",
-        boxShadow: visible
-          ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
-          : "none",
-        width: visible ? "40%" : "100%",
-        y: visible ? 20 : 0,
-        background: visible ? "rgba(10,10,10,0.90)" : "transparent",
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 200,
-        damping: 50,
-      }}
+    <div
       style={{
         minWidth: "800px",
-        backdropFilter: visible ? "blur(18px)" : "none",
-        WebkitBackdropFilter: visible ? "blur(18px)" : "none",
         background: visible ? "rgba(10,10,10,0.90)" : "transparent",
       }}
       className={cn(
@@ -111,7 +94,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
       )}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
@@ -151,8 +134,6 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
   return (
     <motion.div
       animate={{
-        backdropFilter: visible ? "blur(18px)" : "none",
-        WebkitBackdropFilter: visible ? "blur(18px)" : "none",
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
@@ -169,8 +150,6 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         damping: 50,
       }}
       style={{
-        backdropFilter: visible ? "blur(18px)" : "none",
-        WebkitBackdropFilter: visible ? "blur(18px)" : "none",
         background: visible ? "rgba(10,10,10,0.90)" : "transparent",
       }}
       className={cn(

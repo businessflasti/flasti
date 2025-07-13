@@ -9,18 +9,14 @@ const CTASection = () => {
     <section className="py-12 relative overflow-hidden">
       {/* Overlays decorativos ELIMINADOS */}
       <div className="container-custom relative z-10">
+        {/* Título y subtítulo congruentes */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-3 title-google-sans"><span className="text-white">{language === 'es' ? 'Sobre nosotros' : language === 'en' ? 'About us' : 'Sobre nós'}</span></h2>
+          <p className="text-foreground/70 max-w-lg mx-auto hardware-accelerated">
+            {t('ctaSectionSubtitle', 'Tecnología al servicio del crecimiento en la economía digital')}
+          </p>
+        </div>
         <div className="bg-[#232323] border border-white/10 rounded-2xl p-6 max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-5 text-white font-outfit">
-            {language === 'es' && (
-              <>Sobre nosotros</>
-            )}
-            {language === 'en' && (
-              <>About us</>
-            )}
-            {language === 'pt-br' && (
-              <>Sobre nós</>
-            )}
-          </h2>
 
           <p className="text-foreground/70 text-sm max-w-2xl mx-auto mb-8">
             {t('ctaDescription')}

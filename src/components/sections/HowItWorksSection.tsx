@@ -46,7 +46,7 @@ const HowItWorksSection = React.memo(() => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="flex flex-col bg-[#232323] rounded-3xl shadow-lg overflow-hidden border border-white/10"
+              className="flex flex-col bg-[#232323] rounded-3xl shadow-lg overflow-hidden border border-white/10 max-w-[350px] mx-auto"
             >
               <div className="relative w-full h-48 md:h-56 bg-[#1A1A1A] flex items-center justify-center overflow-hidden">
                 <img
