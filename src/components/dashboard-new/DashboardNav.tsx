@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Home,
-  Apps,
+  AppWindow,
   Link as LinkIcon,
   BarChart2,
   Settings,
@@ -35,7 +35,7 @@ export default function DashboardNav() {
     {
       name: t('aplicaciones'),
       href: '/dashboard-new/apps',
-      icon: <Apps size={22} />
+      icon: <AppWindow size={22} />
     },
     {
       name: t('enlaces'),
