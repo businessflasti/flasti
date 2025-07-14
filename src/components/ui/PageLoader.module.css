@@ -37,7 +37,7 @@
 
 @media (max-width: 600px), (max-device-width: 600px) {
   .loader {
-    --size: 90px; /* Mantener tamaño móvil */
+    --size: 140px; /* Más grande para móvil */
     --duration: 0.8s;
   }
 }

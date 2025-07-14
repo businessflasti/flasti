@@ -39,6 +39,18 @@ import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
 
 const CheckoutContent = () => {
+  const [clientCountryCode, setClientCountryCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const code = localStorage.getItem('flastiUserCountry');
+      if (code && code.length === 2) {
+        setClientCountryCode(code);
+      } else {
+        setClientCountryCode(null);
+      }
+    }
+  }, []);
   const { t } = useLanguage();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
   const [isHotmartLoaded, setIsHotmartLoaded] = useState(false);
@@ -1553,108 +1565,7 @@ const CheckoutContent = () => {
   }, [discountApplied, finalDiscountApplied]);
 
   // Efecto para el contador
-  useEffect(() => {
-    // Inicializar el contador desde localStorage o crear uno nuevo
-    const initializeCountdown = () => {
-      // Verificar si hay un contador guardado en localStorage
-      const savedCountdown = localStorage.getItem('flastiCountdown');
-      const savedExpiry = localStorage.getItem('flastiCountdownExpiry');
 
-      if (savedCountdown && savedExpiry) {
-        const expiryTime = parseInt(savedExpiry, 10);
-        const now = Date.now();
-
-        if (now < expiryTime) {
-          // El contador aún no ha expirado, calcular tiempo restante
-          const remainingMs = expiryTime - now;
-          const remainingSeconds = Math.floor(remainingMs / 1000);
-          const remainingHours = Math.floor(remainingSeconds / 3600);
-          const remainingMinutes = Math.floor((remainingSeconds % 3600) / 60);
-          const remainingSecondsLeft = remainingSeconds % 60;
-
-          setCountdown({
-            hours: remainingHours,
-            minutes: remainingMinutes,
-            seconds: remainingSecondsLeft
-          });
-
-          setShowCountdown(true);
-        } else {
-          // El contador ha expirado
-          setShowCountdown(false);
-        }
-      } else {
-        // No hay contador guardado, crear uno nuevo (17 horas y 47 minutos)
-        const expiryTime = Date.now() + (17 * 60 * 60 * 1000) + (47 * 60 * 1000);
-        localStorage.setItem('flastiCountdownExpiry', expiryTime.toString());
-        localStorage.setItem('flastiCountdown', 'active');
-
-        setCountdown({
-          hours: 17,
-          minutes: 47,
-          seconds: 0
-        });
-        setShowCountdown(true);
-      }
-    };
-
-    // Inicializar el contador (solo en el cliente)
-    if (typeof window !== 'undefined') {
-      initializeCountdown();
-    }
-
-    // Configurar el intervalo para actualizar el contador cada segundo (solo en el cliente)
-    if (typeof window !== 'undefined') {
-      countdownInterval.current = setInterval(() => {
-        setCountdown(prev => {
-          // Si el contador llega a cero
-          if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
-            // Limpiar el intervalo
-            if (countdownInterval.current) {
-              clearInterval(countdownInterval.current);
-            }
-            // Ocultar el contador
-            setShowCountdown(false);
-            return prev;
-          }
-
-          // Actualizar el contador
-          let newHours = prev.hours;
-          let newMinutes = prev.minutes;
-          let newSeconds = prev.seconds - 1;
-
-          if (newSeconds < 0) {
-            newSeconds = 59;
-            newMinutes -= 1;
-          }
-
-          if (newMinutes < 0) {
-            newMinutes = 59;
-            newHours -= 1;
-          }
-
-          // Actualizar el tiempo de expiración en localStorage
-          const remainingSeconds = newHours * 3600 + newMinutes * 60 + newSeconds;
-          const remainingMs = remainingSeconds * 1000;
-          const newExpiryTime = Date.now() + remainingMs;
-          localStorage.setItem('flastiCountdownExpiry', newExpiryTime.toString());
-
-          return {
-            hours: newHours,
-            minutes: newMinutes,
-            seconds: newSeconds
-          };
-        });
-      }, 1000);
-    }
-
-    // Limpiar al desmontar
-    return () => {
-      if (typeof window !== 'undefined' && countdownInterval.current) {
-        clearInterval(countdownInterval.current);
-      }
-    };
-  }, []);
 
   const paypalOptions = {
     "client-id": "Aa2g70kJsc_YkhVb6tRb-rI-Ot46EY1Jlt6fmVQeKmkUcZESdOpCHmjUEq7kg9vExa1hialDQadTH-oQ",
@@ -1668,7 +1579,7 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll" style={{ background: "linear-gradient(to bottom, #0f0f1a, #1a1a2e)" }}>
+      <div className="min-h-screen mobile-smooth-scroll" style={{ background: "#101010" }}>
       <CheckoutHeader />
 
       {/* Exit Intent Popup */}
@@ -1684,7 +1595,7 @@ const CheckoutContent = () => {
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-8">
           {/* Columna derecha - Resumen de compra (aparece primero en móvil) */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 mb-2 lg:mb-0">
-            <Card className="border border-[#2a2a4a] bg-[#1a1a2e] p-6 rounded-xl">
+            <Card className="bg-[#232323] p-6 rounded-xl">
               <div className="flex justify-between items-center mb-2">
                 <div>
                   <h2 className="text-2xl text-white"
@@ -1704,35 +1615,25 @@ const CheckoutContent = () => {
                 </div>
               </div>
 
-              <div className="bg-[#0f0f1a] rounded-xl border border-[#2a2a4a] p-4 mt-4 mb-4 relative">
+              <div className="bg-[#101010] rounded-xl p-4 mt-4 mb-4 relative">
                 {/* Banderita del país - En la esquina superior derecha en desktop, inferior en móvil */}
                 <div className="md:absolute md:top-3 md:right-3 absolute bottom-3 right-3">
                   <div className="w-4 h-4 md:w-5 md:h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
-                    {(() => {
-                      // Obtener el código de país desde localStorage
-                      const countryCode = typeof window !== 'undefined' ? localStorage.getItem('flastiUserCountry') : null;
-
-                      // Si tenemos un código de país válido, mostrar la bandera correspondiente
-                      if (countryCode && countryCode.length === 2) {
-                        return (
-                          <img
-                            src={`https://flagcdn.com/w20/${countryCode.toLowerCase()}.png`}
-                            alt={countryCode.toUpperCase()}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              // Verificar que parentElement no sea null antes de modificar innerHTML
-                              if (e.currentTarget.parentElement) {
-                                e.currentTarget.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>';
-                              }
-                            }}
-                          />
-                        );
-                      } else {
-                        // Si no hay código de país o no es válido, mostrar el icono de globo
-                        return <Globe className="h-2 w-2 md:h-2.5 md:w-2.5 text-[#9333ea]" />;
-                      }
-                    })()}
+                    {clientCountryCode ? (
+                      <img
+                        src={`https://flagcdn.com/w20/${clientCountryCode.toLowerCase()}.png`}
+                        alt={clientCountryCode.toUpperCase()}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.parentElement) {
+                            e.currentTarget.parentElement.innerHTML = '<div class=\"w-full h-full flex items-center justify-center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path></svg></div>';
+                          }
+                        }}
+                      />
+                    ) : (
+                      <Globe className="h-2 w-2 md:h-2.5 md:w-2.5 text-[#232323]" />
+                    )}
                   </div>
                 </div>
 
@@ -1862,39 +1763,12 @@ const CheckoutContent = () => {
                 )}
               </div>
 
-              {/* Countdown Timer - Solo se muestra si showCountdown es true */}
-              {showCountdown && (
-                <div className="mb-4 p-3 bg-gradient-to-r from-[#ec4899]/20 to-[#f97316]/20 backdrop-blur-sm rounded-xl border border-[#ec4899]/30 shadow-lg shadow-[#ec4899]/5 relative overflow-hidden">
-                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#ec4899]/10 blur-2xl"></div>
-                  <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-[#f97316]/10 blur-2xl"></div>
-                  <div className="relative z-10">
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center">
-                        <AlertTriangle className="text-[#ef4444] mr-2 h-5 w-5 animate-pulse" />
-                        <span className="text-sm font-medium text-white">{t('ofertaTermina')}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.hours.toString().padStart(2, '0')}</span>
-                        </div>
-                        <span className="text-xl font-bold text-white">:</span>
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.minutes.toString().padStart(2, '0')}</span>
-                        </div>
-                        <span className="text-xl font-bold text-white">:</span>
-                        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner w-14 flex justify-center">
-                          <span className="text-xl font-mono font-bold text-white tabular-nums">{countdown.seconds.toString().padStart(2, '0')}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+
 
               <div className="flex flex-col gap-3 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-[#3a3a5a]">
-                    <Zap className="text-[#ec4899]" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0 border border-[#232323]">
+                    <Zap className="text-white" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Acceso inmediato</h4>
@@ -1903,8 +1777,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-[#3a3a5a]">
-                    <Infinity className="text-[#ec4899]" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
+                    <Infinity className="text-white" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
@@ -1913,8 +1787,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-[#3a3a5a]">
-                    <Shield className="text-[#ec4899]" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
+                    <Shield className="text-white" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
@@ -1923,8 +1797,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-[#3a3a5a]">
-                    <HeadphonesIcon className="text-[#ec4899]" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
+                    <HeadphonesIcon className="text-white" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
@@ -1933,8 +1807,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-[#3a3a5a]">
-                    <Sparkles className="text-[#ec4899]" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="text-white" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Suite completa</h4>
@@ -1943,8 +1817,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center flex-shrink-0 border border-[#3a3a5a]">
-                    <Gift className="text-[#ec4899]" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
+                    <Gift className="text-white" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Actualizaciones gratuitas</h4>
@@ -1969,7 +1843,7 @@ const CheckoutContent = () => {
             <div className="space-y-4">
 
               {/* Moneda local - Hotmart o Mercado Pago */}
-              <Card className={`border border-[#2a2a4a] bg-[#1a1a2e] overflow-hidden rounded-xl mobile-card ${selectedPaymentMethod === "hotmart" ? "border-[#ec4899]" : ""}`}>
+              <Card className={`border bg-[#232323] overflow-hidden rounded-xl mobile-card ${selectedPaymentMethod === "hotmart" ? "border-white" : ""}`}>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -2020,7 +1894,7 @@ const CheckoutContent = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center border border-[#3a3a5a]">
+                    <div className="w-10 h-10 rounded-full bg-[#101010] flex items-center justify-center border border-[#232323]">
                       <WorldIcon className="text-white h-5 w-5" />
                     </div>
                     <div>
@@ -2080,12 +1954,12 @@ const CheckoutContent = () => {
                     </div>
                   </div>
                   <div className="w-6 h-6 rounded-full border border-[#3a3a5a] flex items-center justify-center">
-                    {selectedPaymentMethod === "hotmart" && <CheckIcon className="h-4 w-4 text-[#ec4899]" />}
+                    {selectedPaymentMethod === "hotmart" && <CheckIcon className="h-4 w-4 text-white" />}
                   </div>
                 </div>
 
                 {selectedPaymentMethod === "hotmart" && (
-                  <div className="p-6 border-t border-[#2a2a4a]" style={{ background: "linear-gradient(to bottom, #0f0f1a, #1a1a2e)" }}>
+                  <div className="p-6 border-t border-[#101010]" style={{ background: "#232323" }}>
                     <div id="inline_checkout" className="w-full"></div>
                       {isArgentina ? (
                         <div className="w-full">
@@ -2108,7 +1982,7 @@ const CheckoutContent = () => {
                             </div>
                           </div>
 
-                          <div className="flex justify-between items-center mb-3 p-3 bg-[#0f0f1a] rounded-lg border border-[#2a2a4a]">
+                          <div className="flex justify-between items-center mb-3 p-3 bg-[#101010] rounded-lg">
                             <div className="flex flex-col">
                               <span className="text-sm text-white">Total</span>
                               {/* Etiqueta de ahorro para usuarios de Argentina */}
@@ -2138,10 +2012,10 @@ const CheckoutContent = () => {
                           </div>
 
                           {/* Formulario de datos para Mercado Pago */}
-                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
+                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 bg-[#101010] rounded-lg border border-[#232323] transition-all duration-300">
                             <div className="flex items-center gap-2 mb-4">
-                              <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                                <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                               </div>
@@ -2163,7 +2037,7 @@ const CheckoutContent = () => {
                                 value={mercadoPagoFormData.fullName}
                                 onChange={(e) => handleMercadoPagoFormChange('fullName', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('fullName')}
-                                className={`bg-[#0f0f1a] border-[#2a2a4a] text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 transition-colors ${
+                                className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors ${
                                   mercadoPagoFormTouched.fullName && mercadoPagoFormErrors.fullName ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
                                 disabled={isSubmittingMercadoPagoForm}
@@ -2190,7 +2064,7 @@ const CheckoutContent = () => {
                                 value={mercadoPagoFormData.email}
                                 onChange={(e) => handleMercadoPagoFormChange('email', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('email')}
-                                className={`bg-[#0f0f1a] border-[#2a2a4a] text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 transition-colors ${
+                                className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors ${
                                   mercadoPagoFormTouched.email && mercadoPagoFormErrors.email ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
                                 disabled={isSubmittingMercadoPagoForm}
@@ -2283,7 +2157,7 @@ const CheckoutContent = () => {
               </Card>
 
               {/* PayPal */}
-              <Card className={`border border-[#2a2a4a] bg-[#1a1a2e] overflow-hidden rounded-xl mobile-card ${selectedPaymentMethod === "paypal" ? "border-[#ec4899]" : ""}`}>
+              <Card className={`border bg-[#232323] overflow-hidden rounded-xl mobile-card ${selectedPaymentMethod === "paypal" ? "border-white" : ""}`}>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -2304,7 +2178,7 @@ const CheckoutContent = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center border border-[#3a3a5a]">
+                    <div className="w-10 h-10 rounded-full bg-[#101010] flex items-center justify-center border border-[#232323]">
                       <div className="flex items-center justify-center w-full h-full pl-0.5">
                         <PayPalIcon className="text-white h-5 w-5 flex-shrink-0" />
                       </div>
@@ -2315,12 +2189,12 @@ const CheckoutContent = () => {
                     </div>
                   </div>
                   <div className="w-6 h-6 rounded-full border border-[#3a3a5a] flex items-center justify-center">
-                    {selectedPaymentMethod === "paypal" && <CheckIcon className="h-4 w-4 text-[#ec4899]" />}
+                    {selectedPaymentMethod === "paypal" && <CheckIcon className="h-4 w-4 text-white" />}
                   </div>
                 </div>
 
                 {selectedPaymentMethod === "paypal" && (
-                  <div className="p-6 border-t border-[#2a2a4a]">
+                  <div className="p-6 border-t border-[#101010]" style={{ background: "#232323" }}>
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="font-medium mb-1 text-white">Pago con PayPal</h3>
@@ -2334,7 +2208,7 @@ const CheckoutContent = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mb-3 p-3 bg-[#0f0f1a] rounded-lg border border-[#2a2a4a]">
+                    <div className="flex justify-between items-center mb-3 p-3 bg-[#101010] rounded-lg">
                       <div className="flex flex-col">
                         <span className="text-sm text-white">Total</span>
                         {/* Etiqueta de ahorro siempre en USD para PayPal */}
@@ -2355,10 +2229,10 @@ const CheckoutContent = () => {
 
                     <div>
                       {/* Formulario de datos para PayPal */}
-                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 bg-[#0a0a12] rounded-lg border border-[#2a2a4a] transition-all duration-300">
+                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 bg-[#101010] rounded-lg border border-[#232323] transition-all duration-300">
                         <div className="flex items-center gap-2 mb-4">
-                          <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                           </div>
@@ -2380,9 +2254,7 @@ const CheckoutContent = () => {
                             value={paypalFormData.fullName}
                             onChange={(e) => handlePaypalFormChange('fullName', e.target.value)}
                             onBlur={() => handlePaypalFormBlur('fullName')}
-                            className={`bg-[#0f0f1a] border-[#2a2a4a] text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 transition-colors ${
-                              paypalFormTouched.fullName && paypalFormErrors.fullName ? 'border-red-500 focus:border-red-500' : ''
-                            }`}
+                            className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors`}
                             disabled={isSubmittingPaypalForm}
                           />
                           {paypalFormTouched.fullName && paypalFormErrors.fullName && (
@@ -2407,9 +2279,7 @@ const CheckoutContent = () => {
                             value={paypalFormData.email}
                             onChange={(e) => handlePaypalFormChange('email', e.target.value)}
                             onBlur={() => handlePaypalFormBlur('email')}
-                            className={`bg-[#0f0f1a] border-[#2a2a4a] text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 transition-colors ${
-                              paypalFormTouched.email && paypalFormErrors.email ? 'border-red-500 focus:border-red-500' : ''
-                            }`}
+                            className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors`}
                             disabled={isSubmittingPaypalForm}
                           />
                           {paypalFormTouched.email && paypalFormErrors.email && (
@@ -2423,14 +2293,14 @@ const CheckoutContent = () => {
                         </div>
 
                         {!isPaypalFormValid && (paypalFormTouched.fullName || paypalFormTouched.email) && (paypalFormData.fullName || paypalFormData.email) && (
-                          <div className="flex items-center gap-2 text-xs text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-amber-400/20">
+                          <div className="flex items-center gap-2 text-xs text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-[#2a2a4a]">
                             <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                             <span>Por favor corrige los errores para continuar</span>
                           </div>
                         )}
 
                         {isPaypalFormValid && (
-                          <div className="flex items-center gap-2 text-xs text-green-400 bg-green-400/10 p-3 rounded-lg border border-green-400/20">
+                          <div className="flex items-center gap-2 text-xs text-green-400 bg-green-400/10 p-3 rounded-lg border border-[#2a2a4a]">
                             <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
