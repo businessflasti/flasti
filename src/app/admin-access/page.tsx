@@ -111,9 +111,5 @@ function AdminAccessContent() {
 }
 
 export default function AdminAccessPage() {
-  return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
-      <AdminAccessContent />
-    </Suspense>
-  );
+  return <AdminAccessContent />;
 }
