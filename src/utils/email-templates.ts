@@ -1,7 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 import Handlebars from 'handlebars';
-import fs from 'fs';
-import path from 'path';
+let fs: typeof import('fs') | undefined;
+let path: typeof import('path') | undefined;
+
+if (typeof process !== 'undefined' && process.env.NEXT_RUNTIME === 'node') {
+  fs = require('fs');
+  path = require('path');
+}
 
 // Inicializar cliente de Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -38,19 +43,20 @@ async function getCompiledTemplate(templateName: EmailTemplate): Promise<Handleb
     return templateCache[templateName];
   }
 
+  if (!fs || !path) {
+    // Si no estamos en entorno Node, retorna una función vacía para evitar errores
+    return () => '';
+  }
+
   try {
     // Ruta a la plantilla
     const templatePath = path.join(process.cwd(), 'email-templates', `${templateName}.html`);
-    
     // Leer el contenido de la plantilla
     const templateSource = fs.readFileSync(templatePath, 'utf-8');
-    
     // Compilar la plantilla
     const template = Handlebars.compile(templateSource);
-    
     // Guardar en caché
     templateCache[templateName] = template;
-    
     return template;
   } catch (error) {
     console.error(`Error al cargar la plantilla ${templateName}:`, error);
