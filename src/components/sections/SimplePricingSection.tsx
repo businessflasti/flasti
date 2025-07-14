@@ -17,6 +17,29 @@ const SimplePricingSection = React.memo(() => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isArgentina, setIsArgentina] = useState(false);
 
+  // Detectar si el usuario es de Argentina (igual que en RegistrationFAQSection)
+  React.useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        const savedCountry = localStorage.getItem('userCountry');
+        if (savedCountry) {
+          setIsArgentina(savedCountry === 'AR');
+          return;
+        }
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        const isAR = data.country_code === 'AR';
+        localStorage.setItem('userCountry', isAR ? 'AR' : 'OTHER');
+        setIsArgentina(isAR);
+      } catch (error) {
+        setIsArgentina(false);
+      }
+    };
+    if (typeof window !== 'undefined') {
+      detectCountry();
+    }
+  }, []);
+
   return (
     <div className="py-24 relative overflow-hidden">
       {/* Overlays decorativos ELIMINADOS */}

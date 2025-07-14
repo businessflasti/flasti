@@ -113,6 +113,13 @@ const CheckoutContent = () => {
   // Referencia para rastrear si el usuario ya ha visto el popup
   const hasSeenPopup = useRef(false);
 
+  useEffect(() => {
+    // Recargar el formulario de Hotmart cuando cambie el método de pago, el descuento o el precio
+    if (selectedPaymentMethod === "hotmart" && !isArgentina) {
+      loadHotmartScript();
+    }
+  }, [selectedPaymentMethod, discountApplied, finalDiscountApplied, price, isArgentina, loadHotmartScript]);
+
   // Función para validar email
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1616,26 +1623,7 @@ const CheckoutContent = () => {
               </div>
 
               <div className="bg-[#101010] rounded-xl p-4 mt-4 mb-4 relative">
-                {/* Banderita del país - En la esquina superior derecha en desktop, inferior en móvil */}
-                <div className="md:absolute md:top-3 md:right-3 absolute bottom-3 right-3">
-                  <div className="w-4 h-4 md:w-5 md:h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
-                    {clientCountryCode ? (
-                      <img
-                        src={`https://flagcdn.com/w20/${clientCountryCode.toLowerCase()}.png`}
-                        alt={clientCountryCode.toUpperCase()}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          if (e.currentTarget.parentElement) {
-                            e.currentTarget.parentElement.innerHTML = '<div class=\"w-full h-full flex items-center justify-center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path></svg></div>';
-                          }
-                        }}
-                      />
-                    ) : (
-                      <Globe className="h-2 w-2 md:h-2.5 md:w-2.5 text-[#232323]" />
-                    )}
-                  </div>
-                </div>
+                {/* Eliminada banderita del país detectado */}
 
                 {/* Versión móvil - Diseño más compacto */}
                 <div className="md:hidden">
