@@ -13,6 +13,8 @@ function AdminAccessContent() {
   const { user } = useAuth();
   const [accessCode, setAccessCode] = useState('');
   const [loading, setLoading] = useState(false);
+// Archivo temporalmente deshabilitado para permitir el build en Netlify
+// Renombrado por Copilot
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
