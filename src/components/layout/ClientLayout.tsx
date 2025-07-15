@@ -12,7 +12,6 @@ import { Toaster as HotToaster } from "@/components/ui/Toaster";
 import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
 import HydrationFix from "@/components/utils/HydrationFix";
-import PageLoader from "@/components/ui/PageLoader";
 
 export default function ClientLayout({
   children,
@@ -21,7 +20,6 @@ export default function ClientLayout({
 }) {
   return (
     <>
-      <PageLoader />
       <ThemeProvider>
         <AuthProvider>
           <LanguageProvider>

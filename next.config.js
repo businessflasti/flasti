@@ -21,7 +21,7 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   images: {
-    domains: ['flagcdn.com'],
+    domains: ['flagcdn.com', 'raw.githubusercontent.com'],
     deviceSizes: [640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     formats: ['image/webp'],
@@ -36,6 +36,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.supabase.co',
         pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/businessflasti/images/**',
       },
     ],
   },
