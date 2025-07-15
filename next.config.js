@@ -1,21 +1,31 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react'],
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Configurar para usar Server-Side Rendering con salida standalone
   output: 'standalone',
   distDir: '.next',
-  // Desactivar la generación estática de páginas dinámicas
-  staticPageGenerationTimeout: 1000,
-  // Mover skipTrailingSlashRedirect a la raíz de la configuración
-  skipTrailingSlashRedirect: true,
-  // Configuración de imágenes remotas
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: true,
   images: {
+    domains: ['flagcdn.com'],
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    formats: ['image/webp'],
+    minimumCacheTTL: 60,
     remotePatterns: [
       {
         protocol: 'https',

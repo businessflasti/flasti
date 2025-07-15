@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /checkout
+
+# Host
+Host: https://flasti.com
+
+# Sitemaps
+Sitemap: https://flasti.com/sitemap.xml
