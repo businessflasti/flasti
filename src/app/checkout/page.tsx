@@ -1,5 +1,16 @@
-/* Se eliminaron los useEffect redundantes que disparaban AddPaymentInfo, simplificando la lógica de tracking en el componente. */
 "use client";
+
+// Declaración de tipos para Hotmart
+declare global {
+  interface Window {
+    checkoutElements?: {
+      init: (type: string, options: any) => {
+        mount: (selector: string) => void;
+      };
+    };
+    MercadoPago?: any;
+  }
+}
 
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,18 +26,6 @@ import FacebookPixelDebug from '@/components/debug/FacebookPixelDebug';
 import { supabase } from '@/lib/supabase';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-// Declaración de tipos para Hotmart
-declare global {
-  interface Window {
-    checkoutElements?: {
-      init: (type: string, options: any) => {
-        mount: (selector: string) => void;
-      };
-    };
-    MercadoPago?: any;
-  }
-}
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, Zap, Infinity, AlertTriangle, Sparkles, Shield, HeadphonesIcon, Gift, Wallet, Globe } from "lucide-react";
@@ -39,6 +38,152 @@ import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
 
 const CheckoutContent = () => {
+  const { t } = useLanguage();
+  
+  // Constante para el máximo número de intentos
+  const MAX_HOTMART_LOAD_ATTEMPTS = 3;
+
+  // Estado para rastrear el estado de carga de Hotmart
+  const [isHotmartLoading, setIsHotmartLoading] = useState(false);
+  const [isHotmartLoaded, setIsHotmartLoaded] = useState(false);
+  const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
+
+  // Estado para el precio base
+  const [price] = useState(10); // Precio base en USD
+  
+  // Estados para descuentos (mantenidos por compatibilidad pero siempre en falso)
+  const [discountApplied] = useState(false);
+  const [finalDiscountApplied] = useState(false);
+
+  // Función para configurar el observador de altura dinámica
+  const setupDynamicHeightObserver = useCallback((): void => {
+    const hotmartContainer = document.querySelector('#inline_checkout');
+    if (!hotmartContainer) return;
+
+    const observer = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        const iframe = entry.target.querySelector('iframe');
+        if (iframe) {
+          iframe.style.height = 'auto';
+          iframe.style.minHeight = '1500px';
+          iframe.style.maxHeight = 'none';
+        }
+      });
+    });
+
+    observer.observe(hotmartContainer);
+  }, []);
+
+  // Función para configurar la expansión por scroll
+  const setupHotmartScrollExpansion = useCallback((containerId: string): void => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const iframe = container.querySelector('iframe');
+    if (!iframe) return;
+
+    let currentHeight = 1500; // Altura inicial
+    const INCREMENT = 500; // Incremento en píxeles
+
+    const expandOnScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const iframeBottom = iframe.getBoundingClientRect().bottom + window.scrollY;
+
+      if (scrollPosition > iframeBottom - 200) { // 200px antes del final
+        currentHeight += INCREMENT;
+        iframe.style.minHeight = `${currentHeight}px`;
+      }
+    };
+
+    window.addEventListener('scroll', expandOnScroll);
+  }, []);
+
+  // Función simplificada para reintentar la carga de Hotmart
+  const retryHotmartLoad = useCallback(() => {
+    if (hotmartLoadAttempts < MAX_HOTMART_LOAD_ATTEMPTS) {
+      setHotmartLoadAttempts(prev => prev + 1);
+      setIsHotmartLoading(true);
+    }
+  }, [hotmartLoadAttempts]);
+
+  const loadHotmartScript = useCallback((): HTMLScriptElement | void => {
+    if (isHotmartLoading) return; // Evitar cargas múltiples simultáneas
+
+    console.log("Cargando Hotmart con precio base:", { price });
+
+    setIsHotmartLoading(true);
+
+    // Eliminar cualquier script anterior si existe
+    const existingScript = document.getElementById('hotmart-script');
+    if (existingScript) {
+      document.body.removeChild(existingScript);
+    }
+
+    // Limpiar el contenedor de checkout
+    const checkoutContainer = document.getElementById('inline_checkout');
+    if (checkoutContainer) {
+      checkoutContainer.innerHTML = '';
+    }
+
+    // Crear y cargar el nuevo script
+    const script = document.createElement("script");
+    script.id = 'hotmart-script';
+    script.src = "https://checkout.hotmart.com/lib/hotmart-checkout-elements.js";
+    script.async = true;
+
+    script.onload = () => {
+      if (window.checkoutElements) {
+        try {
+          // Usar oferta con precio base
+          const offerCode = "6j1ga51i"; // Oferta normal (precio: $10 USD)
+
+          const elements = window.checkoutElements.init("inlineCheckout", {
+            offer: offerCode,
+          });
+
+          elements.mount("#inline_checkout");
+
+          // Configurar observador para altura dinámica
+          setTimeout(() => {
+            setupDynamicHeightObserver();
+          }, 1000);
+
+          setIsHotmartLoaded(true);
+          setIsHotmartLoading(false);
+          setHotmartLoadAttempts(0);
+
+          // Configurar expansión por scroll para el formulario normal
+          setTimeout(() => {
+            setupHotmartScrollExpansion('inline_checkout');
+          }, 1500);
+
+          unifiedTrackingService.trackHotmartFormLoaded(offerCode);
+
+        } catch (error) {
+          console.error("Error al inicializar Hotmart:", error);
+          unifiedTrackingService.trackHotmartError(
+            'initialization_error',
+            error instanceof Error ? error.message : 'Unknown error'
+          );
+          setIsHotmartLoading(false);
+          retryHotmartLoad();
+        }
+      } else {
+        console.error("checkoutElements no está disponible");
+        setIsHotmartLoading(false);
+        retryHotmartLoad();
+      }
+    };
+
+    script.onerror = () => {
+      console.error("Error al cargar el script de Hotmart");
+      setIsHotmartLoading(false);
+      retryHotmartLoad();
+    };
+
+    document.body.appendChild(script);
+  }, [isHotmartLoading, price, setupDynamicHeightObserver, setupHotmartScrollExpansion]);
+
   const [clientCountryCode, setClientCountryCode] = useState<string | null>(null);
 
   useEffect(() => {
@@ -51,22 +196,12 @@ const CheckoutContent = () => {
       }
     }
   }, []);
-  const { t } = useLanguage();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
-  const [isHotmartLoaded, setIsHotmartLoaded] = useState(false);
-  const [isHotmartLoading, setIsHotmartLoading] = useState(false);
-  const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
   const [isHotmartPreloaded, setIsHotmartPreloaded] = useState(false);
   const [isArgentina, setIsArgentina] = useState(false);
-  const [isCountryKnown, setIsCountryKnown] = useState(false);
-
-  // Estados para los popups
-  const [showExitPopup, setShowExitPopup] = useState(false);
-  const [discountApplied, setDiscountApplied] = useState(false);
-  const [finalDiscountApplied, setFinalDiscountApplied] = useState(false);
-  const [price, setPrice] = useState("10.00");
-
-  // Estados para el contador
+  const [isCountryKnown, setIsCountryKnown] = useState(false);    // Estados para los popups
+    const [showExitPopup, setShowExitPopup] = useState(false);
+    // Estados para el contador
   const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [showCountdown, setShowCountdown] = useState(true);
   const totalSeconds = useRef((17 * 60 * 60) + (47 * 60)); // 17 horas y 47 minutos en segundos
@@ -114,11 +249,11 @@ const CheckoutContent = () => {
   const hasSeenPopup = useRef(false);
 
   useEffect(() => {
-    // Recargar el formulario de Hotmart cuando cambie el método de pago, el descuento o el precio
+    // Recargar el formulario de Hotmart cuando cambie el método de pago o el precio
     if (selectedPaymentMethod === "hotmart" && !isArgentina) {
       loadHotmartScript();
     }
-  }, [selectedPaymentMethod, discountApplied, finalDiscountApplied, price, isArgentina, loadHotmartScript]);
+  }, [selectedPaymentMethod, price, isArgentina, loadHotmartScript]);
 
   // Función para validar email
   const validateEmail = (email: string): boolean => {
@@ -352,13 +487,8 @@ const CheckoutContent = () => {
       // Deshabilitar el botón y mostrar loading
       setIsSubmittingMercadoPagoForm(true);
 
-      // Obtener el precio actual
-      let amountARS = 11500;
-      if (finalDiscountApplied) {
-        amountARS = 5750;
-      } else if (discountApplied) {
-        amountARS = 9200;
-      }
+      // Precio base en ARS
+      const amountARS = 11500;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -492,11 +622,7 @@ const CheckoutContent = () => {
           const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
           const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
 
-          if (finalDiscountApplied) {
-            offerCode = "5h87lps7"; // Oferta con descuento final (precio: $5 USD)
-          } else if (discountApplied) {
-            offerCode = "yegwjf6i"; // Oferta con descuento inicial (precio: $8 USD)
-          }
+          // Solo usamos la oferta base
 
           const elements = window.checkoutElements.init("inlineCheckout", {
             offer: offerCode,
@@ -590,245 +716,20 @@ const CheckoutContent = () => {
   }, [isHotmartPreloaded, isHotmartLoading]);
 
   // Función simplificada - ya no necesitamos expansión porque inicia completo
-  const setupHotmartScrollExpansion = useCallback((containerId: string) => {
-    console.log(`✅ Hotmart ${containerId} configurado para mostrar completo desde el inicio`);
-  }, []);
+  // Estas funciones se movieron al inicio del componente
+  // Las funciones de manejo de altura dinámica se movieron al inicio del componente
 
-  // Función para configurar observador de altura dinámica
-  const setupDynamicHeightObserver = useCallback(() => {
-    // Buscar tanto el contenedor principal como el de precarga
-    const container = document.getElementById('inline_checkout') ||
-                     document.getElementById('inline_checkout_preload') ||
-                     document.getElementById('inline_checkout_active');
-    if (!container) return;
 
-    console.log('🔍 Configurando observador de altura dinámica para Hotmart...');
-
-    // Observador de mutaciones para detectar cambios en el DOM
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList' || mutation.type === 'attributes') {
-          // Asegurar que el contenedor no tenga restricciones de altura
-          const iframes = container.querySelectorAll('iframe');
-          iframes.forEach((iframe) => {
-            // Permitir que el iframe se expanda naturalmente
-            iframe.style.height = 'auto';
-            iframe.style.minHeight = 'auto';
-            iframe.style.maxHeight = 'none';
-            iframe.style.overflow = 'visible';
-          });
-
-          // Asegurar que el contenedor principal no tenga restricciones
-          container.style.height = 'auto';
-          container.style.minHeight = 'auto';
-          container.style.maxHeight = 'none';
-          container.style.overflow = 'visible';
-
-          console.log('📏 Altura dinámica ajustada automáticamente');
-        }
-      });
-    });
-
-    // Observar cambios en el contenedor y sus hijos
-    observer.observe(container, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class']
-    });
-
-    // Observador de redimensionamiento para detectar cambios de tamaño
-    if (window.ResizeObserver) {
-      const resizeObserver = new ResizeObserver((entries) => {
-        entries.forEach((entry) => {
-          console.log('📐 Formulario redimensionado:', entry.contentRect.height + 'px');
-          // El contenedor se ajustará automáticamente
-        });
-      });
-
-      // Observar el contenedor principal
-      resizeObserver.observe(container);
-
-      // También observar iframes cuando aparezcan
-      const checkForIframes = () => {
-        const iframes = container.querySelectorAll('iframe');
-        iframes.forEach((iframe) => {
-          resizeObserver.observe(iframe);
-        });
-      };
-
-      // Verificar iframes cada segundo durante los primeros 10 segundos
-      let checkCount = 0;
-      const intervalId = setInterval(() => {
-        checkForIframes();
-        checkCount++;
-        if (checkCount >= 10) {
-          clearInterval(intervalId);
-        }
-      }, 1000);
+  // Recargar el formulario de Hotmart cuando cambie el método de pago
+  useEffect(() => {
+    if (selectedPaymentMethod === "hotmart" && !isArgentina) {
+      loadHotmartScript();
     }
+  }, [selectedPaymentMethod, discountApplied, finalDiscountApplied, price, isArgentina, loadHotmartScript]);
 
-    console.log('✅ Observador de altura dinámica configurado correctamente');
-  }, []);
+  // Este código fue movido al useCallback de loadHotmartScript arriba
 
-  // Función para cargar el script de Hotmart
-  const loadHotmartScript = useCallback(() => {
-    if (isHotmartLoading) return; // Evitar cargas múltiples simultáneas
-
-    console.log("Cargando Hotmart con estado de descuentos:", { discountApplied, finalDiscountApplied, price });
-
-    setIsHotmartLoading(true);
-
-    // Eliminar cualquier script anterior si existe
-    const existingScript = document.getElementById('hotmart-script');
-    if (existingScript) {
-      document.body.removeChild(existingScript);
-    }
-
-    // Limpiar el contenedor de checkout
-    const checkoutContainer = document.getElementById('inline_checkout');
-    if (checkoutContainer) {
-      checkoutContainer.innerHTML = '';
-    }
-
-    // Crear y cargar el nuevo script
-    const script = document.createElement("script");
-    script.id = 'hotmart-script';
-    script.src = "https://checkout.hotmart.com/lib/hotmart-checkout-elements.js";
-    script.async = true;
-
-    script.onload = () => {
-      if (window.checkoutElements) {
-        try {
-          // Usar una oferta diferente basada en el descuento aplicado
-          let offerCode = "6j1ga51i"; // Oferta normal (precio completo: $10 USD)
-
-          if (finalDiscountApplied) {
-            offerCode = "5h87lps7"; // Oferta con descuento final (precio: $5 USD)
-          } else if (discountApplied) {
-            offerCode = "yegwjf6i"; // Oferta con descuento inicial (precio: $8 USD)
-          }
-
-          const elements = window.checkoutElements.init("inlineCheckout", {
-            offer: offerCode,
-          });
-
-          elements.mount("#inline_checkout");
-
-          // Configurar observador para altura dinámica
-          setTimeout(() => {
-            setupDynamicHeightObserver();
-          }, 1000);
-
-          // Aplicar estilos para ancho completo - AGRESIVO
-          setTimeout(() => {
-            const applyFullWidthStyles = () => {
-              const hotmartContainer = document.querySelector('#inline_checkout');
-              if (hotmartContainer) {
-                // Aplicar estilos al contenedor principal
-                hotmartContainer.style.width = '100%';
-                hotmartContainer.style.maxWidth = '100%';
-                hotmartContainer.style.minWidth = '100%';
-                hotmartContainer.style.margin = '0';
-                hotmartContainer.style.padding = '0';
-
-                // Aplicar estilos a TODOS los elementos internos
-                const allElements = hotmartContainer.querySelectorAll('*');
-                allElements.forEach(el => {
-                  if (el.style) {
-                    el.style.width = '100%';
-                    el.style.maxWidth = '100%';
-                    el.style.minWidth = '100%';
-                    el.style.boxSizing = 'border-box';
-                  }
-                });
-
-                // ALTURA COMPLETA HASTA EL FINAL - SIN CORTAR
-                const iframes = hotmartContainer.querySelectorAll('iframe');
-                iframes.forEach(iframe => {
-                  iframe.style.width = '100%';
-                  iframe.style.border = 'none';
-                  iframe.style.display = 'block';
-
-                  // ALTURA AUTOMÁTICA COMPLETA - NO CORTAR
-                  iframe.style.height = 'auto';
-                  iframe.style.minHeight = '1500px'; // ALTURA GENEROSA
-                  iframe.style.maxHeight = 'none';
-
-                  // SIN SCROLL INTERNO - VER TODO
-                  iframe.style.overflow = 'visible';
-                  iframe.style.overflowY = 'visible';
-                  iframe.setAttribute('scrolling', 'no');
-
-                  console.log('📏 Iframe COMPLETO HASTA EL FINAL');
-                });
-
-                console.log('✅ Estilos de ancho completo aplicados a Hotmart normal');
-              }
-            };
-
-            // Aplicar inmediatamente y luego cada 500ms por 3 segundos
-            applyFullWidthStyles();
-            const styleInterval = setInterval(applyFullWidthStyles, 500);
-            setTimeout(() => clearInterval(styleInterval), 3000);
-          }, 1000);
-
-          setIsHotmartLoaded(true);
-          setIsHotmartLoading(false);
-          setHotmartLoadAttempts(0); // Reiniciar los intentos cuando se carga con éxito
-
-          // Configurar expansión por scroll para el formulario normal
-          setTimeout(() => {
-            setupHotmartScrollExpansion('inline_checkout');
-          }, 1500);
-
-          // Track que Hotmart se cargó exitosamente
-          unifiedTrackingService.trackHotmartFormLoaded(offerCode);
-
-          console.log(`Hotmart cargado exitosamente con oferta: ${offerCode}`);
-        } catch (error) {
-          console.error("Error al inicializar Hotmart:", error);
-
-          // Track error de Hotmart
-          unifiedTrackingService.trackHotmartError(
-            'initialization_error',
-            error instanceof Error ? error.message : 'Unknown error'
-          );
-
-          setIsHotmartLoading(false);
-          retryHotmartLoad();
-        }
-      } else {
-        console.error("checkoutElements no está disponible");
-        setIsHotmartLoading(false);
-        retryHotmartLoad();
-      }
-    };
-
-    script.onerror = () => {
-      console.error("Error al cargar el script de Hotmart");
-      setIsHotmartLoading(false);
-      retryHotmartLoad();
-    };
-
-    document.body.appendChild(script);
-
-    return script;
-  }, [isHotmartLoading, discountApplied, finalDiscountApplied, price]);
-
-  // Función para reintentar la carga de Hotmart
-  const retryHotmartLoad = useCallback(() => {
-    const maxAttempts = 3;
-    if (hotmartLoadAttempts < maxAttempts) {
-      setHotmartLoadAttempts(prev => prev + 1);
-      setTimeout(() => {
-        console.log(`Reintentando cargar Hotmart (intento ${hotmartLoadAttempts + 1}/${maxAttempts})`);
-        loadHotmartScript();
-      }, 1000); // Esperar 1 segundo antes de reintentar
-    } else {
-      console.error(`No se pudo cargar Hotmart después de ${maxAttempts} intentos`);
-    }
-  }, [hotmartLoadAttempts, loadHotmartScript, discountApplied, finalDiscountApplied]);
+  // Este código fue eliminado para evitar referencias circulares
 
   // Referencia para almacenar el preferenceId de Mercado Pago
   const mercadoPagoPreferenceId = useRef<string | null>(null);
@@ -843,18 +744,8 @@ const CheckoutContent = () => {
     isFetchingPreference.current = true;
 
     try {
-      // Obtener el precio actual desde localStorage
-      let amountARS = 11500; // Valor por defecto: 11.500 ARS
-
-      // Verificar si hay descuentos aplicados
-      const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
-      const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
-
-      if (finalDiscountApplied) {
-        amountARS = 5750; // 5.750 ARS para el descuento de $5 USD
-      } else if (discountApplied) {
-        amountARS = 9200; // 9.200 ARS para el descuento de $8 USD
-      }
+      // Precio base en ARS
+      const amountARS = 11500; // 11.500 ARS precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1389,13 +1280,7 @@ const CheckoutContent = () => {
 
     if (isArgentina) {
         eventCurrency = 'ARS';
-        if (finalDiscountApplied) {
-            eventValue = 5750;
-        } else if (discountApplied) {
-            eventValue = 9200;
-        } else {
-            eventValue = 11500;
-        }
+        eventValue = 11500; // Precio base en ARS
     }
 
     // Track página de checkout vista con servicio unificado
@@ -1412,7 +1297,7 @@ const CheckoutContent = () => {
       value: eventValue,
       currency: eventCurrency,
     });
-  }, [price, isArgentina, isCountryKnown, discountApplied, finalDiscountApplied]);
+  }, [price, isArgentina, isCountryKnown]);
 
   // Efecto para tracking cuando se completa información de pago de PayPal
   useEffect(() => {
@@ -1498,78 +1383,7 @@ const CheckoutContent = () => {
     setSelectedPaymentMethod(null);
   }, []);
 
-  // Efecto para detectar intento de salida, navegación hacia atrás y mostrar el popup
-  useEffect(() => {
-    // Verificar si el descuento final ya ha sido aplicado en una sesión anterior
-    const savedFinalDiscount = localStorage.getItem('flastiFinalDiscountApplied');
-    if (savedFinalDiscount === 'true') {
-      setFinalDiscountApplied(true);
-      setPrice("5.00");
-    } else { // Si no hay descuento final, verificar si hay descuento normal
-      const savedDiscount = localStorage.getItem('flastiDiscountApplied');
-      if (savedDiscount === 'true') {
-        setDiscountApplied(true);
-        setPrice("8.00");
-      }
-    }
-
-    let autoShowTimer: NodeJS.Timeout | null = null;
-
-    // Función unificada para mostrar el popup
-    const showPopup = () => {
-      // Solo mostrar si no se ha visto antes y no hay descuentos aplicados
-      if (!hasSeenPopup.current && !discountApplied && !finalDiscountApplied) {
-        setShowExitPopup(true);
-        hasSeenPopup.current = true;
-      }
-    };
-
-    // Función para detectar cuando el mouse sale de la ventana (exit intent en escritorio)
-    const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) {
-        showPopup();
-      }
-    };
-
-    // Función para manejar el evento de retroceso del navegador (botón "atrás" o gesto de swipe-back)
-    const handlePopState = () => {
-      // Si el popup no se ha mostrado y no hay descuentos, lo mostramos.
-      if (!hasSeenPopup.current && !discountApplied && !finalDiscountApplied) {
-        // Mostramos el popup
-        showPopup();
-        // Volvemos a empujar el estado en el historial para "cancelar" la navegación hacia atrás.
-        // El usuario permanecerá en la página actual.
-        window.history.pushState(null, '', window.location.href);
-      }
-      // Si el popup ya se mostró una vez, el evento 'popstate' se ejecutará
-      // sin entrar en este 'if', permitiendo la navegación hacia atrás en el segundo intento.
-    };
-
-    if (typeof window !== 'undefined') {
-      autoShowTimer = setTimeout(() => {
-        showPopup();
-      }, 10 * 60 * 1000); // 10 minutos en milisegundos
-
-      // --- Lógica para interceptar la navegación hacia atrás ---
-      // 1. Empujamos un estado nulo al historial al cargar la página.
-      //    Esto nos permite interceptar el primer evento 'popstate' (cuando el usuario intenta volver).
-      window.history.pushState(null, '', window.location.href);
-
-      // 2. Agregamos los listeners para los eventos de salida.
-      document.addEventListener('mouseleave', handleMouseLeave);
-      window.addEventListener('popstate', handlePopState);
-
-      // Limpiar listeners y temporizador al desmontar el componente
-      return () => {
-        document.removeEventListener('mouseleave', handleMouseLeave);
-        window.removeEventListener('popstate', handlePopState);
-
-        if (autoShowTimer) {
-          clearTimeout(autoShowTimer);
-        }
-      };
-    }
-  }, [discountApplied, finalDiscountApplied]);
+  // Se eliminó el efecto de popup y sistema de descuentos
 
   // Efecto para el contador
 
@@ -1589,14 +1403,7 @@ const CheckoutContent = () => {
       <div className="min-h-screen mobile-smooth-scroll" style={{ background: "#101010" }}>
       <CheckoutHeader />
 
-      {/* Exit Intent Popup */}
-      <ExitIntentPopup
-        isOpen={showExitPopup}
-        onClose={() => setShowExitPopup(false)}
-        onApplyCoupon={applyDiscount}
-        onApplyFinalDiscount={applyFinalDiscount}
-        isArgentina={isArgentina}
-      />
+      {/* Eliminado Exit Intent Popup */}
 
       <div className="container-custom py-6 lg:py-12">
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-8">
@@ -1630,10 +1437,9 @@ const CheckoutContent = () => {
                   {/* Mostrar precio en USD cuando se selecciona PayPal o cuando no es Argentina */}
                   {(selectedPaymentMethod === "paypal" || !isArgentina) ? (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xl font-bold text-white">
-                          $ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD
-                        </span>
+                      <div className="flex items-center justify-between">                          <span className="text-xl font-bold text-white">
+                            $ 10 USD
+                          </span>
                         <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded whitespace-nowrap">
                           {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                         </span>
@@ -1644,10 +1450,9 @@ const CheckoutContent = () => {
                     </div>
                   ) : (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xl font-bold text-white">
-                          AR$ {finalDiscountApplied ? "5.750" : (discountApplied ? "9.200" : "11.500")}
-                        </span>
+                      <div className="flex items-center justify-between">                          <span className="text-xl font-bold text-white">
+                            AR$ 11.500
+                          </span>
                         <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded whitespace-nowrap">
                           {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
                         </span>
@@ -2523,10 +2328,9 @@ const CheckoutContent = () => {
       <FacebookPixelDebug isVisible={true} />
     )}
     </>
-  );
-};
+  );  }; // Fin de CheckoutContent
 
-const CheckoutPage = () => {
+export default function CheckoutPage() {
   return (
     <CheckoutFomoWrapper>
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin text-primary mb-2">⟳</div><p className="ml-2">Cargando...</p></div>}>
@@ -2535,5 +2339,3 @@ const CheckoutPage = () => {
     </CheckoutFomoWrapper>
   );
 };
-
-export default CheckoutPage;
