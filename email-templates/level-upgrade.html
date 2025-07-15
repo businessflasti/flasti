@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Felicidades por tu ascenso de nivel! - flasti</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            color: #1e1e2e;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: #1e1e2e;
+            margin: 0;
+        }
+        .logo-gradient {
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .celebration-image {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 8px;
+        }
+        .level-box {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .level-badge {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        .level-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #9333ea;
+            margin: 10px 0;
+        }
+        .benefits-list {
+            margin: 30px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .benefit-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .benefit-icon:before {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .benefit-content {
+            flex: 1;
+        }
+        .benefit-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px 25px;
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 14px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .social-links {
+            margin: 15px 0;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #6b7280;
+            text-decoration: none;
+        }
+        .help-text {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        /* Estilos responsivos */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                border-radius: 0;
+            }
+            .content {
+                padding: 20px 15px;
+            }
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo"><span class="logo-gradient">flasti</span></h1>
+        </div>
+        
+        <div class="content">
+            <h2>¡Felicidades por tu ascenso de nivel!</h2>
+            
+            <p>Hola {{ .Name }},</p>
+            
+            <p>Estamos emocionados de informarte que has sido promovido al <strong>Nivel {{ .Level }}</strong> en nuestro programa de afiliados. Este logro refleja tu dedicación y éxito en la promoción de nuestras aplicaciones.</p>
+            
+            <img src="https://flasti.com/images/level-upgrade.jpg" alt="Celebración de ascenso" class="celebration-image">
+            
+            <div class="level-box">
+                <div class="level-badge">{{ .Level }}</div>
+                <div class="level-title">Nivel {{ .Level }} Desbloqueado</div>
+                <p>Has alcanzado un nuevo nivel en tu viaje con flasti. Con este ascenso, obtienes acceso a beneficios exclusivos y mayores comisiones.</p>
+            </div>
+            
+            <h3>Tus nuevos beneficios incluyen:</h3>
+            
+            <ul class="benefits-list">
+                <li class="benefit-item">
+                    <div class="benefit-icon"></div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Comisiones mejoradas</div>
+                        <p>Ahora recibirás un {{ .CommissionRate }}% de comisión por cada venta, un aumento significativo respecto a tu nivel anterior.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item">
+                    <div class="benefit-icon"></div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Acceso prioritario</div>
+                        <p>Serás de los primeros en conocer y promocionar nuevas aplicaciones antes de su lanzamiento oficial.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item">
+                    <div class="benefit-icon"></div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Recursos de marketing exclusivos</div>
+                        <p>Accede a materiales promocionales premium diseñados para maximizar tus conversiones.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item">
+                    <div class="benefit-icon"></div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Procesamiento prioritario de retiros</div>
+                        <p>Tus solicitudes de retiro serán procesadas con mayor rapidez que las de niveles inferiores.</p>
+                    </div>
+                </li>
+            </ul>
+            
+            <p>Este ascenso es solo el comienzo. Continúa con tu excelente trabajo y podrás alcanzar niveles aún más altos con beneficios aún mejores.</p>
+            
+            <a href="https://flasti.com/dashboard" class="button">Ver mi panel</a>
+            
+            <div class="help-text">
+                <p>Si tienes alguna pregunta sobre tus nuevos beneficios o cómo maximizar tus ganancias con tu nuevo nivel, no dudes en contactar a nuestro equipo de soporte.</p>
+                <p>¡Felicitaciones nuevamente y gracias por ser parte de la comunidad flasti!</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 flasti. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="https://twitter.com/flasti">Twitter</a> • 
+                <a href="https://instagram.com/flasti">Instagram</a> • 
+                <a href="https://facebook.com/flasti">Facebook</a>
+            </div>
+            <p>flasti - Ganancia colectiva</p>
+        </div>
+    </div>
+</body>
+</html>
