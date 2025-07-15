@@ -353,6 +353,22 @@ body {
 
     .checkout-info, .checkout-form {
         width: 100%;
+        margin: 0 auto;
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+    
+    .hotmart-form-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    
+    #hotmart-inline_checkout {
+        margin: 0 auto;
+        max-width: 100%;
+        width: 100%;
     }
 }
 

@@ -55,13 +55,13 @@ const StatsSection = () => {
           <div className="flex justify-center">
             <div className="flex -space-x-2">
               <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <Image src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/profile1.jpg" alt={t('usuario1')} width={32} height={32} className="w-full h-full object-cover" priority={true} />
+                <Image src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/profile1.jpg" alt={t('usuario1')} width={32} height={32} className="w-full h-full object-cover" />
               </div>
               <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <Image src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/profile2.jpg" alt={t('usuario2')} width={32} height={32} className="w-full h-full object-cover" priority={true} />
+                <Image src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/profile2.jpg" alt={t('usuario2')} width={32} height={32} className="w-full h-full object-cover" />
               </div>
               <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <Image src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/profile3.jpg" alt={t('usuario3')} width={32} height={32} className="w-full h-full object-cover" priority={true} />
+                <Image src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/profile3.jpg" alt={t('usuario3')} width={32} height={32} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
