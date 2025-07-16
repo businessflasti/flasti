@@ -353,37 +353,6 @@ body {
 
     .checkout-info, .checkout-form {
         width: 100%;
-        margin: 0 auto;
-        max-width: 100%;
-        padding: 1rem;
-    }
-    
-    .hotmart-form-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin: 0 auto;
-        padding: 0;
-    }
-    
-    #hotmart-inline_checkout {
-        margin: 0 auto !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
-        position: relative !important;
-        transform: none !important;
-    }
-
-    /* Ajustes específicos para el iframe de Hotmart */
-    #hotmart-inline_checkout iframe {
-        margin: 0 auto !important;
-        left: 0 !important;
-        right: 0 !important;
-        position: relative !important;
-        transform: none !important;
     }
 }
 

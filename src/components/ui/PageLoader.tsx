@@ -7,25 +7,14 @@ const PageLoader = () => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Temporizador de 10 segundos para ocultar el loader
-    const timeout = setTimeout(() => {
-      setVisible(false);
-    }, 10000);
-
-    // También ocultar cuando la página esté lista (lo que ocurra primero)
+    // Espera a que la página esté completamente cargada
     if (document.readyState === "complete") {
-      setVisible(false);
+      setTimeout(() => setVisible(false), 400); // pequeña pausa para suavidad
     } else {
-      const onLoad = () => setVisible(false);
+      const onLoad = () => setTimeout(() => setVisible(false), 400);
       window.addEventListener("load", onLoad);
-      return () => {
-        window.removeEventListener("load", onLoad);
-        clearTimeout(timeout);
-      };
+      return () => window.removeEventListener("load", onLoad);
     }
-
-    // Limpiar el temporizador si el componente se desmonta
-    return () => clearTimeout(timeout);
   }, []);
 
   return (

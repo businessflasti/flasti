@@ -1691,32 +1691,51 @@ const CheckoutContent = () => {
                       <WorldIcon className="text-white h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-white">Moneda local</h3>                          <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full pr-2">
+                      <h3 className="font-medium text-white">Moneda local</h3>
+
+                      <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full pr-2">
                             {[
-                              ["ar", "Argentina"], ["co", "Colombia"], ["ve", "Venezuela"],
-                              ["pe", "Perú"], ["mx", "México"], ["pa", "Panamá"],
-                              ["gt", "Guatemala"], ["sv", "El Salvador"], ["do", "República Dominicana"],
-                              ["pr", "Puerto Rico"], ["ec", "Ecuador"], ["py", "Paraguay"],
-                              ["es", "España"], ["cr", "Costa Rica"], ["cl", "Chile"],
-                              ["uy", "Uruguay"], ["bo", "Bolivia"], ["hn", "Honduras"],
-                              ["us", "Estados Unidos"], ["br", "Brasil"]
-                            ].map(([country, name], index) => {
+                              // Primera línea (10 banderas)
+                              "🇦🇷", // Argentina
+                              "🇨🇴", // Colombia
+                              "🇻🇪", // Venezuela
+                              "🇵🇪", // Perú
+                              "🇲🇽", // México
+                              "🇵🇦", // Panamá
+                              "🇬🇹", // Guatemala
+                              "🇸🇻", // El Salvador
+                              "🇩🇴", // República Dominicana
+                              "🇵🇷", // Puerto Rico
+                              // Segunda línea (10 banderas)
+                              "🇪🇨", // Ecuador
+                              "🇵🇾", // Paraguay
+                              "🇪🇸", // España
+                              "🇨🇷", // Costa Rica
+                              "🇨🇱", // Chile
+                              "🇺🇾", // Uruguay
+                              "🇧🇴", // Bolivia
+                              "🇭🇳", // Honduras
+                              "🇺🇸", // Estados Unidos
+                              "🇧🇷"  // Brasil
+                            ].map((flag, index) => {
+                              // Obtener el código de país a partir del emoji de la bandera
+                              const countryCode = flag.codePointAt(0)! - 127397;
+                              const countryChar1 = String.fromCharCode(countryCode);
+                              const countryCode2 = flag.codePointAt(2)! - 127397;
+                              const countryChar2 = String.fromCharCode(countryCode2);
+                              const country = (countryChar1 + countryChar2).toLowerCase();
 
                               return (
                                 <span key={index} className="w-4 h-4 md:w-5 md:h-5 rounded-full overflow-hidden flex items-center justify-center bg-[#0f0f1a] border border-white/10">
-                                  <Image
+                                  <img
                                     src={`https://flagcdn.com/w20/${country}.png`}
-                                    alt={name}
-                                    width={20}
-                                    height={20}
+                                    alt={country.toUpperCase()}
                                     className="w-full h-full object-cover"
-                                    loading="lazy"
-                                    placeholder="blur"
-                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHiIiIR0hIzAkMCovLTEzNjY2ODY2NkA6P0BAQEBAQEBAQEBAQEBAQEBAQEH/2wBDAR"
                                     onError={(e) => {
                                       e.currentTarget.style.display = 'none';
+                                      // Verificar que parentElement no sea null antes de modificar innerHTML
                                       if (e.currentTarget.parentElement) {
-                                        e.currentTarget.parentElement.innerHTML = `<span class="text-[8px] md:text-[10px] font-bold">${country.toUpperCase()}</span>`;
+                                        e.currentTarget.parentElement.innerHTML = `<span class="text-[8px] md:text-[10px] font-bold">${flag}</span>`;
                                       }
                                     }}
                                   />

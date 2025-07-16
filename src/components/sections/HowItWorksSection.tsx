@@ -3,12 +3,12 @@ import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const howItWorksImages = [
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/paso1.webp",
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/paso2.webp",
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/inicio/paso3.webp"
+  "/promos/paso1.webp",
+  "/promos/paso2.webp",
+  "/promos/paso3.webp"
 ];
 
-const HowItWorksSection = () => {
+const HowItWorksSection = React.memo(() => {
   const { t } = useLanguage();
 
   const steps = [
@@ -53,6 +53,7 @@ const HowItWorksSection = () => {
                   src={step.image}
                   alt={step.title}
                   className="object-cover w-full h-full rounded-t-3xl"
+                  loading="lazy"
                 />
                 <div className="absolute bottom-3 left-6 z-10">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md border-4 border-[#232323] text-[#232323] font-bold text-lg select-none">
@@ -74,6 +75,6 @@ const HowItWorksSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default HowItWorksSection;
