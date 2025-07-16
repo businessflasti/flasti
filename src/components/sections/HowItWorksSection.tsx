@@ -3,9 +3,9 @@ import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const howItWorksImages = [
-  "/promos/paso1.webp",
-  "/promos/paso2.webp",
-  "/promos/paso3.webp"
+  "/promos/paso1.jpg",
+  "/promos/paso2.jpg",
+  "/promos/paso3.jpg"
 ];
 
 const HowItWorksSection = React.memo(() => {
