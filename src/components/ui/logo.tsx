@@ -41,7 +41,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   const textColor = isDark ? "text-white" : "text-gray-900";
   // Si el logo se usa en el footer, usar isoblanco.svg
   const logoPath = typeof window !== "undefined" && window.location && window.location.pathname ?
-    (window.location.pathname.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.png") : "/logo/isotipo.png";
+    (window.location.pathname.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.svg") : "/logo/isotipo.svg";
 
   // Mostrar texto solo si no estamos en la página de login
   const showText = pathname !== "/login";

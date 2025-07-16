@@ -54,7 +54,7 @@ const BenefitsSection = () => {
           {/* 2. Sin experiencia */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
             <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
-              <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/ben2min.jpg" alt="Sin experiencia" className="object-cover w-full h-full rounded-t-3xl" loading="lazy" />
+              <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/ben2min.jpg" alt="Sin experiencia" className="object-cover w-full h-full rounded-t-3xl object-top sm:object-center" loading="lazy" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinExperiencia')}</h3>
@@ -76,7 +76,7 @@ const BenefitsSection = () => {
           {/* 4. Horario flexible */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
             <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
-              <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/ben4min.jpg" alt="Sin horarios" className="object-cover w-full h-full rounded-t-3xl" loading="lazy" />
+              <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/ben4min.jpg" alt="Sin horarios" className="object-cover w-full h-full rounded-t-3xl object-top sm:object-center" loading="lazy" />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinHorarios')}</h3>

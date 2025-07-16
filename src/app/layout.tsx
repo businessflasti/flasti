@@ -17,17 +17,17 @@ export const metadata: Metadata = {
   title: "Flasti | Ganancia colectiva",
   description: "Genera ingresos completando microtrabajos en línea. Accede a la plataforma y comienza a trabajar desde casa sin experiencia previa.",
   icons: {
-    icon: "/logo/isotipo.png",
-    apple: "/logo/isotipo.png",
+    icon: "/logo/isotipo.svg",
+    apple: "/logo/isotipo.svg",
   },
   metadataBase: new URL('https://flasti.net'),
   other: {
     'link': [
       {
         rel: 'preload',
-        href: '/logo/isotipo.png',
+        href: '/logo/isotipo.svg',
         as: 'image',
-        type: 'image/png'
+        type: 'image/svg+xml'
       }
     ]
   },
