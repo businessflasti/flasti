@@ -7,13 +7,25 @@ const PageLoader = () => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Espera a que la página esté completamente cargada
+    // Timer de 7 segundos para forzar el desvanecimiento
+    const forceHideTimer = setTimeout(() => {
+      setVisible(false);
+    }, 7000);
+
+    // Desvanecimiento inmediato cuando la página cargue completamente
     if (document.readyState === "complete") {
-      setTimeout(() => setVisible(false), 400); // pequeña pausa para suavidad
+      setVisible(false);
+      clearTimeout(forceHideTimer);
     } else {
-      const onLoad = () => setTimeout(() => setVisible(false), 400);
+      const onLoad = () => {
+        setVisible(false);
+        clearTimeout(forceHideTimer);
+      };
       window.addEventListener("load", onLoad);
-      return () => window.removeEventListener("load", onLoad);
+      return () => {
+        window.removeEventListener("load", onLoad);
+        clearTimeout(forceHideTimer);
+      };
     }
   }, []);
 
