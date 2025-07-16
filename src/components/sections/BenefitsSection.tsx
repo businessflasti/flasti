@@ -44,7 +44,7 @@ const BenefitsSection = () => {
           {/* 1. Gana dinero real */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
             <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
-              <Image src="/promos/ben1min.jpg" alt="Gana dinero" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} placeholder="blur" blurDataURL="/promos/ben1min.jpg" />
+              <Image src="/promos/ben1min.jpg" alt="Gana dinero" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('ganaDinero')}</h3>
@@ -55,7 +55,7 @@ const BenefitsSection = () => {
           {/* 2. Sin experiencia */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
             <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
-              <Image src="/promos/ben2min.jpg" alt="Sin experiencia" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} placeholder="blur" blurDataURL="/promos/ben2min.jpg" />
+              <Image src="/promos/ben2min.jpg" alt="Sin experiencia" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinExperiencia')}</h3>
@@ -66,7 +66,7 @@ const BenefitsSection = () => {
           {/* 3. Desde tu casa */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
             <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
-              <Image src="/promos/ben3min.jpg" alt="Desde casa" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} placeholder="blur" blurDataURL="/promos/ben3min.jpg" />
+              <Image src="/promos/ben3min.jpg" alt="Desde casa" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('desdeCasa')}</h3>
@@ -77,7 +77,7 @@ const BenefitsSection = () => {
           {/* 4. Horario flexible */}
           <Card className="flex flex-col items-start bg-[#232323] border border-white/10 rounded-3xl overflow-hidden shadow-lg p-0 max-w-[350px] mx-auto">
             <div className="w-full h-48 bg-[#232323] overflow-hidden rounded-t-3xl">
-              <Image src="/promos/ben4min.jpg" alt="Sin horarios" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} placeholder="blur" blurDataURL="/promos/ben4min.jpg" />
+              <Image src="/promos/ben4min.jpg" alt="Sin horarios" width={350} height={192} className="object-cover object-top w-full h-full rounded-t-3xl" priority={true} />
             </div>
             <div className="flex-1 flex flex-col items-start justify-center p-5 w-full">
               <h3 className="text-lg font-bold text-white mb-2 text-left font-outfit tracking-tight w-full flex items-center">{t('sinHorarios')}</h3>
