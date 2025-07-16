@@ -3,27 +3,17 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./PageLoader.module.css";
 
-interface PageLoaderProps {
-  enabled?: boolean;
-}
-
-const PageLoader = ({ enabled = false }: PageLoaderProps) => {
-  const [visible, setVisible] = useState(enabled);
+const PageLoader = () => {
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Timer de 7 segundos máximo
-    const maxTimer = setTimeout(() => setVisible(false), 7000);
-
-    // También ocultar cuando la página cargue si es antes de los 7 segundos
+    // Espera a que la página esté completamente cargada
     if (document.readyState === "complete") {
-      setVisible(false);
+      setTimeout(() => setVisible(false), 400); // pequeña pausa para suavidad
     } else {
-      const onLoad = () => setVisible(false);
+      const onLoad = () => setTimeout(() => setVisible(false), 400);
       window.addEventListener("load", onLoad);
-      return () => {
-        window.removeEventListener("load", onLoad);
-        clearTimeout(maxTimer);
-      };
+      return () => window.removeEventListener("load", onLoad);
     }
   }, []);
 

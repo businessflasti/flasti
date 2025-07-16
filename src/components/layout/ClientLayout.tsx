@@ -13,17 +13,15 @@ import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
 import HydrationFix from "@/components/utils/HydrationFix";
 import PageLoader from "@/components/ui/PageLoader";
-import { usePathname } from "next/navigation";
 
 export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const pathname = usePathname();
   return (
     <>
-      <PageLoader enabled={pathname === '/'} />
+      <PageLoader />
       <ThemeProvider>
         <AuthProvider>
           <LanguageProvider>
