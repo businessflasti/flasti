@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import Image from "next/image";
 
 const StatsSection = () => {
   const { t } = useLanguage();
@@ -55,13 +54,13 @@ const StatsSection = () => {
           <div className="flex justify-center">
             <div className="flex -space-x-2">
               <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <Image src="/images/profiles/profile1.jpg" alt={t('usuario1')} width={32} height={32} className="w-full h-full object-cover" priority={true} placeholder="blur" blurDataURL="/images/profiles/profile1.jpg" />
+                <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <Image src="/images/profiles/profile2.jpg" alt={t('usuario2')} width={32} height={32} className="w-full h-full object-cover" priority={true} placeholder="blur" blurDataURL="/images/profiles/profile2.jpg" />
+                <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile2.jpg" alt={t('usuario2')} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <Image src="/images/profiles/profile3.jpg" alt={t('usuario3')} width={32} height={32} className="w-full h-full object-cover" priority={true} placeholder="blur" blurDataURL="/images/profiles/profile3.jpg" />
+                <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile3.jpg" alt={t('usuario3')} className="w-full h-full object-cover" loading="lazy" />
               </div>
             </div>
           </div>
