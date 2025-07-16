@@ -25,7 +25,7 @@ function StudiovaHeroSection() {
                 <div className="absolute inset-0 bg-black/50"></div>
                 <div className="relative z-10 container text-left">
                     {/* Badge de ubicación eliminado */}
-                    <div className="flex flex-col gap-6 Xxl:pb-20 pb-10">
+                    <div className="flex flex-col gap-6 Xxl:pb-20 pb-10 md:mt-0 mt-[-30vh]">
                         <div className="flex items-start">
                             <p className="text-white/70 max-w-md text-lg md:text-xl font-normal text-left">
                                 {t('aprovechaPoder')}

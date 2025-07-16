@@ -53,12 +53,14 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
         <div className="relative flex items-center justify-center" style={{ height: logoHeight, width: logoWidth }}>
           <Image
             src={logoPath}
-            alt="logo"
+            alt="Flasti Logo"
             width={logoWidth}
             height={logoHeight}
             className="object-contain"
             priority
-            unoptimized={true}
+            loading="eager"
+            sizes="(max-width: 640px) 22px, (max-width: 768px) 28px, 36px"
+            quality={100}
           />
         </div>
         {/* Texto del logo */}

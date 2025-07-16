@@ -53,7 +53,6 @@ const HowItWorksSection = React.memo(() => {
                   src={step.image}
                   alt={step.title}
                   className="object-cover w-full h-full rounded-t-3xl"
-                  loading="lazy"
                 />
                 <div className="absolute bottom-3 left-6 z-10">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md border-4 border-[#232323] text-[#232323] font-bold text-lg select-none">

@@ -20,6 +20,17 @@ export const metadata: Metadata = {
     icon: "/logo/isotipo.png",
     apple: "/logo/isotipo.png",
   },
+  metadataBase: new URL('https://flasti.net'),
+  other: {
+    'link': [
+      {
+        rel: 'preload',
+        href: '/logo/isotipo.png',
+        as: 'image',
+        type: 'image/png'
+      }
+    ]
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
