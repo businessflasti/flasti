@@ -104,112 +104,63 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const AdCard: React.FC<{ adId: string }> = ({ adId }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [adLoaded, setAdLoaded] = useState(false);
-    const [adError, setAdError] = useState(false);
+    const [showLoading, setShowLoading] = useState(true);
     const adInsRef = useRef<HTMLModElement>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const initRef = useRef(false);
 
-    // Verificar si el anuncio se cargó correctamente
+    // Inicializar AdSense una sola vez
     useEffect(() => {
-      if (!adInsRef.current) return;
+      if (initRef.current) return;
+      initRef.current = true;
 
-      const element = adInsRef.current;
-      
-      const checkAdLoaded = () => {
-        if (adError) return;
-        
-        const hasContent = element.innerHTML.trim() !== '';
-        const hasHeight = element.clientHeight > 100;
-        const hasWidth = element.clientWidth > 200;
-        const isUnfilled = element.dataset.adStatus === 'unfilled';
-        const hasAdsbygoogleStatus = element.hasAttribute('data-adsbygoogle-status');
-        
-        console.log(`Verificando anuncio ${adId}:`, {
-          hasContent,
-          hasHeight,
-          hasWidth,
-          isUnfilled,
-          hasAdsbygoogleStatus,
-          adsbygoogleStatus: element.getAttribute('data-adsbygoogle-status'),
-          clientHeight: element.clientHeight,
-          clientWidth: element.clientWidth
-        });
-        
-        // Anuncio cargado si tiene contenido Y dimensiones apropiadas Y no está marcado como unfilled
-        if (hasContent && hasHeight && hasWidth && !isUnfilled && hasAdsbygoogleStatus) {
-          console.log(`✅ AdSense cargado exitosamente para ${adId}`);
-          setAdLoaded(true);
-          if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
-          }
-        }
-      };
-
-      // Observer para cambios en el DOM del anuncio
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === 'childList' || mutation.type === 'attributes') {
-            checkAdLoaded();
-          }
-        });
-      });
-
-      // Observar cambios en el elemento del anuncio
-      observer.observe(element, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['data-adsbygoogle-status', 'data-ad-status']
-      });
-
-      // Verificar el estado del anuncio en intervalos
-      const checkInterval = setInterval(checkAdLoaded, 2000);
-      
-      // Timeout de 15 segundos para ocultar si no carga
-      timeoutRef.current = setTimeout(() => {
-        if (!adLoaded && !adError) {
-          console.log(`⏰ Timeout para ${adId} - ocultando anuncio`);
-          setIsVisible(false);
-          setHiddenAds(prev => new Set([...prev, adId]));
-        }
-      }, 15000);
-
-      return () => {
-        observer.disconnect();
-        clearInterval(checkInterval);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
-    }, [adId, adLoaded, adError]);
-
-    // Inicializar AdSense cuando el componente se monta
-    useEffect(() => {
       const initializeAd = () => {
         try {
           if (typeof window !== 'undefined' && window.adsbygoogle && adInsRef.current) {
-            // Verificar que el elemento no haya sido inicializado ya
-            if (!adInsRef.current.hasAttribute('data-adsbygoogle-status')) {
-              (window.adsbygoogle = window.adsbygoogle || []).push({});
-              console.log(`🚀 AdSense inicializado para ${adId}`);
-            } else {
-              console.log(`⚠️ AdSense ya inicializado para ${adId}`);
-            }
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            console.log(`🚀 AdSense inicializado para ${adId}`);
+            
+            // Verificar carga después de un tiempo
+            setTimeout(() => {
+              if (adInsRef.current) {
+                const hasContent = adInsRef.current.innerHTML.trim() !== '';
+                const hasHeight = adInsRef.current.clientHeight > 50;
+                
+                if (hasContent && hasHeight) {
+                  console.log(`✅ AdSense cargado para ${adId}`);
+                  setAdLoaded(true);
+                  setShowLoading(false);
+                } else {
+                  console.log(`❌ AdSense falló para ${adId}`);
+                  setShowLoading(false);
+                }
+              }
+            }, 3000);
+            
           } else {
-            console.log(`⏳ AdSense no disponible para ${adId}, reintentando...`);
-            setTimeout(initializeAd, 1000);
+            setTimeout(initializeAd, 500);
           }
         } catch (err) {
           console.error(`❌ Error inicializando AdSense para ${adId}:`, err);
-          setAdError(true);
+          setShowLoading(false);
         }
       };
 
-      // Delay inicial más corto
-      const initTimeout = setTimeout(initializeAd, 100);
-      
-      return () => clearTimeout(initTimeout);
+      const timer = setTimeout(initializeAd, 200);
+      return () => clearTimeout(timer);
     }, [adId]);
+
+    // Timeout para ocultar anuncios que no cargan
+    useEffect(() => {
+      const hideTimeout = setTimeout(() => {
+        if (!adLoaded) {
+          console.log(`⏰ Ocultando anuncio ${adId} por timeout`);
+          setIsVisible(false);
+          setHiddenAds(prev => new Set([...prev, adId]));
+        }
+      }, 10000);
+
+      return () => clearTimeout(hideTimeout);
+    }, [adId, adLoaded]);
 
     if (!isVisible) {
       return null; // No renderizar nada, las otras tarjetas se reacomodarán automáticamente
@@ -234,10 +185,10 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
 
         <CardContent className="pt-0">
           {/* Área del anuncio AdSense */}
-          <div className="w-full flex items-center justify-center bg-white rounded-lg overflow-hidden relative" style={{ minHeight: '250px' }}>
+          <div className="w-full bg-white rounded-lg overflow-hidden relative" style={{ minHeight: '250px', maxHeight: '250px' }}>
             {/* Indicador de carga */}
-            {!adLoaded && !adError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            {showLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                   <span className="text-xs text-gray-500">Cargando anuncio...</span>
@@ -245,28 +196,22 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
               </div>
             )}
             
-            {/* Mensaje de error */}
-            {adError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-                <span className="text-xs text-gray-400">Anuncio no disponible</span>
-              </div>
-            )}
-            
             {/* Elemento del anuncio */}
-            <ins
-              ref={adInsRef}
-              className="adsbygoogle"
-              style={{
-                display: 'block',
-                width: '300px',
-                height: '250px',
-                backgroundColor: 'transparent'
-              }}
-              data-ad-client="ca-pub-8330194041691289"
-              data-ad-slot="9313483236"
-              data-ad-format="rectangle"
-              data-full-width-responsive="false"
-            />
+            <div className="w-full h-full flex items-center justify-center">
+              <ins
+                ref={adInsRef}
+                className="adsbygoogle"
+                style={{
+                  display: 'inline-block',
+                  width: '300px',
+                  height: '250px'
+                }}
+                data-ad-client="ca-pub-8330194041691289"
+                data-ad-slot="9313483236"
+                data-ad-format="rectangle"
+                data-full-width-responsive="false"
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
