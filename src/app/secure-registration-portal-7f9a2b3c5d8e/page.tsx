@@ -121,7 +121,7 @@ export default function RegisterPage() {
           <p className="text-muted-foreground">Completa tu registro para comenzar</p>
         </div>
 
-        <div className="bg-card/60 backdrop-blur-md rounded-2xl shadow-xl p-6 border border-white/10">
+        <div className="bg-card/60 backdrop-blur-md rounded-2xl shadow-xl p-6">
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm mb-2 text-white">

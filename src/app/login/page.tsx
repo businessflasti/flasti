@@ -134,7 +134,7 @@ export default function LoginPage() {
         </div>
         
         {/* Formulario de Login - Estilo moderno y compacto */}
-        <div className="w-full max-w-md order-1 lg:order-2 flex flex-col justify-center lg:mt-4 lg:-mt-2">
+        <div className="w-full max-w-md order-1 lg:order-2 flex flex-col justify-center lg:-mt-4">
           {/* Logo centrado */}
           <div className="flex justify-center mb-8 lg:mb-6">
             <Logo size="lg" />
@@ -145,7 +145,7 @@ export default function LoginPage() {
             <p className="text-muted-foreground">Inicia sesión en tu cuenta</p>
           </div>
 
-          <div className="bg-card/60 backdrop-blur-md rounded-2xl shadow-xl p-6 border border-white/10">
+          <div className="bg-card/60 backdrop-blur-md rounded-2xl shadow-xl p-6">
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="block text-sm mb-2 text-white">

@@ -274,21 +274,25 @@ const FooterComponent = () => {
                 <SocialIcons />
                 <FeedbackTab />
               </div>
-            </div>
 
-            <div className="rounded-xl p-4 mb-6" style={{ background: '#232323' }}>
-              <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
-                {t('soporte')}
-              </h4>
-              <div className="flex flex-col items-center">
-                <p className="font-bold dark:text-white text-foreground/80 text-xs mb-3 text-center">
-                  {t('ayudaInmediata')}
-                </p>
-                <ChatButton
-                  className="bg-white hover:bg-[#ededed] text-black font-bold transition-all flex items-center gap-2 justify-center px-2 py-1 text-xs"
-                  text={t('iniciarChat')}
-                  showIcon={true}
-                />
+              <div className="rounded-xl p-4" style={{ background: '#232323' }}>
+                <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
+                  {t('soporte')}
+                </h4>
+                <div className="flex flex-col items-center">
+                  <p className="font-bold dark:text-white text-foreground/80 text-xs mb-3 text-center">
+                    {t('ayudaInmediata')}
+                  </p>
+                  <ChatButton
+                    className="bg-white hover:bg-[#ededed] text-black font-bold transition-all flex items-center gap-2 justify-center px-2 py-1 text-xs"
+                    text={t('iniciarChat')}
+                    showIcon={true}
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-xl p-4 flex items-center justify-center" style={{ background: '#232323' }}>
+                <RankingCard />
               </div>
             </div>
           </div>

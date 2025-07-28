@@ -6,7 +6,7 @@ const RankingCard = () => {
   return (
     <div className="ranking-card">
       <p className="title1">#33</p>
-      <p className="title2">desarrollo</p>
+      <p className="title2">Impulsado</p>
       <p className="title2">por Flasti Inc.</p>
       <svg className="svg" xmlns="http://www.w3.org/2000/svg" width={94} height={94} viewBox="0 0 94 94" fill="none">
         {/* Círculo exterior */}
