@@ -108,8 +108,11 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     const adInsRef = useRef<HTMLModElement>(null);
 
     useEffect(() => {
+      console.log(`Iniciando timeout de 10 segundos para ${adId}`);
+      
       // Iniciar timeout de 10 segundos
       const timeoutId = setTimeout(() => {
+        console.log(`Verificando timeout para ${adId}: adLoaded=${adLoaded}`);
         if (!adLoaded) {
           console.log(`AdSense timeout para ${adId} - ocultando tarjeta`);
           setIsVisible(false);
@@ -117,12 +120,18 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           setHiddenAds(prev => {
             const newSet = new Set(prev);
             newSet.add(adId);
+            console.log(`Anuncio ${adId} agregado a hiddenAds:`, newSet);
             return newSet;
           });
+        } else {
+          console.log(`Anuncio ${adId} cargado correctamente, manteniendo visible`);
         }
       }, 10000);
 
-      return () => clearTimeout(timeoutId);
+      return () => {
+        console.log(`Limpiando timeout para ${adId}`);
+        clearTimeout(timeoutId);
+      };
     }, [adId, adLoaded]);
 
     // Verificar si el anuncio se cargó correctamente
@@ -130,29 +139,53 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       const checkAdLoaded = () => {
         if (adInsRef.current) {
           const isUnfilled = adInsRef.current.dataset.adStatus === 'unfilled';
-          const isEmpty = adInsRef.current.innerHTML.trim() === '' && adInsRef.current.clientHeight === 0;
+          const hasContent = adInsRef.current.innerHTML.trim() !== '';
+          const hasHeight = adInsRef.current.clientHeight > 50;
           
-          if (!isUnfilled && !isEmpty && adInsRef.current.clientHeight > 0) {
+          console.log(`Verificando anuncio ${adId}:`, {
+            isUnfilled,
+            hasContent,
+            hasHeight,
+            innerHTML: adInsRef.current.innerHTML.substring(0, 100),
+            clientHeight: adInsRef.current.clientHeight
+          });
+          
+          if (!isUnfilled && (hasContent || hasHeight)) {
             console.log(`AdSense cargado exitosamente para ${adId}`);
             setAdLoaded(true);
           }
         }
       };
 
-      // Verificar después de un pequeño delay para dar tiempo a AdSense
-      const checkTimeout = setTimeout(checkAdLoaded, 2000);
-      return () => clearTimeout(checkTimeout);
+      // Verificar múltiples veces para asegurar detección
+      const intervals = [2000, 4000, 6000, 8000];
+      const timeouts = intervals.map(delay => 
+        setTimeout(checkAdLoaded, delay)
+      );
+
+      return () => {
+        timeouts.forEach(timeout => clearTimeout(timeout));
+      };
     }, [adId]);
 
     // Inicializar AdSense cuando el componente se monta
     useEffect(() => {
-      try {
-        if (typeof window !== 'undefined') {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
+      const initializeAd = () => {
+        try {
+          if (typeof window !== 'undefined' && window.adsbygoogle) {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            console.log(`AdSense push ejecutado para ${adId}`);
+          } else {
+            console.log(`AdSense no disponible aún para ${adId}, reintentando...`);
+            setTimeout(initializeAd, 1000);
+          }
+        } catch (err) {
+          console.error(`Error inicializando AdSense para ${adId}:`, err);
         }
-      } catch (err) {
-        console.error(`Error inicializando AdSense para ${adId}:`, err);
-      }
+      };
+
+      // Delay para asegurar que el script se haya cargado
+      setTimeout(initializeAd, 500);
     }, [adId]);
 
     if (!isVisible) {
@@ -177,13 +210,13 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         </CardHeader>
 
         <CardContent className="pt-0">
-          {/* Área del anuncio AdSense */}
-          <div className="mb-4 bg-[#2a2a2a] rounded-lg border border-[#404040] flex items-center justify-center overflow-hidden" style={{ minHeight: '250px', maxWidth: '300px', margin: '0 auto' }}>
+          {/* Área del anuncio AdSense - Simplificada */}
+          <div className="w-full flex items-center justify-center bg-white rounded-lg overflow-hidden" style={{ minHeight: '250px' }}>
             <Script
               async
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289"
               crossOrigin="anonymous"
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
             <ins
               ref={adInsRef}
@@ -191,34 +224,13 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
               style={{
                 display: 'inline-block',
                 width: '300px',
-                height: '250px'
+                height: '250px',
+                backgroundColor: 'white'
               }}
               data-ad-client="ca-pub-8330194041691289"
               data-ad-slot="9313483236"
+              data-full-width-responsive="false"
             />
-          </div>
-
-          {/* Información del anuncio */}
-          <div className="space-y-2 mb-4">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Tag className="w-3 h-3" />
-              <span>Contenido patrocinado</span>
-            </div>
-          </div>
-
-          {/* Botón deshabilitado para mantener estructura */}
-          <div className="flex gap-2">
-            <div className="flex-1 bg-muted/20 text-muted-foreground text-center py-2 rounded-md text-sm">
-              Anuncio
-            </div>
-          </div>
-
-          {/* Indicador de publicidad */}
-          <div className="mt-3 p-2 bg-muted/10 rounded-lg border border-muted/20">
-            <div className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
-              <Tag className="w-4 h-4" />
-              <span>Contenido publicitario</span>
-            </div>
           </div>
         </CardContent>
       </Card>
