@@ -193,7 +193,7 @@ function StudiovaHeroSection() {
 
 
                                 {/* Estadística - Móvil - Movida hacia la derecha y más abajo */}
-                                <div className="absolute top-32 right-6 bg-gradient-to-br from-[#EC4184] to-[#d63384] backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-xl" style={{animation: 'gentle-float-1 7s ease-in-out infinite 3s'}}>
+                                <div className="absolute top-32 right-6 bg-gradient-to-br from-[#EC4184] to-[#d63384] backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-xl">
                                     <div className="text-center">
                                         <p className="text-lg font-bold text-white">+100K</p>
                                         <p className="text-white/70 text-xs font-medium">Usuarios activos</p>
@@ -275,7 +275,7 @@ function StudiovaHeroSection() {
 
 
                             {/* Elemento adicional - Estadística flotante */}
-                            <div className="absolute bottom-20 right-8 bg-gradient-to-br from-[#EC4184] to-[#d63384] backdrop-blur-2xl border border-white/20 rounded-3xl p-4 shadow-xl" style={{animation: 'gentle-float-1 7s ease-in-out infinite 3s'}}>
+                            <div className="absolute bottom-20 right-8 bg-gradient-to-br from-[#EC4184] to-[#d63384] backdrop-blur-2xl border border-white/20 rounded-3xl p-4 shadow-xl">
                                 <div className="text-center">
                                     <p className="text-2xl font-bold text-white">+100K</p>
                                     <p className="text-white/70 text-xs font-medium">Usuarios activos</p>
