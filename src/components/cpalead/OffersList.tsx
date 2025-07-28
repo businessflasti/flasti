@@ -103,64 +103,48 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   // Componente para tarjeta de anuncio con timeout
   const AdCard: React.FC<{ adId: string }> = ({ adId }) => {
     const [isVisible, setIsVisible] = useState(true);
-    const [adLoaded, setAdLoaded] = useState(false);
     const [showLoading, setShowLoading] = useState(true);
     const adInsRef = useRef<HTMLModElement>(null);
     const initRef = useRef(false);
 
-    // Inicializar AdSense una sola vez
     useEffect(() => {
       if (initRef.current) return;
       initRef.current = true;
 
+      // Ocultar loading después de 2 segundos siempre
+      const loadingTimer = setTimeout(() => {
+        setShowLoading(false);
+      }, 2000);
+
+      // Inicializar AdSense
       const initializeAd = () => {
         try {
           if (typeof window !== 'undefined' && window.adsbygoogle && adInsRef.current) {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
             console.log(`🚀 AdSense inicializado para ${adId}`);
-            
-            // Verificar carga después de un tiempo
-            setTimeout(() => {
-              if (adInsRef.current) {
-                const hasContent = adInsRef.current.innerHTML.trim() !== '';
-                const hasHeight = adInsRef.current.clientHeight > 50;
-                
-                if (hasContent && hasHeight) {
-                  console.log(`✅ AdSense cargado para ${adId}`);
-                  setAdLoaded(true);
-                  setShowLoading(false);
-                } else {
-                  console.log(`❌ AdSense falló para ${adId}`);
-                  setShowLoading(false);
-                }
-              }
-            }, 3000);
-            
           } else {
             setTimeout(initializeAd, 500);
           }
         } catch (err) {
           console.error(`❌ Error inicializando AdSense para ${adId}:`, err);
-          setShowLoading(false);
         }
       };
 
-      const timer = setTimeout(initializeAd, 200);
-      return () => clearTimeout(timer);
+      const initTimer = setTimeout(initializeAd, 300);
+
+      // Timeout para ocultar anuncio si no funciona
+      const hideTimer = setTimeout(() => {
+        console.log(`⏰ Ocultando anuncio ${adId} por timeout`);
+        setIsVisible(false);
+        setHiddenAds(prev => new Set([...prev, adId]));
+      }, 12000);
+
+      return () => {
+        clearTimeout(loadingTimer);
+        clearTimeout(initTimer);
+        clearTimeout(hideTimer);
+      };
     }, [adId]);
-
-    // Timeout para ocultar anuncios que no cargan
-    useEffect(() => {
-      const hideTimeout = setTimeout(() => {
-        if (!adLoaded) {
-          console.log(`⏰ Ocultando anuncio ${adId} por timeout`);
-          setIsVisible(false);
-          setHiddenAds(prev => new Set([...prev, adId]));
-        }
-      }, 10000);
-
-      return () => clearTimeout(hideTimeout);
-    }, [adId, adLoaded]);
 
     if (!isVisible) {
       return null; // No renderizar nada, las otras tarjetas se reacomodarán automáticamente
@@ -185,8 +169,8 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
 
         <CardContent className="pt-0">
           {/* Área del anuncio AdSense */}
-          <div className="w-full bg-white rounded-lg overflow-hidden relative" style={{ minHeight: '250px', maxHeight: '250px' }}>
-            {/* Indicador de carga */}
+          <div className="w-full bg-white rounded-lg overflow-hidden relative" style={{ height: '250px' }}>
+            {/* Indicador de carga - solo por 2 segundos */}
             {showLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
                 <div className="flex flex-col items-center gap-2">
@@ -197,21 +181,20 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
             )}
             
             {/* Elemento del anuncio */}
-            <div className="w-full h-full flex items-center justify-center">
-              <ins
-                ref={adInsRef}
-                className="adsbygoogle"
-                style={{
-                  display: 'inline-block',
-                  width: '300px',
-                  height: '250px'
-                }}
-                data-ad-client="ca-pub-8330194041691289"
-                data-ad-slot="9313483236"
-                data-ad-format="rectangle"
-                data-full-width-responsive="false"
-              />
-            </div>
+            <ins
+              ref={adInsRef}
+              className="adsbygoogle"
+              style={{
+                display: 'block',
+                width: '300px',
+                height: '250px',
+                margin: '0 auto'
+              }}
+              data-ad-client="ca-pub-8330194041691289"
+              data-ad-slot="9313483236"
+              data-ad-format="rectangle"
+              data-full-width-responsive="false"
+            />
           </div>
         </CardContent>
       </Card>
