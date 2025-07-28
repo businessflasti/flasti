@@ -110,7 +110,7 @@ function StudiovaHeroSection() {
                             <div className="space-y-4">
                                 <TypewriterEffectSmooth 
                                     words={words} 
-                                    className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight text-center lg:text-left"
+                                    className="text-xl sm:text-2xl md:text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight text-center lg:text-left"
                                 />
                             </div>
 
