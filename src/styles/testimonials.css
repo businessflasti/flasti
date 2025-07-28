@@ -1,0 +1,151 @@
+/* Modern Testimonials Section Styles */
+
+/* Carousel styling */
+.embla {
+  overflow: hidden;
+  position: relative;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  position: relative;
+}
+
+/* Card styling */
+.testimonial-card {
+  transition: all 0.4s ease;
+  transform-origin: center;
+}
+
+/* Eliminado el efecto de "saltito" al pasar el cursor */
+.testimonial-card:hover {
+  transform: none;
+}
+
+.testimonial-avatar {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Avatar border effect removed */
+
+/* Scrollbar styling for testimonial content */
+.testimonial-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(60, 102, 205, 0.3) transparent;
+}
+
+.testimonial-content::-webkit-scrollbar {
+  width: 3px;
+}
+
+.testimonial-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.testimonial-content::-webkit-scrollbar-thumb {
+  background-color: rgba(60, 102, 205, 0.3);
+  border-radius: 20px;
+}
+
+/* Dot indicators */
+.testimonial-indicator {
+  transition: all 0.3s ease;
+}
+
+.testimonial-indicator.active {
+  width: 2rem;
+  background: linear-gradient(90deg, #3C66CD, #3359b6);
+}
+
+/* Navigation buttons */
+.testimonial-nav-button {
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.testimonial-nav-button:hover {
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.testimonial-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Horizontal card specific styles */
+@media (min-width: 768px) {
+  .testimonial-horizontal-card {
+    display: flex;
+    align-items: center;
+  }
+  
+  .testimonial-horizontal-card .testimonial-avatar {
+    margin-right: 1.5rem;
+  }
+  
+  .testimonial-horizontal-card .testimonial-content {
+    flex: 1;
+    padding-left: 1.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Mobile compact styles */
+@media (max-width: 767px) {
+  .testimonial-card {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .testimonial-content {
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+}
+
+/* Elegant hover effects */
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Radial gradient hover effect removed */
+
+/* Subtle animation for active card */
+.testimonial-card.active {
+  z-index: 10;
+}
+
+/* Eliminado el efecto de escala en las tarjetas seleccionadas */
+.embla__slide.is-selected .testimonial-card {
+  transform: none;
+  z-index: 10;
+}
+
+/* Professional shadow effects */
+.testimonial-shadow {
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(60, 102, 205, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.testimonial-shadow:hover {
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(60, 102, 205, 0.1);
+}

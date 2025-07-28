@@ -40,14 +40,14 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
   if (!isAdVisible && !alwaysVisible) return null;
 
   return (
-    <div className={`w-full max-w-md mx-auto animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center ${className}`} style={{color: '#fff'}}>
-      <div className="w-full overflow-hidden shadow-none p-0 relative bg-[#232323] rounded-2xl border border-white/10 flex flex-col">
+    <div className={`w-full max-w-[320px] mx-auto animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center relative z-50 ${className}`} style={{color: '#fff'}}>
+      <div className="w-full overflow-hidden shadow-none p-0 relative bg-[#232323] rounded-3xl border border-white/5 flex flex-col">
         {/* Banda superior para 'Publicidad' */}
-        <div className="w-full px-4 py-2 bg-[#101010] rounded-t-2xl border-b border-white/10 flex items-center justify-center" style={{minHeight: 32}}>
+        <div className="w-full px-4 py-2 bg-[#101010] rounded-t-3xl border-b border-white/10 flex items-center justify-center" style={{minHeight: 32}}>
           <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold select-none">{t('publicidad')}</span>
         </div>
         {/* Área del anuncio o animación minimalista */}
-        <div className="w-full flex flex-col items-center justify-center px-4 pb-4 pt-4" style={{ minHeight: 0 }}>
+        <div className="w-full flex flex-col items-center justify-center p-4" style={{ minHeight: 0 }}>
           {isAdVisible ? (
             <>
               <Script
@@ -56,14 +56,19 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
                 crossOrigin="anonymous"
                 strategy="afterInteractive"
               />
-              {/* Renderizar <ins> solo si hay anuncios */}
-              <div style={{ width: 320, height: 270, display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
+              {/* Contenedor del anuncio con overflow controlado */}
+              <div className="w-full max-w-[288px] max-h-[250px] flex justify-center items-center overflow-hidden rounded-xl">
                 <ins
                   ref={adInsRef}
                   className="adsbygoogle"
-                  style={{ display: 'block', textAlign: 'center', width: 320, height: 270, margin: '0 auto' }}
-                  data-ad-layout="in-article"
-                  data-ad-format="fluid"
+                  style={{ 
+                    display: 'block', 
+                    textAlign: 'center', 
+                    width: '288px', 
+                    height: '250px', 
+                    margin: '0 auto',
+                    overflow: 'hidden'
+                  }}
                   data-ad-client={adClient}
                   data-ad-slot={adSlot}
                 ></ins>

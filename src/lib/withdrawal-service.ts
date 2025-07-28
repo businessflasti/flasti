@@ -1,29 +1,45 @@
-import { EventEmitter } from 'events';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export interface WithdrawalRequest {
   id: string;
-  userId: string;
+  user_id: string;
   username: string;
   email: string;
   amount: number;
+  payment_method: string;
+  payment_details: any;
   status: 'pending' | 'processing' | 'completed' | 'rejected';
   timestamp: string;
-  paymentMethod: 'paypal';
+  processed_at?: string;
   notes?: string;
-  balance?: number;
+}
+
+export interface WithdrawalStats {
+  total_requested: number;
+  total_approved: number;
+  total_pending: number;
+  total_rejected: number;
+  pending_amount: number;
+  approved_amount: number;
 }
 
 class WithdrawalService {
   private static instance: WithdrawalService;
-  private eventEmitter: EventEmitter;
-  private withdrawalRequests: Map<string, WithdrawalRequest[]>;
-  private readonly STORAGE_KEY = 'withdrawal_requests';
-  private ws: WebSocket | null = null;
+  private listeners: {
+    onRequestReceived: ((request: WithdrawalRequest) => void)[];
+    onStatusUpdated: ((request: WithdrawalRequest) => void)[];
+  } = {
+    onRequestReceived: [],
+    onStatusUpdated: []
+  };
 
   private constructor() {
-    this.eventEmitter = new EventEmitter();
-    this.withdrawalRequests = this.loadRequestsFromStorage();
-    this.initializeWebSocket();
+    this.setupRealtimeSubscriptions();
   }
 
   public static getInstance(): WithdrawalService {
@@ -33,212 +49,305 @@ class WithdrawalService {
     return WithdrawalService.instance;
   }
 
-  private initializeWebSocket() {
-    // TODO: Reemplazar con la URL real del servidor WebSocket
-    const wsUrl = 'ws://localhost:3001';
-
-    try {
-      this.ws = new WebSocket(wsUrl);
-
-      this.ws.onopen = () => {
-        console.log('Conexión WebSocket establecida para retiros');
-      };
-
-      this.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        this.handleIncomingMessage(data);
-      };
-
-      this.ws.onerror = (error) => {
-        console.error('Error en la conexión WebSocket para retiros:', error);
-      };
-
-      this.ws.onclose = () => {
-        console.log('Conexión WebSocket cerrada para retiros');
-        // Reintentar conexión después de 5 segundos
-        setTimeout(() => this.initializeWebSocket(), 5000);
-      };
-    } catch (error) {
-      console.error('Error al inicializar WebSocket para retiros:', error);
-    }
+  /**
+   * Configura suscripciones en tiempo real
+   */
+  private setupRealtimeSubscriptions() {
+    // Escuchar nuevas solicitudes de retiro
+    supabase
+      .channel('withdrawal_requests')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'withdrawals'
+      }, async (payload) => {
+        const newRequest = await this.formatWithdrawalRequest(payload.new);
+        this.listeners.onRequestReceived.forEach(listener => listener(newRequest));
+      })
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'withdrawals'
+      }, async (payload) => {
+        const updatedRequest = await this.formatWithdrawalRequest(payload.new);
+        this.listeners.onStatusUpdated.forEach(listener => listener(updatedRequest));
+      })
+      .subscribe();
   }
 
-  private handleIncomingMessage(data: any) {
-    const { type, payload } = data;
+  /**
+   * Formatea una solicitud de retiro con información del usuario
+   */
+  private async formatWithdrawalRequest(withdrawalData: any): Promise<WithdrawalRequest> {
+    // Obtener información del usuario
+    const { data: authUsers } = await supabase.auth.admin.listUsers();
+    const authUser = authUsers.users.find(u => u.id === withdrawalData.user_id);
 
-    switch (type) {
-      case 'new_withdrawal_request':
-        this.addWithdrawalRequest(payload);
-        this.eventEmitter.emit('requestReceived', payload);
-        break;
-      case 'status_update':
-        this.updateRequestStatus(payload);
-        break;
-      default:
-        console.warn('Tipo de mensaje no manejado:', type);
-    }
-  }
-
-  public validateWithdrawalRequest(userId: string, amount: number): { valid: boolean; message?: string } {
-    // Validar que el monto sea mayor que cero
-    if (amount <= 0) {
-      return { valid: false, message: 'El monto debe ser mayor que cero' };
-    }
-
-    // Simular validación de balance disponible
-    const userBalance = 100; // En un caso real, esto vendría de la base de datos
-    if (amount > userBalance) {
-      return { valid: false, message: 'Balance insuficiente para realizar el retiro' };
-    }
-
-    return { valid: true };
-  }
-
-  public createWithdrawalRequest(request: Omit<WithdrawalRequest, 'id' | 'timestamp' | 'status'>): WithdrawalRequest {
-    const newRequest = {
-      ...request,
-      id: crypto.randomUUID(),
-      timestamp: new Date().toISOString(),
-      status: 'pending' as const
+    return {
+      id: withdrawalData.id,
+      user_id: withdrawalData.user_id,
+      username: authUser?.user_metadata?.full_name || authUser?.email?.split('@')[0] || 'Usuario',
+      email: authUser?.email || 'No disponible',
+      amount: withdrawalData.amount,
+      payment_method: withdrawalData.payment_method,
+      payment_details: withdrawalData.payment_details,
+      status: withdrawalData.status,
+      timestamp: withdrawalData.created_at,
+      processed_at: withdrawalData.processed_at,
+      notes: withdrawalData.payment_details?.rejection_reason || withdrawalData.notes
     };
-
-    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
-      // Si no hay conexión WebSocket, almacenamos la solicitud localmente
-      this.addWithdrawalRequest(newRequest);
-      return newRequest;
-    }
-
-    this.ws.send(JSON.stringify({
-      type: 'new_withdrawal_request',
-      payload: newRequest
-    }));
-
-    // Almacenamos la solicitud localmente después de enviarla
-    this.addWithdrawalRequest(newRequest);
-    return newRequest;
   }
 
-  public updateRequestStatus(payload: { requestId: string; status: WithdrawalRequest['status']; notes?: string }) {
-    let updated = false;
+  /**
+   * Obtiene todas las solicitudes de retiro
+   */
+  async getAllRequests(): Promise<WithdrawalRequest[]> {
+    try {
+      const { data, error } = await supabase
+        .from('withdrawals')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    this.withdrawalRequests.forEach((requests, userId) => {
-      const index = requests.findIndex(r => r.id === payload.requestId);
-      if (index !== -1) {
-        requests[index].status = payload.status;
-        if (payload.notes) {
-          requests[index].notes = payload.notes;
+      if (error) throw error;
+
+      const formattedRequests = await Promise.all(
+        data.map(withdrawal => this.formatWithdrawalRequest(withdrawal))
+      );
+
+      return formattedRequests;
+    } catch (error) {
+      console.error('Error obteniendo solicitudes de retiro:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Obtiene solicitudes de retiro por estado
+   */
+  async getRequestsByStatus(status: string): Promise<WithdrawalRequest[]> {
+    try {
+      const { data, error } = await supabase
+        .from('withdrawals')
+        .select('*')
+        .eq('status', status)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedRequests = await Promise.all(
+        data.map(withdrawal => this.formatWithdrawalRequest(withdrawal))
+      );
+
+      return formattedRequests;
+    } catch (error) {
+      console.error('Error obteniendo solicitudes por estado:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Obtiene estadísticas de retiros
+   */
+  async getWithdrawalStats(): Promise<WithdrawalStats> {
+    try {
+      const { data, error } = await supabase
+        .from('withdrawals')
+        .select('amount, status');
+
+      if (error) throw error;
+
+      const stats = data.reduce((acc, withdrawal) => {
+        const amount = parseFloat(withdrawal.amount);
+        acc.total_requested += amount;
+
+        switch (withdrawal.status) {
+          case 'pending':
+            acc.total_pending++;
+            acc.pending_amount += amount;
+            break;
+          case 'approved':
+          case 'completed':
+            acc.total_approved++;
+            acc.approved_amount += amount;
+            break;
+          case 'rejected':
+            acc.total_rejected++;
+            break;
         }
-        this.withdrawalRequests.set(userId, requests);
-        updated = true;
 
-        // Notificar a los suscriptores sobre el cambio de estado
-        this.eventEmitter.emit('statusUpdated', requests[index]);
-      }
-    });
+        return acc;
+      }, {
+        total_requested: 0,
+        total_approved: 0,
+        total_pending: 0,
+        total_rejected: 0,
+        pending_amount: 0,
+        approved_amount: 0
+      });
 
-    if (updated) {
-      this.saveRequestsToStorage();
-
-      // Enviar actualización a través de WebSocket si está disponible
-      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        this.ws.send(JSON.stringify({
-          type: 'status_update',
-          payload
-        }));
-      }
-    }
-
-    return updated;
-  }
-
-  private addWithdrawalRequest(request: WithdrawalRequest) {
-    const userRequests = this.withdrawalRequests.get(request.userId) || [];
-    userRequests.push(request);
-    this.withdrawalRequests.set(request.userId, userRequests);
-    this.saveRequestsToStorage();
-  }
-
-  public getAllRequests(): WithdrawalRequest[] {
-    const allRequests: WithdrawalRequest[] = [];
-    this.withdrawalRequests.forEach(requests => {
-      allRequests.push(...requests);
-    });
-    return allRequests.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  }
-
-  public getUserRequests(userId: string): WithdrawalRequest[] {
-    return (this.withdrawalRequests.get(userId) || []).sort(
-      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-    );
-  }
-
-  public onRequestReceived(callback: (request: WithdrawalRequest) => void) {
-    this.eventEmitter.on('requestReceived', callback);
-    return () => this.eventEmitter.off('requestReceived', callback);
-  }
-
-  public onStatusUpdated(callback: (request: WithdrawalRequest) => void) {
-    this.eventEmitter.on('statusUpdated', callback);
-    return () => this.eventEmitter.off('statusUpdated', callback);
-  }
-
-  private loadRequestsFromStorage(): Map<string, WithdrawalRequest[]> {
-    if (typeof window === 'undefined') {
-      return new Map();
-    }
-
-    const storedData = localStorage.getItem(this.STORAGE_KEY);
-    if (!storedData) {
-      return new Map();
-    }
-
-    try {
-      const parsedData = JSON.parse(storedData);
-      return new Map(Object.entries(parsedData));
+      return stats;
     } catch (error) {
-      console.error('Error al cargar solicitudes de retiro:', error);
-      return new Map();
+      console.error('Error obteniendo estadísticas de retiros:', error);
+      return {
+        total_requested: 0,
+        total_approved: 0,
+        total_pending: 0,
+        total_rejected: 0,
+        pending_amount: 0,
+        approved_amount: 0
+      };
     }
   }
 
-  private saveRequestsToStorage() {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
+  /**
+   * Actualiza el estado de una solicitud de retiro
+   */
+  async updateRequestStatus({
+    requestId,
+    status,
+    notes
+  }: {
+    requestId: string;
+    status: 'pending' | 'processing' | 'completed' | 'rejected';
+    notes?: string;
+  }): Promise<boolean> {
     try {
-      const data = Object.fromEntries(this.withdrawalRequests);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+      const updateData: any = {
+        status,
+        processed_at: new Date().toISOString()
+      };
+
+      if (notes) {
+        // Obtener detalles actuales para preservar otros datos
+        const { data: currentWithdrawal } = await supabase
+          .from('withdrawals')
+          .select('payment_details')
+          .eq('id', requestId)
+          .single();
+
+        updateData.payment_details = {
+          ...currentWithdrawal?.payment_details,
+          notes: notes,
+          ...(status === 'rejected' && { rejection_reason: notes })
+        };
+      }
+
+      const { error } = await supabase
+        .from('withdrawals')
+        .update(updateData)
+        .eq('id', requestId);
+
+      if (error) throw error;
+
+      // Si se aprueba, descontar del saldo del usuario
+      if (status === 'completed' || status === 'approved') {
+        await this.processApprovedWithdrawal(requestId);
+      }
+
+      return true;
     } catch (error) {
-      console.error('Error al guardar solicitudes de retiro:', error);
+      console.error('Error actualizando estado de retiro:', error);
+      return false;
     }
   }
 
-  // Verificar si un usuario tiene suficiente balance para realizar un retiro
-  public checkUserBalance(userId: string, amount: number): boolean {
-    // En un caso real, esto consultaría a una API o base de datos
-    // Por ahora, simulamos un balance fijo para demostración
-    const userBalance = 100; // $100 USD de ejemplo
-    return userBalance >= amount;
+  /**
+   * Procesa un retiro aprobado (descuenta del saldo)
+   */
+  private async processApprovedWithdrawal(requestId: string): Promise<void> {
+    try {
+      // Obtener detalles del retiro
+      const { data: withdrawal, error: withdrawalError } = await supabase
+        .from('withdrawals')
+        .select('*')
+        .eq('id', requestId)
+        .single();
+
+      if (withdrawalError || !withdrawal) return;
+
+      // Obtener saldo actual del usuario
+      const { data: userProfile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('balance, total_withdrawals')
+        .eq('user_id', withdrawal.user_id)
+        .single();
+
+      if (profileError || !userProfile) return;
+
+      // Verificar que tenga saldo suficiente
+      if (userProfile.balance < withdrawal.amount) {
+        console.error('Saldo insuficiente para procesar retiro');
+        return;
+      }
+
+      // Actualizar saldo del usuario
+      const newBalance = userProfile.balance - withdrawal.amount;
+      const newTotalWithdrawals = (userProfile.total_withdrawals || 0) + withdrawal.amount;
+
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({
+          balance: newBalance,
+          total_withdrawals: newTotalWithdrawals,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', withdrawal.user_id);
+
+      if (updateError) {
+        console.error('Error actualizando saldo del usuario:', updateError);
+        return;
+      }
+
+      // Registrar en logs de actividad
+      await supabase
+        .from('affiliate_activity_logs')
+        .insert({
+          user_id: withdrawal.user_id,
+          activity_type: 'withdrawal_processed',
+          details: {
+            withdrawal_id: requestId,
+            amount: withdrawal.amount,
+            previous_balance: userProfile.balance,
+            new_balance: newBalance,
+            payment_method: withdrawal.payment_method
+          },
+          created_at: new Date().toISOString()
+        });
+
+    } catch (error) {
+      console.error('Error procesando retiro aprobado:', error);
+    }
   }
 
-  // Verificar si el monto de retiro es válido (mayor que cero)
-  public validateWithdrawalAmount(amount: number): boolean {
-    return amount > 0;
+  /**
+   * Suscribirse a nuevas solicitudes de retiro
+   */
+  onRequestReceived(callback: (request: WithdrawalRequest) => void): () => void {
+    this.listeners.onRequestReceived.push(callback);
+    
+    // Retornar función para desuscribirse
+    return () => {
+      const index = this.listeners.onRequestReceived.indexOf(callback);
+      if (index > -1) {
+        this.listeners.onRequestReceived.splice(index, 1);
+      }
+    };
   }
 
-  // Validar una solicitud de retiro (monto válido y balance suficiente)
-  public validateWithdrawalRequest(userId: string, amount: number): { valid: boolean; message?: string } {
-    if (!this.validateWithdrawalAmount(amount)) {
-      return { valid: false, message: 'El monto debe ser mayor que cero' };
-    }
-
-    if (!this.checkUserBalance(userId, amount)) {
-      return { valid: false, message: 'No tienes suficiente balance disponible para este retiro' };
-    }
-
-    return { valid: true };
+  /**
+   * Suscribirse a actualizaciones de estado
+   */
+  onStatusUpdated(callback: (request: WithdrawalRequest) => void): () => void {
+    this.listeners.onStatusUpdated.push(callback);
+    
+    // Retornar función para desuscribirse
+    return () => {
+      const index = this.listeners.onStatusUpdated.indexOf(callback);
+      if (index > -1) {
+        this.listeners.onStatusUpdated.splice(index, 1);
+      }
+    };
   }
 }
 
-export const withdrawalService = WithdrawalService.getInstance();
+export default WithdrawalService;

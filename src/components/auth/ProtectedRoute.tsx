@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import PageLoader from '@/components/ui/PageLoader';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading, updateBalance } = useAuth();
@@ -110,22 +111,15 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     );
   }
 
-  // Mostrar spinner de carga mientras se verifica la autenticación
-  if (loading || connectionError) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
+  // Si hay error de conexión después de varios reintentos, mostrar error
+  if (connectionError && retryCount >= 3) {
+    // El mensaje de error ya se muestra arriba, aquí solo retornamos null
+    return null;
   }
 
-  // Si no hay usuario autenticado, no renderizar nada
-  if (!user) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
+  // Si estamos cargando o no hay usuario, no renderizar nada (dejar que PageLoader maneje)
+  if (loading || !user) {
+    return null;
   }
 
   // Si hay usuario autenticado, renderizar los hijos directamente

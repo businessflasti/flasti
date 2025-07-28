@@ -18,7 +18,7 @@ const CompaniesSection = () => {
         <div className="flex flex-wrap items-center justify-center gap-8 mb-12">
           {/* Logos de empresa con efectos de resplandor */}
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-3xl"></div>
             <Image 
               src="https://ext.same-assets.com/1330808718/2761605665.svg"
               alt="Company Logo"
@@ -27,7 +27,7 @@ const CompaniesSection = () => {
             />
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-3xl"></div>
             <Image 
               src="https://ext.same-assets.com/1330808718/616339271.svg"
               alt="Company Logo"
@@ -36,7 +36,7 @@ const CompaniesSection = () => {
             />
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-3xl"></div>
             <Image 
               src="https://ext.same-assets.com/1330808718/1617786510.svg"
               alt="Company Logo"
@@ -45,7 +45,7 @@ const CompaniesSection = () => {
             />
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-3xl"></div>
             <Image 
               src="https://ext.same-assets.com/1330808718/1416560932.svg"
               alt="Company Logo"
@@ -54,7 +54,7 @@ const CompaniesSection = () => {
             />
           </div>
           <div className="h-8 w-32 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300 relative group">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-sm -z-10 rounded-3xl"></div>
             <Image 
               src="https://ext.same-assets.com/1330808718/997317226.svg"
               alt="Company Logo"
@@ -75,7 +75,7 @@ const CompaniesSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="glass-card p-8 rounded-xl">
+          <div className="glass-card p-8 rounded-3xl">
             <h3 className="text-xl md:text-2xl font-bold mb-6">
               Somos la <span className="text-gradient">autoridad</span> en innovación digital en América Latina
             </h3>

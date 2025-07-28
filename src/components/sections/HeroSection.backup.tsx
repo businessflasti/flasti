@@ -309,7 +309,7 @@ const NotificationSimulator = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="mb-3 bg-card/40 backdrop-blur-sm border border-white/5 rounded-lg p-3"
+              className="mb-3 bg-card/40 backdrop-blur-sm border border-white/5 rounded-3xl p-3"
             >
               <div className="flex items-start gap-3">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -393,14 +393,14 @@ const HeroSection = () => {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="flex flex-wrap justify-center gap-8 mb-10 mt-8"
           >
-            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-6 py-4 text-center">
+            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-3xl px-6 py-4 text-center">
               <p className="text-3xl font-bold mb-1 text-[#ec4899]">
                 <AnimatedCounter value={500000} prefix="+" />
               </p>
               <p className="text-sm text-foreground/60">Usuarios activos</p>
             </div>
 
-            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-xl px-6 py-4 text-center">
+            <div className="bg-card/40 backdrop-blur-sm border border-white/5 rounded-3xl px-6 py-4 text-center">
               <p className="text-3xl font-bold mb-1 text-[#9333ea]">
                 <AnimatedCounter value={250000} prefix="$" />
               </p>
@@ -418,7 +418,7 @@ const HeroSection = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Columna izquierda - Imagen de la plataforma */}
               <div className="lg:col-span-2 relative">
-                <div className="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                   {/* Imagen principal del dashboard */}
                   <Image
                     src="/dashboard-preview.webp"
@@ -435,10 +435,10 @@ const HeroSection = () => {
                       initial={{ scale: 0.9, opacity: 0, y: 20 }}
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.2 }}
-                      className="absolute top-10 right-10 backdrop-blur-xl rounded-xl shadow-xl z-30 animate-float"
+                      className="absolute top-10 right-10 backdrop-blur-xl rounded-3xl shadow-xl z-30 animate-float"
                       style={{ animationDelay: '0.3s', animationDuration: '4s' }}
                     >
-                      <div className="bg-gradient-to-br from-[#9333ea]/90 to-[#9333ea]/70 border border-white/10 p-3 rounded-xl">
+                      <div className="bg-gradient-to-br from-[#9333ea]/90 to-[#9333ea]/70 border border-white/10 p-3 rounded-3xl">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                             <DollarSign className="h-5 w-5 text-white" />
@@ -456,10 +456,10 @@ const HeroSection = () => {
                       initial={{ scale: 0.9, opacity: 0, y: 20 }}
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.5 }}
-                      className="absolute top-1/3 -left-5 backdrop-blur-xl rounded-xl shadow-xl z-30 animate-float overflow-hidden"
+                      className="absolute top-1/3 -left-5 backdrop-blur-xl rounded-3xl shadow-xl z-30 animate-float overflow-hidden"
                       style={{ animationDelay: '0.7s', animationDuration: '5s' }}
                     >
-                      <div className="bg-gradient-to-br from-primary/90 to-primary/70 border border-white/10 p-3 rounded-xl">
+                      <div className="bg-gradient-to-br from-primary/90 to-primary/70 border border-white/10 p-3 rounded-3xl">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                             <TrendingUp className="h-5 w-5 text-white" />
@@ -482,10 +482,10 @@ const HeroSection = () => {
                       initial={{ scale: 0.9, opacity: 0, y: 20 }}
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.8 }}
-                      className="absolute bottom-10 right-1/4 backdrop-blur-xl rounded-xl shadow-xl z-30 animate-float"
+                      className="absolute bottom-10 right-1/4 backdrop-blur-xl rounded-3xl shadow-xl z-30 animate-float"
                       style={{ animationDelay: '1s', animationDuration: '4.5s' }}
                     >
-                      <div className="bg-gradient-to-br from-[#facc15]/90 to-[#facc15]/70 border border-white/10 p-3 rounded-xl">
+                      <div className="bg-gradient-to-br from-[#facc15]/90 to-[#facc15]/70 border border-white/10 p-3 rounded-3xl">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center flex-shrink-0 border border-white/10">
                             <Wallet className="h-5 w-5 text-white" />
@@ -503,7 +503,7 @@ const HeroSection = () => {
 
               {/* Columna derecha - Simulador de notificaciones */}
               <div className="relative">
-                <div className="glass-card h-full rounded-xl border border-white/10 p-4 backdrop-blur-md">
+                <div className="glass-card h-full rounded-3xl border border-white/10 p-4 backdrop-blur-md">
                   <NotificationSimulator />
                 </div>
               </div>

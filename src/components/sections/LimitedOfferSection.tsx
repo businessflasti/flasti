@@ -80,7 +80,7 @@ const LimitedOfferSection = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="glass-card p-4 rounded-lg border border-white/10 bg-gradient-to-r from-[#d4386c]/20 to-[#d4386c]/5">
+                <div className="glass-card p-4 rounded-3xl border border-white/10 bg-gradient-to-r from-[#d4386c]/20 to-[#d4386c]/5">
                   <div className="flex items-center">
                     <div className="w-8 h-8 rounded-full bg-[#d4386c]/20 flex items-center justify-center mr-3 border border-white/10">
                       <Check className="h-4 w-4 text-[#d4386c]" />
@@ -89,7 +89,7 @@ const LimitedOfferSection = () => {
                   </div>
                 </div>
 
-                <div className="glass-card p-4 rounded-lg border border-white/10 bg-gradient-to-r from-[#d4386c]/20 to-[#d4386c]/5">
+                <div className="glass-card p-4 rounded-3xl border border-white/10 bg-gradient-to-r from-[#d4386c]/20 to-[#d4386c]/5">
                   <div className="flex items-center">
                     <div className="w-8 h-8 rounded-full bg-[#d4386c]/20 flex items-center justify-center mr-3 border border-white/10">
                       <Check className="h-4 w-4 text-[#d4386c]" />
@@ -98,7 +98,7 @@ const LimitedOfferSection = () => {
                   </div>
                 </div>
 
-                <div className="glass-card p-4 rounded-lg border border-white/10 bg-gradient-to-r from-[#eab308]/20 to-[#eab308]/5">
+                <div className="glass-card p-4 rounded-3xl border border-white/10 bg-gradient-to-r from-[#eab308]/20 to-[#eab308]/5">
                   <div className="flex items-center">
                     <div className="w-8 h-8 rounded-full bg-[#eab308]/20 flex items-center justify-center mr-3 border border-white/10">
                       <Check className="h-4 w-4 text-[#eab308]" />
@@ -111,7 +111,7 @@ const LimitedOfferSection = () => {
 
             {/* Columna derecha - Tarjeta de precio */}
             <div>
-              <div className="glass-card border border-white/10 rounded-xl p-6 bg-gradient-to-br from-[#f97316]/20 to-[#eab308]/20 backdrop-blur-md">
+              <div className="glass-card border border-white/10 rounded-3xl p-6 bg-gradient-to-br from-[#f97316]/20 to-[#eab308]/20 backdrop-blur-md">
                 <div className="bg-[#ef4444] text-white text-sm px-3 py-1 rounded-full inline-block mb-3">
                   -80% casi acaba
                 </div>

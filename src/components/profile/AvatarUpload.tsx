@@ -18,6 +18,35 @@ export default function AvatarUpload() {
   const [refreshKey, setRefreshKey] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Función para obtener las iniciales del usuario
+  const getInitials = (email: string | undefined, name: string | undefined) => {
+    if (name) {
+      return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    }
+    if (email) {
+      return email.split('@')[0].substring(0, 2).toUpperCase();
+    }
+    return 'U';
+  };
+  
+  // Función para generar un color basado en el email/nombre
+  const getAvatarColor = (text: string) => {
+    const colors = [
+      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+    ];
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+      hash = text.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+  };
+  
+  const userEmail = user?.email || profile?.email || '';
+  const userName = profile?.name || user?.user_metadata?.full_name;
+  const initials = getInitials(userEmail, userName);
+  const avatarColor = getAvatarColor(userEmail || userName || 'default');
+
   // Función para abrir el selector de archivos
   const handleSelectFile = () => {
     if (fileInputRef.current) {
@@ -179,7 +208,6 @@ export default function AvatarUpload() {
       {/* Avatar actual con botón de cambio */}
       <div className="relative mb-4">
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#9333ea]/30 via-[#ec4899]/30 to-[#facc15]/30 rounded-full blur-md animate-pulse-slow"></div>
           <div className="h-28 w-28 rounded-full overflow-hidden border-4 border-background shadow-lg relative">
             {profile?.avatar_url ? (
               <div className="h-full w-full flex items-center justify-center">
@@ -192,8 +220,11 @@ export default function AvatarUpload() {
                 />
               </div>
             ) : (
-              <div className="h-28 w-28 rounded-full overflow-hidden">
-                <img src="/images/default-avatar.png" alt="Avatar" className="w-full h-full object-cover" />
+              <div 
+                className="h-full w-full rounded-full flex items-center justify-center text-white font-bold text-2xl"
+                style={{ backgroundColor: avatarColor }}
+              >
+                {initials}
               </div>
             )}
           </div>
@@ -213,9 +244,6 @@ export default function AvatarUpload() {
         {profile?.name || user?.email?.split('@')[0] || 'Usuario'}
       </h3>
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-          Nivel {profile?.level || 1}
-        </span>
         <span className="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full">
           Activo
         </span>

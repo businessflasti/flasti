@@ -38,20 +38,31 @@ export default function ProfilePage() {
         transition={{ duration: 0.5, delay: 0.05 }}
       >
         {loading ? (
-          <Skeleton className="h-56 w-full mb-6 rounded-2xl" />
+          <div className="flex flex-col items-center justify-center py-16 space-y-4">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full border-4 border-gray-700 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full border-4 border-gray-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center">
+                    <div className="w-4 h-4 bg-white rounded-sm transform rotate-45"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
+            </div>
+            <p className="text-gray-400 font-medium">Cargando perfil...</p>
+          </div>
         ) : (
-          <Card className="p-0 overflow-hidden border-0 shadow-xl bg-[#18181b] relative">
-            <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-primary/40 animate-pulse-slow" style={{zIndex:0, filter:'blur(1px)', opacity:0.15}}></div>
-            <div className="flex flex-col items-center gap-6 p-8 relative z-10">
+          <div className="bg-[#232323] border border-white/10 rounded-lg">
+            <div className="flex flex-col items-center gap-6 p-8">
               <AvatarUpload />
               <span className="font-semibold text-white">{user?.email}</span>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-2 text-gray-300">
                 <span className="font-semibold">Registrado:</span>
                 <span>{profile?.created_at ? new Date(profile.created_at).toLocaleString() : '-'}</span>
               </div>
               {/* Aquí puedes agregar más datos y opciones de edición */}
             </div>
-          </Card>
+          </div>
         )}
       </motion.div>
     </div>

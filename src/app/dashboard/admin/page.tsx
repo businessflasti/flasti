@@ -63,6 +63,45 @@ function AdminDashboardContent() {
     checkAdminStatus();
   }, [user, router]);
 
+  // Manejar aprobación de retiro
+  const handleApproveWithdrawal = async (withdrawalId: string) => {
+    if (!user?.id) return;
+
+    try {
+      const success = await adminService.approveWithdrawal(withdrawalId, user.id);
+      if (success) {
+        toast.success('Retiro aprobado exitosamente');
+        loadRealData(); // Recargar datos
+      } else {
+        toast.error('Error al aprobar el retiro');
+      }
+    } catch (error) {
+      console.error('Error aprobando retiro:', error);
+      toast.error('Error al aprobar el retiro');
+    }
+  };
+
+  // Manejar rechazo de retiro
+  const handleRejectWithdrawal = async (withdrawalId: string) => {
+    if (!user?.id) return;
+
+    const reason = prompt('Ingresa la razón del rechazo:');
+    if (!reason) return;
+
+    try {
+      const success = await adminService.rejectWithdrawal(withdrawalId, reason, user.id);
+      if (success) {
+        toast.success('Retiro rechazado');
+        loadRealData(); // Recargar datos
+      } else {
+        toast.error('Error al rechazar el retiro');
+      }
+    } catch (error) {
+      console.error('Error rechazando retiro:', error);
+      toast.error('Error al rechazar el retiro');
+    }
+  };
+
   // Cargar estadísticas del panel de administración
   const loadDashboardStats = async () => {
     try {
@@ -80,79 +119,65 @@ function AdminDashboardContent() {
         }
       } catch (chatError) {
         console.error('Error al cargar conversaciones de soporte:', chatError);
+        dashboardStats.openConversations = 0;
       }
 
       setStats(dashboardStats);
 
-      // Cargar datos básicos para las tablas
-      loadBasicData();
+      // Cargar datos reales para las tablas
+      loadRealData();
     } catch (error) {
       console.error('Error al cargar estadísticas:', error);
       toast.error('Error al cargar estadísticas');
     }
   };
 
-  // Cargar datos básicos para las tablas
-  const loadBasicData = async () => {
-    // Cargar algunos usuarios de ejemplo
-    setUsers([
-      {
-        user_id: '1234567890',
-        first_name: 'Juan',
-        last_name: 'Pérez',
-        users: { email: 'juan@example.com' },
-        balance: 120,
-        level: 2,
-        created_at: '2023-03-15'
-      },
-      {
-        user_id: '0987654321',
-        first_name: 'María',
-        last_name: 'García',
-        users: { email: 'maria@example.com' },
-        balance: 85,
-        level: 1,
-        created_at: '2023-04-20'
-      }
-    ]);
+  // Cargar datos reales para las tablas
+  const loadRealData = async () => {
+    try {
+      // Cargar usuarios reales
+      const realUsers = await adminService.getUsers(10);
+      const formattedUsers = realUsers.map(user => ({
+        user_id: user.user_id,
+        first_name: user.email.split('@')[0],
+        last_name: '',
+        users: { email: user.email },
+        balance: user.balance,
+        level: user.balance > 100 ? 3 : user.balance > 50 ? 2 : 1,
+        created_at: user.created_at
+      }));
+      setUsers(formattedUsers);
 
-    // Cargar algunos retiros pendientes de ejemplo
-    setPendingWithdrawals([
-      {
-        id: 'WR-12345',
-        profiles: { email: 'juan@example.com' },
-        amount: 50,
-        payment_method: 'PayPal',
-        created_at: '2023-05-15',
-        status: 'pending'
-      },
-      {
-        id: 'WR-12346',
-        profiles: { email: 'maria@example.com' },
-        amount: 75,
-        payment_method: 'PayPal',
-        created_at: '2023-05-14',
-        status: 'approved'
-      }
-    ]);
+      // Cargar retiros pendientes reales
+      const realWithdrawals = await adminService.getWithdrawalRequests('pending');
+      const formattedWithdrawals = realWithdrawals.map(withdrawal => ({
+        id: withdrawal.id,
+        profiles: { email: withdrawal.user_email },
+        amount: withdrawal.amount,
+        payment_method: withdrawal.payment_method,
+        created_at: withdrawal.created_at,
+        status: withdrawal.status
+      }));
+      setPendingWithdrawals(formattedWithdrawals);
 
-    // Cargar algunos tickets de soporte de ejemplo
-    setSupportTickets([
-      {
-        id: 'C-12345',
-        profiles: { email: 'juan@example.com' },
-        subject: 'Problema con retiro',
-        updated_at: new Date().toISOString(),
-        status: 'open'
-      },
-      {
-        id: 'C-12346',
-        profiles: { email: 'maria@example.com' },
-        subject: 'Consulta sobre comisiones',
-        updated_at: new Date(Date.now() - 86400000).toISOString(), // Ayer
-        status: 'closed'
-      }
-    ]);
+      // Cargar tickets de soporte (mantener ejemplo por ahora)
+      setSupportTickets([
+        {
+          id: 'C-12345',
+          profiles: { email: 'soporte@flasti.com' },
+          subject: 'Sistema funcionando correctamente',
+          updated_at: new Date().toISOString(),
+          status: 'open'
+        }
+      ]);
+
+    } catch (error) {
+      console.error('Error cargando datos reales:', error);
+      // Fallback a datos vacíos
+      setUsers([]);
+      setPendingWithdrawals([]);
+      setSupportTickets([]);
+    }
   };
 
   if (loading) {
@@ -334,10 +359,22 @@ function AdminDashboardContent() {
                         </td>
                         <td className="px-4 py-3 text-sm">
                           <div className="flex gap-2">
-                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs text-[#10b981]">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="h-8 px-2 text-xs text-[#10b981]"
+                              onClick={() => handleApproveWithdrawal(withdrawal.id)}
+                              disabled={withdrawal.status !== 'pending'}
+                            >
                               Aprobar
                             </Button>
-                            <Button variant="outline" size="sm" className="h-8 px-2 text-xs text-destructive">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="h-8 px-2 text-xs text-destructive"
+                              onClick={() => handleRejectWithdrawal(withdrawal.id)}
+                              disabled={withdrawal.status !== 'pending'}
+                            >
                               Rechazar
                             </Button>
                           </div>

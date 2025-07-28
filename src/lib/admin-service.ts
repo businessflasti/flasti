@@ -1,6 +1,11 @@
-import { supabase } from './supabase';
+import { createClient } from '@supabase/supabase-js';
 
-export interface AdminDashboardStats {
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+export interface AdminStats {
   totalUsers: number;
   newUsersToday: number;
   totalSales: number;
@@ -8,21 +13,33 @@ export interface AdminDashboardStats {
   pendingWithdrawals: number;
   pendingWithdrawalAmount: number;
   openConversations: number;
+  totalEarnings: number;
+  totalWithdrawals: number;
+  activeUsers: number;
 }
 
-export interface UserData {
-  id: string;
+export interface UserProfile {
+  user_id: string;
   email: string;
-  firstName: string;
-  lastName: string;
   balance: number;
-  level: number;
-  totalSales: number;
-  totalCommissions: number;
-  totalWithdrawals: number;
-  createdAt: Date;
-  lastLoginAt?: Date;
-  role: 'user' | 'admin' | 'super_admin';
+  total_earnings: number;
+  total_withdrawals: number;
+  created_at: string;
+  last_login?: string;
+  status: 'active' | 'inactive' | 'suspended';
+}
+
+export interface WithdrawalRequest {
+  id: string;
+  user_id: string;
+  user_email: string;
+  amount: number;
+  payment_method: string;
+  payment_details: any;
+  status: 'pending' | 'approved' | 'rejected' | 'completed';
+  created_at: string;
+  processed_at?: string;
+  notes?: string;
 }
 
 class AdminService {
@@ -38,86 +55,122 @@ class AdminService {
   }
 
   /**
-   * Verifica si un usuario tiene rol de administrador
+   * Verifica si un usuario es administrador
    */
-  public async isAdmin(userId: string): Promise<boolean> {
+  async isAdmin(userId: string): Promise<boolean> {
     try {
-      // Primero verificamos en localStorage (solución alternativa)
-      if (typeof window !== 'undefined') {
-        const isAdminInLocalStorage = localStorage.getItem('isAdmin') === 'true';
-        if (isAdminInLocalStorage) {
-          return true;
-        }
+      console.log('🔍 Verificando admin para userId:', userId);
+      
+      // Lista de IDs de administradores (puedes moverlo a variables de entorno)
+      const adminIds = process.env.ADMIN_USER_IDS?.split(',').filter(id => id.trim()) || [];
+      console.log('📋 Admin IDs en env:', adminIds);
+      
+      if (adminIds.includes(userId)) {
+        console.log('✅ Usuario encontrado en ADMIN_USER_IDS');
+        return true;
       }
 
-      // Luego intentamos verificar en la tabla user_roles
-      try {
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', userId)
-          .single();
+      // También verificar en base de datos si existe tabla de roles
+      console.log('🔍 Verificando en base de datos...');
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .in('role', ['admin', 'super_admin']);
 
-        if (!error && data) {
-          return data.role === 'admin' || data.role === 'super_admin';
+      console.log('📊 Resultado DB:', { data, error });
+
+      if (error) {
+        console.error('❌ Error en consulta DB:', error);
+        
+        // Si hay error de recursión infinita o tabla no accesible, 
+        // usar solo la verificación por variables de entorno
+        if (error.code === '42P17' || error.message?.includes('infinite recursion')) {
+          console.log('⚠️ Problema de RLS detectado, usando solo ADMIN_USER_IDS');
+          return adminIds.includes(userId);
         }
-      } catch (roleError) {
-        console.log('No se encontró en user_roles, verificando en user_profiles...');
+        
+        return false;
       }
 
-      // Si no encontramos en user_roles, verificamos el campo is_admin en user_profiles
-      try {
-        const { data: profileData, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('is_admin')
-          .eq('user_id', userId)
-          .single();
-
-        if (!profileError && profileData && profileData.is_admin === true) {
-          return true;
-        }
-      } catch (profileError) {
-        console.log('Error al verificar is_admin en user_profiles:', profileError);
-      }
-
-      return false;
+      const isAdmin = data && data.length > 0;
+      console.log(isAdmin ? '✅ Usuario es admin en DB' : '❌ Usuario NO es admin');
+      
+      return isAdmin;
     } catch (error) {
-      console.error('Error al verificar rol de administrador:', error);
-      return false;
+      console.error('💥 Error verificando admin:', error);
+      
+      // Fallback: usar solo variables de entorno si hay cualquier error
+      const adminIds = process.env.ADMIN_USER_IDS?.split(',').filter(id => id.trim()) || [];
+      const isFallbackAdmin = adminIds.includes(userId);
+      console.log(`🔄 Fallback admin check: ${isFallbackAdmin}`);
+      
+      return isFallbackAdmin;
     }
   }
 
   /**
-   * Obtiene estadísticas para el panel de administración
+   * Obtiene estadísticas del dashboard administrativo
    */
-  public async getDashboardStats(): Promise<AdminDashboardStats> {
+  async getDashboardStats(): Promise<AdminStats> {
     try {
-      const { data, error } = await supabase.rpc('get_admin_dashboard_stats');
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-      if (error) {
-        console.error('Error al obtener estadísticas:', error);
-        return {
-          totalUsers: 0,
-          newUsersToday: 0,
-          totalSales: 0,
-          salesToday: 0,
-          pendingWithdrawals: 0,
-          pendingWithdrawalAmount: 0,
-          openConversations: 0
-        };
-      }
+      // Obtener total de usuarios
+      const { count: totalUsers } = await supabase
+        .from('user_profiles')
+        .select('*', { count: 'exact', head: true });
+
+      // Obtener usuarios nuevos hoy
+      const { count: newUsersToday } = await supabase
+        .from('user_profiles')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', today.toISOString());
+
+      // Obtener estadísticas de CPALead
+      const { data: cpaLeadStats } = await supabase
+        .from('cpalead_transactions')
+        .select('amount, created_at')
+        .eq('status', 'completed');
+
+      const totalSales = cpaLeadStats?.reduce((sum, t) => sum + parseFloat(t.amount), 0) || 0;
+      const salesToday = cpaLeadStats
+        ?.filter(t => new Date(t.created_at) >= today)
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0) || 0;
+
+      // Obtener retiros pendientes
+      const { data: pendingWithdrawalsData, count: pendingWithdrawals } = await supabase
+        .from('withdrawals')
+        .select('amount', { count: 'exact' })
+        .eq('status', 'pending');
+
+      const pendingWithdrawalAmount = pendingWithdrawalsData
+        ?.reduce((sum, w) => sum + parseFloat(w.amount), 0) || 0;
+
+      // Obtener total de ganancias y retiros
+      const { data: profileStats } = await supabase
+        .from('user_profiles')
+        .select('total_earnings, total_withdrawals, balance');
+
+      const totalEarnings = profileStats?.reduce((sum, p) => sum + (p.total_earnings || 0), 0) || 0;
+      const totalWithdrawals = profileStats?.reduce((sum, p) => sum + (p.total_withdrawals || 0), 0) || 0;
+      const activeUsers = profileStats?.filter(p => (p.balance || 0) > 0).length || 0;
 
       return {
-        totalUsers: data.total_users,
-        newUsersToday: data.new_users_today,
-        totalSales: data.total_sales,
-        salesToday: data.sales_today,
-        pendingWithdrawals: data.pending_withdrawals,
-        pendingWithdrawalAmount: data.pending_withdrawal_amount,
-        openConversations: data.open_conversations
+        totalUsers: totalUsers || 0,
+        newUsersToday: newUsersToday || 0,
+        totalSales,
+        salesToday,
+        pendingWithdrawals: pendingWithdrawals || 0,
+        pendingWithdrawalAmount,
+        openConversations: 0, // Se calculará por separado
+        totalEarnings,
+        totalWithdrawals,
+        activeUsers
       };
     } catch (error) {
-      console.error('Error al obtener estadísticas:', error);
+      console.error('Error obteniendo estadísticas admin:', error);
       return {
         totalUsers: 0,
         newUsersToday: 0,
@@ -125,254 +178,241 @@ class AdminService {
         salesToday: 0,
         pendingWithdrawals: 0,
         pendingWithdrawalAmount: 0,
-        openConversations: 0
+        openConversations: 0,
+        totalEarnings: 0,
+        totalWithdrawals: 0,
+        activeUsers: 0
       };
     }
   }
 
   /**
-   * Obtiene la lista de usuarios
+   * Obtiene lista de usuarios con sus perfiles
    */
-  public async getUsers(
-    search?: string,
-    limit = 20,
-    offset = 0
-  ): Promise<{ users: UserData[]; total: number }> {
-    try {
-      let query = supabase
-        .from('user_profiles')
-        .select(`
-          *,
-          users:user_id (
-            email,
-            created_at,
-            last_login_at
-          ),
-          roles:user_id (
-            role
-          )
-        `, { count: 'exact' });
-
-      if (search) {
-        query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`);
-      }
-
-      const { data, error, count } = await query
-        .order('created_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-
-      if (error) {
-        console.error('Error al obtener usuarios:', error);
-        return { users: [], total: 0 };
-      }
-
-      // Obtener estadísticas adicionales para cada usuario
-      const usersWithStats = await Promise.all(
-        data.map(async (user) => {
-          // Obtener total de ventas
-          const { data: salesData } = await supabase
-            .from('sales')
-            .select('amount', { count: 'exact', head: true })
-            .eq('affiliate_id', user.user_id);
-
-          // Obtener total de comisiones
-          const { data: commissionsData } = await supabase
-            .from('commissions')
-            .select('amount', { count: 'exact', head: true })
-            .eq('user_id', user.user_id);
-
-          // Obtener total de retiros
-          const { data: withdrawalsData } = await supabase
-            .from('withdrawal_requests')
-            .select('amount', { count: 'exact', head: true })
-            .eq('user_id', user.user_id)
-            .eq('status', 'completed');
-
-          return {
-            id: user.user_id,
-            email: user.users?.email || '',
-            firstName: user.first_name,
-            lastName: user.last_name,
-            balance: user.balance || 0,
-            level: user.level || 1,
-            totalSales: salesData?.count || 0,
-            totalCommissions: commissionsData?.count || 0,
-            totalWithdrawals: withdrawalsData?.count || 0,
-            createdAt: new Date(user.users?.created_at || user.created_at),
-            lastLoginAt: user.users?.last_login_at ? new Date(user.users.last_login_at) : undefined,
-            role: user.roles?.role || 'user'
-          };
-        })
-      );
-
-      return { users: usersWithStats, total: count || 0 };
-    } catch (error) {
-      console.error('Error al obtener usuarios:', error);
-      return { users: [], total: 0 };
-    }
-  }
-
-  /**
-   * Obtiene detalles de un usuario específico
-   */
-  public async getUserDetails(userId: string): Promise<UserData | null> {
+  async getUsers(limit: number = 50, offset: number = 0): Promise<UserProfile[]> {
     try {
       const { data, error } = await supabase
         .from('user_profiles')
         .select(`
-          *,
-          users:user_id (
-            email,
-            created_at,
-            last_login_at
-          ),
-          roles:user_id (
-            role
-          )
+          user_id,
+          email,
+          balance,
+          total_earnings,
+          total_withdrawals,
+          created_at,
+          updated_at
         `)
-        .eq('user_id', userId)
-        .single();
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
 
-      if (error || !data) {
-        console.error('Error al obtener detalles del usuario:', error);
-        return null;
-      }
+      if (error) throw error;
 
-      // Obtener estadísticas adicionales
-      const [salesResult, commissionsResult, withdrawalsResult] = await Promise.all([
-        supabase
-          .from('sales')
-          .select('amount', { count: 'exact', head: true })
-          .eq('affiliate_id', userId),
-        supabase
-          .from('commissions')
-          .select('amount', { count: 'exact', head: true })
-          .eq('user_id', userId),
-        supabase
-          .from('withdrawal_requests')
-          .select('amount', { count: 'exact', head: true })
-          .eq('user_id', userId)
-          .eq('status', 'completed')
-      ]);
+      const usersWithEmails: UserProfile[] = data?.map(profile => {
+        return {
+          user_id: profile.user_id,
+          email: profile.email || 'No disponible',
+          balance: profile.balance || 0,
+          total_earnings: profile.total_earnings || 0,
+          total_withdrawals: profile.total_withdrawals || 0,
+          created_at: profile.created_at,
+          last_login: undefined, // No disponible sin auth.admin
+          status: 'active' // Por defecto activo
+        };
+      }) || [];
 
-      return {
-        id: data.user_id,
-        email: data.users?.email || '',
-        firstName: data.first_name,
-        lastName: data.last_name,
-        balance: data.balance || 0,
-        level: data.level || 1,
-        totalSales: salesResult.count || 0,
-        totalCommissions: commissionsResult.count || 0,
-        totalWithdrawals: withdrawalsResult.count || 0,
-        createdAt: new Date(data.users?.created_at || data.created_at),
-        lastLoginAt: data.users?.last_login_at ? new Date(data.users.last_login_at) : undefined,
-        role: data.roles?.role || 'user'
-      };
+      return usersWithEmails;
     } catch (error) {
-      console.error('Error al obtener detalles del usuario:', error);
-      return null;
+      console.error('Error obteniendo usuarios:', error);
+      return [];
     }
   }
 
   /**
-   * Actualiza el rol de un usuario
+   * Obtiene solicitudes de retiro usando API route
    */
-  public async updateUserRole(
-    userId: string,
-    role: 'user' | 'admin' | 'super_admin'
-  ): Promise<{ success: boolean; message?: string }> {
+  async getWithdrawalRequests(status?: string): Promise<WithdrawalRequest[]> {
     try {
-      // Verificar si ya existe un rol para el usuario
-      const { data: existingRole } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .single();
+      console.log('🔍 Obteniendo solicitudes de retiro desde API...');
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        console.error('❌ No hay sesión activa');
+        return [];
+      }
 
-      if (existingRole) {
-        // Actualizar rol existente
-        const { error } = await supabase
-          .from('user_roles')
-          .update({ role, updated_at: new Date().toISOString() })
-          .eq('user_id', userId);
-
-        if (error) {
-          console.error('Error al actualizar rol:', error);
-          return { success: false, message: error.message };
+      const response = await fetch('/api/admin/withdrawals', {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
         }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.error) {
+        console.error('❌ Error en API:', data.error);
+        return [];
+      }
+
+      let withdrawals = data.withdrawals || [];
+      
+      // Filtrar por estado si se especifica
+      if (status) {
+        withdrawals = withdrawals.filter((w: any) => w.status === status);
+      }
+
+      console.log('✅ Retiros obtenidos desde API:', withdrawals.length);
+      return withdrawals;
+    } catch (error) {
+      console.error('💥 Error obteniendo retiros desde API:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Aprueba una solicitud de retiro usando API route
+   */
+  async approveWithdrawal(withdrawalId: string, adminId: string): Promise<boolean> {
+    try {
+      console.log('✅ Aprobando retiro:', withdrawalId);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        console.error('❌ No hay sesión activa');
+        return false;
+      }
+
+      const response = await fetch('/api/admin/withdrawals', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          withdrawal_id: withdrawalId,
+          status: 'approved'
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error al aprobar retiro');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('✅ Retiro aprobado exitosamente');
+        return true;
       } else {
-        // Crear nuevo rol
-        const { error } = await supabase
-          .from('user_roles')
-          .insert({ user_id: userId, role });
-
-        if (error) {
-          console.error('Error al crear rol:', error);
-          return { success: false, message: error.message };
-        }
+        console.error('❌ Error en respuesta:', data.error);
+        return false;
       }
-
-      return { success: true };
     } catch (error) {
-      console.error('Error al actualizar rol de usuario:', error);
-      return { success: false, message: 'Error interno al actualizar rol' };
+      console.error('💥 Error aprobando retiro:', error);
+      return false;
     }
   }
 
   /**
-   * Actualiza el balance de un usuario
+   * Rechaza una solicitud de retiro usando API route
    */
-  public async updateUserBalance(
-    userId: string,
-    amount: number,
-    operation: 'add' | 'subtract'
-  ): Promise<{ success: boolean; message?: string; newBalance?: number }> {
+  async rejectWithdrawal(withdrawalId: string, reason: string, adminId: string): Promise<boolean> {
     try {
-      // Obtener balance actual
-      const { data: userData, error: userError } = await supabase
+      console.log('❌ Rechazando retiro:', withdrawalId);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        console.error('❌ No hay sesión activa');
+        return false;
+      }
+
+      const response = await fetch('/api/admin/withdrawals', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          withdrawal_id: withdrawalId,
+          status: 'rejected',
+          notes: reason
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error al rechazar retiro');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('✅ Retiro rechazado exitosamente');
+        return true;
+      } else {
+        console.error('❌ Error en respuesta:', data.error);
+        return false;
+      }
+    } catch (error) {
+      console.error('💥 Error rechazando retiro:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Agrega saldo a un usuario (función administrativa)
+   */
+  async addUserBalance(userId: string, amount: number, reason: string, adminId: string): Promise<boolean> {
+    try {
+      // Obtener perfil actual del usuario
+      const { data: userProfile, error: profileError } = await supabase
         .from('user_profiles')
         .select('balance')
         .eq('user_id', userId)
         .single();
 
-      if (userError) {
-        console.error('Error al obtener balance del usuario:', userError);
-        return { success: false, message: 'Usuario no encontrado' };
+      if (profileError || !userProfile) {
+        throw new Error('Usuario no encontrado');
       }
 
-      const currentBalance = userData.balance || 0;
-      let newBalance = currentBalance;
+      const newBalance = userProfile.balance + amount;
 
-      if (operation === 'add') {
-        newBalance = currentBalance + amount;
-      } else {
-        // Verificar que hay suficiente balance
-        if (currentBalance < amount) {
-          return { success: false, message: 'Balance insuficiente' };
-        }
-        newBalance = currentBalance - amount;
-      }
-
-      // Actualizar balance
+      // Actualizar saldo
       const { error: updateError } = await supabase
         .from('user_profiles')
-        .update({ balance: newBalance })
+        .update({
+          balance: newBalance,
+          updated_at: new Date().toISOString()
+        })
         .eq('user_id', userId);
 
-      if (updateError) {
-        console.error('Error al actualizar balance:', updateError);
-        return { success: false, message: updateError.message };
-      }
+      if (updateError) throw updateError;
 
-      return {
-        success: true,
-        newBalance,
-        message: `Balance ${operation === 'add' ? 'incrementado' : 'reducido'} correctamente`
-      };
+      // Registrar en logs de actividad
+      await supabase
+        .from('affiliate_activity_logs')
+        .insert({
+          user_id: userId,
+          activity_type: 'admin_balance_adjustment',
+          details: {
+            amount: amount,
+            reason: reason,
+            admin_id: adminId,
+            previous_balance: userProfile.balance,
+            new_balance: newBalance
+          },
+          created_at: new Date().toISOString()
+        });
+
+      return true;
     } catch (error) {
-      console.error('Error al actualizar balance:', error);
-      return { success: false, message: 'Error interno al actualizar balance' };
+      console.error('Error agregando saldo:', error);
+      return false;
     }
   }
 }

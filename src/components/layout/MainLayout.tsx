@@ -9,6 +9,8 @@ import { usePathname } from 'next/navigation';
 import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { Sidebar } from "@/components/ui/sidebar";
+import { StickyBannerDemo } from "@/components/ui/sticky-banner-demo";
+import Header from "@/components/layout/Header";
 
 // Cargar el componente de notificaciones FOMO de forma diferida
 // Solo se cargará en páginas que no sean de checkout, ya que allí se maneja por separado
@@ -25,11 +27,11 @@ const DashboardChatWidget = dynamic(
 
 interface MainLayoutProps {
   children: React.ReactNode;
-  showHeader?: boolean;
   disableChat?: boolean;
+  showStickyBanner?: boolean;
 }
 
-const MainLayoutComponent = ({ children, showHeader = false, disableChat = false }: MainLayoutProps) => {
+const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner = false }: MainLayoutProps) => {
   const pathname = usePathname();
   const isInternalPage = pathname?.startsWith('/dashboard');
   const isContactPage = pathname === '/contacto';
@@ -53,6 +55,18 @@ const MainLayoutComponent = ({ children, showHeader = false, disableChat = false
 
   return (
     <ToastProvider>
+      {/* Banner - Solo en páginas principales - NO STICKY */}
+      {showStickyBanner && !isInternalPage && (
+        <div className="w-full">
+          <StickyBannerDemo />
+        </div>
+      )}
+      
+      {/* Header normal para páginas externas - STICKY */}
+      {!isInternalPage && (
+        <Header showStickyBanner={showStickyBanner} />
+      )}
+
       <div
         className={`min-h-screen flex flex-col relative overflow-hidden mobile-app-container${(isInternalPage || isContactPage) ? '' : ' gradient-background'}`}
         style={(isInternalPage || isContactPage) ? { background: '#101010' } : {}}
@@ -76,12 +90,6 @@ const MainLayoutComponent = ({ children, showHeader = false, disableChat = false
         {isInternalPage && (
           <div className="w-full z-30 sticky top-0">
             <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
-          </div>
-        )}
-        {/* Header con carga optimizada para páginas externas */}
-        {showHeader && !isInternalPage && (
-          <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 hardware-accelerated" style={{ background: '#101010' }}>
-            {/* <Navbar /> */}
           </div>
         )}
 

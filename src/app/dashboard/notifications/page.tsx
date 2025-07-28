@@ -36,30 +36,51 @@ export default function NotificationsPage() {
         transition={{ duration: 0.5, delay: 0.05 }}
       >
         {loading ? (
-          <Skeleton className="h-48 w-full mb-6 rounded-2xl" />
-        ) : (
-          <Card className="p-0 overflow-hidden border-0 shadow-xl bg-[#18181b] relative">
-            <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-primary/40 animate-pulse-slow" style={{zIndex:0, filter:'blur(1px)', opacity:0.15}}></div>
-            <div className="p-8 relative z-10">
-              {notifications.length === 0 ? (
-                <div className="text-[#b0b0b0] py-8 text-center">No tienes notificaciones aún.</div>
-              ) : (
-                <ul className="space-y-4">
-                  {notifications.map((n: any) => (
-                    <li key={n.id} className={n.read ? 'opacity-60' : ''}>
-                      <Notification
-                        title={n.title}
-                        message={n.message}
-                        type={n.type === 'retiro' ? 'info' : n.type === 'recompensa' ? 'success' : 'info'}
-                        className="mb-0"
-                      />
-                      <div className="text-xs text-[#b0b0b0] mt-1">{new Date(n.created_at).toLocaleString()}</div>
-                    </li>
-                  ))}
-                </ul>
-              )}
+          <div className="flex flex-col items-center justify-center py-16 space-y-4">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full border-4 border-gray-700 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full border-4 border-gray-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center">
+                    <div className="w-4 h-4 bg-white rounded-sm transform rotate-45"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
             </div>
-          </Card>
+            <p className="text-gray-400 font-medium">Cargando notificaciones...</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {notifications.length === 0 ? (
+              <div className="text-center py-16">
+                <div className="text-gray-400 text-lg mb-2">📬</div>
+                <p className="text-gray-400 font-medium">No tienes notificaciones aún</p>
+                <p className="text-gray-500 text-sm mt-1">Las notificaciones aparecerán aquí cuando completes tareas o realices retiros</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {notifications.map((n: any) => (
+                  <div key={n.id} className={`bg-[#232323] border border-white/10 rounded-lg p-4 ${n.read ? 'opacity-60' : ''}`}>
+                    <Notification
+                      title={n.title}
+                      message={n.message}
+                      type={n.type === 'success' ? 'success' : n.type === 'error' ? 'error' : 'info'}
+                      className="mb-0"
+                    />
+                    <div className="text-xs text-gray-400 mt-2">
+                      {new Date(n.created_at).toLocaleString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         )}
       </motion.div>
     </div>

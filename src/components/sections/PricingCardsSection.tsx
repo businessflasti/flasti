@@ -81,7 +81,7 @@ const PricingCardsSection = () => {
 					{plans.map((plan, index) => (
 						<div
 							key={index}
-							className={`glass-card p-8 rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 ${
+							className={`glass-card p-8 rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 ${
 								plan.popular
 									? "border-[#3c66ce]/50 shadow-lg shadow-[#3c66ce]/10"
 									: "border-white/10"

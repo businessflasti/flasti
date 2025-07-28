@@ -33,7 +33,7 @@ const TrustedBySection = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="glass-card p-6 rounded-xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/5 text-center hardware-accelerated"
+              className="glass-card p-6 rounded-3xl border border-white/10 hover:border-[#d4386c]/30 transition-all hover:shadow-lg hover:shadow-[#d4386c]/5 text-center hardware-accelerated"
             >
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#d4386c]/20 to-[#3359b6]/20 flex items-center justify-center border border-white/10 mx-auto mb-4">
                 <span className="text-[#d4386c]">{stat.icon}</span>

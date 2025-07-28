@@ -23,7 +23,7 @@ function formatCurrency(amount: number, currency: string = 'USD'): string {
 export default function AffiliateAppsSimple() {
   const [loading, setLoading] = useState(true);
   const [apps, setApps] = useState<any[]>([]);
-  const [userLevel, setUserLevel] = useState(1);
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -71,48 +71,10 @@ export default function AffiliateAppsSimple() {
       // Si hay error, usar datos de fallback
       const finalAppsData = (!appsError && appsData && appsData.length > 0) ? appsData : fallbackApps;
 
-      // Obtener el nivel del usuario
-      let level = 1;
-      try {
-        // Intentar obtener el nivel de user_profiles
-        const { data: userData, error: userError } = await supabase
-          .from('user_profiles')
-          .select('level')
-          .eq('user_id', user.id)
-          .single();
-
-        if (!userError && userData) {
-          level = userData.level;
-        } else {
-          // Si no se encuentra en user_profiles, buscar en profiles
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('level')
-            .eq('id', user.id)
-            .single();
-
-          if (!profileError && profileData) {
-            level = profileData.level;
-          }
-        }
-      } catch (error) {
-        console.error('Error al obtener nivel del usuario:', error);
-      }
-
-      setUserLevel(level);
-      console.log('Nivel del usuario:', level);
-
-      // Tabla de comisiones por nivel (fallback)
-      const commissionRates = {
-        1: 0.50, // 50% para nivel 1
-        2: 0.60, // 60% para nivel 2
-        3: 0.70  // 70% para nivel 3
-      };
-
-      // Procesar las apps con comisiones
+      // Procesar las apps con comisión fija del 50%
       const processedApps = finalAppsData.map((app) => {
-        // Usar la tasa de comisión según el nivel del usuario
-        const commissionRate = commissionRates[level as keyof typeof commissionRates] || 0.50;
+        // Usar tasa de comisión fija del 50%
+        const commissionRate = 0.50;
 
         // Calcular la comisión en dinero
         const commissionAmount = app.base_price * commissionRate;
@@ -181,10 +143,7 @@ export default function AffiliateAppsSimple() {
               Promociona estas apps y gana comisiones por cada venta
             </CardDescription>
           </div>
-          <Badge variant="outline" className="flex items-center gap-1">
-            <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-            Nivel {userLevel}
-          </Badge>
+
         </div>
       </CardHeader>
       <CardContent>

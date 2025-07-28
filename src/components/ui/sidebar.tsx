@@ -10,11 +10,10 @@ import Image from 'next/image';
 
 const sidebarItems = [
   { name: "Inicio", icon: <FiHome />, href: "/dashboard", tooltip: "Inicio" },
-  { name: "Balance", icon: <FiDollarSign />, href: "/dashboard/balance", tooltip: "Tu balance" },
   { name: "Historial de Retiros", icon: <FiClock />, href: "/dashboard/withdrawals-history", tooltip: "Historial de retiros" },
   { name: "Perfil", icon: <FiUser />, href: "/dashboard/profile", tooltip: "Tu perfil" },
   { name: "Recompensas", icon: <FiAward />, href: "/dashboard/rewards-history", tooltip: "Historial de recompensas" },
-  { name: "Retiros", icon: <FiGift />, href: "/dashboard/withdrawals", tooltip: "Solicitar retiro" },
+  { name: "Retiros", icon: <FiDollarSign />, href: "/dashboard/withdrawals", tooltip: "Solicitar retiro" },
   { name: "Notificaciones", icon: <FiBell />, href: "/dashboard/notifications", tooltip: "Tus notificaciones" },
   { name: "Soporte", icon: <FiMessageCircle />, href: "/contacto", tooltip: "Soporte y ayuda" },
   { name: "Salir", icon: <FiLogOut />, href: "/logout", tooltip: "Cerrar sesión", isLogout: true },
@@ -22,7 +21,37 @@ const sidebarItems = [
 
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
   const { profile, user } = useAuth();
-  const avatar = profile?.avatar_url || '/images/profiles/profile1.jpg';
+  
+  // Función para obtener las iniciales del usuario
+  const getInitials = (email: string | undefined, name: string | undefined) => {
+    if (name) {
+      return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    }
+    if (email) {
+      return email.split('@')[0].substring(0, 2).toUpperCase();
+    }
+    return 'U';
+  };
+  
+  // Función para generar un color basado en el email/nombre
+  const getAvatarColor = (text: string) => {
+    const colors = [
+      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+    ];
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+      hash = text.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+  };
+  
+  const userEmail = user?.email || profile?.email || '';
+  const userName = profile?.full_name || user?.user_metadata?.full_name;
+  const initials = getInitials(userEmail, userName);
+  const avatarColor = getAvatarColor(userEmail || userName || 'default');
+  
+  const hasCustomAvatar = profile?.avatar_url;
   const color = '#232323';
   const pathname = usePathname();
   // Eliminar el botón flotante, solo sidebar y overlay
@@ -43,10 +72,24 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
             tabIndex={-1}
           >
             <div className="mb-8 flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full border-4 flex items-center justify-center mb-2" style={{ borderColor: color, background: color, transition: 'border-color 0.3s' }}>
-                <Image src={avatar} alt="Avatar del usuario" width={56} height={56} className="rounded-full" />
+              <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden" style={{ borderColor: color, transition: 'border-color 0.3s' }}>
+                {hasCustomAvatar ? (
+                  <Image 
+                    src={profile.avatar_url} 
+                    alt="Avatar del usuario" 
+                    width={80} 
+                    height={80} 
+                    className="w-full h-full object-cover rounded-full" 
+                  />
+                ) : (
+                  <div 
+                    className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl"
+                    style={{ backgroundColor: avatarColor }}
+                  >
+                    {initials}
+                  </div>
+                )}
               </div>
-              <span className="text-white font-semibold text-base" aria-label="Bienvenida">Bienvenido</span>
             </div>
             <nav className="flex flex-col gap-2 w-full" aria-label="Navegación lateral" role="menu">
               {sidebarItems.map((item, idx) => (

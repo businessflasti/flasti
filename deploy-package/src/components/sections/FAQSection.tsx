@@ -139,6 +139,11 @@ const FAQSection = () => {
 										<div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
 									</div>
 									<span className="font-medium">{faq.question}</span>
+									{index === 0 && ( // Suponemos que la primera pregunta es la más popular
+										<span className="ml-2 px-2 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+											Popular
+										</span>
+									)}
 								</div>
 								<div className="text-primary">
 									{openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}

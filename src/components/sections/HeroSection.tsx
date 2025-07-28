@@ -8,6 +8,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 // Estilos para el scrollbar personalizado y animaciones
 const customStyles = `
@@ -215,14 +216,15 @@ const HeroSection = React.memo(function HeroSection() {
               <RotatingText />
               <span className="block mt-2 bg-gradient-to-t from-[#444] via-[#b0b0b0] to-white bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #444 0%, #b0b0b0 55%, #fff 100%)'}}>{t('con')} <span>flasti</span></span>
             </h1>
-            <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">
-              {t('aprovechaPoder')}
-            </p>
+            <TextGenerateEffect 
+              words={t('aprovechaPoder')}
+              className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mt-6"
+            />
           </div>
           {/* Estadísticas */}
           <div className="flex flex-row justify-center gap-4 sm:gap-8 mb-10 mt-8 animate-entry animate-entry-delay-3 hardware-accelerated hero-stats-container">
             <div className={
-              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
+              `rounded-3xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
             }>
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.generatedAmount} prefix="$" />
@@ -233,7 +235,7 @@ const HeroSection = React.memo(function HeroSection() {
               </p>
             </div>
             <div className={
-              `rounded-xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
+              `rounded-3xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
             }>
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.microtasksCompleted} />
@@ -247,16 +249,16 @@ const HeroSection = React.memo(function HeroSection() {
           {/* Indicador de usuarios */}
           <div className="mt-6 flex justify-center animate-entry animate-entry-delay-4 hardware-accelerated">
             <div className={
-              `flex items-center gap-2 rounded-full border border-white/5 px-4 py-2 bg-[#282828]`
+              `flex items-center gap-2 px-4 py-2 bg-[#282828]`
             }>
               <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden transition-all duration-300 hover:scale-110 hover:border-foreground/80 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
+                <div className="w-8 h-8 overflow-hidden transition-all duration-300 hover:scale-110 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
                   <img src="/images/profiles/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" />
                 </div>
-                <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden transition-all duration-300 hover:scale-110 hover:border-foreground/80 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
+                <div className="w-8 h-8 overflow-hidden transition-all duration-300 hover:scale-110 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
                   <img src="/images/profiles/profile2.jpg" alt={t('usuario2')} className="w-full h-full object-cover" />
                 </div>
-                <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden transition-all duration-300 hover:scale-110 hover:border-foreground/80 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
+                <div className="w-8 h-8 overflow-hidden transition-all duration-300 hover:scale-110 hover:z-10 hover:shadow-lg hover:shadow-foreground/20">
                   <img src="/images/profiles/profile3.jpg" alt={t('usuario3')} className="w-full h-full object-cover" />
                 </div>
               </div>

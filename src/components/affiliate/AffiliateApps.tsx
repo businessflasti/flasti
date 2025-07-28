@@ -13,7 +13,7 @@ import Image from 'next/image';
 export default function AffiliateApps() {
   const [loading, setLoading] = useState(true);
   const [apps, setApps] = useState<any[]>([]);
-  const [userLevel, setUserLevel] = useState(1);
+
 
   useEffect(() => {
     fetchAffiliateApps();
@@ -47,7 +47,7 @@ export default function AffiliateApps() {
       console.log('Datos recibidos:', data);
 
       setApps(data.apps || []);
-      setUserLevel(data.user_level || 1);
+
 
       // Verificar si hay apps
       if (!data.apps || data.apps.length === 0) {
@@ -102,10 +102,7 @@ export default function AffiliateApps() {
               Promociona estas apps y gana comisiones por cada venta
             </CardDescription>
           </div>
-          <Badge variant="outline" className="flex items-center gap-1">
-            <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-            Nivel {userLevel}
-          </Badge>
+
         </div>
       </CardHeader>
       <CardContent>

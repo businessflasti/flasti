@@ -12,6 +12,8 @@ type AuthContextType = {
   loading: boolean;
   signUp: (email: string, password: string, phone: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signInWithGoogle: () => Promise<{ error: any }>;
+  signInWithFacebook: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateProfile: (data: any) => Promise<{ error: any }>;
   updateBalance: () => Promise<void>;
@@ -423,6 +425,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Iniciar sesión con Google
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    console.log('Iniciando proceso de login con Google');
+
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (error) {
+        console.error('Error durante el inicio de sesión con Google:', error);
+        setLoading(false);
+        return { error };
+      }
+
+      // El usuario será redirigido automáticamente
+      console.log('Redirigiendo a Google para autenticación...');
+      return { error: null };
+
+    } catch (err) {
+      console.error('Error inesperado durante el inicio de sesión con Google:', err);
+      setLoading(false);
+      return { error: err as Error };
+    }
+  };
+
+  // Iniciar sesión con Facebook
+  const signInWithFacebook = async () => {
+    setLoading(true);
+    console.log('Iniciando proceso de login con Facebook');
+
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (error) {
+        console.error('Error durante el inicio de sesión con Facebook:', error);
+        setLoading(false);
+        return { error };
+      }
+
+      // El usuario será redirigido automáticamente
+      console.log('Redirigiendo a Facebook para autenticación...');
+      return { error: null };
+
+    } catch (err) {
+      console.error('Error inesperado durante el inicio de sesión con Facebook:', err);
+      setLoading(false);
+      return { error: err as Error };
+    }
+  };
+
   // Iniciar sesión - Versión ultra básica
   const signIn = async (email: string, password: string) => {
     setLoading(true);
@@ -731,6 +793,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loading,
     signUp,
     signIn,
+    signInWithGoogle,
+    signInWithFacebook,
     signOut,
     updateProfile,
     updateBalance,

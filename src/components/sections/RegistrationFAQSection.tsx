@@ -111,8 +111,8 @@ const RegistrationFAQSection = React.memo(() => {
 
 			<div className="container-custom relative z-10">
 				<div className="text-center mb-8">
-					<h2 className="text-3xl font-bold mb-4 text-white dark:text-white light:text-black title-google-sans">{t('faqTitle')}</h2>
-					<p className="text-foreground/70 max-w-2xl mx-auto">
+					<h2 className="text-3xl md:text-4xl font-bold mb-4 text-white dark:text-white light:text-black title-google-sans">{t('faqTitle')}</h2>
+					<p className="text-foreground/70 max-w-2xl mx-auto text-lg md:text-xl">
 						{t('faqSubtitle')}
 					</p>
 				</div>
@@ -121,15 +121,15 @@ const RegistrationFAQSection = React.memo(() => {
 					{getFaqs(t).map((faq, index) => (
 						<div
 							key={index}
-							className="bg-[#232323] overflow-hidden relative rounded-xl border border-white/10"
+							className="bg-[#232323] overflow-hidden relative rounded-3xl border-0"
 						>
 							<button
 								className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left"
 								onClick={() => toggleFAQ(index)}
 							> 
 								<div className="flex items-center">
-									<div className="w-8 h-8 rounded-full bg-[#232323] flex items-center justify-center mr-3 border border-white/10">
-										<div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
+									<div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3">
+										<div className="text-[#101010] transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: '#101010' })}</div>
 									</div>
 									<span className="font-medium">{faq.question}</span>
 								</div>

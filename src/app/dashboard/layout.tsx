@@ -1,7 +1,7 @@
 'use client';
 
 import MainLayout from '@/components/layout/MainLayout';
-import { UserLevelProvider } from '@/contexts/UserLevelContext';
+
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import GamificationProviders from '@/components/providers/GamificationProviders';
@@ -23,9 +23,7 @@ export default function DashboardLayout({
       <MainLayout>
         {/* Sidebar ya integrado en MainLayout para rutas internas */}
         <BalanceVisibilityProvider>
-          <UserLevelProvider>
-            <GamificationProviders>{children}</GamificationProviders>
-          </UserLevelProvider>
+          <GamificationProviders>{children}</GamificationProviders>
         </BalanceVisibilityProvider>
       </MainLayout>
     </ProtectedRoute>

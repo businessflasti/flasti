@@ -11,6 +11,7 @@ import HomepageChatWidget from "@/components/chat/HomepageChatWidget";
 import FeedbackTab from "@/components/ui/FeedbackTab";
 import LanguageSelector from "@/components/ui/language-selector";
 import SocialIcons from "@/components/ui/SocialIcons";
+import RankingCard from "@/components/ui/ranking-card";
 
 const FooterComponent = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -41,16 +42,16 @@ const FooterComponent = () => {
     <>
       {/* Widget de chat para la página de inicio (oculto por defecto) */}
       <HomepageChatWidget />
-      <footer className="relative overflow-hidden pt-12 pb-8" style={{background: '#232323'}}>
+      <footer className="relative overflow-hidden pt-12 pb-8 z-30" style={{background: '#101010', borderTop: '1px solid rgba(63, 140, 255, 0.15)'}}>
         {/* Fondo sólido */}
-        <div className="absolute inset-0" style={{background: '#232323', zIndex: -10}}></div>
+        <div className="absolute inset-0" style={{background: '#101010', zIndex: -1}}></div>
 
         {/* Elementos decorativos eliminados */}
 
-        <div className="container-custom">
+        <div className="container-custom relative z-10">
           {/* Sello de seguridad elegante - Versión escritorio */}
           <div className="hidden md:block mb-10 pb-6 border-b border-white/5">
-            <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#101010'}}>
+            <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#232323'}}>
               <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
                 <div className="flex items-center">
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2">
@@ -78,7 +79,7 @@ const FooterComponent = () => {
 
           {/* Sello de seguridad elegante - Versión móvil */}
           <div className="md:hidden mb-8 pb-4 border-b border-white/5">
-            <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#101010' }}>
+            <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#232323' }}>
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center">
@@ -205,7 +206,7 @@ const FooterComponent = () => {
             </div>
 
             <div className="flex justify-center mb-4">
-              <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 px-4 py-1 rounded-full" style={{ background: '#101010' }}>
+              <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 px-4 py-1 rounded-full" style={{ background: '#232323' }}>
                 {t('gananciaColectiva')}
               </p>
             </div>
@@ -215,7 +216,7 @@ const FooterComponent = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="rounded-xl p-4" style={{ background: '#101010' }}>
+              <div className="rounded-xl p-4" style={{ background: '#232323' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('empresa')}
                 </h4>
@@ -233,7 +234,7 @@ const FooterComponent = () => {
                 </ul>
               </div>
 
-              <div className="rounded-xl p-4" style={{ background: '#101010' }}>
+              <div className="rounded-xl p-4" style={{ background: '#232323' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('legal')}
                 </h4>
@@ -251,7 +252,7 @@ const FooterComponent = () => {
                 </ul>
               </div>
 
-              <div className="rounded-xl p-3" style={{ background: '#101010' }}>
+              <div className="rounded-xl p-3" style={{ background: '#232323' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('recursos')}
                 </h4>
@@ -269,13 +270,13 @@ const FooterComponent = () => {
                 </ul>
               </div>
 
-              <div className="rounded-xl p-3 flex flex-col items-center justify-center gap-3" style={{ background: '#101010' }}>
+              <div className="rounded-xl p-3 flex flex-col items-center justify-center gap-3" style={{ background: '#232323' }}>
                 <SocialIcons />
                 <FeedbackTab />
               </div>
             </div>
 
-            <div className="rounded-xl p-4 mb-6" style={{ background: '#101010' }}>
+            <div className="rounded-xl p-4 mb-6" style={{ background: '#232323' }}>
               <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                 {t('soporte')}
               </h4>
@@ -296,6 +297,7 @@ const FooterComponent = () => {
           <div className="hidden md:block w-full border-t border-white/10 mt-10"></div>
           <div className="hidden md:flex pt-12 pb-4 justify-between items-center w-full px-0 max-w-none">
             <div className="flex items-center gap-6 ml-6">
+              <RankingCard />
               <p className="text-sm dark:text-foreground/60 text-foreground/80 text-left flex items-center h-8">
                 <span className="relative z-10">© {new Date().getFullYear()} Flasti Inc. {t('derechosReservados')}</span>
               </p>

@@ -9,7 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Notification {
   id: string;
-  type: 'click' | 'sale' | 'commission' | 'level_up' | 'system';
+  type: 'click' | 'sale' | 'commission' | 'system';
   title: string;
   message: string;
   amount?: number;
@@ -249,8 +249,6 @@ export default function LiveNotifications() {
         return <DollarSign size={16} className="text-[#ec4899]" />;
       case 'commission':
         return <DollarSign size={16} className="text-[#facc15]" />;
-      case 'level_up':
-        return <User size={16} className="text-[#3b82f6]" />;
       case 'system':
         return <Bell size={16} className="text-[#3b82f6]" />;
       default:

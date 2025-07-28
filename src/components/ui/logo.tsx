@@ -12,7 +12,7 @@ interface LogoProps {
 
 const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: LogoProps) => {
   const { theme } = useTheme();
-  const pathname = typeof window !== "undefined" ? window.location.pathname : undefined;
+  const pathname = usePathname();
   const isDark = theme === "dark";
 
   // Tamaños basados en el prop size
@@ -40,8 +40,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   // Determinar el color basado en el tema y la ruta del logo
   const textColor = isDark ? "text-white" : "text-gray-900";
   // Si el logo se usa en el footer, usar isoblanco.svg
-  const logoPath = typeof window !== "undefined" && window.location && window.location.pathname ?
-    (window.location.pathname.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.svg") : "/logo/isotipo.svg";
+  const logoPath = pathname?.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.svg";
 
   // Mostrar texto solo si no estamos en la página de login
   const showText = pathname !== "/login";

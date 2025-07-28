@@ -100,7 +100,7 @@ export default function ContactoPage() {
       <div className="container-custom py-16 md:py-24" style={{ background: '#101010', minHeight: '100vh' }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-gradient">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
               Contáctanos
             </h1>
             <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
@@ -158,7 +158,7 @@ export default function ContactoPage() {
             <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl -z-10"></div>
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl -z-10"></div>
 
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gradient">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
               Envíanos un mensaje
             </h2>
 

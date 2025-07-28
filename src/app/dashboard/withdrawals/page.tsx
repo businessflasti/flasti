@@ -1,140 +1,358 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/contexts/ToastContext';
 import { useState, useEffect } from 'react';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { ConfettiCheck } from '@/components/ui/confetti-check';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
+import { DollarSign, CreditCard, AlertCircle, CheckCircle } from 'lucide-react';
+
+interface UserBalance {
+  balance: number;
+  total_earnings: number;
+  total_withdrawals: number;
+}
 
 export default function WithdrawalsPage() {
-  const { user, profile } = useAuth();
-  const { showToast } = useToast();
+  const { user } = useAuth();
   const [amount, setAmount] = useState('');
   const [destination, setDestination] = useState('');
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [userBalance, setUserBalance] = useState<UserBalance>({
+    balance: 0,
+    total_earnings: 0,
+    total_withdrawals: 0
+  });
+
+  // Obtener saldo del usuario desde CPALead
+  const fetchUserBalance = async () => {
+    if (!user?.id) {
+      setPageLoading(false);
+      return;
+    }
+
+    try {
+      setPageLoading(true);
+      
+      // Timeout para evitar loading infinito
+      const timeoutId = setTimeout(() => {
+        console.warn('Timeout al cargar saldo, usando datos por defecto');
+        setUserBalance({
+          balance: 0,
+          total_earnings: 0,
+          total_withdrawals: 0
+        });
+        setPageLoading(false);
+      }, 10000); // 10 segundos timeout
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast.error('Sesión expirada, por favor inicia sesión nuevamente');
+        clearTimeout(timeoutId);
+        setPageLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/user/profile', {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.error) {
+        console.error('Error fetching user profile:', data.error);
+        setUserBalance({
+          balance: 0,
+          total_earnings: 0,
+          total_withdrawals: 0
+        });
+      } else {
+        setUserBalance({
+          balance: data.profile.balance || 0,
+          total_earnings: data.profile.total_earnings || 0,
+          total_withdrawals: data.profile.total_withdrawals || 0
+        });
+      }
+      
+      clearTimeout(timeoutId);
+    } catch (error) {
+      console.error('Error fetching user balance:', error);
+      setUserBalance({
+        balance: 0,
+        total_earnings: 0,
+        total_withdrawals: 0
+      });
+    } finally {
+      setPageLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => setPageLoading(false), 700);
-    return () => clearTimeout(timer);
-  }, []);
+    fetchUserBalance();
+  }, [user?.id]);
 
   const handleWithdraw = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
-      showToast('Ingresa un monto válido.', 'error');
+      toast.error('Ingresa un monto válido.');
       return;
     }
-    if (!destination) {
-      showToast('Debes ingresar el email de PayPal.', 'error');
+    
+    if (!destination || !destination.includes('@')) {
+      toast.error('Debes ingresar un email de PayPal válido.');
       return;
     }
-    if (Number(amount) > Number(profile?.balance ?? 0)) {
-      showToast('Saldo insuficiente.', 'error');
+    
+    if (Number(amount) > userBalance.balance) {
+      toast.error(`Saldo insuficiente. Disponible: $${userBalance.balance.toFixed(2)}`);
       return;
     }
+
     setLoading(true);
-    const res = await fetch('/api/withdrawals', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: user?.id, amount, method: 'PayPal', destination })
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast('Solicitud de retiro enviada correctamente.', 'success');
-      setAmount('');
-      setDestination('');
-      setShowConfetti(true);
-    } else {
-      showToast(data.error || 'Error al solicitar el retiro.', 'error');
+    
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast.error('Sesión expirada, por favor inicia sesión nuevamente');
+        return;
+      }
+
+      const response = await fetch('/api/withdrawals', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({ 
+          user_id: user?.id, 
+          amount: Number(amount), 
+          method: 'PayPal', 
+          destination 
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        toast.success('¡Solicitud de retiro enviada correctamente!');
+        setAmount('');
+        setDestination('');
+        // Actualizar saldo
+        fetchUserBalance();
+      } else {
+        toast.error(data.error || 'Error al solicitar el retiro.');
+      }
+    } catch (error) {
+      console.error('Error submitting withdrawal:', error);
+      toast.error('Error al procesar la solicitud.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+
+  const formatCurrency = (amount: number): string => {
+    return new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(amount);
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto px-2 md:px-0 py-10">
-      <ConfettiCheck show={showConfetti} onClose={() => setShowConfetti(false)} message="¡Solicitud de retiro enviada!" />
+    <div className="w-full max-w-4xl mx-auto px-4 py-8 space-y-6">
       <Breadcrumbs />
+      
+      {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-primary"><path d="M12 3v18m0 0-4-4m4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <DollarSign className="w-8 h-8 text-primary" />
         <h1 className="text-2xl md:text-3xl font-bold text-white">Solicitar Retiro</h1>
       </div>
+
+      {/* Información del saldo */}
+      {!pageLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <Card className="bg-card/50 border-border/50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-500/20 rounded-lg">
+                  <DollarSign className="w-5 h-5 text-green-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Saldo Disponible</p>
+                  <p className="text-xl font-bold text-foreground">
+                    {formatCurrency(userBalance.balance)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card/50 border-border/50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-500/20 rounded-lg">
+                  <CheckCircle className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Ganado</p>
+                  <p className="text-xl font-bold text-foreground">
+                    {formatCurrency(userBalance.total_earnings)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card/50 border-border/50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <CreditCard className="w-5 h-5 text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Retirado</p>
+                  <p className="text-xl font-bold text-foreground">
+                    {formatCurrency(userBalance.total_withdrawals)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Formulario de retiro */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.05 }}
       >
         {pageLoading ? (
-          <Skeleton className="h-72 w-full mb-6 rounded-2xl" />
+          <div className="flex flex-col items-center justify-center py-16 space-y-4">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full border-4 border-gray-700 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full border-4 border-gray-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center">
+                    <div className="w-4 h-4 bg-white rounded-sm transform rotate-45"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
+            </div>
+            <p className="text-gray-400 font-medium">Cargando formulario de retiro...</p>
+          </div>
         ) : (
-          <Card className="p-0 overflow-hidden border-0 shadow-xl bg-[#18181b] relative">
-            <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-primary/40 animate-pulse-slow" style={{zIndex:0, filter:'blur(1px)', opacity:0.15}}></div>
-            <form onSubmit={handleWithdraw} className="flex flex-col gap-6 p-8 relative z-10">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
-                <div className="flex items-center gap-3">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/><path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                  <span className="text-lg font-semibold text-white">Saldo disponible</span>
+          <div className="bg-[#232323] border border-white/10 rounded-lg">
+            <div className="p-6 border-b border-white/10">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <CreditCard className="w-5 h-5" />
+                Solicitar Retiro
+              </h2>
+            </div>
+            <div className="p-6">
+              <form onSubmit={handleWithdraw} className="space-y-6">
+                {/* Información importante */}
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-blue-400 mb-1">Información importante</h4>
+                      <ul className="text-sm text-blue-300 space-y-1">
+                        <li>• Los retiros se procesan en 24 horas hábiles</li>
+                        <li>• Asegúrate de que el email de PayPal coincida con el registrado en Flasti</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-2xl font-bold text-primary">${profile?.balance?.toFixed(2) ?? '0.00'}</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Monto a retirar
+                    </label>
+                    <Input
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      max={userBalance.balance}
+                      value={amount}
+                      onChange={e => setAmount(e.target.value)}
+                      placeholder="Introduce tu monto"
+                      className="bg-background border-border focus:border-primary"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Máximo disponible: {formatCurrency(userBalance.balance)}
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Email de PayPal
+                    </label>
+                    <Input
+                      type="email"
+                      value={destination}
+                      onChange={e => setDestination(e.target.value)}
+                      placeholder="Introduce tu email"
+                      className="bg-background border-border focus:border-primary"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Debe ser un email válido de PayPal
+                    </p>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-sm text-[#b0b0b0] mb-1">Monto a retirar</label>
-                  <Input
-                    type="number"
-                    min="1"
-                    step="0.01"
-                    value={amount}
-                    onChange={e => setAmount(e.target.value)}
-                    placeholder="Ej: 10.00"
-                    className="bg-[#232323] border border-[#232323] focus:border-primary text-white"
-                  />
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Método de retiro
+                  </label>
+                  <div className="flex gap-3">
+                    <div className="flex-1 flex items-center gap-3 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                      <CreditCard className="w-5 h-5 text-white" />
+                      <span className="font-medium text-white">PayPal</span>
+                      <Badge className="ml-auto bg-green-500/20 text-green-400 border-green-500/30">
+                        Disponible
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm text-[#b0b0b0] mb-1">Email de PayPal</label>
-                  <Input
-                    type="email"
-                    value={destination}
-                    onChange={e => setDestination(e.target.value)}
-                    placeholder="tu-email@paypal.com"
-                    className="bg-[#232323] border border-[#232323] focus:border-primary text-white"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm text-[#b0b0b0] mb-1">Método de retiro</label>
-                <div className="flex gap-3">
-                  <Button variant="primary" type="button" className="flex-1 flex items-center gap-2 bg-[#232323] border border-primary/40 text-primary font-semibold cursor-default py-5 min-h-[56px] text-base" disabled>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="4" stroke="currentColor" strokeWidth="2"/><path d="M6 12h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                    PayPal <Badge color="success" className="ml-2">Disponible</Badge>
-                  </Button>
-                </div>
-                <div className="text-xs text-[#b0b0b0] mt-1">No hay mínimo de retiro.</div>
-              </div>
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full mt-2 text-lg font-bold py-3 rounded-xl bg-white text-[#101010] border border-[#e5e5e5] transition-all shadow-lg hover:bg-[#ec3f7c] hover:text-white hover:border-[#ec3f7c] focus:bg-[#ec3f7c] focus:text-white focus:border-[#ec3f7c]"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2"><span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span> Enviando...</span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-4 4m4-4 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Solicitar retiro
-                  </span>
-                )}
-              </Button>
-              <div className="text-xs text-[#b0b0b0] mt-2 text-center">El retiro se procesa en menos de 24 horas hábiles.</div>
-            </form>
-          </Card>
+
+                <Button
+                  type="submit"
+                  disabled={loading || userBalance.balance <= 0}
+                  className="w-full bg-white hover:bg-white/90 text-[#101010]"
+                  size="lg"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="animate-spin h-5 w-5 border-2 border-[#101010] border-t-transparent rounded-full"></span>
+                      Procesando...
+                    </span>
+                  ) : (
+                    <span>
+                      Solicitar Retiro
+                    </span>
+                  )}
+                </Button>
+              </form>
+            </div>
+          </div>
         )}
       </motion.div>
     </div>

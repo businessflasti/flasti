@@ -27,6 +27,26 @@ const nextConfig = {
         hostname: '*.supabase.co',
         pathname: '/storage/v1/object/public/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdndn.s3.us-west-1.amazonaws.com',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.trending.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.trending.com',
+        pathname: '/**',
+      },
     ],
   },
   // Ignorar errores específicos durante la exportación estática
@@ -36,6 +56,22 @@ const nextConfig = {
     optimizeServerReact: true,
     // Mejorar la estabilidad de la hidratación
     ppr: false
+  },
+  webpack: (config, { isServer }) => {
+    // Solo configurar fallbacks si es necesario
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
+        buffer: false,
+        util: false
+      };
+    }
+    return config;
   }
 };
 

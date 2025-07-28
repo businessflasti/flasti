@@ -27,9 +27,21 @@ export function AchievementsProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   const loadAchievements = async () => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
+    
+    // Timeout para evitar loading infinito
+    const timeoutId = setTimeout(() => {
+      console.warn('Timeout al cargar logros, usando datos por defecto');
+      setAchievements([]);
+      setTotalPoints(0);
+      setLoading(false);
+    }, 8000); // 8 segundos timeout
+    
     try {
       // Usar datos estáticos con logros no conseguidos para nuevos usuarios
       const mockAchievements = [
@@ -91,8 +103,12 @@ export function AchievementsProvider({ children }: { children: ReactNode }) {
 
       setAchievements(mockAchievements);
       setTotalPoints(0); // Nuevos usuarios comienzan con 0 puntos
+      clearTimeout(timeoutId);
     } catch (error) {
       console.error('Error al cargar logros:', error);
+      setAchievements([]);
+      setTotalPoints(0);
+      clearTimeout(timeoutId);
     } finally {
       setLoading(false);
     }

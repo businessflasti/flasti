@@ -10,6 +10,8 @@ import { ArrowLeft, Clock, CheckCircle, XCircle, Search } from "lucide-react";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { WithdrawalRequest } from "@/lib/withdrawal-service";
+import { WithdrawalRequest as AdminWithdrawalRequest } from "@/lib/admin-service";
+import { toast } from 'sonner';
 
 export default function AdminWithdrawalsPage() {
   const { t } = useLanguage();
@@ -21,61 +23,143 @@ export default function AdminWithdrawalsPage() {
 
   useEffect(() => {
     const loadWithdrawals = async () => {
-      // Cargar todas las solicitudes de retiro
-      const withdrawalService = await import('@/lib/withdrawal-service').then(module => module.default.getInstance());
-      const allWithdrawals = withdrawalService.getAllRequests();
-      setWithdrawals(allWithdrawals);
-      setIsLoading(false);
+      try {
+        console.log('🔄 Cargando retiros desde admin-service...');
+        
+        // Cargar todas las solicitudes de retiro usando admin-service
+        const { adminService } = await import('@/lib/admin-service');
+        const allWithdrawals = await adminService.getWithdrawalRequests();
+        
+        console.log('📋 Retiros cargados:', allWithdrawals.length);
+        
+        // Convertir formato de admin-service a withdrawal-service
+        const formattedWithdrawals = allWithdrawals.map(w => ({
+          id: w.id,
+          user_id: w.user_id,
+          username: w.user_email?.split('@')[0] || 'Usuario',
+          email: w.user_email || 'No disponible',
+          amount: w.amount,
+          payment_method: w.payment_method,
+          payment_details: w.payment_details,
+          status: w.status as WithdrawalRequest['status'],
+          timestamp: w.created_at,
+          processed_at: w.processed_at,
+          notes: w.notes
+        }));
+        
+        setWithdrawals(formattedWithdrawals);
+        setIsLoading(false);
 
-      // Suscribirse a nuevas solicitudes
-      const unsubscribeNewRequest = withdrawalService.onRequestReceived((newRequest) => {
-        setWithdrawals((prevWithdrawals) => [newRequest, ...prevWithdrawals]);
-      });
-
-      // Suscribirse a actualizaciones de estado
-      const unsubscribeStatusUpdate = withdrawalService.onStatusUpdated((updatedRequest) => {
-        setWithdrawals((prevWithdrawals) => {
-          const index = prevWithdrawals.findIndex((w) => w.id === updatedRequest.id);
-          if (index !== -1) {
-            const newWithdrawals = [...prevWithdrawals];
-            newWithdrawals[index] = updatedRequest;
-            return newWithdrawals;
-          }
-          return prevWithdrawals;
+        // Configurar suscripción en tiempo real usando withdrawal-service
+        const withdrawalService = (await import('@/lib/withdrawal-service')).default.getInstance();
+        
+        // Suscribirse a nuevas solicitudes
+        const unsubscribeNewRequest = withdrawalService.onRequestReceived((newRequest) => {
+          console.log('🆕 Nueva solicitud recibida:', newRequest);
+          setWithdrawals((prevWithdrawals) => [newRequest, ...prevWithdrawals]);
         });
 
-        // Si la solicitud seleccionada fue actualizada, actualizar también la selección
-        if (selectedRequest && selectedRequest.id === updatedRequest.id) {
-          setSelectedRequest(updatedRequest);
-        }
-      });
+        // Suscribirse a actualizaciones de estado
+        const unsubscribeStatusUpdate = withdrawalService.onStatusUpdated((updatedRequest) => {
+          console.log('🔄 Solicitud actualizada:', updatedRequest);
+          setWithdrawals((prevWithdrawals) => {
+            const index = prevWithdrawals.findIndex((w) => w.id === updatedRequest.id);
+            if (index !== -1) {
+              const newWithdrawals = [...prevWithdrawals];
+              newWithdrawals[index] = updatedRequest;
+              return newWithdrawals;
+            }
+            return prevWithdrawals;
+          });
 
-      return () => {
-        unsubscribeNewRequest();
-        unsubscribeStatusUpdate();
-      };
+          // Si la solicitud seleccionada fue actualizada, actualizar también la selección
+          if (selectedRequest && selectedRequest.id === updatedRequest.id) {
+            setSelectedRequest(updatedRequest);
+          }
+        });
+
+        return () => {
+          unsubscribeNewRequest();
+          unsubscribeStatusUpdate();
+        };
+      } catch (error) {
+        console.error('💥 Error cargando retiros:', error);
+        setIsLoading(false);
+      }
     };
 
     loadWithdrawals();
   }, [selectedRequest]);
 
   const handleApprove = async (request: WithdrawalRequest) => {
-    const withdrawalService = await import('@/lib/withdrawal-service').then(module => module.default.getInstance());
-    withdrawalService.updateRequestStatus({
-      requestId: request.id,
-      status: 'completed'
-    });
+    try {
+      console.log('✅ Aprobando retiro:', request.id);
+      
+      const { adminService } = await import('@/lib/admin-service');
+      const success = await adminService.approveWithdrawal(request.id, 'admin-user-id');
+
+      if (success) {
+        toast.success('Retiro aprobado exitosamente');
+        
+        // Actualizar la lista local
+        setWithdrawals(prev => prev.map(w => 
+          w.id === request.id 
+            ? { ...w, status: 'completed', processed_at: new Date().toISOString() }
+            : w
+        ));
+        
+        // Actualizar solicitud seleccionada si es la misma
+        if (selectedRequest?.id === request.id) {
+          setSelectedRequest({ 
+            ...selectedRequest, 
+            status: 'completed', 
+            processed_at: new Date().toISOString() 
+          });
+        }
+      } else {
+        toast.error('Error al aprobar el retiro');
+      }
+    } catch (error) {
+      console.error('💥 Error aprobando retiro:', error);
+      toast.error('Error al aprobar el retiro');
+    }
   };
 
   const handleReject = async (request: WithdrawalRequest) => {
-    const withdrawalService = await import('@/lib/withdrawal-service').then(module => module.default.getInstance());
-    withdrawalService.updateRequestStatus({
-      requestId: request.id,
-      status: 'rejected',
-      notes: rejectionReason || 'Solicitud rechazada por el administrador'
-    });
-    setRejectionReason("");
-    setSelectedRequest(null);
+    try {
+      console.log('❌ Rechazando retiro:', request.id);
+      
+      const { adminService } = await import('@/lib/admin-service');
+      const success = await adminService.rejectWithdrawal(
+        request.id, 
+        rejectionReason || 'Solicitud rechazada por el administrador',
+        'admin-user-id'
+      );
+
+      if (success) {
+        toast.success('Retiro rechazado');
+        setRejectionReason("");
+        
+        // Actualizar la lista local
+        setWithdrawals(prev => prev.map(w => 
+          w.id === request.id 
+            ? { 
+                ...w, 
+                status: 'rejected', 
+                processed_at: new Date().toISOString(),
+                notes: rejectionReason || 'Solicitud rechazada por el administrador'
+              }
+            : w
+        ));
+        
+        setSelectedRequest(null);
+      } else {
+        toast.error('Error al rechazar el retiro');
+      }
+    } catch (error) {
+      console.error('💥 Error rechazando retiro:', error);
+      toast.error('Error al rechazar el retiro');
+    }
   };
 
   const getStatusBadge = (status: WithdrawalRequest['status']) => {

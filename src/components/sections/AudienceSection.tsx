@@ -49,7 +49,7 @@ const AudienceSection = () => {
 					{audiences.map((audience, index) => (
 						<div
 							key={index}
-							className="glass-card group overflow-hidden relative p-6 rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10"
+							className="glass-card group overflow-hidden relative p-6 rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10"
 						>
 							<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
 

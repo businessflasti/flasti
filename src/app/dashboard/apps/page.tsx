@@ -18,22 +18,42 @@ export default function AppsPage() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        // Obtener todas las aplicaciones disponibles
-        const availableApps = await affiliateServiceEnhanced.getAvailableApps();
-        setApps(availableApps);
         
-        // Obtener enlaces del usuario
-        const { links } = await affiliateServiceEnhanced.getUserAffiliateLinks('user123'); // En un caso real, obtendríamos el ID del usuario autenticado
+        // Timeout para evitar loading infinito
+        const timeoutId = setTimeout(() => {
+          console.warn('Timeout al cargar aplicaciones, usando datos por defecto');
+          setApps([]);
+          setUserLinks({});
+          setIsLoading(false);
+        }, 10000); // 10 segundos timeout
         
-        // Crear un mapa de appId -> url
-        const linkMap: Record<number, string> = {};
-        links.forEach(link => {
-          linkMap[link.app_id] = link.url;
-        });
-        
-        setUserLinks(linkMap);
+        try {
+          // Obtener todas las aplicaciones disponibles
+          const availableApps = await affiliateServiceEnhanced.getAvailableApps();
+          setApps(availableApps);
+          
+          // Obtener enlaces del usuario
+          const { links } = await affiliateServiceEnhanced.getUserAffiliateLinks('user123'); // En un caso real, obtendríamos el ID del usuario autenticado
+          
+          // Crear un mapa de appId -> url
+          const linkMap: Record<number, string> = {};
+          links.forEach(link => {
+            linkMap[link.app_id] = link.url;
+          });
+          
+          setUserLinks(linkMap);
+          clearTimeout(timeoutId);
+        } catch (error) {
+          console.error('Error al cargar aplicaciones:', error);
+          // En caso de error, mostrar datos vacíos pero quitar el loading
+          setApps([]);
+          setUserLinks({});
+          clearTimeout(timeoutId);
+        }
       } catch (error) {
-        console.error('Error al cargar aplicaciones:', error);
+        console.error('Error general:', error);
+        setApps([]);
+        setUserLinks({});
       } finally {
         setIsLoading(false);
       }

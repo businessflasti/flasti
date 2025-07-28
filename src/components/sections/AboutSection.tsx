@@ -85,7 +85,7 @@ const AboutSection = () => {
             {values.map((value, index) => (
               <div
                 key={index}
-                className="glass-card group overflow-hidden relative p-6 px-5 rounded-xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5 h-full"
+                className="glass-card group overflow-hidden relative p-6 px-5 rounded-3xl border border-white/10 hover:border-[#ec4899]/30 transition-all hover:shadow-lg hover:shadow-[#ec4899]/5 h-full"
               >
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#d4386c]/5 to-transparent"></div>
 

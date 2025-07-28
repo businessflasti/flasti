@@ -56,7 +56,7 @@ const DashboardPreview = () => {
     // Título de la página
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 24px Arial";
-    ctx.fillText("Panel de Control", 250, 40);
+    ctx.fillText("Panel personal", 250, 40);
 
     // Tarjetas de estadísticas
     const cards = [

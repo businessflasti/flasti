@@ -5,12 +5,14 @@ import AdBlock from "@/components/ui/AdBlock";
 import { ChevronDown, ChevronUp, Heart, Zap, Rocket, Award, Star, Gift, Sparkles, Key, Coins, ShieldCheck } from "lucide-react";
 import { optimizeFAQs } from "@/utils/faq-optimizer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import {
   inversionAnswerUSD_EN,
   inversionAnswerUSD_PT,
   inversionAnswerARS_EN,
   inversionAnswerARS_PT
 } from "./FAQSectionTranslations";
+import React from "react";
 
 // Definir las respuestas para la pregunta de inversión
 const inversionAnswerUSD = "Hemos diseñado diferentes planes para adaptarnos a distintas necesidades y presupuestos. Nuestra opción más accesible comienza en un único pago de $10 USD (el equivalente en tu moneda local se mostrará al finalizar el pago), una inversión que muchos de nuestros usuarios recuperan en su primera semana de uso.\n\n⚡ ¡SUPER OFERTA EXCLUSIVA POR TIEMPO LIMITADO!\n\nSolo $10 USD en lugar de $50 USD (80% OFF)\n\n💥 ¡Paga una sola vez y accede a Flasti de por vida usando PayPal o tu moneda local! 💥\n\n🚨 EL PRECIO VOLVERÁ A SU VALOR ORIGINAL DE $50 USD EN CUALQUIER MOMENTO\n\nSi lo piensas bien, esta pequeña inversión es mínima comparada con el potencial de ingresos que puedes obtener a partir de hoy mismo.\n\n💡 Recuerda: Este precio tiene un 80% de descuento y es solo por tiempo limitado. ¡Estás ahorrando $40 USD por única vez, ahora mismo! Solo los más decididos y comprometidos tendrán la oportunidad de aprovechar esta oferta. ¡Este es tu momento! ✅ No dejes escapar esta oportunidad. ¡Aprovecha ahora antes de que sea tarde!\n\n⚠️ IMPORTANTE: El precio volverá a su valor original en cualquier momento. Esta oferta exclusiva es única y las inscripciones están por agotarse.";
@@ -157,36 +159,41 @@ const FAQSection = () => {
       {/* Forzar borde azul en hover de acordeones FAQ */}
       <style jsx global>{`
         .glass-card {
-          border-color: #3c66ce !important;
+          border: none !important;
+          border-width: 0 !important;
+          outline: none !important;
         }
         .glass-card:hover, .glass-card:focus, .glass-card.active, .glass-card.open {
-          border-color: #3c66ce !important;
-          box-shadow: 0 0 0 2px #3c66ce33 !important;
+          border: none !important;
+          border-width: 0 !important;
+          box-shadow: none !important;
+          outline: none !important;
         }
       `}</style>
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
           <span className="text-xs text-primary uppercase tracking-wider font-medium mb-2 inline-block">FAQ</span>
-          <h2 className="text-3xl font-bold text-gradient mb-4">{t('todoLoQueNecesitasSaber')}</h2>
-          <p className="text-foreground/70 max-w-2xl mx-auto">
-            {t('faqSubtitle')}
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">{t('todoLoQueNecesitasSaber')}</h2>
+          <TextGenerateEffect 
+            words={t('faqSubtitle')}
+            className="text-foreground/70 max-w-2xl mx-auto text-lg md:text-xl"
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="glass-card overflow-hidden relative rounded-xl border border-white/10 hover:border-primary/30 transition-all bg-[#0A0A0A]"
+              className="glass-card overflow-hidden relative rounded-3xl transition-all bg-[#0A0A0A] border-none !border-0"
             >
               <button
                 className="w-full p-6 flex items-center justify-between text-left group"
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-[#4a162a] flex items-center justify-center mr-3 border border-white/10 transition-all duration-300 group-hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
-                    <div className="text-white transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: 'white' })}</div>
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
+                    <div className="text-[#101010] transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: '#101010' })}</div>
                   </div>
                   <span className="font-medium group-hover:text-primary transition-colors duration-200">{faq.question}</span>
                 </div>
@@ -201,7 +208,7 @@ const FAQSection = () => {
                 }`}
                 data-faq-content="true"
               >
-                <div className="pt-2 border-t border-white/10">
+                <div className="pt-2">
                   {index === 8 ? (
                     isArgentina ? (
                       language === 'en' ? inversionAnswerARS_EN :

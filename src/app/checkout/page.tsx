@@ -135,7 +135,7 @@ const CheckoutContent = () => {
       if (window.checkoutElements) {
         try {
           // Usar oferta con precio base
-          const offerCode = "6j1ga51i"; // Oferta normal (precio: $10 USD)
+          const offerCode = "5h87lps7"; // Oferta normal (precio: $10 USD)
 
           const elements = window.checkoutElements.init("inlineCheckout", {
             offer: offerCode,
@@ -616,7 +616,7 @@ const CheckoutContent = () => {
       if (window.checkoutElements) {
         try {
           // Usar la oferta por defecto para precarga
-          let offerCode = "6j1ga51i"; // Oferta normal (precio completo: $10 USD)
+          let offerCode = "5h87lps7"; // Oferta normal (precio completo: $10 USD)
 
           // Verificar si hay descuentos aplicados desde localStorage
           const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
@@ -1560,8 +1560,8 @@ const CheckoutContent = () => {
 
               <div className="flex flex-col gap-3 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0 border border-[#232323]">
-                    <Zap className="text-white" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-[#232323]">
+                    <Zap className="text-[#101010]" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Acceso inmediato</h4>
@@ -1570,8 +1570,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
-                    <Infinity className="text-white" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                    <Infinity className="text-[#101010]" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
@@ -1580,8 +1580,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
-                    <Shield className="text-white" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                    <Shield className="text-[#101010]" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
@@ -1590,8 +1590,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
-                    <HeadphonesIcon className="text-white" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                    <HeadphonesIcon className="text-[#101010]" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
@@ -1600,8 +1600,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="text-white" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="text-[#101010]" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Suite completa</h4>
@@ -1610,8 +1610,8 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#101010] flex items-center justify-center flex-shrink-0">
-                    <Gift className="text-white" size={16} />
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                    <Gift className="text-[#101010]" size={16} />
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Actualizaciones gratuitas</h4>
@@ -1671,7 +1671,7 @@ const CheckoutContent = () => {
 
                       // Track específico de Hotmart si no es Argentina
                       if (!isArgentina) {
-                        let offerCode = "6j1ga51i";
+                        let offerCode = "5h87lps7";
                         if (finalDiscountApplied) {
                           offerCode = "5h87lps7";
                         } else if (discountApplied) {

@@ -3,10 +3,12 @@ import Handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
 
-// Inicializar cliente de Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+// Inicializar cliente de Supabase
+
 
 // Plantillas de correo personalizadas
 export enum EmailTemplate {

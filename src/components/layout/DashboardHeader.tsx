@@ -3,12 +3,46 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBalanceVisibility } from '@/contexts/BalanceVisibilityContext';
+import { usePathname } from 'next/navigation';
 
 export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, profile, signOut } = useAuth();
   const { t } = useLanguage();
   const { isBalanceVisible, toggleBalanceVisibility } = useBalanceVisibility();
   const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
+  
+  // Ocultar balance solo en la página principal del dashboard
+  const isMainDashboard = pathname === '/dashboard' || pathname === '/dashboard/';
+
+  // Función para obtener las iniciales del usuario
+  const getInitials = (email: string | undefined, name: string | undefined) => {
+    if (name) {
+      return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    }
+    if (email) {
+      return email.split('@')[0].substring(0, 2).toUpperCase();
+    }
+    return 'U';
+  };
+  
+  // Función para generar un color basado en el email/nombre
+  const getAvatarColor = (text: string) => {
+    const colors = [
+      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+    ];
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+      hash = text.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+  };
+  
+  const userEmail = user?.email || profile?.email || '';
+  const userName = profile?.name || user?.user_metadata?.full_name;
+  const initials = getInitials(userEmail, userName);
+  const avatarColor = getAvatarColor(userEmail || userName || 'default');
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -22,33 +56,42 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
     return (
       <header
         className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10"
-        style={{ minHeight: 48 }}
+        style={{ minHeight: 64 }}
       >
         <div className="flex items-center justify-between w-full">
-          {/* Logo y balance */}
-          <div className="flex items-center gap-2 sm:gap-4 lg:ml-56 w-1/3 sm:w-auto justify-center">
-            <a href="/dashboard" className="flex items-center justify-center">
+          {/* Logo y título/balance */}
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-4 lg:ml-56 w-1/3 sm:w-auto justify-start ml-2 sm:ml-4 md:ml-0">
+            <a href="/dashboard" className="flex items-center justify-center flex-shrink-0">
               <Image
                 src="/logo/isotipo.svg"
                 alt="Logo Flasti"
-                width={36}
-                height={36}
+                width={28}
+                height={28}
                 priority
-                className="h-9 w-9 mx-auto"
+                className="h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9"
                 onError={(e) => {
                   e.currentTarget.src = '/images/default-avatar.png';
                 }}
               />
             </a>
-            {/* Balance solo en escritorio */}
-            <div className="user-balance hidden md:block text-right">
-              <div className="user-balance-amount text-lg font-bold text-white">
-                <span>${profile?.balance?.toFixed(2) ?? '0.00'} USD</span>
+            {/* Mostrar título en dashboard principal, balance en otras páginas */}
+            {isMainDashboard ? (
+              <div className="text-left">
+                <div className="text-xs sm:text-sm md:text-lg font-bold text-white leading-tight">
+                  Panel personal
+                </div>
+                <div className="text-[10px] sm:text-xs text-[#b0b0b0] leading-tight">
+                  <span className="md:hidden whitespace-nowrap">Bienvenido de vuelta</span>
+                  <span className="hidden md:inline">Bienvenido de vuelta, {user?.email?.split('@')[0] || 'Usuario'}</span>
+                </div>
               </div>
-              <div className="user-balance-usd text-xs text-[#b0b0b0]">
-                {profile?.balance?.toFixed(2) ?? '0.00'} CR
+            ) : (
+              <div className="user-balance hidden md:flex items-center justify-center">
+                <div className="user-balance-amount text-lg font-bold text-white text-center">
+                  <span>${profile?.balance?.toFixed(2) ?? '0.00'} USD</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="flex items-center gap-3 sm:gap-6 lg:mr-16 md:mr-8 w-2/3 sm:w-auto justify-end">
             {/* Usuario */}
@@ -67,14 +110,12 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                     }}
                   />
                 ) : (
-                  <Image
-                    src="/images/default-avatar.png"
-                    alt="Avatar"
-                    width={36}
-                    height={36}
-                    className="w-full h-full object-cover"
-                    priority
-                  />
+                  <div 
+                    className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-sm"
+                    style={{ backgroundColor: avatarColor }}
+                  >
+                    {initials}
+                  </div>
                 )}
               </div>
               <span className="ml-1 sm:ml-2 text-xs sm:text-sm font-medium text-white truncate max-w-[80px] sm:max-w-none">

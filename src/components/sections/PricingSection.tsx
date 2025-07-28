@@ -5,19 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckIcon, Sparkles, Zap, Shield, Clock, HeadphonesIcon, Infinity, AlertTriangle, ChevronDown, ChevronUp, Lock, Gift } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const LoginAccordion = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
 
   return (
-    <div className="glass-card overflow-hidden relative rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all">
+    <div className="glass-card overflow-hidden relative transition-all">
       <button
         className="w-full p-4 flex items-center justify-between text-left"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-3 border border-white/10">
+          <div className="w-8 h-8 bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-3">
             <div className="text-[#3c66ce]">
               <Lock className="h-4 w-4" />
             </div>
@@ -32,7 +33,7 @@ const LoginAccordion = () => {
       <div
         className={`px-6 pb-6 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
       >
-        <div className="pt-2 border-t border-white/10 pl-8">
+        <div className="pt-2 pl-8">
           {t('instruccionesInicioSesion')}
         </div>
       </div>
@@ -71,7 +72,7 @@ const CountdownTimer = () => {
         <span className="text-sm font-medium">{t('ofertaTermina')}</span>
       </div>
       <div className="flex items-center space-x-2">
-        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner">
+        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 shadow-inner">
           <span className="text-xl font-mono font-bold text-white">{timeLeft.hours.toString().padStart(2, '0')}</span>
         </div>
         <span className="text-xl font-bold text-white">:</span>
@@ -102,14 +103,15 @@ const PricingSection = () => {
         <div className="text-center mb-12">
           <span className="text-xs dark:text-primary text-black uppercase tracking-wider font-medium mb-2 inline-block">{t('registrateAhoraBtn')}</span>
           <h2 className="text-3xl font-bold text-gradient mb-3">{t('unicoPago')}</h2>
-          <p className="text-foreground/70 max-w-lg mx-auto">
-            {t('accedeComienza')}
-          </p>
+          <TextGenerateEffect 
+            words={t('accedeComienza')}
+            className="text-foreground/70 max-w-lg mx-auto"
+          />
         </div>
 
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
-          <Card className="glass-card overflow-hidden relative group h-full border-[#3c66ce]/30 hover:border-[#3c66ce] transition-colors">
+          <Card className="glass-card overflow-hidden relative group h-full transition-colors">
             <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
 
@@ -124,7 +126,7 @@ const PricingSection = () => {
 
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
+                <div className="w-12 h-12 rounded-3xl bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
                   <Sparkles className="text-[#3c66ce]" size={24} />
                 </div>
                 <div>
@@ -135,7 +137,7 @@ const PricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-xl border border-white/10">
+              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-3xl border border-white/10">
                 <div className="flex items-baseline mb-2">
                   <span className="text-4xl font-bold">$10</span>
                   <span className="text-foreground/70 text-sm ml-2">USD</span>
@@ -239,7 +241,7 @@ const PricingSection = () => {
                 </ul>
               </div>
 
-              <div className="mb-6 p-4 bg-gradient-to-r from-[#ef4444]/20 to-[#f97316]/20 backdrop-blur-sm rounded-xl border border-[#ef4444]/30 shadow-lg shadow-[#ef4444]/5 relative overflow-hidden">
+              <div className="mb-6 p-4 bg-gradient-to-r from-[#ef4444]/20 to-[#f97316]/20 backdrop-blur-sm rounded-3xl border border-[#ef4444]/30 shadow-lg shadow-[#ef4444]/5 relative overflow-hidden">
                 <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#ef4444]/10 blur-2xl"></div>
                 <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-[#f97316]/10 blur-2xl"></div>
                 <div className="relative z-10">
@@ -247,7 +249,7 @@ const PricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-6 bg-black/20 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+              <div className="mb-6 bg-black/20 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden">
                 <div className="p-3 relative">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
@@ -315,7 +317,7 @@ const PricingSection = () => {
 
                   {/* Versión móvil más elegante con iconos arriba y texto abajo */}
                   <div className="flex sm:hidden flex-col items-center gap-4 mb-2">
-                    <div className="flex flex-col items-center gap-1 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl">
+                    <div className="flex flex-col items-center gap-1 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-3xl">
                       <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm mb-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-5 h-5" fill="#0070BA">
                           <path d="M7.266 29.154l.523-3.322-1.165-.027H1.061L4.927 1.292a.316.316 0 0 1 .314-.268h9.38c3.114 0 5.263.648 6.385 1.927.526.6.861 1.227 1.023 1.917.17.724.173 1.589.007 2.644l-.012.077v.676l.526.298a3.69 3.69 0 0 1 1.065.812c.45.513.741 1.165.864 1.938.127.795.085 1.741-.123 2.812-.24 1.232-.628 2.305-1.152 3.183a6.547 6.547 0 0 1-1.825 2c-.696.494-1.523.869-2.458 1.109-.906.236-1.939.355-3.072.355h-.73c-.522 0-1.029.188-1.427.525a2.21 2.21 0 0 0-.744 1.328l-.055.299-.924 5.855-.042.215c-.011.068-.03.102-.058.125a.155.155 0 0 1-.096.035H7.266z" />
@@ -324,7 +326,7 @@ const PricingSection = () => {
                       <span className="text-sm font-medium">PayPal</span>
                     </div>
 
-                    <div className="flex flex-col items-center gap-1 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-xl">
+                    <div className="flex flex-col items-center gap-1 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-3xl">
                       <div className="flex justify-center space-x-1 mb-1">
                         {[
                           "🇦🇷", // Argentina

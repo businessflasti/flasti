@@ -33,7 +33,7 @@ const CertificationsSection = () => {
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4386c]/50 to-transparent"></div>
 
             <div className="p-8 relative z-10">
-              <div className="w-10 h-10 rounded-lg bg-[#d4386c]/10 flex items-center justify-center mb-5">
+              <div className="w-10 h-10 rounded-3xl bg-[#d4386c]/10 flex items-center justify-center mb-5">
                 <Award className="text-primary" size={20} />
               </div>
 
@@ -69,7 +69,7 @@ const CertificationsSection = () => {
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4386c]/50 to-transparent"></div>
 
             <div className="p-8 relative z-10">
-              <div className="w-10 h-10 rounded-lg bg-[#d4386c]/10 flex items-center justify-center mb-5">
+              <div className="w-10 h-10 rounded-3xl bg-[#d4386c]/10 flex items-center justify-center mb-5">
                 <Sparkles className="text-primary" size={20} />
               </div>
 
@@ -105,7 +105,7 @@ const CertificationsSection = () => {
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4386c]/50 to-transparent"></div>
 
             <div className="p-8 relative z-10">
-              <div className="w-10 h-10 rounded-lg bg-[#d4386c]/10 flex items-center justify-center mb-5">
+              <div className="w-10 h-10 rounded-3xl bg-[#d4386c]/10 flex items-center justify-center mb-5">
                 <ShieldCheck className="text-primary" size={20} />
               </div>
 

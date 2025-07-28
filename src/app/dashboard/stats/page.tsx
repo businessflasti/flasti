@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, TrendingUp, Users, DollarSign, Calendar } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useUserLevel } from '@/contexts/UserLevelContext';
+
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
@@ -18,7 +18,6 @@ const affiliateService = AffiliateServiceEnhanced.getInstance();
 
 export default function StatsPage() {
   const { t } = useLanguage();
-  const { level, commission } = useUserLevel();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<AffiliateStats>({

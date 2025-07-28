@@ -1,11 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 
 const StatsSection = () => {
   const { t } = useLanguage();
   const statsRef = useRef<(HTMLDivElement | null)[]>([]);
   const sectionRef = useRef<HTMLElement | null>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+  
+  const placeholders = [
+    "Un microtrabajo suma, hacerlo juntos multiplica",
+    "La nueva forma de trabajar, está en tus manos",
+    "Generá ingresos con lo que ya sabés hacer",
+  ];
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("submitted");
+  };
   const stats = [
     { number: 24000000, display: '24M+', label: t('generadosPorUsuarios') },
     { number: 1300000, display: '1.3M+', label: t('microtrabajosCompletados') },
@@ -46,37 +62,39 @@ const StatsSection = () => {
   };
   return (
     <section
+      id="stats-section"
       ref={sectionRef}
-      className="bg-[#101010] text-white py-20 px-6"
+      className="bg-[#101010] text-white py-28 px-6"
     >
       <div className="container-custom max-w-[1200px] mb-16 text-center">
         <div className="flex flex-col items-center gap-3 mb-4">
           <div className="flex justify-center">
-            <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" loading="lazy" />
-              </div>
-              <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile2.jpg" alt={t('usuario2')} className="w-full h-full object-cover" loading="lazy" />
-              </div>
-              <div className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile3.jpg" alt={t('usuario3')} className="w-full h-full object-cover" loading="lazy" />
+            <div className="bg-white py-1 px-2 rounded-full shadow-md">
+              <div className="flex -space-x-2">
+                <div className="w-7 h-7 rounded-full border-2 border-white overflow-hidden">
+                  <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" loading="lazy" />
+                </div>
+                <div className="w-7 h-7 rounded-full border-2 border-white overflow-hidden">
+                  <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile2.jpg" alt={t('usuario2')} className="w-full h-full object-cover" loading="lazy" />
+                </div>
+                <div className="w-7 h-7 rounded-full border-2 border-white overflow-hidden">
+                  <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile3.jpg" alt={t('usuario3')} className="w-full h-full object-cover" loading="lazy" />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className="text-center">
-          <h2 className="text-3xl font-bold leading-tight">
-            {t('gananciaColectiva')}
+          <h2 className="text-3xl md:text-4xl font-bold leading-tight">
+            El poder de nuestra comunidad
           </h2>
-          <p className="text-foreground/70 max-w-2xl mx-auto text-center mt-4 text-base md:text-lg font-normal">
-            {(() => {
-              const { language } = useLanguage();
-              if (language === 'es') return 'Un microtrabajo suma, hacerlo juntos multiplica';
-              if (language === 'en') return 'One microtask adds up, doing it together multiplies';
-              return 'Uma microtarefa soma, fazer juntos multiplica';
-            })()}
-          </p>
+          <div className="mt-8 max-w-2xl mx-auto">
+            <PlaceholdersAndVanishInput
+              placeholders={placeholders}
+              onChange={handleChange}
+              onSubmit={onSubmit}
+            />
+          </div>
         </div>
       </div>
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">

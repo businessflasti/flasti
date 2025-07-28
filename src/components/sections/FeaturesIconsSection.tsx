@@ -47,9 +47,9 @@ const FeaturesIconsSection = () => {
 					{features.map((feature, index) => (
 						<div
 							key={index}
-							className="glass-card p-6 rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10"
+							className="glass-card p-6 rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10"
 						>
-							<div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#9333ea] to-[#3c66ce] flex items-center justify-center mb-4">
+							<div className="w-12 h-12 rounded-3xl bg-gradient-to-br from-[#9333ea] to-[#3c66ce] flex items-center justify-center mb-4">
 								{feature.icon}
 							</div>
 							<h3 className="text-xl font-bold mb-2">{feature.title}</h3>

@@ -46,12 +46,12 @@ const PaymentInfoSection = () => {
 
 			<div className="container-custom relative z-10">
 				<div className="max-w-4xl mx-auto">
-					<div className="glass-card p-6 rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 overflow-hidden relative h-full flex flex-col justify-between">
+					<div className="glass-card p-6 rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 overflow-hidden relative h-full flex flex-col justify-between">
 						<div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#9333ea]/10 blur-3xl"></div>
 						<div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-[#ec4899]/10 blur-3xl"></div>
 
 						<div className="relative z-10">
-							<div className="rounded-lg overflow-hidden border border-white/10 shadow-xl p-8 text-center mb-6">
+							<div className="rounded-3xl overflow-hidden border border-white/10 shadow-xl p-8 text-center mb-6">
 								<div className="text-4xl font-bold font-outfit mb-6 text-white dark:text-white light:text-black">
 									Conoce a{" "}
 									<span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ec4899] to-[#9333ea]">
@@ -74,7 +74,7 @@ const PaymentInfoSection = () => {
 							</div>
 
 							<div className="grid grid-cols-3 md:grid-cols-3 gap-2 md:gap-4 mt-4">
-								<div className="glass-card p-2 md:p-3 rounded-lg md:rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
+								<div className="glass-card p-2 md:p-3 rounded-3xl md:rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
 									<div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mx-auto mb-2 md:mb-3 border border-white/10">
 										<Shield className="text-red-500 h-4 w-4 md:h-5 md:w-5" />
 									</div>
@@ -85,7 +85,7 @@ const PaymentInfoSection = () => {
 										Relaciones basadas en transparencia
 									</p>
 								</div>
-								<div className="glass-card p-2 md:p-3 rounded-lg md:rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
+								<div className="glass-card p-2 md:p-3 rounded-3xl md:rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
 									<div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mx-auto mb-2 md:mb-3 border border-white/10">
 										<Lightbulb className="text-yellow-500 h-4 w-4 md:h-5 md:w-5" />
 									</div>
@@ -96,7 +96,7 @@ const PaymentInfoSection = () => {
 										Mejora constante de la plataforma
 									</p>
 								</div>
-								<div className="glass-card p-2 md:p-3 rounded-lg md:rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
+								<div className="glass-card p-2 md:p-3 rounded-3xl md:rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
 									<div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mx-auto mb-2 md:mb-3 border border-white/10">
 										<Lock className="text-green-500 h-4 w-4 md:h-5 md:w-5" />
 									</div>
@@ -107,7 +107,7 @@ const PaymentInfoSection = () => {
 										Protección de datos e ingresos
 									</p>
 								</div>
-								<div className="glass-card p-2 md:p-3 rounded-lg md:rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
+								<div className="glass-card p-2 md:p-3 rounded-3xl md:rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
 									<div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mx-auto mb-2 md:mb-3 border border-white/10">
 										<TrendingUp className="text-blue-500 h-4 w-4 md:h-5 md:w-5" />
 									</div>
@@ -118,7 +118,7 @@ const PaymentInfoSection = () => {
 										Plataforma global en expansión
 									</p>
 								</div>
-								<div className="glass-card p-2 md:p-3 rounded-lg md:rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
+								<div className="glass-card p-2 md:p-3 rounded-3xl md:rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
 									<div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mx-auto mb-2 md:mb-3 border border-white/10">
 										<Target className="text-purple-500 h-4 w-4 md:h-5 md:w-5" />
 									</div>
@@ -129,7 +129,7 @@ const PaymentInfoSection = () => {
 										Beneficios tangibles para usuarios
 									</p>
 								</div>
-								<div className="glass-card p-2 md:p-3 rounded-lg md:rounded-xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
+								<div className="glass-card p-2 md:p-3 rounded-3xl md:rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 text-center">
 									<div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#ec4899]/20 flex items-center justify-center mx-auto mb-2 md:mb-3 border border-white/10">
 										<Rocket className="text-orange-500 h-4 w-4 md:h-5 md:w-5" />
 									</div>
