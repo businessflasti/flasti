@@ -52,18 +52,18 @@ function StudiovaHeroSection() {
                     50% { transform: translateX(4px) rotate(2deg); }
                 }
                 @keyframes slideshow {
-                    0% { opacity: 1; transform: scale(1.06); }
-                    45% { opacity: 1; transform: scale(1.01); }
-                    50% { opacity: 0; transform: scale(1); }
-                    95% { opacity: 0; transform: scale(1); }
-                    100% { opacity: 1; transform: scale(1.06); }
+                    0% { opacity: 1; }
+                    45% { opacity: 1; }
+                    50% { opacity: 0; }
+                    95% { opacity: 0; }
+                    100% { opacity: 1; }
                 }
                 @keyframes slideshow-2 {
-                    0% { opacity: 0; transform: scale(1); }
-                    45% { opacity: 0; transform: scale(1); }
-                    50% { opacity: 1; transform: scale(1.06); }
-                    95% { opacity: 1; transform: scale(1.01); }
-                    100% { opacity: 0; transform: scale(1); }
+                    0% { opacity: 0; }
+                    45% { opacity: 0; }
+                    50% { opacity: 1; }
+                    95% { opacity: 1; }
+                    100% { opacity: 0; }
                 }
                 @keyframes vertical-float {
                     0%, 100% { transform: translateY(0px); }
