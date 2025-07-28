@@ -123,17 +123,18 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
 
         <CardContent className="pt-0">
           {/* Área del anuncio AdSense - SIMPLE */}
-          <div className="w-full bg-white rounded-lg p-2" style={{ height: '250px' }}>
+          <div className="w-full bg-white rounded-lg flex items-center justify-center" style={{ minHeight: '280px' }}>
             <ins
               ref={adInsRef}
               className="adsbygoogle"
               style={{
-                display: 'block',
+                display: 'inline-block',
                 width: '300px',
                 height: '250px'
               }}
               data-ad-client="ca-pub-8330194041691289"
               data-ad-slot="9313483236"
+              data-ad-format="rectangle"
             />
           </div>
         </CardContent>

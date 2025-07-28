@@ -175,7 +175,7 @@ export default function WithdrawalsPage() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8 space-y-6">
+    <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6">
       <Breadcrumbs />
       
       {/* Header */}
