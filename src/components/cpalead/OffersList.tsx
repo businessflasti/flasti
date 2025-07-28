@@ -16,7 +16,6 @@ interface OffersListProps {
 
 const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const { user } = useAuth();
-  const [hiddenAds, setHiddenAds] = useState<Set<string>>(new Set());
 
   // Función para crear array con ofertas y anuncios intercalados
   const createMixedArray = (offers: CPALeadOffer[]) => {
@@ -28,25 +27,11 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       // Insertar anuncio después de cada 3 ofertas (posiciones 4, 8, 12, etc.)
       if ((index + 1) % 3 === 0 && index < offers.length - 1) {
         const adId = `ad-${Math.floor(index / 3)}`;
-        // Solo agregar el anuncio si no está oculto
-        if (!hiddenAds.has(adId)) {
-          mixedArray.push({ type: 'ad', id: adId });
-        }
+        mixedArray.push({ type: 'ad', id: adId });
       }
     });
     
     return mixedArray;
-  };
-
-  // Función para ocultar un anuncio después del timeout
-  const hideAdAfterTimeout = (adId: string) => {
-    setTimeout(() => {
-      setHiddenAds(prev => {
-        const newSet = new Set(prev);
-        newSet.add(adId);
-        return newSet;
-      });
-    }, 10000); // 10 segundos
   };
 
   // Función para formatear el texto del dispositivo
@@ -100,55 +85,24 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     );
   }
 
-  // Componente para tarjeta de anuncio con timeout
+  // Componente para tarjeta de anuncio - VERSIÓN SIMPLE
   const AdCard: React.FC<{ adId: string }> = ({ adId }) => {
-    const [isVisible, setIsVisible] = useState(true);
-    const [showLoading, setShowLoading] = useState(true);
     const adInsRef = useRef<HTMLModElement>(null);
-    const initRef = useRef(false);
 
     useEffect(() => {
-      if (initRef.current) return;
-      initRef.current = true;
-
-      // Ocultar loading después de 2 segundos siempre
-      const loadingTimer = setTimeout(() => {
-        setShowLoading(false);
-      }, 2000);
-
-      // Inicializar AdSense
-      const initializeAd = () => {
+      // Inicializar AdSense después de que el componente se monte
+      const timer = setTimeout(() => {
         try {
-          if (typeof window !== 'undefined' && window.adsbygoogle && adInsRef.current) {
+          if (window.adsbygoogle && adInsRef.current) {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            console.log(`🚀 AdSense inicializado para ${adId}`);
-          } else {
-            setTimeout(initializeAd, 500);
           }
         } catch (err) {
-          console.error(`❌ Error inicializando AdSense para ${adId}:`, err);
+          console.error('Error inicializando AdSense:', err);
         }
-      };
+      }, 1000);
 
-      const initTimer = setTimeout(initializeAd, 300);
-
-      // Timeout para ocultar anuncio si no funciona
-      const hideTimer = setTimeout(() => {
-        console.log(`⏰ Ocultando anuncio ${adId} por timeout`);
-        setIsVisible(false);
-        setHiddenAds(prev => new Set([...prev, adId]));
-      }, 12000);
-
-      return () => {
-        clearTimeout(loadingTimer);
-        clearTimeout(initTimer);
-        clearTimeout(hideTimer);
-      };
-    }, [adId]);
-
-    if (!isVisible) {
-      return null; // No renderizar nada, las otras tarjetas se reacomodarán automáticamente
-    }
+      return () => clearTimeout(timer);
+    }, []);
 
     return (
       <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
@@ -168,32 +122,18 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         </CardHeader>
 
         <CardContent className="pt-0">
-          {/* Área del anuncio AdSense */}
-          <div className="w-full bg-white rounded-lg overflow-hidden relative" style={{ height: '250px' }}>
-            {/* Indicador de carga - solo por 2 segundos */}
-            {showLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-xs text-gray-500">Cargando anuncio...</span>
-                </div>
-              </div>
-            )}
-            
-            {/* Elemento del anuncio */}
+          {/* Área del anuncio AdSense - SIMPLE */}
+          <div className="w-full bg-white rounded-lg p-2" style={{ height: '250px' }}>
             <ins
               ref={adInsRef}
               className="adsbygoogle"
               style={{
                 display: 'block',
                 width: '300px',
-                height: '250px',
-                margin: '0 auto'
+                height: '250px'
               }}
               data-ad-client="ca-pub-8330194041691289"
               data-ad-slot="9313483236"
-              data-ad-format="rectangle"
-              data-full-width-responsive="false"
             />
           </div>
         </CardContent>
