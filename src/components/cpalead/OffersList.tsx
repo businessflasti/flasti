@@ -16,6 +16,7 @@ interface OffersListProps {
 
 const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const { user } = useAuth();
+  const [hiddenAds, setHiddenAds] = useState<Set<string>>(new Set());
 
   // Función para crear array con ofertas y anuncios intercalados
   const createMixedArray = (offers: CPALeadOffer[]) => {
@@ -27,7 +28,10 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       // Insertar anuncio después de cada 3 ofertas (posiciones 4, 8, 12, etc.)
       if ((index + 1) % 3 === 0 && index < offers.length - 1) {
         const adId = `ad-${Math.floor(index / 3)}`;
-        mixedArray.push({ type: 'ad', id: adId });
+        // Solo agregar el anuncio si no está oculto
+        if (!hiddenAds.has(adId)) {
+          mixedArray.push({ type: 'ad', id: adId });
+        }
       }
     });
     
@@ -85,24 +89,41 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     );
   }
 
-  // Componente para tarjeta de anuncio - VERSIÓN SIMPLE
+  // Componente para tarjeta de anuncio - CON LÓGICA INTELIGENTE COMO ADBLOCK
   const AdCard: React.FC<{ adId: string }> = ({ adId }) => {
+    const [isAdVisible, setIsAdVisible] = useState(true);
+    const [adTried, setAdTried] = useState(false);
     const adInsRef = useRef<HTMLModElement>(null);
 
     useEffect(() => {
-      // Inicializar AdSense después de que el componente se monte
-      const timer = setTimeout(() => {
-        try {
-          if (window.adsbygoogle && adInsRef.current) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          }
-        } catch (err) {
-          console.error('Error inicializando AdSense:', err);
-        }
-      }, 1000);
+      try {
+        // Inicializar AdSense
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (err) {
+        console.error("AdSense error:", err);
+      }
 
-      return () => clearTimeout(timer);
-    }, []);
+      // Sistema de timeout de 15 segundos (igual que AdBlock)
+      const adCheckTimeout = setTimeout(() => {
+        setAdTried(true);
+        if (adInsRef.current) {
+          const isUnfilled = adInsRef.current.dataset.adStatus === 'unfilled';
+          const isEmpty = adInsRef.current.innerHTML.trim() === '' && adInsRef.current.clientHeight === 0;
+          
+          if (isUnfilled || isEmpty) {
+            console.log(`Anuncio ${adId} no cargó, ocultando tarjeta`);
+            setIsAdVisible(false);
+            // Agregar a la lista de anuncios ocultos para futuras renderizaciones
+            setHiddenAds(prev => new Set([...prev, adId]));
+          }
+        }
+      }, 15000); // 15 segundos como AdBlock
+
+      return () => clearTimeout(adCheckTimeout);
+    }, [adId]);
+
+    // Si el anuncio no es visible, no renderizar nada (la tarjeta desaparece completamente)
+    if (!isAdVisible) return null;
 
     return (
       <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
@@ -122,20 +143,37 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         </CardHeader>
 
         <CardContent className="pt-0">
-          {/* Área del anuncio AdSense - SIMPLE */}
-          <div className="w-full bg-white rounded-lg flex items-center justify-center" style={{ minHeight: '280px' }}>
-            <ins
-              ref={adInsRef}
-              className="adsbygoogle"
-              style={{
-                display: 'inline-block',
-                width: '300px',
-                height: '250px'
-              }}
-              data-ad-client="ca-pub-8330194041691289"
-              data-ad-slot="9313483236"
-              data-ad-format="rectangle"
-            />
+          {/* Área del anuncio AdSense con lógica inteligente */}
+          <div className="w-full bg-white rounded-lg flex items-center justify-center relative" style={{ minHeight: '280px' }}>
+            {isAdVisible ? (
+              <div className="w-full max-w-[300px] max-h-[250px] flex justify-center items-center overflow-hidden rounded-lg">
+                <ins
+                  ref={adInsRef}
+                  className="adsbygoogle"
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    width: '300px',
+                    height: '250px',
+                    margin: '0 auto',
+                    overflow: 'hidden'
+                  }}
+                  data-ad-client="ca-pub-8330194041691289"
+                  data-ad-slot="9313483236"
+                  data-ad-format="rectangle"
+                />
+              </div>
+            ) : (
+              adTried && (
+                <div className="flex flex-col items-center justify-center w-full h-[200px] animate-pulse">
+                  <svg width="32" height="32" fill="none" viewBox="0 0 32 32" className="mb-2 opacity-40">
+                    <circle cx="16" cy="16" r="14" stroke="#666" strokeWidth="2" strokeDasharray="4 4" />
+                    <path d="M10 16h12" stroke="#666" strokeWidth="2" strokeLinecap="round" className="animate-pulse" />
+                  </svg>
+                  <span className="text-xs text-gray-500">No hay anuncios disponibles</span>
+                </div>
+              )
+            )}
           </div>
         </CardContent>
       </Card>
