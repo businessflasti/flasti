@@ -20,7 +20,7 @@ const sidebarItems = [
 ];
 
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
-  const { profile, user } = useAuth();
+  const { profile, user, signOut } = useAuth();
   
   // Función para obtener las iniciales del usuario
   const getInitials = (email: string | undefined, name: string | undefined) => {
@@ -104,9 +104,14 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                       role="menuitem"
                       aria-label={item.tooltip}
                       onClick={async () => {
-                        const { signOut } = await import('@/contexts/AuthContext');
-                        if (typeof signOut === 'function') await signOut();
-                        window.location.href = '/login';
+                        try {
+                          await signOut();
+                          window.location.href = '/login';
+                        } catch (error) {
+                          console.error('Error al cerrar sesión:', error);
+                          // Redirigir de todas formas en caso de error
+                          window.location.href = '/login';
+                        }
                         if (typeof window !== 'undefined' && window.innerWidth < 768) {
                           setOpen(false);
                         }
