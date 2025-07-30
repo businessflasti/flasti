@@ -1,13 +1,14 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
-import { ExternalLink, DollarSign, Globe, Smartphone, Tag } from 'lucide-react';
+import { ExternalLink, DollarSign, Globe, Smartphone, Tag, Filter, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface OffersListProps {
@@ -16,6 +17,133 @@ interface OffersListProps {
 
 const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const { user } = useAuth();
+  const [selectedCountry, setSelectedCountry] = useState<string>('all');
+  const [selectedDevice, setSelectedDevice] = useState<string>('all');
+  const [userCountry, setUserCountry] = useState<string>('US');
+  const [userDevice, setUserDevice] = useState<string>('desktop');
+
+  // Detectar país y dispositivo del usuario
+  useEffect(() => {
+    const detectUserInfo = async () => {
+      try {
+        // Detectar dispositivo
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTablet = /iPad|Android(?=.*\bMobile\b)/i.test(navigator.userAgent);
+        
+        let detectedDevice = 'desktop';
+        if (isTablet) {
+          detectedDevice = 'tablet';
+        } else if (isMobile) {
+          detectedDevice = 'mobile';
+        }
+        
+        setUserDevice(detectedDevice);
+        
+        // Detectar país usando API de geolocalización
+        try {
+          const response = await fetch('https://ipapi.co/json/');
+          const data = await response.json();
+          const countryCode = data.country_code || 'US';
+          
+          // Verificar si hay ofertas para este país
+          const hasOffersForCountry = offers.some(offer => 
+            offer.country?.toUpperCase() === countryCode.toUpperCase()
+          );
+          
+          const finalCountry = hasOffersForCountry ? countryCode : 'US';
+          setUserCountry(finalCountry);
+          setSelectedCountry(finalCountry);
+          
+          console.log('Detección automática:', {
+            detectedCountry: countryCode,
+            finalCountry,
+            hasOffersForCountry,
+            detectedDevice
+          });
+          
+        } catch (error) {
+          console.log('Error detectando país, usando US por defecto:', error);
+          setUserCountry('US');
+          setSelectedCountry('US');
+        }
+        
+        setSelectedDevice(detectedDevice);
+        
+      } catch (error) {
+        console.error('Error en detección automática:', error);
+      }
+    };
+
+    if (offers.length > 0) {
+      detectUserInfo();
+    }
+  }, [offers]);
+
+  // Obtener países únicos de las ofertas
+  const availableCountries = useMemo(() => {
+    const countries = new Set<string>();
+    offers.forEach(offer => {
+      if (offer.country) {
+        countries.add(offer.country);
+      }
+    });
+    return Array.from(countries).sort();
+  }, [offers]);
+
+  // Obtener dispositivos únicos de las ofertas
+  const availableDevices = useMemo(() => {
+    const devices = new Set<string>();
+    offers.forEach(offer => {
+      if (offer.device) {
+        devices.add(offer.device);
+      }
+    });
+    return Array.from(devices).sort();
+  }, [offers]);
+
+  // Filtrar ofertas según selección
+  const filteredOffers = useMemo(() => {
+    return offers.filter(offer => {
+      const countryMatch = selectedCountry === 'all' || 
+        offer.country?.toUpperCase() === selectedCountry.toUpperCase();
+      
+      const deviceMatch = selectedDevice === 'all' || 
+        offer.device?.toLowerCase() === selectedDevice.toLowerCase() ||
+        offer.device?.toLowerCase() === 'all_devices';
+      
+      return countryMatch && deviceMatch;
+    });
+  }, [offers, selectedCountry, selectedDevice]);
+
+  // Mapeo de códigos de país a nombres
+  const countryNames: { [key: string]: string } = {
+    'US': 'Estados Unidos',
+    'CA': 'Canadá',
+    'GB': 'Reino Unido',
+    'AU': 'Australia',
+    'DE': 'Alemania',
+    'FR': 'Francia',
+    'ES': 'España',
+    'IT': 'Italia',
+    'BR': 'Brasil',
+    'MX': 'México',
+    'AR': 'Argentina',
+    'CL': 'Chile',
+    'CO': 'Colombia',
+    'PE': 'Perú'
+  };
+
+  // Mapeo de dispositivos a nombres en español
+  const deviceNames: { [key: string]: string } = {
+    'mobile': 'Móvil',
+    'desktop': 'Escritorio',
+    'tablet': 'Tablet',
+    'all_devices': 'Todos los dispositivos',
+    'android': 'Android',
+    'ios': 'iOS',
+    'iphone': 'iPhone',
+    'ipad': 'iPad'
+  };
 
   // Función para formatear el texto del dispositivo
   const formatDeviceText = (device: string): string => {
@@ -73,10 +201,140 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   return (
     <TooltipProvider>
       <div className="space-y-6">
+        {/* Sistema de filtros */}
+        <div className="bg-[#101010] rounded-lg border border-border/50 p-4">
+          <div className="flex items-center gap-3 mb-4">
+            <Filter className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-white">Filtros</h3>
+            {(selectedCountry !== 'all' || selectedDevice !== 'all') && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSelectedCountry('all');
+                  setSelectedDevice('all');
+                }}
+                className="text-xs text-gray-400 hover:text-white"
+              >
+                <X className="w-3 h-3 mr-1" />
+                Limpiar filtros
+              </Button>
+            )}
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Filtro por país */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                País
+              </label>
+              <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                <SelectTrigger className="bg-[#232323] border-border/50 text-white">
+                  <SelectValue placeholder="Seleccionar país" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#232323] border-border/50">
+                  <SelectItem value="all" className="text-white hover:bg-[#333]">
+                    Todos los países
+                  </SelectItem>
+                  {availableCountries.map(country => (
+                    <SelectItem 
+                      key={country} 
+                      value={country}
+                      className="text-white hover:bg-[#333]"
+                    >
+                      {countryNames[country] || country}
+                      {country === userCountry && (
+                        <Badge variant="secondary" className="ml-2 text-xs">
+                          Tu país
+                        </Badge>
+                      )}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
+            {/* Filtro por dispositivo */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                <Smartphone className="w-4 h-4" />
+                Dispositivo
+              </label>
+              <Select value={selectedDevice} onValueChange={setSelectedDevice}>
+                <SelectTrigger className="bg-[#232323] border-border/50 text-white">
+                  <SelectValue placeholder="Seleccionar dispositivo" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#232323] border-border/50">
+                  <SelectItem value="all" className="text-white hover:bg-[#333]">
+                    Todos los dispositivos
+                  </SelectItem>
+                  {availableDevices.map(device => (
+                    <SelectItem 
+                      key={device} 
+                      value={device}
+                      className="text-white hover:bg-[#333]"
+                    >
+                      {deviceNames[device] || device}
+                      {device === userDevice && (
+                        <Badge variant="secondary" className="ml-2 text-xs">
+                          Tu dispositivo
+                        </Badge>
+                      )}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {offers.map((offer, index) => (
+          {/* Información de resultados */}
+          <div className="mt-4 flex items-center justify-between text-sm text-gray-400">
+            <span>
+              Mostrando {filteredOffers.length} de {offers.length} ofertas
+            </span>
+            {(selectedCountry !== 'all' || selectedDevice !== 'all') && (
+              <div className="flex items-center gap-2">
+                {selectedCountry !== 'all' && (
+                  <Badge variant="outline" className="text-xs">
+                    {countryNames[selectedCountry] || selectedCountry}
+                  </Badge>
+                )}
+                {selectedDevice !== 'all' && (
+                  <Badge variant="outline" className="text-xs">
+                    {deviceNames[selectedDevice] || selectedDevice}
+                  </Badge>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Mensaje si no hay ofertas filtradas */}
+        {filteredOffers.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
+              <Filter className="w-12 h-12 text-muted-foreground" />
+            </div>
+            <h3 className="text-xl font-semibold text-foreground mb-2">
+              No hay ofertas disponibles
+            </h3>
+            <p className="text-muted-foreground max-w-md mx-auto mb-4">
+              No se encontraron ofertas que coincidan con los filtros seleccionados.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSelectedCountry('all');
+                setSelectedDevice('all');
+              }}
+            >
+              Ver todas las ofertas
+            </Button>
+          </div>
+        ) : (
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredOffers.map((offer, index) => (
             <li key={offer.id} className="group">
               {/* Tarjeta de oferta */}
               <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
@@ -185,7 +443,8 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
               </Card>
             </li>
           ))}
-        </ul>
+          </ul>
+        )}
 
         {/* Información de actualización */}
         <div className="mt-8 p-4 bg-[#101010] rounded-lg border border-border/50">

@@ -81,7 +81,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                   Panel personal
                 </div>
                 <div className="text-[10px] sm:text-xs text-[#b0b0b0] leading-tight">
-                  <span className="md:hidden whitespace-nowrap">Bienvenido de vuelta</span>
+                  <span className="md:hidden whitespace-nowrap">Bienvenido</span>
                   <span className="hidden md:inline">Bienvenido de vuelta, {user?.email?.split('@')[0] || 'Usuario'}</span>
                 </div>
               </div>
