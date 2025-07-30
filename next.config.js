@@ -14,6 +14,31 @@ const nextConfig = {
   staticPageGenerationTimeout: 1000,
   // Mover skipTrailingSlashRedirect a la raíz de la configuración
   skipTrailingSlashRedirect: true,
+  // Páginas que no deben ser indexadas
+  async headers() {
+    return [
+      {
+        // Rutas específicas que no deben indexarse
+        source: '/register',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow'
+          }
+        ],
+      },
+      {
+        // Otras rutas que tampoco deben indexarse
+        source: '/(register-simple|apps|dashboard-new|aplicaciones)',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow'
+          }
+        ],
+      }
+    ]
+  },
   // Configuración de imágenes remotas
   images: {
     remotePatterns: [

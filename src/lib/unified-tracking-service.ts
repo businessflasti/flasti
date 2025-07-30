@@ -3,6 +3,7 @@
  */
 
 import facebookPixelService from './facebook-pixel-service';
+import facebookEventDeduplication from './facebook-event-deduplication';
 import analyticsService from './analytics-service';
 
 interface TrackingEventParams {
@@ -59,43 +60,55 @@ class UnifiedTrackingService {
    * Track inicio de checkout en ambas plataformas
    */
   public async trackInitiateCheckout(params: TrackingEventParams) {
-    await facebookPixelService.trackInitiateCheckout({
-      content_name: params.content_name || 'Flasti Access',
-      content_category: params.content_category || 'platform_access',
-      value: params.value,
-      currency: params.currency,
-      num_items: 1
-    });
-    analyticsService.trackEvent('initiate_checkout', {
-      content_name: params.content_name,
-      value: params.value,
-      currency: params.currency,
-      payment_method: params.payment_method
-    });
-    await this.sendToMetaAPI('InitiateCheckout', params);
+    try {
+      // Usar deduplicación para Facebook Pixel + Conversions API
+      await facebookEventDeduplication.trackInitiateCheckout({
+        content_name: params.content_name || 'Flasti Access',
+        content_category: params.content_category || 'platform_access',
+        value: params.value,
+        currency: params.currency,
+        num_items: 1
+      });
 
-    console.log('📊 Inicio de checkout trackeado');
+      // Yandex Metrica
+      analyticsService.trackEvent('initiate_checkout', {
+        content_name: params.content_name,
+        value: params.value,
+        currency: params.currency,
+        payment_method: params.payment_method
+      });
+
+      console.log('📊 InitiateCheckout trackeado con deduplicación');
+    } catch (error) {
+      console.error('❌ Error en trackInitiateCheckout:', error);
+    }
   }
 
   /**
    * Track información de pago agregada en ambas plataformas
    */
   public async trackAddPaymentInfo(params: TrackingEventParams) {
-    await facebookPixelService.trackAddPaymentInfo({
-      content_name: params.content_name || 'Flasti Access',
-      content_category: params.content_category || 'platform_access',
-      value: params.value,
-      currency: params.currency
-    });
-    analyticsService.trackEvent('add_payment_info', {
-      content_name: params.content_name,
-      value: params.value,
-      currency: params.currency,
-      payment_method: params.payment_method
-    });
-    await this.sendToMetaAPI('AddPaymentInfo', params);
+    try {
+      // Usar deduplicación para Facebook Pixel + Conversions API
+      await facebookEventDeduplication.trackAddPaymentInfo({
+        content_name: params.content_name || 'Flasti Access',
+        content_category: params.content_category || 'platform_access',
+        value: params.value,
+        currency: params.currency
+      });
 
-    console.log('📊 Información de pago trackeada');
+      // Yandex Metrica
+      analyticsService.trackEvent('add_payment_info', {
+        content_name: params.content_name,
+        value: params.value,
+        currency: params.currency,
+        payment_method: params.payment_method
+      });
+
+      console.log('📊 AddPaymentInfo trackeado con deduplicación');
+    } catch (error) {
+      console.error('❌ Error en trackAddPaymentInfo:', error);
+    }
   }
 
   /**
@@ -138,44 +151,52 @@ class UnifiedTrackingService {
   /**
    * Track lead generado (registro, suscripción)
    */
-  public trackLead(params: TrackingEventParams): void {
-    // Facebook Pixel
-    facebookPixelService.trackLead({
-      content_name: params.content_name,
-      content_category: params.content_category,
-      value: params.value,
-      currency: params.currency
-    });
+  public async trackLead(params: TrackingEventParams): Promise<void> {
+    try {
+      // Usar deduplicación para Facebook Pixel + Conversions API
+      await facebookEventDeduplication.trackLead({
+        content_name: params.content_name,
+        content_category: params.content_category,
+        value: params.value,
+        currency: params.currency
+      });
 
-    // Yandex Metrica
-    analyticsService.trackEvent('lead_generated', {
-      content_name: params.content_name,
-      user_email: params.user_email,
-      user_name: params.user_name
-    });
+      // Yandex Metrica
+      analyticsService.trackEvent('lead_generated', {
+        content_name: params.content_name,
+        user_email: params.user_email,
+        user_name: params.user_name
+      });
 
-    console.log('📊 Lead trackeado');
+      console.log('📊 Lead trackeado con deduplicación');
+    } catch (error) {
+      console.error('❌ Error en trackLead:', error);
+    }
   }
 
   /**
    * Track registro completado
    */
-  public trackCompleteRegistration(params: TrackingEventParams): void {
-    // Facebook Pixel
-    facebookPixelService.trackCompleteRegistration({
-      content_name: params.content_name,
-      value: params.value,
-      currency: params.currency
-    });
+  public async trackCompleteRegistration(params: TrackingEventParams): Promise<void> {
+    try {
+      // Usar deduplicación para Facebook Pixel + Conversions API
+      await facebookEventDeduplication.trackCompleteRegistration({
+        content_name: params.content_name,
+        value: params.value,
+        currency: params.currency
+      });
 
-    // Yandex Metrica
-    analyticsService.trackEvent('complete_registration', {
-      user_email: params.user_email,
-      user_name: params.user_name,
-      registration_method: params.payment_method
-    });
+      // Yandex Metrica
+      analyticsService.trackEvent('complete_registration', {
+        user_email: params.user_email,
+        user_name: params.user_name,
+        registration_method: params.payment_method
+      });
 
-    console.log('📊 Registro completado trackeado');
+      console.log('📊 CompleteRegistration trackeado con deduplicación');
+    } catch (error) {
+      console.error('❌ Error en trackCompleteRegistration:', error);
+    }
   }
 
   /**

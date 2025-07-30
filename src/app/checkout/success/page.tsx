@@ -50,9 +50,9 @@ function SuccessContent() {
       console.log('Tracking de compra completada enviado');
     }
 
-    // Redirigir a la página de registro después de un breve delay
+    // Redirigir a la página de éxito de pago después de un breve delay
     const timer = setTimeout(() => {
-      window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+      window.location.href = "/payment-success";
     }, 3000);
 
     return () => clearTimeout(timer);

@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         },
       ],
       back_urls: {
-        success: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout/success`,
+        success: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/payment-success`,
         failure: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout`,
         pending: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout`,
       },

@@ -11,7 +11,7 @@ import Image from 'next/image';
 const sidebarItems = [
   { name: "Inicio", icon: <FiHome />, href: "/dashboard", tooltip: "Inicio" },
   { name: "Historial de Retiros", icon: <FiClock />, href: "/dashboard/withdrawals-history", tooltip: "Historial de retiros" },
-  { name: "Perfil", icon: <FiUser />, href: "/dashboard/profile", tooltip: "Tu perfil" },
+  { name: "Perfil", icon: <FiUser />, href: "/dashboard/perfil", tooltip: "Tu perfil" },
   { name: "Recompensas", icon: <FiAward />, href: "/dashboard/rewards-history", tooltip: "Historial de recompensas" },
   { name: "Retiros", icon: <FiDollarSign />, href: "/dashboard/withdrawals", tooltip: "Solicitar retiro" },
   { name: "Notificaciones", icon: <FiBell />, href: "/dashboard/notifications", tooltip: "Tus notificaciones" },

@@ -41,10 +41,10 @@ export async function getOffersFromCpaLead(): Promise<CPALeadOffer[]> {
       id: CPALEAD_CONFIG.ID,
       api_key: CPALEAD_CONFIG.API_KEY,
       format: 'JSON',
-      country: 'all', // Cambiar a 'all' para obtener ofertas de todos los países
-      limit: '100', // Aumentar el límite para obtener más ofertas
+      country: 'user', // CPALead detecta automáticamente el país del usuario
+      limit: '50',
       offerwall_offers: 'true',
-      device: 'all' // Cambiar a 'all' para obtener ofertas de todos los dispositivos
+      device: 'user' // CPALead detecta automáticamente el dispositivo del usuario
     });
 
     const url = `${CPALEAD_CONFIG.BASE_URL}/offers?${params.toString()}`;

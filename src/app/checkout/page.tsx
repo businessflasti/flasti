@@ -2261,8 +2261,8 @@ const CheckoutContent = () => {
                                   customer_email: paypalFormData.email
                                 });
 
-                                // Redirigir al usuario a la página de registro segura
-                                window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+                                // Redirigir al usuario a la página de éxito de pago
+                                window.location.href = "/payment-success";
                               } catch (error) {
                                 console.error('Error en el proceso de pago:', error);
                                 setIsSubmittingPaypalForm(false);

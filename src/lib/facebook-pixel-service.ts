@@ -13,6 +13,7 @@ interface FacebookPixelEventParams {
   num_items?: number;
   search_string?: string;
   status?: string;
+  eventID?: string; // Para deduplicación con Conversions API
   [key: string]: any;
 }
 
@@ -23,6 +24,7 @@ interface FacebookPixelPurchaseParams {
   content_name?: string;
   content_type?: string;
   num_items?: number;
+  eventID?: string; // Para deduplicación con Conversions API
 }
 
 interface FacebookPixelLeadParams {
@@ -30,6 +32,7 @@ interface FacebookPixelLeadParams {
   content_category?: string;
   value?: number;
   currency?: string;
+  eventID?: string; // Para deduplicación con Conversions API
 }
 
 class FacebookPixelService {
@@ -98,8 +101,14 @@ class FacebookPixelService {
     if (!(await this.shouldTrack())) return;
     try {
       if (params) {
-        window.fbq('track', eventName, params);
-        console.log(`Evento enviado a Facebook Pixel: ${eventName}`, params);
+        // Si hay eventID, usar trackSingle para deduplicación
+        if (params.eventID) {
+          window.fbq('trackSingle', this.pixelId, eventName, params, { eventID: params.eventID });
+          console.log(`Evento enviado a Facebook Pixel con eventID: ${eventName}`, { ...params, eventID: params.eventID });
+        } else {
+          window.fbq('track', eventName, params);
+          console.log(`Evento enviado a Facebook Pixel: ${eventName}`, params);
+        }
       } else {
         window.fbq('track', eventName);
         console.log(`Evento enviado a Facebook Pixel: ${eventName}`);
@@ -135,6 +144,27 @@ class FacebookPixelService {
    */
   public async trackPurchase(params: FacebookPixelPurchaseParams): Promise<void> {
     await this.trackEvent('Purchase', params);
+  }
+
+  /**
+   * Registra un lead
+   */
+  public async trackLead(params: FacebookPixelLeadParams): Promise<void> {
+    await this.trackEvent('Lead', params);
+  }
+
+  /**
+   * Registra cuando un usuario completa el registro
+   */
+  public async trackCompleteRegistration(params: FacebookPixelEventParams): Promise<void> {
+    await this.trackEvent('CompleteRegistration', params);
+  }
+
+  /**
+   * Registra un evento personalizado de Flasti
+   */
+  public async trackFlastiEvent(eventName: string, params?: FacebookPixelEventParams): Promise<void> {
+    await this.trackEvent(`Flasti_${eventName}`, params);
   }
 }
 
