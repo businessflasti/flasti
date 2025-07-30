@@ -1,4 +1,7 @@
+"use strict";
+
 // Usar fetch nativo de Node.js (disponible desde Node 18+)
+// @ts-check
 
 // Configuración de la API de CPALead
 const CPALEAD_CONFIG = {
@@ -37,14 +40,18 @@ export interface CPALeadOffersResponse {
 export async function getOffersFromCpaLead(): Promise<CPALeadOffer[]> {
   try {
     // Construir la URL con todos los parámetros requeridos
+    // Intentar obtener el país del usuario desde localStorage
+    const userCountry = typeof window !== 'undefined' ? localStorage.getItem('userCountry') : null;
+    
     const params = new URLSearchParams({
       id: CPALEAD_CONFIG.ID,
       api_key: CPALEAD_CONFIG.API_KEY,
       format: 'JSON',
-      country: 'user', // CPALead detecta automáticamente el país del usuario
-      limit: '50',
+      country: userCountry || 'user', // Usar el país guardado o dejar que CPALead lo detecte
+      limit: '100', // Aumentar el límite para tener más ofertas disponibles
       offerwall_offers: 'true',
-      device: 'user' // CPALead detecta automáticamente el dispositivo del usuario
+      device: 'user',
+      quality: 'high' // Solicitar ofertas de alta calidad
     });
 
     const url = `${CPALEAD_CONFIG.BASE_URL}/offers?${params.toString()}`;
@@ -52,14 +59,19 @@ export async function getOffersFromCpaLead(): Promise<CPALeadOffer[]> {
     console.log('CPALead: Solicitando ofertas desde:', url);
 
     // Realizar la solicitud GET
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Flasti.com/1.0'
       },
-      timeout: 10000 // 10 segundos de timeout
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error('CPALead: Error en la respuesta HTTP:', response.status, response.statusText);
@@ -165,14 +177,19 @@ export async function getReversalsFromCpaLead(startDate: string, endDate: string
 
     console.log('CPALead: Solicitando reversiones desde:', url);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Flasti.com/1.0'
       },
-      timeout: 10000
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error('CPALead: Error en la respuesta HTTP para reversiones:', response.status, response.statusText);
