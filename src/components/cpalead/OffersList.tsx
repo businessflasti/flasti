@@ -89,63 +89,36 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     );
   }
 
-  // Componente para tarjeta de anuncio - LÓGICA EXACTA DE ADBLOCK
+  // Componente para tarjeta de anuncio - COPIA EXACTA DE ADBLOCK
   const AdCard: React.FC<{ adId: string }> = ({ adId }) => {
     const [isAdVisible, setIsAdVisible] = useState(true);
     const [adTried, setAdTried] = useState(false);
-    const [isInitialized, setIsInitialized] = useState(false);
     const adInsRef = useRef<HTMLModElement>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-      // Evitar múltiples inicializaciones
-      if (isInitialized) return;
-      setIsInitialized(true);
+      try {
+        // @ts-ignore - EXACTO COMO ADBLOCK
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (err) {
+        console.error("AdSense error:", err);
+      }
 
-      // Delay antes de inicializar AdSense para evitar conflictos
-      const initDelay = setTimeout(() => {
-        try {
-          if (adInsRef.current && !adInsRef.current.hasAttribute('data-adsbygoogle-status')) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-            console.log(`AdSense inicializado para ${adId}`);
-          }
-        } catch (err) {
-          console.error(`AdSense error para ${adId}:`, err);
-        }
-      }, 500);
-
-      // Sistema de timeout de 15 segundos (exacto como AdBlock)
-      timeoutRef.current = setTimeout(() => {
+      const adCheckTimeout = setTimeout(() => {
         setAdTried(true);
         if (adInsRef.current) {
           const isUnfilled = adInsRef.current.dataset.adStatus === 'unfilled';
           const isEmpty = adInsRef.current.innerHTML.trim() === '' && adInsRef.current.clientHeight === 0;
-          
-          console.log(`Verificando anuncio ${adId}:`, {
-            isUnfilled,
-            isEmpty,
-            innerHTML: adInsRef.current.innerHTML.substring(0, 100),
-            clientHeight: adInsRef.current.clientHeight
-          });
-          
           if (isUnfilled || isEmpty) {
-            console.log(`Anuncio ${adId} no cargó, ocultando tarjeta`);
             setIsAdVisible(false);
-            // Agregar a la lista de anuncios ocultos para futuras renderizaciones
             setHiddenAds(prev => new Set([...prev, adId]));
           }
         }
-      }, 15000);
+      }, 15000); // 15 segundos EXACTO COMO ADBLOCK
+      
+      return () => clearTimeout(adCheckTimeout);
+    }, [adId]);
 
-      return () => {
-        clearTimeout(initDelay);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
-    }, [adId, isInitialized]);
-
-    // Si el anuncio no es visible, no renderizar nada (la tarjeta desaparece completamente)
+    // Si alwaysVisible está activo, el bloque nunca desaparece - COMO ADBLOCK
     if (!isAdVisible) return null;
 
     return (
@@ -166,35 +139,38 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         </CardHeader>
 
         <CardContent className="pt-0">
-          {/* Área del anuncio AdSense - EXACTO COMO ADBLOCK */}
-          <div className="w-full bg-white rounded-lg flex items-center justify-center relative overflow-hidden" style={{ minHeight: '250px' }}>
-            {/* Contenedor del anuncio con overflow controlado */}
-            <div className="w-full max-w-[288px] max-h-[250px] flex justify-center items-center overflow-hidden rounded-xl">
-              <ins
-                ref={adInsRef}
-                className="adsbygoogle"
-                style={{ 
-                  display: 'block', 
-                  textAlign: 'center', 
-                  width: '288px', 
-                  height: '250px', 
-                  margin: '0 auto',
-                  overflow: 'hidden'
-                }}
-                data-ad-client="ca-pub-8330194041691289"
-                data-ad-slot="9313483236"
-              />
-            </div>
-            
-            {/* Fallback solo si adTried y no visible */}
-            {adTried && !isAdVisible && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full animate-pulse">
-                <svg width="32" height="32" fill="none" viewBox="0 0 32 32" className="mb-2 opacity-40">
-                  <circle cx="16" cy="16" r="14" stroke="#666" strokeWidth="2" strokeDasharray="4 4" />
-                  <path d="M10 16h12" stroke="#666" strokeWidth="2" strokeLinecap="round" className="animate-pulse" />
-                </svg>
-                <span className="text-xs text-gray-500">No hay anuncios disponibles</span>
-              </div>
+          {/* ESTRUCTURA EXACTA DE ADBLOCK */}
+          <div className="w-full flex flex-col items-center justify-center p-4" style={{ minHeight: 0 }}>
+            {isAdVisible ? (
+              <>
+                {/* Contenedor del anuncio con overflow controlado - EXACTO COMO ADBLOCK */}
+                <div className="w-full max-w-[288px] max-h-[250px] flex justify-center items-center overflow-hidden rounded-xl">
+                  <ins
+                    ref={adInsRef}
+                    className="adsbygoogle"
+                    style={{ 
+                      display: 'block', 
+                      textAlign: 'center', 
+                      width: '288px', 
+                      height: '250px', 
+                      margin: '0 auto',
+                      overflow: 'hidden'
+                    }}
+                    data-ad-client="ca-pub-8330194041691289"
+                    data-ad-slot="9313483236"
+                  />
+                </div>
+              </>
+            ) : (
+              adTried && (
+                <div className="flex flex-col items-center justify-center w-full h-[80px] animate-pulse">
+                  <svg width="32" height="32" fill="none" viewBox="0 0 32 32" className="mb-2 opacity-40">
+                    <circle cx="16" cy="16" r="14" stroke="#fff" strokeWidth="2" strokeDasharray="4 4" />
+                    <path d="M10 16h12" stroke="#fff" strokeWidth="2" strokeLinecap="round" className="animate-pulse" />
+                  </svg>
+                  <span className="text-xs text-muted-foreground/60">No hay anuncios disponibles en este momento</span>
+                </div>
+              )
             )}
           </div>
         </CardContent>
