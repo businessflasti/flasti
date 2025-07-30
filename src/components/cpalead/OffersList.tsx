@@ -19,14 +19,6 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const [userCountry, setUserCountry] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
-  // Estado para rastrear si estamos detectando el país
-  const [isDetectingCountry, setIsDetectingCountry] = useState(true);
-
-  // Actualizar el estado de carga cuando cambian las condiciones
-  useEffect(() => {
-    setLoading(isDetectingCountry || !userCountry);
-  }, [isDetectingCountry, userCountry]);
-
   // Detectar país del usuario
   useEffect(() => {
     const geoServices = [
@@ -101,7 +93,6 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
               localStorage.setItem('userCountry', countryCode.toUpperCase());
               setUserCountry(countryCode.toUpperCase());
               detected = true;
-              setIsDetectingCountry(false);
               break;
             }
           } catch (error) {
@@ -242,43 +233,26 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           Detectando tu ubicación
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Estamos buscando las mejores tareas disponibles para tu país...
+          Estamos buscando las mejores ofertas disponibles para tu país...
         </p>
       </div>
     );
   }
 
-  // Si aún no tenemos país detectado O estamos cargando, mostrar spinner
-  if (!userCountry || loading) {
+  if (!offers || offers.length === 0 || (userCountry && filteredOffers.length === 0)) {
     return (
       <div className="text-center py-12">
-        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4 animate-pulse">
-          <Globe className="w-12 h-12 text-muted-foreground animate-spin" />
+        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
+          <Tag className="w-12 h-12 text-muted-foreground" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">
-          {loading ? "Detectando tu ubicación" : "Cargando tareas"}
+          Microtrabajos disponibles
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          {loading
-            ? "Estamos buscando las mejores tareas disponibles para tu país..."
-            : "Preparando las tareas disponibles..."}
-        </p>
-      </div>
-    );
-  }
-
-  // Mostrar estado de carga si no hay ofertas aún
-  if (!offers || offers.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4 animate-pulse">
-          <Globe className="w-12 h-12 text-muted-foreground animate-spin" />
-        </div>
-        <h3 className="text-xl font-semibold text-foreground mb-2">
-          Cargando tareas disponibles
-        </h3>
-        <p className="text-muted-foreground max-w-md mx-auto">
-          Estamos buscando las mejores tareas para ti...
+          {userCountry 
+            ? `No hay tareas disponibles para ${userCountry} en este momento. Por favor, inténtalo de nuevo más tarde.`
+            : 'No se encontraron tareas en este momento. Por favor, inténtalo de nuevo más tarde.'
+          }
         </p>
       </div>
     );

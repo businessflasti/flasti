@@ -49,10 +49,10 @@ export default function DashboardPage() {
       
       if (result.success) {
         setOffers(result.data);
-        console.log(`CPALead: Cargadas ${result.count} tareas`);
+        console.log(`CPALead: Cargadas ${result.count} ofertas`);
       } else {
         console.error('Error fetching CPALead offers:', result.message);
-        toast.error('Error al cargar las tareas');
+        toast.error('Error al cargar las ofertas');
         setOffers([]);
       }
     } catch (error) {
