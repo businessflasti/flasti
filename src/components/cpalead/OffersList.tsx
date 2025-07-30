@@ -22,6 +22,36 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const [userCountry, setUserCountry] = useState<string>('US');
   const [userDevice, setUserDevice] = useState<string>('desktop');
 
+  // Debug: mostrar información de las ofertas cuando se cargan
+  useEffect(() => {
+    if (offers.length > 0) {
+      console.log('=== OFERTAS CARGADAS ===');
+      console.log(`Total de ofertas: ${offers.length}`);
+      
+      // Mostrar muestra de las primeras 3 ofertas
+      offers.slice(0, 3).forEach((offer, index) => {
+        console.log(`Oferta ${index + 1}:`, {
+          id: offer.id,
+          title: offer.title,
+          country: offer.country,
+          device: offer.device,
+          amount: offer.amount,
+          currency: offer.payout_currency
+        });
+      });
+      
+      // Mostrar países únicos
+      const uniqueCountries = [...new Set(offers.map(o => o.country).filter(Boolean))];
+      console.log('Países únicos en ofertas:', uniqueCountries);
+      
+      // Mostrar dispositivos únicos
+      const uniqueDevices = [...new Set(offers.map(o => o.device).filter(Boolean))];
+      console.log('Dispositivos únicos en ofertas:', uniqueDevices);
+      
+      console.log('========================');
+    }
+  }, [offers]);
+
   // Detectar país y dispositivo del usuario
   useEffect(() => {
     const detectUserInfo = async () => {
@@ -83,43 +113,58 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const availableCountries = useMemo(() => {
     const countries = new Set<string>();
     offers.forEach(offer => {
-      if (offer.country) {
-        countries.add(offer.country);
+      if (offer.country && offer.country.trim() !== '') {
+        countries.add(offer.country.toUpperCase());
       }
     });
-    return Array.from(countries).sort();
+    const sortedCountries = Array.from(countries).sort();
+    console.log('Países disponibles en ofertas:', sortedCountries);
+    return sortedCountries;
   }, [offers]);
 
   // Obtener dispositivos únicos de las ofertas
   const availableDevices = useMemo(() => {
     const devices = new Set<string>();
     offers.forEach(offer => {
-      if (offer.device) {
-        devices.add(offer.device);
+      if (offer.device && offer.device.trim() !== '') {
+        devices.add(offer.device.toLowerCase());
       }
     });
-    return Array.from(devices).sort();
+    const sortedDevices = Array.from(devices).sort();
+    console.log('Dispositivos disponibles en ofertas:', sortedDevices);
+    return sortedDevices;
   }, [offers]);
 
   // Filtrar ofertas según selección
   const filteredOffers = useMemo(() => {
-    return offers.filter(offer => {
+    const filtered = offers.filter(offer => {
+      // Filtro por país
       const countryMatch = selectedCountry === 'all' || 
-        offer.country?.toUpperCase() === selectedCountry.toUpperCase();
+        (offer.country && offer.country.toUpperCase() === selectedCountry.toUpperCase());
       
+      // Filtro por dispositivo
       const deviceMatch = selectedDevice === 'all' || 
-        offer.device?.toLowerCase() === selectedDevice.toLowerCase() ||
-        offer.device?.toLowerCase() === 'all_devices';
+        (offer.device && (
+          offer.device.toLowerCase() === selectedDevice.toLowerCase() ||
+          offer.device.toLowerCase() === 'all_devices' ||
+          offer.device.toLowerCase() === 'all'
+        ));
       
       return countryMatch && deviceMatch;
     });
+    
+    console.log(`Filtros aplicados - País: ${selectedCountry}, Dispositivo: ${selectedDevice}`);
+    console.log(`Ofertas filtradas: ${filtered.length} de ${offers.length}`);
+    
+    return filtered;
   }, [offers, selectedCountry, selectedDevice]);
 
-  // Mapeo de códigos de país a nombres
+  // Mapeo de códigos de país a nombres (más completo)
   const countryNames: { [key: string]: string } = {
     'US': 'Estados Unidos',
     'CA': 'Canadá',
     'GB': 'Reino Unido',
+    'UK': 'Reino Unido',
     'AU': 'Australia',
     'DE': 'Alemania',
     'FR': 'Francia',
@@ -130,7 +175,77 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     'AR': 'Argentina',
     'CL': 'Chile',
     'CO': 'Colombia',
-    'PE': 'Perú'
+    'PE': 'Perú',
+    'VE': 'Venezuela',
+    'EC': 'Ecuador',
+    'BO': 'Bolivia',
+    'UY': 'Uruguay',
+    'PY': 'Paraguay',
+    'CR': 'Costa Rica',
+    'PA': 'Panamá',
+    'GT': 'Guatemala',
+    'HN': 'Honduras',
+    'SV': 'El Salvador',
+    'NI': 'Nicaragua',
+    'DO': 'República Dominicana',
+    'CU': 'Cuba',
+    'PR': 'Puerto Rico',
+    'IN': 'India',
+    'CN': 'China',
+    'JP': 'Japón',
+    'KR': 'Corea del Sur',
+    'TH': 'Tailandia',
+    'VN': 'Vietnam',
+    'PH': 'Filipinas',
+    'ID': 'Indonesia',
+    'MY': 'Malasia',
+    'SG': 'Singapur',
+    'RU': 'Rusia',
+    'PL': 'Polonia',
+    'NL': 'Países Bajos',
+    'BE': 'Bélgica',
+    'CH': 'Suiza',
+    'AT': 'Austria',
+    'SE': 'Suecia',
+    'NO': 'Noruega',
+    'DK': 'Dinamarca',
+    'FI': 'Finlandia',
+    'PT': 'Portugal',
+    'IE': 'Irlanda',
+    'ZA': 'Sudáfrica',
+    'EG': 'Egipto',
+    'NG': 'Nigeria',
+    'KE': 'Kenia',
+    'MA': 'Marruecos',
+    'TN': 'Túnez',
+    'DZ': 'Argelia',
+    'IL': 'Israel',
+    'TR': 'Turquía',
+    'SA': 'Arabia Saudí',
+    'AE': 'Emiratos Árabes Unidos',
+    'QA': 'Qatar',
+    'KW': 'Kuwait',
+    'BH': 'Baréin',
+    'OM': 'Omán',
+    'JO': 'Jordania',
+    'LB': 'Líbano',
+    'SY': 'Siria',
+    'IQ': 'Irak',
+    'IR': 'Irán',
+    'PK': 'Pakistán',
+    'BD': 'Bangladesh',
+    'LK': 'Sri Lanka',
+    'NP': 'Nepal',
+    'MM': 'Myanmar',
+    'KH': 'Camboya',
+    'LA': 'Laos',
+    'MN': 'Mongolia',
+    'KZ': 'Kazajistán',
+    'UZ': 'Uzbekistán',
+    'TM': 'Turkmenistán',
+    'KG': 'Kirguistán',
+    'TJ': 'Tayikistán',
+    'AF': 'Afganistán'
   };
 
   // Mapeo de dispositivos a nombres en español
@@ -139,10 +254,24 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     'desktop': 'Escritorio',
     'tablet': 'Tablet',
     'all_devices': 'Todos los dispositivos',
+    'all': 'Todos los dispositivos',
     'android': 'Android',
     'ios': 'iOS',
     'iphone': 'iPhone',
-    'ipad': 'iPad'
+    'ipad': 'iPad',
+    'windows': 'Windows',
+    'mac': 'Mac',
+    'linux': 'Linux'
+  };
+
+  // Función para obtener el nombre del país
+  const getCountryName = (countryCode: string): string => {
+    return countryNames[countryCode.toUpperCase()] || countryCode.toUpperCase();
+  };
+
+  // Función para obtener el nombre del dispositivo
+  const getDeviceName = (deviceCode: string): string => {
+    return deviceNames[deviceCode.toLowerCase()] || deviceCode;
   };
 
   // Función para formatear el texto del dispositivo
@@ -243,8 +372,8 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
                       value={country}
                       className="text-white hover:bg-[#333]"
                     >
-                      {countryNames[country] || country}
-                      {country === userCountry && (
+                      {getCountryName(country)}
+                      {country.toUpperCase() === userCountry.toUpperCase() && (
                         <Badge variant="secondary" className="ml-2 text-xs">
                           Tu país
                         </Badge>
@@ -275,8 +404,8 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
                       value={device}
                       className="text-white hover:bg-[#333]"
                     >
-                      {deviceNames[device] || device}
-                      {device === userDevice && (
+                      {getDeviceName(device)}
+                      {device.toLowerCase() === userDevice.toLowerCase() && (
                         <Badge variant="secondary" className="ml-2 text-xs">
                           Tu dispositivo
                         </Badge>
@@ -297,12 +426,12 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
               <div className="flex items-center gap-2">
                 {selectedCountry !== 'all' && (
                   <Badge variant="outline" className="text-xs">
-                    {countryNames[selectedCountry] || selectedCountry}
+                    {getCountryName(selectedCountry)}
                   </Badge>
                 )}
                 {selectedDevice !== 'all' && (
                   <Badge variant="outline" className="text-xs">
-                    {deviceNames[selectedDevice] || selectedDevice}
+                    {getDeviceName(selectedDevice)}
                   </Badge>
                 )}
               </div>

@@ -41,10 +41,10 @@ export async function getOffersFromCpaLead(): Promise<CPALeadOffer[]> {
       id: CPALEAD_CONFIG.ID,
       api_key: CPALEAD_CONFIG.API_KEY,
       format: 'JSON',
-      country: 'user',
-      limit: '50',
+      country: 'all', // Cambiar a 'all' para obtener ofertas de todos los países
+      limit: '100', // Aumentar el límite para obtener más ofertas
       offerwall_offers: 'true',
-      device: 'user'
+      device: 'all' // Cambiar a 'all' para obtener ofertas de todos los dispositivos
     });
 
     const url = `${CPALEAD_CONFIG.BASE_URL}/offers?${params.toString()}`;
@@ -81,6 +81,30 @@ export async function getOffersFromCpaLead(): Promise<CPALeadOffer[]> {
     }
 
     console.log(`CPALead: Se obtuvieron ${data.offers.length} ofertas exitosamente`);
+    
+    // Debug: mostrar información de las primeras ofertas
+    if (data.offers.length > 0) {
+      console.log('CPALead: Muestra de ofertas obtenidas:');
+      data.offers.slice(0, 3).forEach((offer, index) => {
+        console.log(`  Oferta ${index + 1}:`, {
+          id: offer.id,
+          title: offer.title?.substring(0, 50) + '...',
+          country: offer.country,
+          device: offer.device,
+          amount: offer.amount,
+          currency: offer.payout_currency
+        });
+      });
+      
+      // Mostrar países únicos
+      const countries = [...new Set(data.offers.map(o => o.country).filter(Boolean))];
+      console.log('CPALead: Países disponibles:', countries);
+      
+      // Mostrar dispositivos únicos
+      const devices = [...new Set(data.offers.map(o => o.device).filter(Boolean))];
+      console.log('CPALead: Dispositivos disponibles:', devices);
+    }
+    
     return data.offers;
 
   } catch (error) {
