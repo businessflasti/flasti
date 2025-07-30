@@ -265,14 +265,14 @@ const SimplePricingSection = React.memo(() => {
 
 
 
-              <Link href="/checkout"> 
+              <a href="/checkout" className="block"> 
                 <Button className="w-full py-6 text-xl font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-3 focus:outline-none focus:ring-0 focus:border-white/10 rounded-3xl">
                   {t('registrateAhoraBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6"/>
                   </svg>
                 </Button>
-              </Link>
+              </a>
 
               <div className="flex justify-center mt-4 mb-2">
                 <div className="px-3 py-2 rounded-xl flex items-center gap-1.5 border-0" style={{ background: '#1A1A1A' }}>
@@ -312,7 +312,7 @@ const SimplePricingSection = React.memo(() => {
                     className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                   >
                     <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                      {t('instruccionesInicioSesionSimple')}
+                      <a href="/login" className="text-primary hover:underline">{t('instruccionesInicioSesionSimple')}</a>
                     </div>
                   </div>
 

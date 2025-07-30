@@ -16,12 +16,99 @@ interface OffersListProps {
 
 const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const { user } = useAuth();
+  const [userCountry, setUserCountry] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+
+  // Detectar país del usuario
+  useEffect(() => {
+    const geoServices = [
+      {
+        name: 'ipapi',
+        url: 'https://ipapi.co/json/',
+        extract: (data: any) => data.country_code
+      },
+      {
+        name: 'ip-api',
+        url: 'http://ip-api.com/json/',
+        extract: (data: any) => data.countryCode
+      },
+      {
+        name: 'cloudflare',
+        url: 'https://www.cloudflare.com/cdn-cgi/trace',
+        extract: (data: string) => {
+          const lines = data.split('\n');
+          const locLine = lines.find(line => line.startsWith('loc='));
+          return locLine ? locLine.split('=')[1] : null;
+        }
+      }
+    ];
+
+    const detectCountry = async () => {
+      let detected = false;
+
+      for (const service of geoServices) {
+        if (detected) break;
+
+        try {
+          console.log(`Intentando detectar país con ${service.name}...`);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+          const response = await fetch(service.url, {
+            signal: controller.signal,
+            headers: {
+              'Accept': 'application/json',
+              'User-Agent': 'Flasti/1.0'
+            }
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!response.ok && service.name !== 'cloudflare') {
+            throw new Error(`Error en respuesta de ${service.name}`);
+          }
+
+          const data = service.name === 'cloudflare' 
+            ? await response.text() 
+            : await response.json();
+
+          const countryCode = service.extract(data);
+
+          if (countryCode) {
+            console.log(`País detectado con ${service.name}:`, countryCode);
+            setUserCountry(countryCode.toUpperCase());
+            detected = true;
+            break;
+          }
+        } catch (error) {
+          console.warn(`Error con ${service.name}:`, error);
+          continue;
+        }
+      }
+
+      if (!detected) {
+        console.warn('No se pudo detectar el país con ningún servicio');
+        // Si no se detecta el país, mostrar todas las ofertas
+        setUserCountry('ALL');
+      }
+
+      setLoading(false);
+    };
+
+    detectCountry();
+
+    return () => {
+      // Cleanup si es necesario
+      setLoading(false);
+    };
+  }, []);
 
   // Debug: mostrar información de las ofertas cuando se cargan
   useEffect(() => {
     if (offers.length > 0) {
       console.log('=== TAREAS CARGADAS PARA TU UBICACIÓN ===');
       console.log(`Total de tareas: ${offers.length}`);
+      console.log('País detectado:', userCountry);
       
       // Mostrar muestra de las primeras 3 ofertas
       offers.slice(0, 3).forEach((offer, index) => {
@@ -37,10 +124,33 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       
       console.log('=======================================');
     }
-  }, [offers]);
+  }, [offers, userCountry]);
 
-  // Sin filtros - mostrar todas las tareas que envía CPALead
-  const filteredOffers = offers;
+  // Filtrar ofertas por país del usuario
+  const filteredOffers = useMemo(() => {
+    // Si no hay país detectado o es 'ALL', mostrar todas las ofertas
+    if (!userCountry || userCountry === 'ALL') return offers;
+    
+    return offers.filter(offer => {
+      // Si no hay país especificado en la oferta, asumimos que es global
+      if (!offer.country) return true;
+      
+      try {
+        const offerCountry = (offer.country || '').toLowerCase();
+        const userCountryLower = userCountry.toLowerCase();
+        
+        // Lista de valores que indican que la oferta es global
+        const globalValues = ['all', 'all_countries', 'worldwide', 'global', '*'];
+        
+        // Si la oferta es global o coincide con el país del usuario
+        return globalValues.includes(offerCountry) || offerCountry === userCountryLower;
+      } catch (error) {
+        console.warn('Error al procesar oferta:', error);
+        // En caso de error, incluir la oferta por defecto
+        return true;
+      }
+    });
+  }, [offers, userCountry]);
 
 
 
@@ -83,7 +193,23 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     return trackingLink;
   };
 
-  if (!offers || offers.length === 0) {
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4 animate-pulse">
+          <Globe className="w-12 h-12 text-muted-foreground animate-spin" />
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">
+          Detectando tu ubicación
+        </h3>
+        <p className="text-muted-foreground max-w-md mx-auto">
+          Estamos buscando las mejores ofertas disponibles para tu país...
+        </p>
+      </div>
+    );
+  }
+
+  if (!offers || offers.length === 0 || (userCountry && filteredOffers.length === 0)) {
     return (
       <div className="text-center py-12">
         <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
@@ -93,7 +219,10 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           Microtrabajos disponibles
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          No se encontraron tareas en este momento. Por favor, inténtalo de nuevo más tarde.
+          {userCountry 
+            ? `No hay tareas disponibles para ${userCountry} en este momento. Por favor, inténtalo de nuevo más tarde.`
+            : 'No se encontraron tareas en este momento. Por favor, inténtalo de nuevo más tarde.'
+          }
         </p>
       </div>
     );
@@ -132,12 +261,31 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
                           <DollarSign className="w-3 h-3" />
                           {offer.amount} {offer.payout_currency}
                         </Badge>
-                        {offer.country && (
-                          <Badge variant="outline" className="text-xs">
-                            <Globe className="w-3 h-3 mr-1" />
-                            {offer.country}
+                        <Badge 
+                            variant="outline" 
+                            className={`text-xs px-3 py-1 flex items-center gap-2 min-w-[90px] justify-center ${
+                              !offer.country || 
+                              offer.country.toLowerCase() === 'all' || 
+                              offer.country.toLowerCase() === 'all_countries' ||
+                              offer.country.toLowerCase() === 'worldwide'
+                                ? 'bg-green-100/10 text-green-500 border-green-500/20'
+                                : offer.country.toLowerCase() === userCountry?.toLowerCase()
+                                ? 'bg-blue-100/10 text-blue-500 border-blue-500/20'
+                                : 'bg-gray-100/10 text-gray-500 border-gray-500/20'
+                            }`}
+                          >
+                            <Globe className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span className="truncate">
+                              {!offer.country || 
+                               offer.country.toLowerCase() === 'all' || 
+                               offer.country.toLowerCase() === 'all_countries' ||
+                               offer.country.toLowerCase() === 'worldwide'
+                                ? 'Global'
+                                : offer.country.toLowerCase() === userCountry?.toLowerCase()
+                                ? 'Tu país'
+                                : offer.country || 'Global'}
+                            </span>
                           </Badge>
-                        )}
                       </div>
                     </div>
                     

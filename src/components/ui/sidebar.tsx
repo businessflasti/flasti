@@ -130,9 +130,14 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                       role="menuitem"
                       aria-current={pathname === item.href ? 'page' : undefined}
                       aria-label={item.tooltip}
-                      onClick={() => {
-                        if (typeof window !== 'undefined' && window.innerWidth < 768) {
-                          setOpen(false);
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevenir la navegación normal
+                        if (typeof window !== 'undefined') {
+                          if (window.innerWidth < 768) {
+                            setOpen(false);
+                          }
+                          // Navegar a la página y forzar la recarga
+                          window.location.href = item.href;
                         }
                       }}
                     >
