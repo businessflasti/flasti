@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
 import { ExternalLink, DollarSign, Globe, Smartphone, Tag } from 'lucide-react';
@@ -16,27 +16,6 @@ interface OffersListProps {
 
 const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const { user } = useAuth();
-  const [hiddenAds, setHiddenAds] = useState<Set<string>>(new Set());
-
-  // Función para crear array con ofertas y anuncios intercalados
-  const createMixedArray = (offers: CPALeadOffer[]) => {
-    const mixedArray: (CPALeadOffer | { type: 'ad', id: string })[] = [];
-    
-    offers.forEach((offer, index) => {
-      mixedArray.push(offer);
-      
-      // Insertar anuncio después de cada 3 ofertas (posiciones 4, 8, 12, etc.)
-      if ((index + 1) % 3 === 0 && index < offers.length - 1) {
-        const adId = `ad-${Math.floor(index / 3)}`;
-        // Solo agregar el anuncio si no está oculto
-        if (!hiddenAds.has(adId)) {
-          mixedArray.push({ type: 'ad', id: adId });
-        }
-      }
-    });
-    
-    return mixedArray;
-  };
 
   // Función para formatear el texto del dispositivo
   const formatDeviceText = (device: string): string => {
@@ -89,125 +68,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     );
   }
 
-  // SOLUCIÓN SIMPLE Y ESTABLE - SIN CICLOS
-  const AdCard: React.FC<{ adId: string }> = ({ adId }) => {
-    const [isVisible, setIsVisible] = useState(true);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const adInsRef = useRef<HTMLModElement>(null);
-    const hasInitialized = useRef(false);
-    const hasChecked = useRef(false);
 
-    useEffect(() => {
-      // Solo inicializar UNA VEZ
-      if (hasInitialized.current) return;
-      hasInitialized.current = true;
-
-      try {
-        // Inicializar AdSense inmediatamente
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        console.log(`[${adId}] AdSense inicializado`);
-      } catch (err) {
-        console.error(`[${adId}] Error AdSense:`, err);
-      }
-
-      // Verificar una sola vez después de 5 segundos
-      const checkTimeout = setTimeout(() => {
-        if (hasChecked.current) return;
-        hasChecked.current = true;
-
-        if (adInsRef.current) {
-          const element = adInsRef.current;
-          const hasContent = element.innerHTML.trim().length > 0;
-          const hasHeight = element.clientHeight > 50;
-          const isUnfilled = element.dataset.adStatus === 'unfilled';
-          
-          console.log(`[${adId}] Verificación final:`, {
-            hasContent,
-            hasHeight,
-            isUnfilled,
-            innerHTML: element.innerHTML.substring(0, 100)
-          });
-
-          if (hasContent && hasHeight && !isUnfilled) {
-            console.log(`[${adId}] ✅ Anuncio CARGADO - estado permanente`);
-            setIsLoaded(true);
-          } else {
-            console.log(`[${adId}] ❌ Anuncio FALLÓ - ocultando`);
-            setIsVisible(false);
-            setHiddenAds(prev => new Set([...prev, adId]));
-          }
-        }
-      }, 5000);
-
-      return () => clearTimeout(checkTimeout);
-    }, []); // Sin dependencias - solo se ejecuta UNA VEZ
-
-    // No renderizar si no es visible
-    if (!isVisible) return null;
-
-    return (
-      <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
-        <CardHeader className="pb-3">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <CardTitle className="text-xl font-semibold text-foreground line-clamp-2">
-                Publicidad
-              </CardTitle>
-              <div className="flex items-center gap-2 mt-2">
-                <Badge variant="secondary" className="text-xs px-3 py-1">
-                  Anuncio
-                </Badge>
-                {!isLoaded && (
-                  <Badge variant="outline" className="text-xs px-2 py-1 animate-pulse">
-                    Cargando...
-                  </Badge>
-                )}
-                {isLoaded && (
-                  <Badge variant="default" className="text-xs px-2 py-1 bg-green-600">
-                    Activo
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardContent className="pt-0">
-          <div className="w-full bg-white rounded-lg relative" style={{ minHeight: '280px' }}>
-            {/* Indicador de carga - solo si no está cargado */}
-            {!isLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-50 rounded-lg z-10">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-sm text-gray-600 font-medium">Cargando anuncio...</span>
-                </div>
-              </div>
-            )}
-            
-            {/* Contenedor del anuncio */}
-            <div className="w-full h-full flex items-center justify-center p-4">
-              <div className="w-full max-w-[300px] h-[250px] flex items-center justify-center">
-                <ins
-                  ref={adInsRef}
-                  className="adsbygoogle"
-                  style={{
-                    display: 'inline-block',
-                    width: '300px',
-                    height: '250px',
-                    backgroundColor: 'transparent'
-                  }}
-                  data-ad-client="ca-pub-8330194041691289"
-                  data-ad-slot="9313483236"
-                  data-ad-format="rectangle"
-                  data-full-width-responsive="false"
-                />
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
 
   return (
     <TooltipProvider>
@@ -215,117 +76,113 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
 
 
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {createMixedArray(offers).map((item, index) => (
-            <li key={'type' in item ? item.id : item.id} className="group">
-              {'type' in item ? (
-                <AdCard adId={item.id} />
-              ) : (
-                // Tarjeta de oferta normal
-                <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-xl font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {item.title}
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mt-2">
-                          <Badge variant="secondary" className="text-xs px-3 py-1 flex items-center gap-1.5">
-                            <DollarSign className="w-3 h-3" />
-                            {item.amount} {item.payout_currency}
+          {offers.map((offer, index) => (
+            <li key={offer.id} className="group">
+              {/* Tarjeta de oferta */}
+              <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-xl font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                        {offer.title}
+                      </CardTitle>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="secondary" className="text-xs px-3 py-1 flex items-center gap-1.5">
+                          <DollarSign className="w-3 h-3" />
+                          {offer.amount} {offer.payout_currency}
+                        </Badge>
+                        {offer.country && (
+                          <Badge variant="outline" className="text-xs">
+                            <Globe className="w-3 h-3 mr-1" />
+                            {offer.country}
                           </Badge>
-                          {item.country && (
-                            <Badge variant="outline" className="text-xs">
-                              <Globe className="w-3 h-3 mr-1" />
-                              {item.country}
-                            </Badge>
-                          )}
+                        )}
+                      </div>
+                    </div>
+                    
+                    {offer.creatives?.url && (
+                      <div className="flex-shrink-0">
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted">
+                          <Image
+                            src={offer.creatives.url}
+                            alt={`${offer.title} - Imagen de la oferta`}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            sizes="64px"
+                            onError={(e) => {
+                              // Ocultar imagen si falla la carga
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                            }}
+                          />
                         </div>
                       </div>
-                      
-                      {item.creatives?.url && (
-                        <div className="flex-shrink-0">
-                          <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted">
-                            <Image
-                              src={item.creatives.url}
-                              alt={`${item.title} - Imagen de la oferta`}
-                              fill
-                              className="object-cover transition-transform duration-300 group-hover:scale-110"
-                              sizes="64px"
-                              onError={(e) => {
-                                // Ocultar imagen si falla la carga
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
+                    )}
+                  </div>
+                </CardHeader>
+
+                <CardContent className="pt-0">
+                  <CardDescription className="text-sm text-muted-foreground line-clamp-3 mb-4">
+                    {offer.description || 'Completa esta oferta para ganar dinero fácilmente.'}
+                  </CardDescription>
+
+                  {/* Información adicional */}
+                  <div className="space-y-2 mb-4">
+                    {offer.device && (
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Smartphone className="w-3 h-3" />
+                        <span>Dispositivo: {formatDeviceText(offer.device)}</span>
+                      </div>
+                    )}
+                    
+                    {offer.category && (
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Tag className="w-3 h-3" />
+                        <span>Categoría: {offer.category}</span>
+                      </div>
+                    )}
+
+                    {offer.requirements && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="text-xs text-muted-foreground line-clamp-2 cursor-help">
+                            <strong>Requisitos:</strong> {offer.requirements}
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  </CardHeader>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>{offer.requirements}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
+                  </div>
 
-                  <CardContent className="pt-0">
-                    <CardDescription className="text-sm text-muted-foreground line-clamp-3 mb-4">
-                      {item.description || 'Completa esta oferta para ganar dinero fácilmente.'}
-                    </CardDescription>
-
-                    {/* Información adicional */}
-                    <div className="space-y-2 mb-4">
-                      {item.device && (
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Smartphone className="w-3 h-3" />
-                          <span>Dispositivo: {formatDeviceText(item.device)}</span>
-                        </div>
-                      )}
-                      
-                      {item.category && (
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Tag className="w-3 h-3" />
-                          <span>Categoría: {item.category}</span>
-                        </div>
-                      )}
-
-                      {item.requirements && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="text-xs text-muted-foreground line-clamp-2 cursor-help">
-                              <strong>Requisitos:</strong> {item.requirements}
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-xs">
-                            <p>{item.requirements}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </div>
-
-                    {/* Botón de acción */}
-                    <div className="flex gap-2">
-                      <Button
-                        asChild
-                        className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300 group-hover:shadow-md"
+                  {/* Botón de acción */}
+                  <div className="flex gap-2">
+                    <Button
+                      asChild
+                      className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300 group-hover:shadow-md"
+                    >
+                      <a
+                        href={generateTrackingLink(offer.link)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2"
                       >
-                        <a
-                          href={generateTrackingLink(item.link)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2"
-                        >
-                          <span>Iniciar</span>
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      </Button>
-                    </div>
+                        <span>Iniciar</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </Button>
+                  </div>
 
-                    {/* Indicador de ganancia destacada */}
-                    <div className="mt-3 p-2 bg-primary/10 rounded-lg border border-primary/20">
-                      <div className="flex items-center justify-center gap-2 text-sm font-medium text-white">
-                        <DollarSign className="w-4 h-4" />
-                        <span>Gana {item.amount} {item.payout_currency}</span>
-                      </div>
+                  {/* Indicador de ganancia destacada */}
+                  <div className="mt-3 p-2 bg-primary/10 rounded-lg border border-primary/20">
+                    <div className="flex items-center justify-center gap-2 text-sm font-medium text-white">
+                      <DollarSign className="w-4 h-4" />
+                      <span>Gana {offer.amount} {offer.payout_currency}</span>
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                </CardContent>
+              </Card>
             </li>
           ))}
         </ul>
