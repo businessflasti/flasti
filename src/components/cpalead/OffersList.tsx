@@ -102,6 +102,12 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
 
     // Función para verificar si el anuncio cargó correctamente
     const checkAdStatus = useCallback(() => {
+      // Si ya está en estado final, NO cambiar
+      if (adState === 'loaded' || adState === 'hidden') {
+        console.log(`[${adId}] Estado final ${adState}, no verificando más`);
+        return adState === 'loaded' ? true : false;
+      }
+      
       if (!adInsRef.current) return false;
       
       const element = adInsRef.current;
@@ -112,6 +118,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       const hasAdsbygoogleStatus = element.hasAttribute('data-adsbygoogle-status');
       
       console.log(`[${adId}] Estado del anuncio:`, {
+        currentState: adState,
         hasContent,
         hasHeight,
         hasWidth,
@@ -124,7 +131,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       
       // Anuncio cargado exitosamente
       if (hasContent && hasHeight && hasWidth && !isUnfilled) {
-        console.log(`[${adId}] ✅ Anuncio cargado exitosamente`);
+        console.log(`[${adId}] ✅ Anuncio cargado exitosamente - ESTADO FINAL`);
         setAdState('loaded');
         setAdContent(element.innerHTML);
         return true;
@@ -132,13 +139,13 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       
       // Anuncio falló
       if (isUnfilled || (hasAdsbygoogleStatus && (!hasContent || !hasHeight))) {
-        console.log(`[${adId}] ❌ Anuncio falló`);
+        console.log(`[${adId}] ❌ Anuncio falló - ESTADO FINAL`);
         setAdState('failed');
         return false;
       }
       
       return null; // Aún cargando
-    }, [adId]);
+    }, [adId, adState]);
 
     // Función para inicializar AdSense
     const initializeAdSense = useCallback(() => {
@@ -168,9 +175,13 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
       }
     }, [adId, retryCount]);
 
-    // Efecto principal
+    // Efecto principal - SOLO SE EJECUTA UNA VEZ
     useEffect(() => {
-      if (adState === 'loaded' || adState === 'hidden') return;
+      // Si ya está cargado o oculto, NO hacer nada más
+      if (adState === 'loaded' || adState === 'hidden') {
+        console.log(`[${adId}] Estado final alcanzado: ${adState}, deteniendo procesos`);
+        return;
+      }
       
       // Delay inicial para evitar conflictos
       const initDelay = setTimeout(() => {
@@ -179,11 +190,36 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         // Observer para cambios en el DOM
         if (adInsRef.current) {
           observerRef.current = new MutationObserver((mutations) => {
+            // Solo procesar si aún está en loading
+            if (adState !== 'loading') return;
+            
             mutations.forEach((mutation) => {
               if (mutation.type === 'childList' || mutation.type === 'attributes') {
                 const result = checkAdStatus();
-                if (result !== null) {
+                if (result === true) {
+                  // Anuncio cargado exitosamente - DETENER TODO
+                  console.log(`[${adId}] 🎉 Anuncio cargado - deteniendo observadores`);
                   observerRef.current?.disconnect();
+                  if (intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                    intervalRef.current = null;
+                  }
+                  if (timeoutRef.current) {
+                    clearTimeout(timeoutRef.current);
+                    timeoutRef.current = null;
+                  }
+                } else if (result === false) {
+                  // Anuncio falló - DETENER TODO
+                  console.log(`[${adId}] ❌ Anuncio falló - deteniendo observadores`);
+                  observerRef.current?.disconnect();
+                  if (intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                    intervalRef.current = null;
+                  }
+                  if (timeoutRef.current) {
+                    clearTimeout(timeoutRef.current);
+                    timeoutRef.current = null;
+                  }
                 }
               }
             });
@@ -197,13 +233,39 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           });
         }
         
-        // Verificación periódica cada 2 segundos
+        // Verificación periódica cada 2 segundos - SOLO SI ESTÁ LOADING
         intervalRef.current = setInterval(() => {
-          const result = checkAdStatus();
-          if (result !== null) {
+          if (adState !== 'loading') {
+            console.log(`[${adId}] Estado cambió a ${adState}, deteniendo interval`);
             if (intervalRef.current) {
               clearInterval(intervalRef.current);
               intervalRef.current = null;
+            }
+            return;
+          }
+          
+          const result = checkAdStatus();
+          if (result === true) {
+            // Anuncio cargado - DETENER TODO
+            console.log(`[${adId}] ✅ Interval detectó anuncio cargado`);
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+              timeoutRef.current = null;
+            }
+          } else if (result === false) {
+            // Anuncio falló - DETENER TODO
+            console.log(`[${adId}] ❌ Interval detectó anuncio fallido`);
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+              timeoutRef.current = null;
             }
           }
         }, 2000);
@@ -224,7 +286,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         if (intervalRef.current) clearInterval(intervalRef.current);
         if (observerRef.current) observerRef.current.disconnect();
       };
-    }, [adId, adState, initializeAdSense, checkAdStatus]);
+    }, [adId]); // SOLO DEPENDE DE adId, NO de adState
 
     // No renderizar si está oculto
     if (adState === 'hidden') return null;
