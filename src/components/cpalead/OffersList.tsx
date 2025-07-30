@@ -233,7 +233,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           Detectando tu ubicación
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Estamos buscando las mejores ofertas disponibles para tu país...
+          Cargando tareas...
         </p>
       </div>
     );
