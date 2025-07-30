@@ -1,0 +1,9 @@
+/* Estilos para ocultar el widget flotante de tawk.to */
+#tawkchat-minified-wrapper {
+  display: none !important;
+}
+
+/* Mantener el chat cuando está abierto */
+#tawkchat-container {
+  display: block !important;
+}

@@ -23,16 +23,6 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   useEffect(() => {
     const geoServices = [
       {
-        name: 'ipapi',
-        url: 'https://ipapi.co/json/',
-        extract: (data: any) => data.country_code
-      },
-      {
-        name: 'ip-api',
-        url: 'http://ip-api.com/json/',
-        extract: (data: any) => data.countryCode
-      },
-      {
         name: 'cloudflare',
         url: 'https://www.cloudflare.com/cdn-cgi/trace',
         extract: (data: string) => {
@@ -40,56 +30,96 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           const locLine = lines.find(line => line.startsWith('loc='));
           return locLine ? locLine.split('=')[1] : null;
         }
+      },
+      {
+        name: 'ipapi',
+        url: 'https://ipapi.co/json/',
+        extract: (data: any) => data.country_code
+      },
+      {
+        name: 'ipinfo',
+        url: 'https://ipinfo.io/json',
+        extract: (data: any) => data.country
+      },
+      {
+        name: 'bigdatacloud',
+        url: 'https://api.bigdatacloud.net/data/ip-geolocation',
+        extract: (data: any) => data.country?.isoAlpha2
       }
     ];
 
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
     const detectCountry = async () => {
       let detected = false;
+      let retries = 0;
+      const maxRetries = 3;
 
-      for (const service of geoServices) {
-        if (detected) break;
+      while (!detected && retries < maxRetries) {
+        for (const service of geoServices) {
+          if (detected) break;
 
-        try {
-          console.log(`Intentando detectar país con ${service.name}...`);
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 3000);
+          try {
+            console.log(`Intento ${retries + 1}: Detectando país con ${service.name}...`);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // Aumentado a 5 segundos
 
-          const response = await fetch(service.url, {
-            signal: controller.signal,
-            headers: {
-              'Accept': 'application/json',
-              'User-Agent': 'Flasti/1.0'
+            const response = await fetch(service.url, {
+              signal: controller.signal,
+              headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (compatible; Flasti/1.0)',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+              },
+              cache: 'no-store'
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok && service.name !== 'cloudflare') {
+              throw new Error(`Error en respuesta de ${service.name}`);
             }
-          });
 
-          clearTimeout(timeoutId);
+            const data = service.name === 'cloudflare' 
+              ? await response.text() 
+              : await response.json();
 
-          if (!response.ok && service.name !== 'cloudflare') {
-            throw new Error(`Error en respuesta de ${service.name}`);
+            const countryCode = service.extract(data);
+
+            if (countryCode) {
+              console.log(`País detectado con ${service.name}:`, countryCode);
+              // Guardar en localStorage para futuros accesos
+              localStorage.setItem('userCountry', countryCode.toUpperCase());
+              setUserCountry(countryCode.toUpperCase());
+              detected = true;
+              break;
+            }
+          } catch (error) {
+            console.warn(`Error con ${service.name}:`, error);
+            continue;
           }
+        }
 
-          const data = service.name === 'cloudflare' 
-            ? await response.text() 
-            : await response.json();
-
-          const countryCode = service.extract(data);
-
-          if (countryCode) {
-            console.log(`País detectado con ${service.name}:`, countryCode);
-            setUserCountry(countryCode.toUpperCase());
-            detected = true;
-            break;
+        if (!detected) {
+          retries++;
+          if (retries < maxRetries) {
+            console.log(`Reintentando detección de país en 2 segundos...`);
+            await delay(2000); // Esperar 2 segundos entre reintentos
           }
-        } catch (error) {
-          console.warn(`Error con ${service.name}:`, error);
-          continue;
         }
       }
 
       if (!detected) {
-        console.warn('No se pudo detectar el país con ningún servicio');
-        // Si no se detecta el país, mostrar todas las ofertas
-        setUserCountry('ALL');
+        console.warn('No se pudo detectar el país después de varios intentos');
+        // Intentar usar el país guardado anteriormente
+        const savedCountry = localStorage.getItem('userCountry');
+        if (savedCountry) {
+          console.log('Usando país guardado previamente:', savedCountry);
+          setUserCountry(savedCountry);
+        } else {
+          setUserCountry('ALL');
+        }
       }
 
       setLoading(false);
