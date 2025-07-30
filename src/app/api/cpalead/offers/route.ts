@@ -6,7 +6,7 @@ import { getOffersFromCpaLead } from '@/lib/cpa-lead-api';
  */
 export async function GET(request: NextRequest) {
   try {
-    console.log('CPALead API: Solicitando ofertas...');
+    console.log('CPALead API: Solicitando tareas...');
 
     // Obtener ofertas de CPALead
     const offers = await getOffersFromCpaLead();
