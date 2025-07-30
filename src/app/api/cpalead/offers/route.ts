@@ -6,22 +6,10 @@ import { getOffersFromCpaLead } from '@/lib/cpa-lead-api';
  */
 export async function GET(request: NextRequest) {
   try {
-    // Obtener el país del usuario desde los parámetros de consulta
-    const searchParams = request.nextUrl.searchParams;
-    const userCountry = searchParams.get('country');
-    
-    console.log('CPALead API: Solicitud recibida');
-    console.log('CPALead API: URL completa:', request.nextUrl.toString());
-    console.log('CPALead API: País solicitado:', userCountry || 'all');
-    console.log('CPALead API: Todos los parámetros:', Object.fromEntries(searchParams.entries()));
+    console.log('CPALead API: Solicitando ofertas...');
 
-    // Si el país es Argentina, forzar el código AR
-    const countryCode = userCountry === 'Argentina' ? 'AR' : userCountry;
-    
-    console.log('CPALead API: Código de país a usar:', countryCode);
-
-    // Obtener ofertas de CPALead con el país específico
-    const offers = await getOffersFromCpaLead(countryCode);
+    // Obtener ofertas de CPALead
+    const offers = await getOffersFromCpaLead();
 
     return NextResponse.json({
       success: true,

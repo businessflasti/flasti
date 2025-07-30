@@ -38,119 +38,31 @@ export default function DashboardPage() {
   });
   const [isLoadingOffers, setIsLoadingOffers] = useState(true);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
-  const [userCountry, setUserCountry] = useState<string>("");
-  const [lastFetchTime, setLastFetchTime] = useState<number>(0);
-
-  // Obtener el país del usuario basado en su IP
-  useEffect(() => {
-    const getUserCountry = async () => {
-      try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        console.log('Datos de ubicación completos:', data);
-        
-        // Usar el código de país de dos letras para Argentina (AR)
-        if (data.country_code === 'AR' || data.country === 'Argentina') {
-          console.log('País detectado: Argentina (AR)');
-          setUserCountry('AR');
-        } else if (data.country_code) {
-          console.log('País detectado:', data.country_code);
-          setUserCountry(data.country_code);
-        }
-      } catch (error) {
-        console.error('Error al detectar el país:', error);
-      }
-    };
-
-    getUserCountry();
-  }, []);
 
   // Obtener ofertas de CPALead
   const fetchOffers = async () => {
     try {
-      // Evitar múltiples solicitudes en un corto período de tiempo
-      const now = Date.now();
-      if (now - lastFetchTime < 5000) { // 5 segundos de cooldown
-        console.log('Evitando refetch demasiado rápido');
-        return;
-      }
-      
       setIsLoadingOffers(true);
-      setLastFetchTime(now);
       
-      // Incluir el país del usuario en la solicitud
-      const url = userCountry 
-        ? `/api/cpalead/offers?country=${encodeURIComponent(userCountry)}&_t=${now}`
-        : `/api/cpalead/offers?_t=${now}`;
-      
-      console.log('Solicitando ofertas para URL:', url);
-      const response = await fetch(url, {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-      
+      const response = await fetch('/api/cpalead/offers');
       const result = await response.json();
       
       if (result.success) {
-        const newOffers = result.data;
-        console.log(`CPALead: Recibidas ${result.count} ofertas`);
-        
-        // Solo actualizar si realmente hay cambios
-        if (JSON.stringify(offers) !== JSON.stringify(newOffers)) {
-          console.log('Actualizando ofertas con nuevos datos');
-          setOffers(newOffers);
-        } else {
-          console.log('Las ofertas no han cambiado, manteniendo estado actual');
-        }
+        setOffers(result.data);
+        console.log(`CPALead: Cargadas ${result.count} ofertas`);
       } else {
-        console.error('Error en la respuesta de CPALead:', result.message);
-        // No limpiar las ofertas existentes si ya teníamos algunas
-        if (offers.length === 0) {
-          toast.error('No se encontraron ofertas disponibles');
-        }
+        console.error('Error fetching CPALead offers:', result.message);
+        toast.error('Error al cargar las ofertas');
+        setOffers([]);
       }
     } catch (error) {
-      console.error('Error al obtener ofertas:', error);
-      // No limpiar las ofertas existentes en caso de error
-      if (offers.length === 0) {
-        toast.error('Error al cargar las ofertas');
-      }
+      console.error('Error fetching CPALead offers:', error);
+      toast.error('Error al cargar las ofertas');
+      setOffers([]);
     } finally {
       setIsLoadingOffers(false);
     }
   };
-
-  // Efecto para cargar las ofertas cuando se detecte el país
-  useEffect(() => {
-    let isSubscribed = true;
-
-    const loadOffers = async () => {
-      if (user && userCountry && isSubscribed) {
-        await fetchOffers();
-        
-        // Configurar refresco periódico
-        const interval = setInterval(() => {
-          if (isSubscribed) {
-            console.log('Actualizando ofertas periódicamente');
-            fetchOffers();
-          }
-        }, 30000); // Actualizar cada 30 segundos
-
-        return () => {
-          clearInterval(interval);
-        };
-      }
-    };
-
-    loadOffers();
-
-    return () => {
-      isSubscribed = false;
-    };
-  }, [user, userCountry]); // Recargar cuando cambie el país o el usuario
 
   // Obtener estadísticas del usuario
   const fetchUserStats = async () => {

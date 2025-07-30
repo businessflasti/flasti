@@ -34,36 +34,29 @@ export interface CPALeadOffersResponse {
  * Obtiene las ofertas disponibles de CPALead
  * @returns Promise<CPALeadOffer[]> Array de ofertas o array vacío en caso de error
  */
-export async function getOffersFromCpaLead(userCountry?: string): Promise<CPALeadOffer[]> {
+export async function getOffersFromCpaLead(): Promise<CPALeadOffer[]> {
   try {
-    // Validar y normalizar el código de país
-    let countryCode = userCountry;
-    if (countryCode === 'Argentina') countryCode = 'AR';
-    console.log('CPALead API Client: Procesando solicitud para país:', countryCode);
-
     // Construir la URL con todos los parámetros requeridos
     const params = new URLSearchParams({
       id: CPALEAD_CONFIG.ID,
       api_key: CPALEAD_CONFIG.API_KEY,
       format: 'JSON',
-      country: countryCode || 'all', // Usar el código normalizado
-      limit: '100', // Aumentar el límite para asegurar que obtengamos todas las ofertas
+      country: 'user', // CPALead detecta automáticamente el país del usuario
+      limit: '50',
       offerwall_offers: 'true',
-      device: 'all' // Obtener todas las ofertas independientemente del dispositivo
+      device: 'user' // CPALead detecta automáticamente el dispositivo del usuario
     });
 
     const url = `${CPALEAD_CONFIG.BASE_URL}/offers?${params.toString()}`;
 
     console.log('CPALead: Solicitando ofertas desde:', url);
-    console.log('CPALead: País solicitado:', userCountry || 'all');
 
-    // Realizar la solicitud GET con timeout más largo para asegurar respuesta completa
+    // Realizar la solicitud GET
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': 'Flasti.com/1.0',
-        'Cache-Control': 'no-cache' // Evitar caché
+        'User-Agent': 'Flasti.com/1.0'
       },
       timeout: 10000 // 10 segundos de timeout
     });
