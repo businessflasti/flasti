@@ -291,31 +291,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
                           <DollarSign className="w-3 h-3" />
                           {offer.amount} {offer.payout_currency}
                         </Badge>
-                        <Badge 
-                            variant="outline" 
-                            className={`text-xs px-3 py-1 flex items-center gap-2 min-w-[90px] justify-center ${
-                              !offer.country || 
-                              offer.country.toLowerCase() === 'all' || 
-                              offer.country.toLowerCase() === 'all_countries' ||
-                              offer.country.toLowerCase() === 'worldwide'
-                                ? 'bg-green-100/10 text-green-500 border-green-500/20'
-                                : offer.country.toLowerCase() === userCountry?.toLowerCase()
-                                ? 'bg-blue-100/10 text-blue-500 border-blue-500/20'
-                                : 'bg-gray-100/10 text-gray-500 border-gray-500/20'
-                            }`}
-                          >
-                            <Globe className="w-3.5 h-3.5 flex-shrink-0" />
-                            <span className="truncate">
-                              {!offer.country || 
-                               offer.country.toLowerCase() === 'all' || 
-                               offer.country.toLowerCase() === 'all_countries' ||
-                               offer.country.toLowerCase() === 'worldwide'
-                                ? 'Global'
-                                : offer.country.toLowerCase() === userCountry?.toLowerCase()
-                                ? 'Tu país'
-                                : offer.country || 'Global'}
-                            </span>
-                          </Badge>
+
                       </div>
                     </div>
                     

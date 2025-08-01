@@ -51,43 +51,21 @@ function StudiovaHeroSection() {
                     0%, 100% { transform: translateX(0px) rotate(0deg); }
                     50% { transform: translateX(4px) rotate(2deg); }
                 }
-                @keyframes slideshow {
-                    0% { opacity: 1; }
-                    45% { opacity: 1; }
-                    50% { opacity: 0; }
-                    95% { opacity: 0; }
-                    100% { opacity: 1; }
-                }
-                @keyframes slideshow-2 {
-                    0% { opacity: 0; }
-                    45% { opacity: 0; }
-                    50% { opacity: 1; }
-                    95% { opacity: 1; }
-                    100% { opacity: 0; }
-                }
+
                 @keyframes vertical-float {
                     0%, 100% { transform: translateY(0px); }
                     50% { transform: translateY(-15px); }
                 }
             `}</style>
             <section className="relative flex items-start text-white bg-black h-full min-h-[70vh] pt-8">
-                {/* Slideshow de imágenes de fondo */}
+                {/* Imagen de fondo estática */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
                     <div 
-                        className="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-all duration-1000"
+                        className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
                         style={{
-                            backgroundImage: 'url("https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/herouno.webp")',
-                            animation: 'slideshow 45s ease-in-out infinite'
+                            backgroundImage: 'url("https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/herouno.webp")'
                         }}
                     />
-                    <div 
-                        className="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-all duration-1000"
-                        style={{
-                            backgroundImage: 'url("https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/herodos.webp")',
-                            animation: 'slideshow-2 45s ease-in-out infinite'
-                        }}
-                    />
-
                 </div>
                 {/* Overlay elegante con gradiente más oscuro */}
                 <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/80 to-black/90"></div>

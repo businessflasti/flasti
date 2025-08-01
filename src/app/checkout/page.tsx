@@ -119,10 +119,15 @@ const CheckoutContent = () => {
       document.body.removeChild(existingScript);
     }
 
-    // Limpiar el contenedor de checkout
+    // Limpiar el contenedor de checkout sin mostrar mensaje de carga
     const checkoutContainer = document.getElementById('inline_checkout');
     if (checkoutContainer) {
       checkoutContainer.innerHTML = '';
+      checkoutContainer.style.backgroundColor = '#232323';
+      checkoutContainer.style.minHeight = '0px';
+      checkoutContainer.style.opacity = '0';
+      checkoutContainer.style.borderRadius = '12px';
+      checkoutContainer.style.overflow = 'hidden';
     }
 
     // Crear y cargar el nuevo script
@@ -147,6 +152,17 @@ const CheckoutContent = () => {
           setTimeout(() => {
             setupDynamicHeightObserver();
           }, 1000);
+
+          // Mostrar el formulario suavemente una vez cargado
+          setTimeout(() => {
+            const checkoutContainer = document.getElementById('inline_checkout');
+            if (checkoutContainer) {
+              checkoutContainer.style.minHeight = 'auto';
+              checkoutContainer.style.opacity = '1';
+              checkoutContainer.style.borderRadius = '12px';
+              checkoutContainer.style.overflow = 'hidden';
+            }
+          }, 500);
 
           setIsHotmartLoaded(true);
           setIsHotmartLoading(false);
@@ -603,7 +619,7 @@ const CheckoutContent = () => {
     checkoutContainer.id = 'inline_checkout_preload';
     checkoutContainer.style.width = '100%';
     checkoutContainer.style.maxWidth = '600px';
-    checkoutContainer.innerHTML = '<div class="animate-pulse text-white/70">Precargando Hotmart...</div>';
+    checkoutContainer.innerHTML = '';
     hiddenContainer.appendChild(checkoutContainer);
 
     // Crear y cargar el script de Hotmart
@@ -938,8 +954,12 @@ const CheckoutContent = () => {
       const targetContainer = document.getElementById('inline_checkout');
 
       if (hiddenContainer && targetContainer && hiddenContainer.children.length > 0) {
-        // Limpiar el contenedor objetivo
+        // Limpiar el contenedor objetivo y preparar para transición suave
         targetContainer.innerHTML = '';
+        targetContainer.style.minHeight = '0px';
+        targetContainer.style.opacity = '0';
+        targetContainer.style.borderRadius = '12px';
+        targetContainer.style.overflow = 'hidden';
 
         // CLONAR (no mover) todo el contenido del contenedor oculto al visible
         Array.from(hiddenContainer.children).forEach(child => {
@@ -950,6 +970,12 @@ const CheckoutContent = () => {
           }
           targetContainer.appendChild(clonedChild);
         });
+
+        // Mostrar suavemente después de clonar
+        setTimeout(() => {
+          targetContainer.style.minHeight = 'auto';
+          targetContainer.style.opacity = '1';
+        }, 300);
 
         // Aplicar estilos de ancho completo al formulario clonado
         setTimeout(() => {
@@ -1753,7 +1779,9 @@ const CheckoutContent = () => {
 
                 {selectedPaymentMethod === "hotmart" && (
                   <div className="p-6 border-t border-[#101010]" style={{ background: "#232323" }}>
-                    <div id="inline_checkout" className="w-full"></div>
+                    {!isArgentina && (
+                      <div id="inline_checkout" className="w-full rounded-xl overflow-hidden" style={{backgroundColor: '#232323', minHeight: isHotmartLoaded ? 'auto' : '0px', opacity: isHotmartLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in-out'}}></div>
+                    )}
                       {isArgentina ? (
                         <div className="w-full">
                           <div className="flex items-center justify-between mb-4">

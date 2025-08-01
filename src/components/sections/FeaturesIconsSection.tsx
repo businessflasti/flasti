@@ -28,11 +28,7 @@ const features = [
 const FeaturesIconsSection = () => {
 	return (
 		<section className="py-16 relative overflow-hidden">
-			{/* Elementos decorativos */}
-			<div className="absolute inset-0 z-0">
-				<div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
-				<div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-[#3c66ce]/5 blur-3xl"></div>
-			</div>
+
 
 			<div className="container-custom relative z-10">
 				<div className="text-center mb-12">

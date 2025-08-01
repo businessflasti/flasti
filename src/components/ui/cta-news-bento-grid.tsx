@@ -17,14 +17,14 @@ const BannerImage = ({ src }: { src: string }) => (
 export const CTANewsBentoGrid: React.FC = () => {
   const newsItems = [
     {
-      title: "Julio 2025: Más microtrabajos disponibles",
-      description: "Esta semana se sumaron nuevas empresas al ecosistema de Flasti. Eso significa más microtrabajos activos para todos los usuarios registrados",
-      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/banner1.png",
+      title: "Agosto 2025: Más microtrabajos disponibles",
+      description: "Nuevas tareas se están sumando al ecosistema de Flasti este mes. Eso significa más microtrabajos disponibles a diario para todos los usuarios registrados",
+      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/bannerdot1.png",
     },
     {
       title: "Nueva función activa",
       description: "Ya está disponible la nueva modalidad de tareas rápidas. Se pueden completar en menos de tres minutos, desde cualquier dispositivo",
-      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/banner2.png",
+      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/bannerdot2.png",
     },
     {
       title: "+4.800 usuarios nuevos esta semana",

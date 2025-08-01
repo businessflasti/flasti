@@ -109,7 +109,7 @@ export default function ContactoPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 flex flex-col items-center text-center">
+            <div className="p-6 rounded-xl transition-all duration-300 flex flex-col items-center text-center" style={{backgroundColor: '#232323'}}>
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Mail className="w-6 h-6 text-primary" />
               </div>
@@ -117,13 +117,13 @@ export default function ContactoPage() {
               <p className="text-foreground/70 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
               <a
                 href="mailto:access@flasti.com"
-                className="text-primary hover:text-accent transition-colors"
+                className="text-white hover:text-gray-200 transition-colors"
               >
                 access@flasti.com
               </a>
             </div>
 
-            <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 flex flex-col items-center text-center">
+            <div className="p-6 rounded-xl transition-all duration-300 flex flex-col items-center text-center" style={{backgroundColor: '#232323'}}>
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <MessageCircle className="w-6 h-6 text-primary" />
               </div>
@@ -132,13 +132,13 @@ export default function ContactoPage() {
               <ChatButton
                 variant="default"
                 size="sm"
-                className="flex items-center justify-center gap-2 bg-[#3c66ce] hover:bg-[#3359b6] text-white px-4 py-2 rounded-lg shadow-md transition-all"
+                className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-lg shadow-md transition-all"
                 text="Iniciar chat"
                 showIcon={true}
               />
             </div>
 
-            <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/5 hover:border-primary/20 transition-all duration-300 flex flex-col items-center text-center">
+            <div className="p-6 rounded-xl transition-all duration-300 flex flex-col items-center text-center" style={{backgroundColor: '#232323'}}>
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Phone className="w-6 h-6 text-primary" />
               </div>
@@ -146,17 +146,14 @@ export default function ContactoPage() {
               <p className="text-foreground/70 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
               <a
                 href="tel:+123456789"
-                className="text-primary hover:text-accent transition-colors"
+                className="text-white hover:text-gray-200 transition-colors"
               >
                 +1 (234) 567-890
               </a>
             </div>
           </div>
 
-          <div className="bg-card/30 backdrop-blur-sm p-8 md:p-10 rounded-2xl border border-white/5 relative overflow-hidden">
-            {/* Elementos decorativos */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl -z-10"></div>
+          <div className="p-8 md:p-10 rounded-2xl relative overflow-hidden" style={{backgroundColor: '#232323'}}>
 
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
               Envíanos un mensaje
@@ -175,7 +172,8 @@ export default function ContactoPage() {
                     onChange={handleChange}
                     placeholder="Tu nombre"
                     required
-                    className="w-full"
+                    className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                    style={{backgroundColor: '#101010'}}
                   />
                 </div>
 
@@ -191,7 +189,8 @@ export default function ContactoPage() {
                     onChange={handleChange}
                     placeholder="tu@email.com"
                     required
-                    className="w-full"
+                    className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                    style={{backgroundColor: '#101010'}}
                   />
                 </div>
               </div>
@@ -207,7 +206,8 @@ export default function ContactoPage() {
                   onChange={handleChange}
                   placeholder="¿Sobre qué quieres hablar?"
                   required
-                  className="w-full"
+                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                  style={{backgroundColor: '#101010'}}
                 />
               </div>
 
@@ -222,7 +222,8 @@ export default function ContactoPage() {
                   onChange={handleChange}
                   placeholder="Escribe tu mensaje aquí..."
                   required
-                  className="w-full min-h-[150px]"
+                  className="w-full min-h-[150px] rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                  style={{backgroundColor: '#101010'}}
                 />
               </div>
 
@@ -230,7 +231,7 @@ export default function ContactoPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full md:w-auto min-w-[200px]"
+                  className="w-full md:w-auto min-w-[200px] bg-white text-black hover:bg-gray-200"
                 >
                   {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                 </Button>

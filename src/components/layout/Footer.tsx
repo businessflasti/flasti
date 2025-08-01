@@ -151,7 +151,7 @@ const FooterComponent = () => {
               <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('legal').toUpperCase()}</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/legal" className="font-bold text-foreground/60 dark:text-white hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
+                  <Link href="/informacion-legal" className="font-bold text-foreground/60 dark:text-white hover:text-white hover:dark:text-white transition-colors duration-200 text-sm inline-flex items-center">
                     {t('informacionLegal')}
                   </Link>
                 </li>
@@ -240,7 +240,7 @@ const FooterComponent = () => {
                 </h4>
                 <ul className="space-y-3">
                   <li>
-                    <Link href="/legal" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
+                    <Link href="/informacion-legal" className="font-bold dark:text-white text-foreground/80 hover:text-white hover:dark:text-white transition-colors duration-200 text-xs inline-block">
                       {t('informacionLegal')}
                     </Link>
                   </li>

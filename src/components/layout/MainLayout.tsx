@@ -78,13 +78,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
           </div>
         )}
 
-        {/* Elementos decorativos futuristas solo en desktop */}
-        {isDesktop && !isInternalPage && (
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-[#9333ea]/10 blur-3xl animate-float decorative-element hardware-accelerated"></div>
-            <div className="absolute bottom-20 right-1/4 w-80 h-80 rounded-full bg-[#9333ea]/10 blur-3xl animate-float delay-300 decorative-element hardware-accelerated"></div>
-          </div>
-        )}
+
 
         {/* Nuevo encabezado para dashboard y todas las páginas con sidebar */}
         {isInternalPage && (

@@ -67,17 +67,6 @@
   border-color: rgba(100, 100, 100, 0.5);
   animation-delay: 0.3s;
 }
-.loader .box:nth-child(3) {
-  inset: 5%;
-  z-index: 97;
-  border-color: rgba(100, 100, 100, 0.3);
-  animation-delay: 0.6s;
-}
-/* Solo 3 círculos para máxima fluidez */
-.loader .box:nth-child(4),
-.loader .box:nth-child(5) {
-  display: none;
-}
 
 .loader .logo {
   position: absolute;

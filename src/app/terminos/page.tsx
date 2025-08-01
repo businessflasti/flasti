@@ -11,7 +11,7 @@ export default function TerminosPage() {
       <Suspense fallback={<div className="container-custom py-16 md:py-24">Cargando...</div>}>
         <div className="container-custom py-16 md:py-24">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gradient">
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-white">
             Términos y Condiciones
           </h1>
 
@@ -95,7 +95,7 @@ export default function TerminosPage() {
 
             <h2 className="text-2xl font-bold mt-8 mb-4 text-white">9. Contacto</h2>
             <p>
-              Si tiene alguna pregunta sobre estos Términos, por favor contáctenos en <a href="mailto:access@flasti.com" className="text-primary hover:text-accent">access@flasti.com</a>.
+              Si tiene alguna pregunta sobre estos Términos, por favor contáctenos en <a href="mailto:access@flasti.com" className="text-primary hover:text-white">access@flasti.com</a>.
             </p>
 
             <p className="text-sm text-foreground/60 mt-12 pt-6 border-t border-white/10">

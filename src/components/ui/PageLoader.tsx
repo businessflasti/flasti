@@ -48,9 +48,6 @@ const PageLoader = () => {
           </div>
         </div>
         <div className={styles.box} />
-        <div className={styles.box} />
-        <div className={styles.box} />
-        <div className={styles.box} />
       </div>
     </div>
   );

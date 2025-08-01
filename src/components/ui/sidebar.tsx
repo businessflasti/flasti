@@ -21,6 +21,7 @@ const sidebarItems = [
 
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
   const { profile, user, signOut } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   
   // Función para obtener las iniciales del usuario
   const getInitials = (email: string | undefined, name: string | undefined) => {
@@ -97,28 +98,56 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                   {item.isLogout ? (
                     <button
                       type="button"
-                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b0b0b0] group w-full text-left ${pathname === item.href ? 'bg-[#3c66ce] text-white font-bold shadow-md' : 'text-[#b0b0b0] hover:bg-[#232323] hover:text-white'}`}
+                      disabled={isLoggingOut}
+                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b0b0b0] group w-full text-left ${
+                        isLoggingOut 
+                          ? 'bg-[#232323] text-[#666] cursor-not-allowed' 
+                          : pathname === item.href 
+                            ? 'bg-[#3c66ce] text-white font-bold shadow-md' 
+                            : 'text-[#b0b0b0] hover:bg-[#232323] hover:text-white'
+                      }`}
                       data-tooltip-id={`sidebar-${item.name}`}
-                      data-tooltip-content={item.tooltip}
+                      data-tooltip-content={isLoggingOut ? "Cerrando sesión..." : item.tooltip}
                       tabIndex={0}
                       role="menuitem"
-                      aria-label={item.tooltip}
-                      onClick={async () => {
-                        try {
-                          await signOut();
-                          window.location.href = '/login';
-                        } catch (error) {
-                          console.error('Error al cerrar sesión:', error);
-                          // Redirigir de todas formas en caso de error
-                          window.location.href = '/login';
-                        }
+                      aria-label={isLoggingOut ? "Cerrando sesión..." : item.tooltip}
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (isLoggingOut) return;
+                        
+                        setIsLoggingOut(true);
+                        
+                        // Cerrar sidebar en móvil inmediatamente
                         if (typeof window !== 'undefined' && window.innerWidth < 768) {
                           setOpen(false);
                         }
+                        
+                        try {
+                          // Intentar cerrar sesión
+                          await signOut();
+                        } catch (error) {
+                          console.error('Error al cerrar sesión:', error);
+                        } finally {
+                          // Siempre redirigir, independientemente del resultado
+                          if (typeof window !== 'undefined') {
+                            // Limpiar localStorage y sessionStorage
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            
+                            // Forzar redirección
+                            window.location.replace('/login');
+                          }
+                        }
                       }}
                     >
-                      <span className="text-lg group-hover:scale-110 transition-transform" aria-hidden="true">{item.icon}</span>
-                      <span className="text-sm font-medium">{item.name}</span>
+                      <span className={`text-lg transition-transform ${isLoggingOut ? 'animate-spin' : 'group-hover:scale-110'}`} aria-hidden="true">
+                        {isLoggingOut ? <FiSettings /> : item.icon}
+                      </span>
+                      <span className="text-sm font-medium">
+                        {isLoggingOut ? "Cerrando..." : item.name}
+                      </span>
                     </button>
                   ) : (
                     <Link
