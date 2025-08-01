@@ -3,15 +3,10 @@
   publish = ".next"
 
 [build.environment]
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  NETLIFY_NEXT_PLUGIN_SKIP = "false"
 
 [functions]
   node_bundler = "esbuild"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
