@@ -28,7 +28,7 @@
 - **Deduplicación:** ✅ Activa
 
 ### 4. **Purchase - Página Payment Success**
-- **Ubicación:** `src/app/payment-success/page.tsx` (línea 21)
+- **Ubicación:** `src/app/payment-confirmation-9d4e7b2a8f1c6e3b/page.tsx` (línea 21)
 - **Método:** `unifiedTrackingService.trackPurchase(params)`
 - **Flujo:**
   1. 🎯 Facebook Pixel (cliente) con eventID único
@@ -97,7 +97,7 @@
        ├── 🎯 Facebook Pixel (cliente) + eventID
        └── 📡 Conversions API (servidor) + mismo eventID
 
-4. Usuario completa pago → /payment-success
+4. Usuario completa pago → /payment-confirmation-9d4e7b2a8f1c6e3b
    └── ✅ Purchase
        ├── 🎯 Facebook Pixel (cliente) + eventID
        └── 📡 Conversions API (servidor) + mismo eventID

@@ -86,7 +86,7 @@ const SimplePricingSection = React.memo(() => {
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border-0">
-                  <Image src="/logo/isotipo.svg" alt="logo flasti" width={22} height={22} className="m-auto" />
+                  <Image src="/logo/isotipo.svg" alt="logo flasti" width={22} height={22} className="m-auto" data-noindex="true" loading="lazy" />
                 </div>
                 <div>
                   <h3

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 // BenefitsSection removed due to persistent errors
 import AdBlock from "@/components/ui/AdBlock";
 import MainLayout from "@/components/layout/MainLayout";
@@ -18,6 +18,68 @@ import CTASection from "@/components/sections/CTASection";
 // const MemoBenefitsSection = React.memo(BenefitsSection);
 
 export default function Home() {
+  // Agregar meta tags específicas para no indexar imágenes y configurar todas las imágenes
+  useEffect(() => {
+    // Agregar meta tag para no indexar imágenes si no existe
+    if (!document.querySelector('meta[name="robots"][content*="noimageindex"]')) {
+      const metaRobots = document.createElement('meta');
+      metaRobots.name = 'robots';
+      metaRobots.content = 'index, follow, noimageindex';
+      document.head.appendChild(metaRobots);
+    }
+
+    // Meta tag específica para Googlebot
+    if (!document.querySelector('meta[name="googlebot"]')) {
+      const metaGooglebot = document.createElement('meta');
+      metaGooglebot.name = 'googlebot';
+      metaGooglebot.content = 'index, follow, noimageindex';
+      document.head.appendChild(metaGooglebot);
+    }
+
+    // Meta tag específica para Bingbot
+    if (!document.querySelector('meta[name="bingbot"]')) {
+      const metaBingbot = document.createElement('meta');
+      metaBingbot.name = 'bingbot';
+      metaBingbot.content = 'index, follow, noimageindex';
+      document.head.appendChild(metaBingbot);
+    }
+
+    // Agregar atributos data-noindex a todas las imágenes de la página principal
+    const addNoIndexToImages = () => {
+      const images = document.querySelectorAll('img, [data-next-image]');
+      images.forEach((img) => {
+        if (!img.hasAttribute('data-noindex')) {
+          img.setAttribute('data-noindex', 'true');
+          // Agregar loading lazy si no existe
+          if (!img.hasAttribute('loading')) {
+            img.setAttribute('loading', 'lazy');
+          }
+        }
+      });
+    };
+
+    // Ejecutar inmediatamente
+    addNoIndexToImages();
+
+    // Ejecutar después de que se carguen los componentes dinámicos
+    const timer = setTimeout(addNoIndexToImages, 2000);
+
+    // Observer para imágenes que se cargan dinámicamente
+    const observer = new MutationObserver(() => {
+      addNoIndexToImages();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <MainLayout disableChat={true} showStickyBanner={true}>
       <div style={{ minHeight: "100vh", background: "#101010" }}>

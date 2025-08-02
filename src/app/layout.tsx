@@ -20,6 +20,19 @@ export const metadata: Metadata = {
     apple: "/logo/isotipo.svg",
   },
   metadataBase: new URL('https://flasti.net'),
+  robots: {
+    index: true, // La página SÍ se indexa
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true, // La página SÍ se indexa
+      follow: true,
+      noimageindex: true, // Las imágenes NO se indexan
+      'max-video-preview': -1,
+      'max-image-preview': 'none', // No mostrar previews de imágenes
+      'max-snippet': -1,
+    },
+  },
   other: {
     'link': [
       {
@@ -28,7 +41,11 @@ export const metadata: Metadata = {
         as: 'image',
         type: 'image/svg+xml'
       }
-    ]
+    ],
+    // Meta tags adicionales para evitar indexación de imágenes
+    'googlebot': 'index, follow, noimageindex',
+    'bingbot': 'index, follow, noimageindex',
+    'robots': 'index, follow, noimageindex',
   },
   appleWebApp: {
     capable: true,

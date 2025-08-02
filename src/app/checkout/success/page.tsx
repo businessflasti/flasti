@@ -38,13 +38,13 @@ function SuccessContent() {
         priceARS = 9200;
       }
 
-      // Compra completada - El tracking se hace en payment-success
-      console.log('Compra completada, redirigiendo a payment-success');
+      // Compra completada - El tracking se hace en payment-confirmation-9d4e7b2a8f1c6e3b
+      console.log('Compra completada, redirigiendo a payment-confirmation-9d4e7b2a8f1c6e3b');
     }
 
     // Redirigir a la página de éxito de pago después de un breve delay
     const timer = setTimeout(() => {
-      window.location.href = "/payment-success";
+      window.location.href = "/payment-confirmation-9d4e7b2a8f1c6e3b";
     }, 3000);
 
     return () => clearTimeout(timer);

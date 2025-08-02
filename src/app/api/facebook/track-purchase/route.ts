@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
         event_time: Math.floor(Date.now() / 1000),
         event_id: eventId, // ID único para deduplicación con el pixel del cliente
         action_source: 'website',
-        event_source_url: `${request.nextUrl.origin}/payment-success`,
+        event_source_url: `${request.nextUrl.origin}/payment-confirmation-9d4e7b2a8f1c6e3b`,
         user_data: {
           client_ip_address: ip,
           client_user_agent: request.headers.get('user-agent') || undefined,

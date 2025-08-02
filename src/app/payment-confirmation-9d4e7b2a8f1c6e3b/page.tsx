@@ -14,7 +14,7 @@ export default function GraciasPorTuPagoPage() {
   useEffect(() => {
     setMounted(true);
     
-    // 4. Purchase - Disparar cuando se visita la página payment-success
+    // 4. Purchase - Disparar cuando se visita la página payment-confirmation-9d4e7b2a8f1c6e3b
     const trackPurchase = async () => {
       try {
         const { default: unifiedTrackingService } = await import('@/lib/unified-tracking-service');

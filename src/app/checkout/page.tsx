@@ -2137,7 +2137,7 @@ const CheckoutContent = () => {
                                 const details = await actions.order.capture();
                                 console.log("Pago completado. ID de transacción: " + details.id);
 
-                                // Compra completada - El tracking Purchase se hace en payment-success
+                                // Compra completada - El tracking Purchase se hace en payment-confirmation-9d4e7b2a8f1c6e3b
 
                                 // Guardar datos en Supabase
                                 const saveResult = await saveCheckoutLead(details);
@@ -2182,7 +2182,7 @@ const CheckoutContent = () => {
                                 // Compra completada (sin tracking de Yandex)
 
                                 // Redirigir al usuario a la página de éxito de pago
-                                window.location.href = "/payment-success";
+                                window.location.href = "/payment-confirmation-9d4e7b2a8f1c6e3b";
                               } catch (error) {
                                 console.error('Error en el proceso de pago:', error);
                                 setIsSubmittingPaypalForm(false);

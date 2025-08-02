@@ -5,7 +5,19 @@ Disallow: /api
 Disallow: /dashboard
 Disallow: /admin
 Disallow: /checkout
+Disallow: /payment-confirmation-9d4e7b2a8f1c6e3b
 Disallow: /secure-registration-portal-7f9a2b3c5d8e
+
+# Bloquear indexación de imágenes específicas de la página principal
+User-agent: Googlebot-Image
+Disallow: /images/
+Disallow: /_next/static/media/
+Disallow: /logo/
+
+User-agent: Bingbot
+Disallow: /images/
+Disallow: /_next/static/media/
+Disallow: /logo/
 
 # Host
 Host: https://flasti.com

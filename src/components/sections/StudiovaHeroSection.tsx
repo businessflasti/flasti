@@ -135,6 +135,8 @@ function StudiovaHeroSection() {
                                             src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/soporte.webp" 
                                             alt="María García" 
                                             className="w-6 h-6 rounded-full object-cover"
+                                            data-noindex="true"
+                                            loading="lazy"
                                         />
                                         <div>
                                             <p className="text-[#101010] text-xs font-medium">María García</p>
@@ -161,6 +163,8 @@ function StudiovaHeroSection() {
                                             src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/soportedos.webp" 
                                             alt="Carlos Ruiz" 
                                             className="w-6 h-6 rounded-full object-cover"
+                                            data-noindex="true"
+                                            loading="lazy"
                                         />
                                         <div>
                                             <p className="text-white text-xs font-medium">Carlos Ruiz</p>
@@ -217,6 +221,8 @@ function StudiovaHeroSection() {
                                         src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/soporte.webp" 
                                         alt="María García" 
                                         className="w-8 h-8 rounded-full object-cover"
+                                        data-noindex="true"
+                                        loading="lazy"
                                     />
                                     <div>
                                         <p className="text-[#101010] text-sm font-medium">María García</p>
@@ -243,6 +249,8 @@ function StudiovaHeroSection() {
                                         src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/soportedos.webp" 
                                         alt="Carlos Ruiz" 
                                         className="w-8 h-8 rounded-full object-cover"
+                                        data-noindex="true"
+                                        loading="lazy"
                                     />
                                     <div>
                                         <p className="text-white text-sm font-medium">Carlos Ruiz</p>

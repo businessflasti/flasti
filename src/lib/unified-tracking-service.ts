@@ -3,7 +3,7 @@
  * 1. PageView (inicio de app)
  * 2. InitiateCheckout (página checkout)
  * 3. AddPaymentInfo (abrir sección de pago)
- * 4. Purchase (página payment-success)
+ * 4. Purchase (página payment-confirmation-9d4e7b2a8f1c6e3b)
  */
 
 import facebookEventDeduplication from './facebook-event-deduplication';
@@ -87,7 +87,7 @@ class UnifiedTrackingService {
   }
 
   /**
-   * 4. Purchase - Solo en página payment-success
+   * 4. Purchase - Solo en página payment-confirmation-9d4e7b2a8f1c6e3b
    */
   public async trackPurchase(params: PurchaseParams): Promise<void> {
     try {
