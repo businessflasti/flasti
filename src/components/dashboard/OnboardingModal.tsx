@@ -58,11 +58,7 @@ export default function OnboardingModal() {
           console.log('Mostrando onboarding para nuevo usuario:', user.id);
           setIsVisible(true);
 
-          // Tracking: Onboarding iniciado
-          analyticsService.trackEvent('onboarding_started', {
-            user_id: user.id,
-            timestamp: new Date().toISOString()
-          });
+          // Onboarding iniciado (sin tracking de Yandex)
         }
       } catch (error) {
         console.error('Error al verificar estado del onboarding:', error);
@@ -126,13 +122,7 @@ export default function OnboardingModal() {
         if (user) {
           localStorage.setItem(`flasti_hasSeenOnboarding_${user.id}`, 'true');
 
-          // Tracking: Onboarding completado
-          analyticsService.trackOnboardingComplete();
-          analyticsService.trackEvent('onboarding_completed', {
-            user_id: user.id,
-            steps_completed: steps.length,
-            completion_time: new Date().toISOString()
-          });
+          // Onboarding completado (sin tracking de Yandex)
         }
       } catch (error) {
         console.error('Error al guardar el estado del onboarding:', error);

@@ -310,13 +310,8 @@ const CheckoutContent = () => {
     const wasValid = isPaypalFormValid;
     validatePaypalForm();
 
-    // Si el formulario se vuelve válido por primera vez, hacer tracking
+    // Formulario PayPal completado (sin tracking de Yandex)
     if (!wasValid && isPaypalFormValid && paypalFormData.fullName && paypalFormData.email) {
-      analyticsService.trackEvent('paypal_form_completed', {
-        full_name: paypalFormData.fullName,
-        email: paypalFormData.email,
-        timestamp: new Date().toISOString()
-      });
 
       // Guardar lead en Supabase cuando el formulario se completa
       saveCheckoutLead().then(result => {
@@ -388,13 +383,7 @@ const CheckoutContent = () => {
 
       console.log('Lead de Mercado Pago guardado exitosamente:', data);
 
-      // Tracking: Lead guardado
-      analyticsService.trackEvent('checkout_lead_saved', {
-        lead_id: data.id,
-        email: leadData.email,
-        payment_method: 'mercadopago',
-        amount: leadData.amount
-      });
+      // Lead guardado (sin tracking de Yandex)
 
       return { success: true, data };
     } catch (error) {
@@ -408,13 +397,8 @@ const CheckoutContent = () => {
     const wasValid = isMercadoPagoFormValid;
     validateMercadoPagoForm();
 
-    // Si el formulario se vuelve válido por primera vez, hacer tracking
+    // Formulario MercadoPago completado (sin tracking de Yandex)
     if (!wasValid && isMercadoPagoFormValid && mercadoPagoFormData.fullName && mercadoPagoFormData.email) {
-      analyticsService.trackEvent('mercadopago_form_completed', {
-        full_name: mercadoPagoFormData.fullName,
-        email: mercadoPagoFormData.email,
-        timestamp: new Date().toISOString()
-      });
 
       // Guardar lead en Supabase cuando el formulario se completa
       saveMercadoPagoCheckoutLead().then(result => {
@@ -574,13 +558,7 @@ const CheckoutContent = () => {
 
       console.log('Lead guardado exitosamente:', data);
 
-      // Tracking: Lead guardado
-      analyticsService.trackEvent('checkout_lead_saved', {
-        lead_id: data.id,
-        email: leadData.email,
-        payment_method: 'paypal',
-        amount: leadData.amount
-      });
+      // Lead guardado (sin tracking de Yandex)
 
       return { success: true, data };
     } catch (error) {
@@ -1290,11 +1268,8 @@ const CheckoutContent = () => {
 
   // Efecto para tracking inicial de la página de checkout
   useEffect(() => {
-    // Tracking: Usuario accede a la página de checkout
-    analyticsService.trackEvent('checkout_page_view', {
-      page: 'checkout',
-      timestamp: new Date().toISOString()
-    });
+    // 2. InitiateCheckout - Disparar cuando se visita la página checkout
+    unifiedTrackingService.trackInitiateCheckout();
   }, []);
 
   useEffect(() => {
@@ -1316,13 +1291,7 @@ const CheckoutContent = () => {
       currency: eventCurrency
     });
 
-    // Disparar InitiateCheckout cada vez que cambien las dependencias (precio, país, etc.)
-    unifiedTrackingService.trackInitiateCheckout({
-      content_name: 'Flasti Access',
-      content_category: 'platform_access',
-      value: eventValue,
-      currency: eventCurrency,
-    });
+    // InitiateCheckout ya se dispara una sola vez al cargar la página
   }, [price, isArgentina, isCountryKnown]);
 
   // Efecto para tracking cuando se completa información de pago de PayPal
@@ -1672,28 +1641,8 @@ const CheckoutContent = () => {
                       // Cambiar el método de pago
                     } else {
                       setSelectedPaymentMethod("hotmart");
-                      const currentPriceUSD = parseFloat(price);
-                      let eventValue = currentPriceUSD;
-                      let eventCurrency = 'USD';
-
-                      if (isArgentina) {
-                        eventCurrency = 'ARS';
-                        if (finalDiscountApplied) {
-                          eventValue = 5750;
-                        } else if (discountApplied) {
-                          eventValue = 9200;
-                        } else {
-                          eventValue = 11500;
-                        }
-                      }
-
-                      unifiedTrackingService.trackAddPaymentInfo({
-                        content_name: 'Flasti Access',
-                        content_category: 'platform_access',
-                        value: eventValue,
-                        currency: eventCurrency,
-                        payment_method: isArgentina ? 'mercadopago' : 'hotmart'
-                      });
+                      // 3. AddPaymentInfo - Disparar cuando se abre sección Moneda Local
+                      unifiedTrackingService.trackAddPaymentInfo(isArgentina ? 'mercadopago' : 'hotmart');
 
                       // Track específico de Hotmart si no es Argentina
                       if (!isArgentina) {
@@ -1987,14 +1936,8 @@ const CheckoutContent = () => {
                       setSelectedPaymentMethod(null);
                     } else {
                       setSelectedPaymentMethod("paypal");
-                      // Track AddPaymentInfo cuando se selecciona PayPal
-                      unifiedTrackingService.trackAddPaymentInfo({
-                        content_name: 'Flasti Access',
-                        content_category: 'platform_access',
-                        value: parseFloat(price),
-                        currency: 'USD',
-                        payment_method: 'paypal'
-                      });
+                      // 3. AddPaymentInfo - Disparar cuando se abre sección PayPal
+                      unifiedTrackingService.trackAddPaymentInfo('paypal');
                     }
                   }}
                 >
@@ -2194,15 +2137,7 @@ const CheckoutContent = () => {
                                 const details = await actions.order.capture();
                                 console.log("Pago completado. ID de transacción: " + details.id);
 
-                                // Track compra completada con servicio unificado
-                                unifiedTrackingService.trackPurchase({
-                                  transaction_id: details.id || 'paypal_transaction',
-                                  value: parseFloat(price),
-                                  currency: 'USD',
-                                  payment_method: 'paypal',
-                                  content_name: 'Acceso a Flasti',
-                                  content_ids: ['flasti-access']
-                                });
+                                // Compra completada - El tracking Purchase se hace en payment-success
 
                                 // Guardar datos en Supabase
                                 const saveResult = await saveCheckoutLead(details);
@@ -2232,62 +2167,19 @@ const CheckoutContent = () => {
                                   if (emailResult.success) {
                                     console.log('Email de bienvenida enviado exitosamente');
 
-                                    // Tracking: Email enviado exitosamente
-                                    analyticsService.trackEvent('welcome_email_sent', {
-                                      user_email: paypalFormData.email,
-                                      user_name: paypalFormData.fullName,
-                                      transaction_id: details.id,
-                                      timestamp: new Date().toISOString()
-                                    });
+                                    // Email enviado exitosamente (sin tracking de Yandex)
                                   } else {
                                     console.error('Error al enviar email de bienvenida:', emailResult.error);
 
-                                    // Tracking: Error en envío de email
-                                    analyticsService.trackEvent('welcome_email_failed', {
-                                      user_email: paypalFormData.email,
-                                      user_name: paypalFormData.fullName,
-                                      transaction_id: details.id,
-                                      error: emailResult.error,
-                                      timestamp: new Date().toISOString()
-                                    });
+                                    // Error en envío de email (sin tracking de Yandex)
                                   }
                                 } catch (emailError) {
                                   console.error('Error inesperado al enviar email:', emailError);
 
-                                  // Tracking: Error inesperado en email
-                                  analyticsService.trackEvent('welcome_email_error', {
-                                    user_email: paypalFormData.email,
-                                    user_name: paypalFormData.fullName,
-                                    transaction_id: details.id,
-                                    error: emailError instanceof Error ? emailError.message : 'Error desconocido',
-                                    timestamp: new Date().toISOString()
-                                  });
+                                  // Error inesperado en email (sin tracking de Yandex)
                                 }
 
-                                // Tracking: Compra completada en Yandex Metrica
-                                const purchaseAmount = parseFloat(price);
-                                analyticsService.trackPurchase(
-                                  details.id || 'paypal_transaction',
-                                  purchaseAmount,
-                                  'USD',
-                                  [{
-                                    id: 'flasti-access',
-                                    name: 'Acceso a Flasti',
-                                    category: 'Platform Access',
-                                    price: purchaseAmount,
-                                    quantity: 1
-                                  }]
-                                );
-
-                                // Tracking: Evento de conversión
-                                analyticsService.trackGoal('purchase_completed', {
-                                  order_price: purchaseAmount,
-                                  currency: 'USD',
-                                  payment_method: 'paypal',
-                                  transaction_id: details.id,
-                                  customer_name: paypalFormData.fullName,
-                                  customer_email: paypalFormData.email
-                                });
+                                // Compra completada (sin tracking de Yandex)
 
                                 // Redirigir al usuario a la página de éxito de pago
                                 window.location.href = "/payment-success";

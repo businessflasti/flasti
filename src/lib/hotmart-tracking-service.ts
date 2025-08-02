@@ -208,11 +208,8 @@ class HotmartTrackingService {
         lastName: buyerName.split(' ').slice(1).join(' ') || ''
       };
 
-      // Enviar evento a Facebook Conversions API
+      // Hotmart tracking - Solo para webhooks del servidor (no interfiere con los 4 eventos principales)
       await this.sendServerSidePixelEvent('Purchase', pixelEventData, userData, ip);
-
-      // También podemos enviar a otros sistemas de tracking aquí
-      await this.trackToYandexMetrica(transactionId, price, currency, productName);
 
       console.log('✅ Tracking de compra de Hotmart completado');
 
@@ -257,27 +254,7 @@ class HotmartTrackingService {
     }
   }
 
-  /**
-   * Envía datos a Yandex Metrica (server-side)
-   */
-  private async trackToYandexMetrica(transactionId: string, price: number, currency: string, productName: string): Promise<void> {
-    try {
-      // Yandex Metrica server-side tracking
-      // Esto requiere configuración adicional con Yandex Metrica API
-      console.log('📈 Enviando a Yandex Metrica:', {
-        transactionId,
-        price,
-        currency,
-        productName
-      });
-
-      // Aquí puedes implementar la llamada a Yandex Metrica API si es necesario
-      // Por ahora, solo loggeamos la información
-
-    } catch (error) {
-      console.error('💥 Error al enviar a Yandex Metrica:', error);
-    }
-  }
+  // Método trackToYandexMetrica eliminado - solo usamos Facebook Pixel + Conversions API
 
   /**
    * Registra un evento personalizado de Hotmart

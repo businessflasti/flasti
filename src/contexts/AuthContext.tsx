@@ -341,11 +341,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           setProfile(basicProfile);
 
-          // Tracking: Usuario ya registrado intenta registrarse de nuevo
-          analyticsService.trackEvent('duplicate_registration_attempt', {
-            user_id: signInData.user.id,
-            email: email
-          });
+          // Usuario ya registrado (sin tracking de Yandex)
 
           setLoading(false);
           return { error: { message: 'User already registered' } };
@@ -403,14 +399,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Establecer perfil en el estado
       setProfile(profileData);
 
-      // Tracking: Registro exitoso
-      analyticsService.trackUserRegistration('email');
-      analyticsService.setUserParams({
-        user_id: data.user.id,
-        email: email,
-        phone: phone || '',
-        registration_date: new Date().toISOString()
-      });
+      // Registro exitoso (sin tracking de Yandex)
 
       // Finalizar proceso
       console.log('Registro completado con éxito');
@@ -529,13 +518,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log('Perfil encontrado en tabla profiles');
           setProfile(profileData);
 
-          // Tracking: Login exitoso
-          analyticsService.trackUserLogin('email');
-          analyticsService.setUserParams({
-            user_id: data.user.id,
-            email: data.user.email || email,
-            last_login: new Date().toISOString()
-          });
+          // Login exitoso (sin tracking de Yandex)
 
           setLoading(false);
           return { error: null };
@@ -562,13 +545,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           };
           setProfile(mappedProfile);
 
-          // Tracking: Login exitoso desde user_profiles
-          analyticsService.trackUserLogin('email');
-          analyticsService.setUserParams({
-            user_id: data.user.id,
-            email: data.user.email || email,
-            last_login: new Date().toISOString()
-          });
+          // Login exitoso desde user_profiles (sin tracking de Yandex)
 
           setLoading(false);
           return { error: null };
@@ -592,14 +569,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Establecer el perfil en el estado
       setProfile(basicProfile);
 
-      // Tracking: Login exitoso con perfil básico creado
-      analyticsService.trackUserLogin('email');
-      analyticsService.setUserParams({
-        user_id: data.user.id,
-        email: data.user.email || email,
-        last_login: new Date().toISOString(),
-        profile_created: true
-      });
+      // Login exitoso con perfil básico creado (sin tracking de Yandex)
 
       // Finalizar proceso
       console.log('Inicio de sesión completado con éxito');

@@ -56,11 +56,7 @@ export function initTawkTo(showBubble = true) {
       setTimeout(safeHideWidget, 1000);
     }
 
-    // Tracking: Chat widget cargado
-    analyticsService.trackEvent('chat_widget_loaded', {
-      show_bubble: showBubble,
-      timestamp: new Date().toISOString()
-    });
+    // Chat widget cargado (sin tracking de Yandex)
   };
 
   document.head.appendChild(script);
@@ -91,14 +87,12 @@ export function openTawkToChat() {
         if (typeof window.Tawk_API.maximize === 'function') {
           window.Tawk_API.maximize();
 
-          // Tracking: Chat abierto manualmente
-          analyticsService.trackChatInteraction('chat_opened');
+          // Chat abierto manualmente (sin tracking de Yandex)
         } else if (typeof window.Tawk_API.popup === 'function') {
           // Alternativa si maximize no está disponible
           window.Tawk_API.popup();
 
-          // Tracking: Chat abierto manualmente (popup)
-          analyticsService.trackChatInteraction('chat_popup_opened');
+          // Chat popup abierto (sin tracking de Yandex)
         }
       } catch (error) {
         console.warn('Error al maximizar el chat de Tawk.to:', error);

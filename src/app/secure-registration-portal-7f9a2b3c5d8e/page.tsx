@@ -131,7 +131,7 @@ export default function RegisterPage() {
                 id="email"
                 type="email"
                 placeholder="Tu correo electrónico"
-                className="w-full py-3 px-4 h-12 bg-[#2a2a2a] border border-[#404040] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                className="w-full py-3 px-4 h-12 bg-[#2a2a2a] border border-[#404040] rounded-lg text-white placeholder-gray-400 focus:ring-[0.1px] focus:ring-[#606060] focus:border-[#606060] transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -146,7 +146,7 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 placeholder="Tu contraseña"
-                className="w-full py-3 px-4 h-12 bg-[#2a2a2a] border border-[#404040] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                className="w-full py-3 px-4 h-12 bg-[#2a2a2a] border border-[#404040] rounded-lg text-white placeholder-gray-400 focus:ring-[0.1px] focus:ring-[#606060] focus:border-[#606060] transition-all"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -161,7 +161,7 @@ export default function RegisterPage() {
                 id="phone"
                 type="tel"
                 placeholder="Tu número de teléfono"
-                className="w-full py-3 px-4 h-12 bg-[#2a2a2a] border border-[#404040] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                className="w-full py-3 px-4 h-12 bg-[#2a2a2a] border border-[#404040] rounded-lg text-white placeholder-gray-400 focus:ring-[0.1px] focus:ring-[#606060] focus:border-[#606060] transition-all"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required

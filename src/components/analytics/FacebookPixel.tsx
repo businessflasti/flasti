@@ -50,8 +50,13 @@ const FacebookPixel = ({ pixelId = "738700458549300" }: FacebookPixelProps) => {
   useEffect(() => {
     if (shouldLoadPixel && typeof window !== 'undefined' && window.fbq) {
       window.fbq('init', pixelId);
-      window.fbq('track', 'PageView');
+      // PageView se disparará automáticamente con deduplicación desde unifiedTrackingService
       console.log('Facebook Pixel inicializado:', pixelId);
+      
+      // Disparar PageView con deduplicación
+      import('@/lib/unified-tracking-service').then(({ default: unifiedTrackingService }) => {
+        unifiedTrackingService.trackPageView();
+      });
     }
   }, [pixelId, shouldLoadPixel]);
 
@@ -74,7 +79,7 @@ const FacebookPixel = ({ pixelId = "738700458549300" }: FacebookPixelProps) => {
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '${pixelId}');
-            fbq('track', 'PageView');
+            // PageView se maneja con deduplicación desde unifiedTrackingService
           `,
         }}
       />

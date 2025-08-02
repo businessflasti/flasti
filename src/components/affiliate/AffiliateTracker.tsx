@@ -83,12 +83,7 @@ function AffiliateTrackerContent() {
             } else {
               console.log('Clic de afiliado registrado correctamente');
 
-              // Tracking: Clic de afiliado registrado en Yandex Metrica
-              analyticsService.trackAffiliateClick(
-                affiliateData.id,
-                'general',
-                'Flasti Platform'
-              );
+              // Clic de afiliado registrado (sin tracking de Yandex)
             }
           } catch (error) {
             console.error('Error en el procesamiento en segundo plano:', error);

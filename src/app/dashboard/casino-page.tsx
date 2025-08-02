@@ -22,12 +22,7 @@ export default function CasinoDashboardPage() {
     if (!loading && !user) {
       router.push('/login');
     } else if (user) {
-      // Tracking: Usuario accede al dashboard
-      analyticsService.trackDashboardAccess();
-      analyticsService.setUserParams({
-        user_id: user.id,
-        dashboard_access_time: new Date().toISOString()
-      });
+      // Usuario accede al dashboard (sin tracking de Yandex)
     }
   }, [user, loading, router]);
 

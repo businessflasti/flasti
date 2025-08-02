@@ -39,42 +39,21 @@ const FacebookPixelDebug = ({ isVisible = false }: FacebookPixelDebugProps) => {
     {
       name: 'PageView',
       action: () => {
-        unifiedTrackingService.trackPageView('Debug Test Page');
+        unifiedTrackingService.trackPageView();
         addEvent('PageView enviado');
-      }
-    },
-    {
-      name: 'ViewContent',
-      action: () => {
-        unifiedTrackingService.trackPageView('Test Content', {
-          content_category: 'test',
-          value: 10,
-          currency: 'USD'
-        });
-        addEvent('ViewContent enviado');
       }
     },
     {
       name: 'InitiateCheckout',
       action: () => {
-        unifiedTrackingService.trackInitiateCheckout({
-          content_name: 'Test Product',
-          value: 10,
-          currency: 'USD',
-          payment_method: 'test'
-        });
+        unifiedTrackingService.trackInitiateCheckout();
         addEvent('InitiateCheckout enviado');
       }
     },
     {
       name: 'AddPaymentInfo',
       action: () => {
-        unifiedTrackingService.trackAddPaymentInfo({
-          content_name: 'Test Product',
-          value: 10,
-          currency: 'USD',
-          payment_method: 'test'
-        });
+        unifiedTrackingService.trackAddPaymentInfo('test');
         addEvent('AddPaymentInfo enviado');
       }
     },

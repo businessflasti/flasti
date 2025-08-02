@@ -36,7 +36,8 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
   const isInternalPage = pathname?.startsWith('/dashboard');
   const isContactPage = pathname === '/contacto';
   const isCheckoutPage = pathname === '/checkout';
-  const shouldShowChat = !disableChat && isInternalPage;
+  // No mostrar el chat en páginas del dashboard
+  const shouldShowChat = !disableChat && !isInternalPage;
 
   // Renderizado optimizado de decorativos solo en desktop
   const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
@@ -104,8 +105,8 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
         {/* Chat widget - cargado de forma diferida solo cuando es necesario */}
         {shouldShowChat && <DashboardChatWidget />}
 
-        {/* Tawk.to chat script */}
-        <DirectTawkToScript showBubble={isContactPage} />
+        {/* Tawk.to chat script - No mostrar en páginas del dashboard */}
+        {!isInternalPage && <DirectTawkToScript showBubble={isContactPage} />}
 
         {/* Notificaciones FOMO - No mostrar en la página de checkout */}
         {!isCheckoutPage && <FomoNotifications />}

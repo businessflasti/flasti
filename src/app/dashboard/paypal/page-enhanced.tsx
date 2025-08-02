@@ -136,14 +136,7 @@ export default function PayPalWithdrawalPageEnhanced() {
       if (result.success) {
         toast.success('Solicitud de retiro creada correctamente');
 
-        // Tracking: Solicitud de retiro creada
-        analyticsService.trackWithdrawalRequest(amountValue, 'paypal');
-        analyticsService.trackEvent('withdrawal_request_created', {
-          amount: amountValue,
-          payment_method: 'paypal',
-          user_id: user?.id,
-          request_id: result.requestId
-        });
+        // Solicitud de retiro creada (sin tracking de Yandex)
 
         // Actualizar balance local
         setBalance(result.newBalance || 0);

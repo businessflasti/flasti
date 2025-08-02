@@ -14,29 +14,23 @@ export default function GraciasPorTuPagoPage() {
   useEffect(() => {
     setMounted(true);
     
-    // Disparar evento de Purchase cuando el usuario llega a esta página
+    // 4. Purchase - Disparar cuando se visita la página payment-success
     const trackPurchase = async () => {
       try {
-        // Datos del evento de compra
-        const purchaseData = {
-          value: 10, // Valor del producto premium
+        const { default: unifiedTrackingService } = await import('@/lib/unified-tracking-service');
+        await unifiedTrackingService.trackPurchase({
+          transaction_id: 'flasti_purchase_' + Date.now(),
+          value: 10,
           currency: 'USD',
-          content_ids: ['flasti-premium'],
-          content_name: 'Flasti Premium Access',
-          content_type: 'product',
-          num_items: 1
-        };
-
-        // Enviar evento con deduplicación automática (Pixel + Conversions API)
-        const eventId = await facebookEventDeduplication.trackPurchase(purchaseData);
-        
-        console.log(`✅ Evento Purchase enviado con deduplicación. EventID: ${eventId}`);
+          payment_method: 'completed',
+          content_name: 'Flasti Access'
+        });
       } catch (error) {
         console.error('❌ Error al enviar evento Purchase:', error);
       }
     };
 
-    // Ejecutar tracking después de un pequeño delay para asegurar que el pixel esté cargado
+    // Ejecutar tracking después de un pequeño delay
     const timer = setTimeout(trackPurchase, 1000);
     
     return () => clearTimeout(timer);

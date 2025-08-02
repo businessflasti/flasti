@@ -312,7 +312,7 @@ const SimplePricingSection = React.memo(() => {
                     className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                   >
                     <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                      <a href="/login" className="text-primary hover:underline">{t('instruccionesInicioSesionSimple')}</a>
+                      <span style={{ color: '#AEAEB0' }}>{t('instruccionesInicioSesionSimple')}</span>
                     </div>
                   </div>
 

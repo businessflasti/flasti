@@ -38,16 +38,8 @@ function SuccessContent() {
         priceARS = 9200;
       }
 
-      // Track compra completada con servicio unificado
-      unifiedTrackingService.trackPurchase({
-        transaction_id: paymentId,
-        value: priceARS,
-        currency: 'ARS',
-        payment_method: 'mercadopago',
-        content_name: 'Acceso a Flasti'
-      });
-
-      console.log('Tracking de compra completada enviado');
+      // Compra completada - El tracking se hace en payment-success
+      console.log('Compra completada, redirigiendo a payment-success');
     }
 
     // Redirigir a la página de éxito de pago después de un breve delay

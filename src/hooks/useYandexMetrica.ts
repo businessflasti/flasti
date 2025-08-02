@@ -13,9 +13,7 @@ export const useYandexMetrica = () => {
 
   // Trackear cambios de página automáticamente
   useEffect(() => {
-    if (pathname) {
-      analyticsService.trackPageView(pathname);
-    }
+    // PageView automático deshabilitado - Solo usamos Facebook Pixel
   }, [pathname]);
 
   // Funciones de tracking envueltas en useCallback para optimización
