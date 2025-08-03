@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Logo from "@/components/ui/logo";
-import LanguageSelector from "@/components/ui/language-selector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Link from 'next/link';
 
@@ -26,7 +25,6 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
 
           {/* Right Side Actions - Desktop */}
           <div className="hidden md:flex items-center gap-4">
-            <LanguageSelector />
             <a
               href="/login"
               className="bg-white hover:bg-gray-100 text-black px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
@@ -37,7 +35,6 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
 
           {/* Right Side Actions - Mobile */}
           <div className="flex md:hidden items-center gap-3">
-            <LanguageSelector mobile />
             <a
               href="/login"
               className="bg-white hover:bg-gray-100 text-black px-3 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"

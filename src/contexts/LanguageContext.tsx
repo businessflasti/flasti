@@ -748,24 +748,9 @@ interface LanguageContextType {
 // Crear contexto
 export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Función para detectar el idioma del navegador
+// Función que siempre devuelve español como idioma predeterminado
 const detectBrowserLanguage = (): 'es' | 'en' | 'pt-br' => {
-  if (typeof window === 'undefined') return 'es'; // Valor predeterminado para SSR
-
-  try {
-    const browserLang = navigator.language.toLowerCase();
-
-    // Detectar idioma basado en el código del navegador
-    if (browserLang.startsWith('es')) return 'es';
-    if (browserLang.startsWith('en')) return 'en';
-    if (browserLang.startsWith('pt')) return 'pt-br';
-
-    // Si no coincide con ninguno de los idiomas soportados, usar español como predeterminado
-    return 'es';
-  } catch (e) {
-    console.error('Error detecting browser language:', e);
-    return 'es'; // Valor predeterminado en caso de error
-  }
+  return 'es'; // Siempre español, independientemente del idioma del navegador
 };
 
 // Proveedor del contexto
@@ -773,20 +758,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Estado para el idioma actual
   const [language, setLanguage] = useState<'es' | 'en' | 'pt-br'>('es');
 
-  // Cargar preferencia de idioma al iniciar
+  // Inicializar siempre en español
   useEffect(() => {
     try {
-      // Primero intentar cargar desde localStorage
-      const savedLanguage = localStorage.getItem('language');
-      if (savedLanguage === 'es' || savedLanguage === 'en' || savedLanguage === 'pt-br') {
-        setLanguage(savedLanguage);
-      } else {
-        // Si no hay preferencia guardada, detectar idioma del navegador
-        const detectedLanguage = detectBrowserLanguage();
-        setLanguage(detectedLanguage);
-        // Guardar la preferencia detectada
-        localStorage.setItem('language', detectedLanguage);
-      }
+      // Forzar español como idioma predeterminado
+      setLanguage('es');
+      // Guardar en localStorage
+      localStorage.setItem('language', 'es');
     } catch (e) {
       console.error('Error reading from localStorage:', e);
     }
