@@ -106,13 +106,13 @@ const RegistrationFAQSection = React.memo(() => {
 	}
 
 	return (
-		<section className="py-16 relative overflow-hidden">
+		<section className="py-16 relative overflow-hidden bg-[#FEF9F3]">
 			{/* Elementos decorativos del fondo eliminados para fondo negro puro */}
 
 			<div className="container-custom relative z-10">
 				<div className="text-center mb-8">
-					<h2 className="text-3xl md:text-4xl font-bold mb-4 text-white dark:text-white light:text-black title-google-sans">{t('faqTitle')}</h2>
-					<p className="text-foreground/70 max-w-2xl mx-auto text-lg md:text-xl">
+					<h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#0E1726' }}>{t('faqTitle')}</h2>
+					<p className="max-w-2xl mx-auto text-lg md:text-xl" style={{ color: '#0E1726' }}>
 						{t('faqSubtitle')}
 					</p>
 				</div>

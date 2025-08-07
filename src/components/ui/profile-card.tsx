@@ -204,9 +204,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         .card__title {
           margin-top: 60px;
-          font-weight: 500;
+          font-weight: 600;
           font-size: 18px;
-          color: var(--main-color);
+          color: #FFFFFF;
+          font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         .card__subtitle {

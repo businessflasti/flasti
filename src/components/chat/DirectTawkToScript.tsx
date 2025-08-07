@@ -33,6 +33,17 @@ export function initTawkTo(showBubble = true) {
     if (!showBubble) {
       // Intentar ocultar el widget si ya existe el script
       setTimeout(safeHideWidget, 500); // Dar tiempo a que la API esté disponible
+    } else {
+      // Si showBubble es true, asegurar que el widget esté visible
+      setTimeout(() => {
+        try {
+          if (window.Tawk_API && typeof window.Tawk_API.showWidget === 'function') {
+            window.Tawk_API.showWidget();
+          }
+        } catch (error) {
+          console.warn('No se pudo mostrar el widget de Tawk.to:', error);
+        }
+      }, 500);
     }
     return;
   }
@@ -54,6 +65,17 @@ export function initTawkTo(showBubble = true) {
     if (!showBubble) {
       // Dar tiempo suficiente para que la API se inicialice completamente
       setTimeout(safeHideWidget, 1000);
+    } else {
+      // Asegurar que el widget esté visible cuando showBubble es true
+      setTimeout(() => {
+        try {
+          if (window.Tawk_API && typeof window.Tawk_API.showWidget === 'function') {
+            window.Tawk_API.showWidget();
+          }
+        } catch (error) {
+          console.warn('No se pudo mostrar el widget de Tawk.to:', error);
+        }
+      }, 1000);
     }
 
     // Chat widget cargado (sin tracking de Yandex)
@@ -109,8 +131,25 @@ export default function DirectTawkToScript({ showBubble = true }: DirectTawkToSc
     // Inicializar Tawk.to con la configuración de visibilidad
     initTawkTo(showBubble);
 
+    // Si showBubble es true, asegurar que el widget permanezca visible
+    let visibilityInterval: NodeJS.Timeout;
+    if (showBubble) {
+      visibilityInterval = setInterval(() => {
+        try {
+          if (window.Tawk_API && typeof window.Tawk_API.showWidget === 'function') {
+            window.Tawk_API.showWidget();
+          }
+        } catch (error) {
+          // Silenciar errores para evitar spam en consola
+        }
+      }, 2000); // Verificar cada 2 segundos
+    }
+
     // Limpieza al desmontar
     return () => {
+      if (visibilityInterval) {
+        clearInterval(visibilityInterval);
+      }
       // No eliminamos el script para evitar problemas, solo actualizamos la visibilidad si es necesario
       if (!showBubble && window.Tawk_API && typeof window.Tawk_API.hideWidget === 'function') {
         window.Tawk_API.hideWidget();

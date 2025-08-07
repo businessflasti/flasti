@@ -82,7 +82,7 @@ export default function Home() {
 
   return (
     <MainLayout disableChat={true} showStickyBanner={true}>
-      <div style={{ minHeight: "100vh", background: "#101010" }}>
+      <div style={{ minHeight: "100vh", background: "#FEF9F3" }}>
         {/* Sección Studiova Hero (nueva) */}
         <StudiovaHeroSection />
         {/* Sección Stats (nueva) */}

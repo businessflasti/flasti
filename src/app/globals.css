@@ -6,24 +6,76 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Solitreo&display=swap');
 @import url('/fonts/noto-sans-display.css');
+/* Definir fuentes Segoe UI directamente */
+@font-face {
+  font-family: 'Segoe UI Display Semibold';
+  src: url('/fonts/SegoeUIVariableStaticDisplaySemibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Segoe UI Text';
+  src: url('/fonts/SegoeUIVariableStaticText.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 @import url('../styles/testimonials.css');
+
+/* Clases específicas para forzar fuentes Segoe UI */
+.force-segoe-display {
+  font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.force-segoe-display * {
+  font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.force-segoe-text {
+  font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* Ocultar branding de Tawk.to para apariencia más profesional */
+body > div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*="z-index: 1000"],
+div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*="background: rgb(255, 255, 255)"],
+.tawk-branding,
+[class*="tawk"][class*="branding"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
 
 /* Configurar fuente por defecto */
 @layer base {
   html {
-    font-family: 'Noto Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-weight: 400;
   }
   body {
-    font-family: 'Noto Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     background-color: #101010 !important;
   }
   p, span, li, ul, ol, a, label, input, textarea, button, div, section, article, main, small, strong, em, b, i {
-    font-family: 'Noto Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    font-weight: 700;
+    font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Asegurar que las fuentes se apliquen a todos los elementos */
+  * {
+    font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-display, .font-extrabold, .font-bold {
+    font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 600 !important;
   }
 
   .gradient-text {
@@ -273,8 +325,9 @@
   }
 
   /* Estilos para títulos */
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-outfit font-bold;
+  h1, h2, h3, h4, h5, h6, .font-bold, .font-extrabold, .font-medium {
+    font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 600 !important;
   }
 
   /* Títulos */
@@ -467,7 +520,7 @@
 
   .large-heading {
     @apply text-7xl md:text-[10rem] 2xl:text-[320px] leading-none font-extrabold tracking-tight;
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     letter-spacing: -0.04em;
     line-height: 0.92;
   }

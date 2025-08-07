@@ -9,7 +9,8 @@ export default {
   ],
   theme: {
     fontFamily: {
-      sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      sans: ['Segoe UI Text', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      display: ['Segoe UI Display Semibold', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       outfit: ['Outfit', 'sans-serif'],
       solitreo: ['Solitreo', 'cursive'],
     },

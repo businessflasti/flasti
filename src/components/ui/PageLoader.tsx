@@ -38,7 +38,7 @@ const PageLoader = () => {
         <div className={styles.box}>
           <div className={styles.logo}>
             <Image
-              src="/logo/isotipo.svg"
+              src="/logo/isotipo-web.png"
               alt="Logo"
               width={80}
               height={80}

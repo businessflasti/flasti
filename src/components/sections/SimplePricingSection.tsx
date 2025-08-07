@@ -45,10 +45,10 @@ const SimplePricingSection = React.memo(() => {
   return (
     <DotBackground 
       className="py-24 relative overflow-hidden"
-      dotColor="#505050" 
+      dotColor="#B0B0B0" 
       dotSize="1.2px"
       dotSpacing="18px"
-      backgroundColor="#101010"
+      backgroundColor="#FEF9F3"
       maskEnabled={true}
       fadeEdges={true}
       fadeAmount="60px"
@@ -59,12 +59,11 @@ const SimplePricingSection = React.memo(() => {
       {/* <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[340px] h-[120px] bg-[#facc15]/10 blur-2xl rounded-full z-0"></div> */}
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
-          <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block text-white">{t('registrateAhoraBtn')}</span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 title-google-sans"><span className="text-white">{t('unicoPago')}</span></h2>
-          <TextGenerateEffect 
-            words={t('subtituloSimplePricing', 'Comienza a generar ingresos con flasti')}
-            className="text-foreground/70 max-w-lg mx-auto hardware-accelerated text-lg md:text-xl"
-          />
+          <span className="text-xs uppercase tracking-wider font-medium mb-2 inline-block" style={{ color: '#0E1726' }}>{t('registrateAhoraBtn')}</span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: '#0E1726' }}>{t('unicoPago')}</h2>
+          <p className="max-w-lg mx-auto text-lg md:text-xl text-center" style={{ color: '#0E1726' }}>
+            {t('subtituloSimplePricing', 'Comienza a generar ingresos con flasti')}
+          </p>
         </div>
 
         <div className="max-w-3xl mx-auto">
@@ -85,18 +84,11 @@ const SimplePricingSection = React.memo(() => {
 
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border-0">
-                  <Image src="/logo/isotipo.svg" alt="logo flasti" width={22} height={22} className="m-auto" data-noindex="true" loading="lazy" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border-0">
+                  <Image src="/logo/isotipo-web.png" alt="logo flasti" width={26} height={26} className="m-auto" data-noindex="true" loading="lazy" />
                 </div>
                 <div>
-                  <h3
-                    className="text-2xl text-white group-hover:text-white transition-all duration-300 title-google-sans"
-                    style={{
-                      fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                      fontWeight: 600,
-                      letterSpacing: '-0.01em'
-                    }}
-                  >flasti</h3>
+                  <h3 className="text-2xl text-white group-hover:text-white transition-all duration-300">flasti</h3>
                   <p className="text-foreground/70">
                     {t('accesoExclusivoPlataforma')}
                   </p>
@@ -202,7 +194,7 @@ const SimplePricingSection = React.memo(() => {
                       <Zap className="text-[#101010]" size={16} />
                     </div>
                     <div>
-                      <h4 className="font-medium text-sm title-google-sans">{t('accesoInmediato')}</h4>
+                      <h4 className="font-medium text-sm">{t('accesoInmediato')}</h4>
                       <p className="text-xs text-foreground/70">{t('comienzaGenerarIngresos')}</p>
                     </div>
                   </div>

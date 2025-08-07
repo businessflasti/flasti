@@ -60,10 +60,10 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
       >
         <div className="flex items-center justify-between w-full">
           {/* Logo y título/balance */}
-          <div className="flex items-center gap-1 sm:gap-2 md:gap-4 lg:ml-56 w-1/3 sm:w-auto justify-start ml-2 sm:ml-4 md:ml-0">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-5 lg:ml-56 w-1/3 sm:w-auto justify-start ml-2 sm:ml-4 md:ml-0">
             <a href="/dashboard" className="flex items-center justify-center flex-shrink-0">
               <Image
-                src="/logo/isotipo.svg"
+                src="/logo/isotipo-web.png"
                 alt="Logo Flasti"
                 width={28}
                 height={28}

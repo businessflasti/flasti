@@ -15,21 +15,21 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   const pathname = usePathname();
   const isDark = theme === "dark";
 
-  // Tamaños basados en el prop size
+  // Tamaños basados en el prop size - ajustados para logo completo
   const sizes = {
     sm: {
       logoHeight: 22,
-      logoWidth: 22,
+      logoWidth: 80, // Ancho ajustado para logo completo
       textClass: "text-xl"
     },
     md: {
-      logoHeight: 28,
-      logoWidth: 28,
+      logoHeight: 32,
+      logoWidth: 110, // Ancho ajustado para logo completo - sutilmente más grande
       textClass: "text-2xl"
     },
     lg: {
       logoHeight: 36,
-      logoWidth: 36,
+      logoWidth: 130, // Ancho ajustado para logo completo
       textClass: "text-3xl"
     }
   };
@@ -37,46 +37,31 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   // Obtener dimensiones según el tamaño
   const { logoHeight, logoWidth, textClass } = sizes[size];
 
-  // Determinar el color basado en el tema y la ruta del logo
-  const textColor = isDark ? "text-white" : "text-gray-900";
-  // Si el logo se usa en el footer, usar isoblanco.svg
-  const logoPath = pathname?.includes("footer") ? "/logo/isoblanco.svg" : "/logo/isotipo.svg";
-
-  // Mostrar texto solo si no estamos en la página de login
-  const showText = pathname !== "/login";
+  // Usar isotipo en login, logo completo en otras páginas
+  const logoPath = pathname === "/login" ? "/logo/isotipo-web.png" : "/logo/logo-web.png";
+  
+  // Ajustar tamaños para isotipo en login (cuadrado)
+  const isLoginPage = pathname === "/login";
+  const finalWidth = isLoginPage ? logoHeight : logoWidth;
+  const finalHeight = logoHeight;
 
   return (
     <div className={`${className} flex justify-center`} tabIndex={-1} style={{ cursor: "default" }}>
       <div className="flex items-center justify-center">
-        {/* Logo SVG */}
-        <div className="relative flex items-center justify-center" style={{ height: logoHeight, width: logoWidth }}>
+        {/* Logo completo o isotipo según la página */}
+        <div className="relative flex items-center justify-center" style={{ height: finalHeight, width: finalWidth }}>
           <Image
             src={logoPath}
             alt="Flasti Logo"
-            width={logoWidth}
-            height={logoHeight}
+            width={finalWidth}
+            height={finalHeight}
             className="object-contain"
             priority
             loading="eager"
-            sizes="(max-width: 640px) 22px, (max-width: 768px) 28px, 36px"
+            sizes={isLoginPage ? "(max-width: 640px) 22px, (max-width: 768px) 32px, 36px" : "(max-width: 640px) 80px, (max-width: 768px) 110px, 130px"}
             quality={100}
           />
         </div>
-        {/* Texto del logo */}
-        {showText && (
-          <span
-            className={`ml-2 font-bold ${textClass} ${textColor}`}
-            style={{
-              fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-              userSelect: 'none',
-              lineHeight: 1
-            }}
-          >
-            flasti
-          </span>
-        )}
       </div>
     </div>
   );

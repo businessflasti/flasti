@@ -102,26 +102,16 @@ const FooterComponent = () => {
           {/* Enlaces de escritorio */}
           <div className="hidden md:grid grid-cols-5 gap-8">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center">
                 <Image
-                  src="/logo/isoblanco.svg"
+                  src="/logo/logo-web.png"
                   alt="flasti logo"
-                  width={28}
-                  height={28}
+                  width={110}
+                  height={32}
                   className="object-contain"
                   priority
                   unoptimized={true}
                 />
-                <span
-                  className="text-white text-2xl transform -translate-y-px"
-                  style={{
-                    fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                    fontWeight: 600,
-                    letterSpacing: '-0.01em'
-                  }}
-                >
-                  flasti
-                </span>
               </div>
               <div className="mt-4">
                 <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 py-0.5">
@@ -195,7 +185,7 @@ const FooterComponent = () => {
           <div className="md:hidden mobile-footer-blocks">
             <div className="flex justify-center mb-6">
               <Image
-                src="/logo/isoblanco.svg"
+                src="/logo/isotipo-web.png"
                 alt="flasti logo"
                 width={28}
                 height={28}

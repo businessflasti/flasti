@@ -64,20 +64,20 @@ const StatsSection = () => {
     <section
       id="stats-section"
       ref={sectionRef}
-      className="bg-[#101010] text-white py-28 px-6"
+      className="bg-[#FEF9F3] text-white py-28 px-6"
     >
       <div className="container-custom max-w-[1200px] mb-16 text-center">
         <div className="flex flex-col items-center gap-3 mb-4">
           <div className="flex justify-center">
-            <div className="bg-white py-1 px-2 rounded-full shadow-md">
+            <div className="bg-[#232323] py-1 px-2 rounded-full shadow-md">
               <div className="flex -space-x-2">
-                <div className="w-7 h-7 rounded-full border-2 border-white overflow-hidden">
+                <div className="w-7 h-7 rounded-full overflow-hidden">
                   <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" loading="lazy" />
                 </div>
-                <div className="w-7 h-7 rounded-full border-2 border-white overflow-hidden">
+                <div className="w-7 h-7 rounded-full overflow-hidden">
                   <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile2.jpg" alt={t('usuario2')} className="w-full h-full object-cover" loading="lazy" />
                 </div>
-                <div className="w-7 h-7 rounded-full border-2 border-white overflow-hidden">
+                <div className="w-7 h-7 rounded-full overflow-hidden">
                   <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/profile3.jpg" alt={t('usuario3')} className="w-full h-full object-cover" loading="lazy" />
                 </div>
               </div>
@@ -85,7 +85,7 @@ const StatsSection = () => {
           </div>
         </div>
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold leading-tight">
+          <h2 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: '#0E1726' }}>
             El poder de nuestra comunidad
           </h2>
           <div className="mt-8 max-w-2xl mx-auto">
@@ -103,11 +103,12 @@ const StatsSection = () => {
             <div
               ref={(el) => { statsRef.current[i] = el; }}
               data-target={stat.number}
-              className="text-5xl md:text-6xl font-extrabold text-white mx-auto"
+              className="text-5xl md:text-6xl font-extrabold mx-auto"
+              style={{ color: '#0E1726' }}
             >
               {stat.display}
             </div>
-            <p className="mt-2 text-base md:text-lg text-white/80 text-center">{stat.label}</p>
+            <p className="mt-2 text-base md:text-lg text-center" style={{ color: '#0E1726' }}>{stat.label}</p>
           </div>
         ))}
       </div>

@@ -9,7 +9,7 @@ import { BackgroundGradientAnimation } from "@/components/ui/background-gradient
 const CTASection = () => {
   const { language, t } = useLanguage();
   return (
-    <section className="pt-12 pb-24 lg:py-16 relative">
+    <section className="pt-12 pb-24 lg:py-16 relative bg-[#FEF9F3]">
       {/* Fondo de gradiente animado extendido que se extiende más allá de la sección */}
       <div 
         className="absolute pointer-events-none will-change-transform" 
@@ -38,7 +38,7 @@ const CTASection = () => {
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(to bottom, #101010 0%, transparent 15%, transparent 85%, #101010 100%)',
+            background: 'linear-gradient(to bottom, #FEF9F3 0%, transparent 15%, transparent 85%, #FEF9F3 100%)',
             zIndex: 1
           }}
         />
@@ -50,10 +50,10 @@ const CTASection = () => {
           {/* Lado Izquierdo - Contenido Actual */}
           <div className="w-full">
             <div className="mb-6 text-center lg:text-left">
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#0E1726' }}>
                 {language === 'es' ? 'Sobre nosotros' : language === 'en' ? 'About us' : 'Sobre nós'}
               </h3>
-              <p className="text-foreground/70 text-lg md:text-xl">
+              <p className="text-lg md:text-xl" style={{ color: '#0E1726' }}>
                 {language === 'es' ? 'Conocé la visión que impulsa nuestro trabajo' : language === 'en' ? 'Discover the vision that drives our work' : 'Conheça a visão que impulsiona nosso trabalho'}
               </p>
             </div>
@@ -68,7 +68,7 @@ const CTASection = () => {
                   <div className="w-10 h-10 bg-[#232323] flex items-center justify-center lg:mx-0 mb-3 rounded-3xl">
                     <Shield className="text-white h-5 w-5" />
                   </div>
-                  <h3 className="text-sm font-bold mb-2 !text-[#101010] font-outfit" style={{color: '#101010'}}>{t('confianza')}</h3>
+                  <h3 className="text-sm font-bold mb-2 !text-[#101010]" style={{color: '#101010'}}>{t('confianza')}</h3>
                   <p className="text-xs text-[#101010]/70 leading-relaxed">{t('relacionesTransparentes')}</p>
                 </div>
                 
@@ -77,7 +77,7 @@ const CTASection = () => {
                   <div className="w-10 h-10 bg-[#232323] flex items-center justify-center lg:mx-0 mb-3 rounded-3xl">
                     <Lightbulb className="text-white h-5 w-5" />
                   </div>
-                  <h3 className="text-sm font-bold mb-2 !text-[#101010] font-outfit" style={{color: '#101010'}}>{t('innovacion')}</h3>
+                  <h3 className="text-sm font-bold mb-2 !text-[#101010]" style={{color: '#101010'}}>{t('innovacion')}</h3>
                   <p className="text-xs text-[#101010]/70">{t('mejoraConstante')}</p>
                 </div>
                 
@@ -86,7 +86,7 @@ const CTASection = () => {
                   <div className="w-10 h-10 bg-[#232323] flex items-center justify-center lg:mx-0 mb-3 rounded-3xl">
                     <Lock className="text-white h-5 w-5" />
                   </div>
-                  <h3 className="text-sm font-bold mb-2 !text-[#101010] font-outfit" style={{color: '#101010'}}>{t('seguridad')}</h3>
+                  <h3 className="text-sm font-bold mb-2 !text-[#101010]" style={{color: '#101010'}}>{t('seguridad')}</h3>
                   <p className="text-xs text-[#101010]/70">{t('proteccionDatos')}</p>
                 </div>
                 
@@ -95,7 +95,7 @@ const CTASection = () => {
                   <div className="w-10 h-10 bg-[#232323] flex items-center justify-center lg:mx-0 mb-3 rounded-3xl">
                     <TrendingUp className="text-white h-5 w-5" />
                   </div>
-                  <h3 className="text-sm font-bold mb-2 !text-[#101010] font-outfit" style={{color: '#101010'}}>{t('crecimiento')}</h3>
+                  <h3 className="text-sm font-bold mb-2 !text-[#101010]" style={{color: '#101010'}}>{t('crecimiento')}</h3>
                   <p className="text-xs text-[#101010]/70">{t('plataformaGlobal')}</p>
                 </div>
                 
@@ -104,7 +104,7 @@ const CTASection = () => {
                   <div className="w-10 h-10 bg-[#232323] flex items-center justify-center lg:mx-0 mb-3 rounded-3xl">
                     <Target className="text-white h-5 w-5" />
                   </div>
-                  <h3 className="text-sm font-bold mb-2 !text-[#101010] font-outfit" style={{color: '#101010'}}>{t('resultados')}</h3>
+                  <h3 className="text-sm font-bold mb-2 !text-[#101010]" style={{color: '#101010'}}>{t('resultados')}</h3>
                   <p className="text-xs text-[#101010]/70">Resultados comprobados</p>
                 </div>
                 
@@ -113,7 +113,7 @@ const CTASection = () => {
                   <div className="w-10 h-10 bg-[#232323] flex items-center justify-center lg:mx-0 mb-3 rounded-3xl">
                     <Rocket className="text-white h-5 w-5" />
                   </div>
-                  <h3 className="text-sm font-bold mb-2 !text-[#101010] font-outfit" style={{color: '#101010'}}>{t('oportunidad')}</h3>
+                  <h3 className="text-sm font-bold mb-2 !text-[#101010]" style={{color: '#101010'}}>{t('oportunidad')}</h3>
                   <p className="text-xs text-[#101010]/70">{t('futuroProspero')}</p>
                 </div>
               </div>
@@ -123,10 +123,10 @@ const CTASection = () => {
           {/* Lado Derecho - Grid de Novedades */}
           <div className="w-full">
             <div className="mt-20 md:mt-0 mb-6 text-center lg:text-left">
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#0E1726' }}>
                 {language === 'es' ? 'Últimas Novedades' : language === 'en' ? 'Latest News' : 'Últimas Novidades'}
               </h3>
-              <p className="text-foreground/70 text-lg md:text-xl">
+              <p className="text-lg md:text-xl" style={{ color: '#0E1726' }}>
                 {language === 'es' ? 'Mantente al día con las últimas actualizaciones' : 
                  language === 'en' ? 'Stay up to date with the latest updates' : 
                  'Mantenha-se atualizado com as últimas atualizações'}

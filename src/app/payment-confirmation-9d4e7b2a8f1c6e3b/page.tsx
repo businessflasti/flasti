@@ -59,7 +59,7 @@ export default function GraciasPorTuPagoPage() {
                 {/* Logo */}
                 <div className="flex justify-center lg:justify-start mb-8">
                   <Image
-                    src="/logo/isotipo.svg"
+                    src="/logo/isotipo-web.png"
                     alt="Logo Flasti"
                     width={60}
                     height={60}

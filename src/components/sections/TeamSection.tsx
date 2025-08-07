@@ -97,20 +97,19 @@ const TeamSection = React.memo(() => {
   return (
     <GridBackground 
       className="py-24 relative overflow-hidden"
-      gridColor="#262626"
+      gridColor="#B0B0B0"
       gridSize="40px"
-      backgroundColor="#101010"
+      backgroundColor="#FEF9F3"
       maskEnabled={true}
     >
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white dark:text-white light:text-black">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#0E1726' }}>
             Ganancia colectiva
           </h2>
-          <TextGenerateEffect 
-            words="Miles de personas en todo el mundo ya están ganando dinero con nuestra plataforma"
-            className="text-foreground/70 mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full"
-          />
+          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#0E1726' }}>
+            Miles de personas en todo el mundo ya están ganando dinero con nuestra plataforma
+          </p>
         </div>
 
         {/* Grid de tarjetas */}

@@ -165,7 +165,7 @@ const SkeletonAI = () => {
   return (
     <div className="flex flex-1 w-full h-full min-h-[6rem] relative overflow-hidden rounded-3xl">
       <img
-        src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/flastiai.webp"
+        src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/flastiai-web.webp"
         alt="Flasti AI"
         className="w-full h-full object-cover rounded-3xl"
       />

@@ -11,7 +11,7 @@ import { BackgroundGradientAnimation } from "@/components/ui/background-gradient
 const DashboardPreviewSection = React.memo(() => {
   const { t } = useLanguage();
   return (
-    <section className="py-20 relative overflow-visible">
+    <section className="py-20 relative overflow-visible bg-[#FEF9F3]">
       {/* Fondo de gradiente animado extendido que se extiende más allá de la sección */}
       <div 
         className="absolute pointer-events-none will-change-transform" 
@@ -39,13 +39,12 @@ const DashboardPreviewSection = React.memo(() => {
       </div>
       <div className="container-custom relative z-30">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white dark:text-white light:text-black">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#0E1726' }}>
             {t('ingresaMundo')}
           </h2>
-          <TextGenerateEffect 
-            words={t('accedeArea')}
-            className="text-foreground/70 max-w-2xl mx-auto text-lg md:text-xl"
-          />
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-center" style={{ color: '#0E1726' }}>
+            {t('accedeArea')}
+          </p>
         </div>
         <div className="w-full">
           <FlastiBentoGrid />

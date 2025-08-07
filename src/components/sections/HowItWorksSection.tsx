@@ -5,7 +5,7 @@ import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const howItWorksImages = [
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso1.webp",
+  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso1-web.webp",
   "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso2.webp",
   "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso3.webp"
 ];
@@ -35,14 +35,13 @@ const HowItWorksSection = React.memo(() => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#101010]/70">
+    <section className="py-24 relative overflow-hidden bg-[#FEF9F3]">
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white dark:text-white light:text-black text-center">{t('comoFunciona')}</h2>
-          <TextGenerateEffect 
-            words={t('soloNecesitas')}
-            className="text-foreground/70 max-w-2xl mx-auto text-center text-lg md:text-xl"
-          />
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center" style={{ color: '#0E1726' }}>{t('comoFunciona')}</h2>
+          <p className="max-w-2xl mx-auto text-center text-lg md:text-xl" style={{ color: '#0E1726' }}>
+            {t('soloNecesitas')}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
@@ -143,7 +142,8 @@ const HowItWorksSection = React.memo(() => {
             text-align: center;
             margin-top: calc(var(--unit) * 0.75);
             padding-block: calc(var(--unit) * 0.5);
-            color: var(--lightgray);
+            color: #FFFFFF;
+            font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             animation: keyframes-flash-text 3s infinite;
           }
 

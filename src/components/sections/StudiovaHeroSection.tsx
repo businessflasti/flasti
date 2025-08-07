@@ -102,7 +102,7 @@ function StudiovaHeroSection() {
                             <div className="hidden lg:flex justify-start pt-4">
                                 <button
                                     onClick={scrollToStats}
-                                    className="group relative overflow-hidden bg-white/95 backdrop-blur-sm hover:bg-white text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)] transform hover:scale-105 border border-white/20"
+                                    className="force-segoe-display group relative overflow-hidden bg-white/95 backdrop-blur-sm hover:bg-white text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)] transform hover:scale-105 border border-white/20"
                                 >
                                     <span className="relative z-10 flex items-center gap-3">
                                         Descubre más
@@ -187,7 +187,7 @@ function StudiovaHeroSection() {
                             <div className="lg:hidden flex justify-center -mt-[76px] pb-8">
                                 <button
                                     onClick={scrollToStats}
-                                    className="group relative overflow-hidden bg-white/95 backdrop-blur-sm hover:bg-white text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)] transform hover:scale-105 border border-white/20"
+                                    className="force-segoe-display group relative overflow-hidden bg-white/95 backdrop-blur-sm hover:bg-white text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)] transform hover:scale-105 border border-white/20"
                                 >
                                     <span className="relative z-10 flex items-center gap-3">
                                         Descubre más

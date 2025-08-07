@@ -238,20 +238,19 @@ const ModernTestimonialsSection = () => {
   }, [mobileEmblaApi, onMobileSelect]);
 
   return (
-    <section className="py-12 md:py-16 relative overflow-hidden bg-[#101010]/70">
+    <section className="py-12 md:py-16 relative overflow-hidden bg-[#FEF9F3]">
 
 
       <div className="container-custom relative z-0 max-w-5xl mx-auto px-4">
         {/* Main heading */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#0E1726' }}>
             Ahora es posible
           </h2>
 
-          <TextGenerateEffect 
-            words={t("experienciasUsuarios").replace(/Flasti/g, "flasti").replace(/<[^>]*>/g, '')}
-            className="text-foreground/70 mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full"
-          />
+          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#0E1726' }}>
+            {t("experienciasUsuarios").replace(/Flasti/g, "flasti").replace(/<[^>]*>/g, '')}
+          </p>
         </div>
 
         {/* Desktop carousel - Una sola tarjeta horizontal */}
@@ -268,7 +267,7 @@ const ModernTestimonialsSection = () => {
           
           {/* Navigation buttons */}
           <button
-            className="absolute top-1/2 -left-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-[#232323]/80 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white z-0"
+            className="absolute top-1/2 -left-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white z-0"
             onClick={() => desktopEmblaApi?.scrollPrev()}
             aria-label="Previous testimonial"
           >
@@ -276,7 +275,7 @@ const ModernTestimonialsSection = () => {
           </button>
           
           <button
-            className="absolute top-1/2 -right-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-[#232323]/80 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white z-0"
+            className="absolute top-1/2 -right-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white z-0"
             onClick={() => desktopEmblaApi?.scrollNext()}
             aria-label="Next testimonial"
           >
@@ -298,7 +297,7 @@ const ModernTestimonialsSection = () => {
           
           {/* Navigation buttons for mobile */}
           <button
-            className="absolute top-1/2 left-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white z-0"
+            className="absolute top-1/2 left-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white z-0"
             onClick={() => mobileEmblaApi?.scrollPrev()}
             aria-label="Previous testimonial"
           >
@@ -306,7 +305,7 @@ const ModernTestimonialsSection = () => {
           </button>
           
           <button
-            className="absolute top-1/2 right-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white z-0"
+            className="absolute top-1/2 right-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white z-0"
             onClick={() => mobileEmblaApi?.scrollNext()}
             aria-label="Next testimonial"
           >
