@@ -4,7 +4,7 @@
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background: #000000;
+  background: #101010;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,92 +20,36 @@
   pointer-events: none;
 }
 
-/* Loader animación optimizada para máxima fluidez */
-.loader {
-  --size: 180px; /* Más grande para escritorio */
-  --duration: 1s; /* Animación más rápida y menos costosa */
-  --logo-color: grey;
-  --background: linear-gradient(
-      0deg,
-      rgba(50, 50, 50, 0.15) 0%,
-      rgba(100, 100, 100, 0.15) 100%
-    );
-  height: var(--size);
-  aspect-ratio: 1;
-  position: relative;
+/* Windows Loading Spinner */
+.windowsLoadingSpinner {
+  box-sizing: border-box;
+  width: 3rem;
+  height: 3rem;
+  padding: 2px;
+  overflow: visible;
 }
 
-@media (max-width: 600px), (max-device-width: 600px) {
-  .loader {
-    --size: 140px; /* Más grande para móvil */
-    --duration: 0.8s;
-  }
+.windowsLoadingSpinner > circle {
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
+  transition: all 0.2s ease-in-out 0s;
+  animation: 2s linear 0s infinite normal none running loading-spinner;
 }
 
-.loader .box {
-  position: absolute;
-  background: var(--background);
-  border-radius: 50%;
-  border-top: 2px solid rgba(100, 100, 100, 0.7);
-  /* Eliminar blur para mejorar rendimiento */
-  /* backdrop-filter: blur(5px); */
-  will-change: transform, opacity;
-  animation: ripple-fast var(--duration) infinite cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0.7;
-  /* Eliminar box-shadow para máxima fluidez en móviles */
-  box-shadow: none;
-}
-
-.loader .box:nth-child(1) {
-  inset: 35%;
-  z-index: 99;
-  animation-delay: 0s;
-}
-.loader .box:nth-child(2) {
-  inset: 20%;
-  z-index: 98;
-  border-color: rgba(100, 100, 100, 0.5);
-  animation-delay: 0.3s;
-}
-
-.loader .logo {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  padding: 30%;
-}
-
-.loader .logo img,
-.loader .logo svg {
-  fill: var(--logo-color);
-  width: 100%;
-  animation: color-change var(--duration) infinite ease-in-out;
-}
-
-@keyframes ripple-fast {
+@keyframes loading-spinner {
   0% {
-    transform: scale(1);
-    opacity: 0.7;
+    stroke-dasharray: 0.01px, 43.97px;
+    transform: rotate(0);
   }
   50% {
-    transform: scale(1.18);
-    opacity: 1;
+    stroke-dasharray: 21.99px, 21.99px;
+    transform: rotate(450deg);
   }
   100% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-}
-
-@keyframes color-change {
-  0% {
-    fill: var(--logo-color);
-  }
-  50% {
-    fill: white;
-  }
-  100% {
-    fill: var(--logo-color);
+    stroke-dasharray: 0.01px, 43.97px;
+    transform: rotate(1080deg);
   }
 }

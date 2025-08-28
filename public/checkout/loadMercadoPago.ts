@@ -139,7 +139,7 @@ function createFallbackButton(container: HTMLElement, amount: number) {
     
     // Redirigir a la página de registro
     setTimeout(() => {
-      window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+      window.location.href = "https://flasti.com/register";
     }, 2000);
   });
   

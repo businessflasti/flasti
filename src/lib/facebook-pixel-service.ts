@@ -36,7 +36,7 @@ interface FacebookPixelLeadParams {
 }
 
 class FacebookPixelService {
-  private pixelId: string = "738700458549300";
+  private pixelId: string = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "738700458549300";
   private isInitialized: boolean = false;
   private excludedIp: string = "201.235.207.156";
 

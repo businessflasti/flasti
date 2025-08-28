@@ -1311,7 +1311,7 @@ const CheckoutContent = () => {
                               const details = await actions.order.capture();
                               console.log("Pago completado. ID de transacción: " + details.id);
                               // Redirigir al usuario a la página de registro segura
-                              window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+                              window.location.href = "https://flasti.com/register";
                             }
                           }}
                         />

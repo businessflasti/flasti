@@ -34,21 +34,9 @@ const PageLoader = () => {
       className={styles.loaderWrapper + (visible ? "" : " " + styles.hide)}
       aria-hidden={!visible}
     >
-      <div className={styles.loader}>
-        <div className={styles.box}>
-          <div className={styles.logo}>
-            <Image
-              src="/logo/isotipo-web.png"
-              alt="Logo"
-              width={80}
-              height={80}
-              priority
-              className={styles.logoImg}
-            />
-          </div>
-        </div>
-        <div className={styles.box} />
-      </div>
+      <svg viewBox="0 0 16 16" height="48" width="48" className={styles.windowsLoadingSpinner}>
+        <circle r="7px" cy="8px" cx="8px"></circle>
+      </svg>
     </div>
   );
 };

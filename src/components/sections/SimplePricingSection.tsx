@@ -257,7 +257,7 @@ const SimplePricingSection = React.memo(() => {
 
 
 
-              <a href="/checkout" className="block"> 
+              <a href="/dashboard/checkout" className="block"> 
                 <Button className="w-full py-6 text-xl font-bold bg-gradient-to-r from-[#16a34a] to-[#15803d] hover:from-[#15803d] hover:to-[#166534] border-0 flex items-center justify-center gap-3 focus:outline-none focus:ring-0 focus:border-white/10 rounded-3xl">
                   {t('registrateAhoraBtn').toUpperCase()}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

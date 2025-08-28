@@ -23,17 +23,17 @@ const faqs = [
   {
     icon: <Heart className="h-5 w-5" />,
     question: "¿Por qué debería unirme a Flasti?",
-    answer: "Flasti te ofrece una plataforma única que combina inteligencia artificial con microtrabajos, permitiéndote generar ingresos desde cualquier lugar. Nuestra tecnología simplifica tareas complejas, maximizando tus ganancias con menos esfuerzo y tiempo invertido."
+    answer: "Flasti te ofrece una plataforma única que combina inteligencia artificial con microtareas, permitiéndote generar ingresos desde cualquier lugar. Nuestra tecnología simplifica tareas complejas, maximizando tus ganancias con menos esfuerzo y tiempo invertido."
   },
   {
     icon: <Zap className="h-5 w-5" />,
-    question: "¿Qué son los microtrabajos en línea?",
-    answer: "Los microtrabajos son tareas digitales sencillas y rápidas que puedes completar desde tu dispositivo. En Flasti, utilizamos IA para automatizar gran parte del proceso, permitiéndote completar más tareas en menos tiempo y aumentar tus ingresos significativamente."
+    question: "¿Qué son las microtareas en línea?",
+    answer: "Las microtareas son tareas digitales sencillas y rápidas que puedes completar desde tu dispositivo. En Flasti, utilizamos IA para automatizar gran parte del proceso, permitiéndote completar más tareas en menos tiempo y aumentar tus ingresos significativamente."
   },
   {
     icon: <Rocket className="h-5 w-5" />,
     question: "¿Cómo puedo empezar?",
-    answer: "Comenzar es muy sencillo: regístrate en nuestra plataforma, completa tu perfil, selecciona el plan que mejor se adapte a tus necesidades, y comienza a realizar microtrabajos asistidos por IA. Nuestro sistema te guiará paso a paso desde el primer momento."
+    answer: "Comenzar es muy sencillo: regístrate en nuestra plataforma, completa tu perfil, selecciona el plan que mejor se adapte a tus necesidades, y comienza a realizar microtareas asistidas por IA. Nuestro sistema te guiará paso a paso desde el primer momento."
   },
   {
     icon: <Award className="h-5 w-5" />,
@@ -154,7 +154,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden bg-[#101010]">
       <style jsx global>{pulseAnimation}</style>
       {/* Forzar borde azul en hover de acordeones FAQ */}
       <style jsx global>{`

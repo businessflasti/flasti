@@ -38,7 +38,7 @@ function isLocalOrPrivateNetworkOrExcludedIP() {
   return false;
 }
 
-const FacebookPixel = ({ pixelId = "738700458549300" }: FacebookPixelProps) => {
+const FacebookPixel = ({ pixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "738700458549300" }: FacebookPixelProps) => {
   const [shouldLoadPixel, setShouldLoadPixel] = useState(false);
 
   useEffect(() => {

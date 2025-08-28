@@ -39,7 +39,7 @@ export default function TerminosPage() {
 
             <h2 className="text-2xl font-bold mt-8 mb-4 text-white">2. Uso del Servicio</h2>
             <p>
-              Flasti te ofrece herramientas para generar ingresos a través de microtrabajos en línea y otras oportunidades digitales. Al usar nuestro servicio, aceptás:
+              Flasti te ofrece herramientas para generar ingresos a través de microtareas en línea y otras oportunidades digitales. Al usar nuestro servicio, aceptás:
             </p>
             <ul className="space-y-3 mt-4">
               <li>Brindar información real y actualizada al registrarte.</li>

@@ -42,7 +42,7 @@ export function FlastiBentoGrid() {
       className: "md:col-span-1 lg:col-span-2",
     },
     {
-      title: t('microtrabajosEnLinea'),
+      title: t('microtareasEnLinea'),
       description: (
         <span className="text-sm">
           {t('generaIngresosTareas')}
@@ -102,8 +102,8 @@ const SkeletonDashboard = () => {
           >
             <div className="p-2 sm:p-3 rounded-xl transition-all duration-300">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center flex-shrink-0 border border-gray-200">
-                  <span className="text-[#101010] text-sm sm:text-base font-bold">$</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#232323] flex items-center justify-center flex-shrink-0 border border-gray-200">
+                  <span className="text-white text-sm sm:text-base font-bold">$</span>
                 </div>
                 <div>
                   <div className="text-xs text-[#101010]/70">{t('gananciasTotal')}</div>
@@ -114,7 +114,7 @@ const SkeletonDashboard = () => {
           </motion.div>
           {/* Bloque flotante 2 - Retiro */}
           <motion.div
-            className="absolute top-16 right-4 sm:top-24 sm:right-8 rounded-lg sm:rounded-xl z-30 scale-75 sm:scale-100 border border-gray-200/80 bg-white"
+            className="absolute top-16 right-4 sm:top-24 sm:right-8 lg:top-28 rounded-lg sm:rounded-xl z-30 scale-75 sm:scale-100 border border-gray-200/80 bg-white"
             style={{
               borderRadius: '1rem',
               boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
@@ -122,8 +122,8 @@ const SkeletonDashboard = () => {
           >
             <div className="p-2 sm:p-3 rounded-xl transition-all duration-300">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center flex-shrink-0 border border-gray-200">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#101010]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#232323] flex items-center justify-center flex-shrink-0 border border-gray-200">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -177,8 +177,8 @@ const SkeletonEarnings = () => {
   return (
     <div className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-row space-x-2">
       <div className="h-full w-1/3 rounded-3xl bg-white px-2 py-4 border border-gray-200 flex flex-col items-center justify-center min-h-[8rem]">
-        <div className="w-10 h-10 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center">
-          <svg className="w-5 h-5 text-[#101010]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 rounded-full bg-blue-400 border border-blue-500 flex items-center justify-center">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
           </svg>
         </div>
@@ -186,14 +186,14 @@ const SkeletonEarnings = () => {
           Descargar<br />aplicación
         </p>
         <div className="mt-4 min-h-[24px] flex items-center">
-          <p className="border border-green-500 bg-green-100 text-green-600 text-xs rounded-full px-2 py-0.5">
+          <p className="bg-[#5BC660] text-white text-xs rounded-full px-2 py-1 flex items-center justify-center">
             Completado
           </p>
         </div>
       </div>
       <div className="h-full w-1/3 rounded-3xl bg-white px-2 py-4 border border-gray-200 flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-full bg-red-100 border border-red-200 flex items-center justify-center">
-          <svg className="w-5 h-5 text-[#101010]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 rounded-full bg-[#EA4085] border border-[#EA4085] flex items-center justify-center">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -202,14 +202,14 @@ const SkeletonEarnings = () => {
           Mirar video<br />(12 min)
         </p>
         <div className="mt-4 min-h-[24px] flex items-center">
-          <p className="border border-green-500 bg-green-100 text-green-600 text-xs rounded-full px-2 py-0.5">
+          <p className="bg-[#5BC660] text-white text-xs rounded-full px-2 py-1 flex items-center justify-center">
             Completado
           </p>
         </div>
       </div>
       <div className="h-full w-1/3 rounded-3xl bg-white px-2 py-4 border border-gray-200 flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-full bg-yellow-100 border border-yellow-200 flex items-center justify-center">
-          <svg className="w-5 h-5 text-[#101010]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 rounded-full bg-yellow-400 border border-yellow-500 flex items-center justify-center">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.5 2C5.4 2 2 5.4 2 9.5V14c0 4.1 3.4 7.5 7.5 7.5H14c4.1 0 7.5-3.4 7.5-7.5V9.5C21.5 5.4 18.1 2 14 2H9.5z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 10.8v1.5M16.5 10.8v1.5M12 7v1.5M9.8 15h3.7" />
           </svg>
@@ -218,7 +218,7 @@ const SkeletonEarnings = () => {
           Probar juego<br />(30 min)
         </p>
         <div className="mt-4 min-h-[24px] flex items-center">
-          <p className="border border-orange-500 bg-orange-100 text-orange-600 text-xs rounded-full px-2 py-0.5 min-w-[85px] text-center">
+          <p className="bg-[#E95434] text-white text-xs rounded-full px-2 py-1 min-w-[85px] flex items-center justify-center">
             Iniciar
           </p>
         </div>
@@ -231,7 +231,7 @@ const SkeletonSupport = () => {
   return (
     <div className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2">
       <div className="flex flex-row rounded-3xl border border-gray-200 p-2 items-center space-x-2 bg-white">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#3C66CD] to-[#ed4066] flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-[#E85433] flex items-center justify-center">
           <span className="text-white text-xs font-bold">24</span>
         </div>
         <p className="text-xs text-[#101010]">

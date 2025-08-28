@@ -321,7 +321,7 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-orange-500;
   }
 
   /* Estilos para títulos */
@@ -524,116 +524,4 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
     letter-spacing: -0.04em;
     line-height: 0.92;
   }
-}
-/* Animaciones para BackgroundGradientAnimation */
-@keyframes first {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  33% {
-    transform: rotate(120deg);
-  }
-  66% {
-    transform: rotate(240deg);
-  }
-}
-
-@keyframes second {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  33% {
-    transform: rotate(240deg);
-  }
-  66% {
-    transform: rotate(120deg);
-  }
-}
-
-@keyframes third {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  33% {
-    transform: rotate(-120deg);
-  }
-  66% {
-    transform: rotate(-240deg);
-  }
-}
-
-@keyframes fourth {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  33% {
-    transform: rotate(-240deg);
-  }
-  66% {
-    transform: rotate(-120deg);
-  }
-}
-
-@keyframes fifth {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  33% {
-    transform: rotate(60deg);
-  }
-  66% {
-    transform: rotate(300deg);
-  }
-}
-
-.animate-first {
-  animation: first 20s ease infinite;
-}
-
-.animate-second {
-  animation: second 20s ease infinite;
-}
-
-.animate-third {
-  animation: third 20s ease infinite;
-}
-
-.animate-fourth {
-  animation: fourth 20s ease infinite;
-}
-
-.animate-fifth {
-  animation: fifth 20s ease infinite;
-}
-
-/* Animaciones optimizadas más lentas */
-.animate-first-slow {
-  animation: first 30s ease infinite;
-}
-
-.animate-second-slow {
-  animation: second 35s ease infinite;
-}
-
-/* Animaciones ultra lentas para máximo rendimiento */
-.animate-first-ultra-slow {
-  animation: first 45s ease-in-out infinite;
-  transform: translateZ(0); /* Hardware acceleration */
-  backface-visibility: hidden;
-}
-
-.animate-second-ultra-slow {
-  animation: second 50s ease-in-out infinite;
-  transform: translateZ(0); /* Hardware acceleration */
-  backface-visibility: hidden;
-}
-
-/* Optimizaciones para gradientes */
-.gradients-container {
-  contain: layout style paint;
-  isolation: isolate;
-}
-
-.animate-third-slow {
-  animation: third 40s ease infinite;
 }

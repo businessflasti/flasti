@@ -76,15 +76,15 @@ const MobileTestimonialCard = ({
           
           <div className="flex items-center gap-2 mt-3">
             {testimonial.paymentMethod === 'paypal' && (
-              <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-0.5 rounded-full">
-                <PayPalIcon className="w-3 h-3 text-blue-400" />
-                <span className="text-xs text-blue-300">PayPal</span>
+              <div className="flex items-center gap-1 bg-[#393939] px-2 py-0.5 rounded-full">
+                <PayPalIcon className="w-3 h-3 text-[#CCCCCC]" />
+                <span className="text-xs text-[#CCCCCC]">PayPal</span>
               </div>
             )}
             {testimonial.paymentMethod === 'bank' && (
-              <div className="flex items-center gap-1 bg-green-500/10 px-2 py-0.5 rounded-full">
-                <Landmark className="w-3 h-3 text-green-400" />
-                <span className="text-xs text-green-300">Transferencia</span>
+              <div className="flex items-center gap-1 bg-[#393939] px-2 py-0.5 rounded-full">
+                <Landmark className="w-3 h-3 text-[#CCCCCC]" />
+                <span className="text-xs text-[#CCCCCC]">Transferencia</span>
               </div>
             )}
             {!testimonial.paymentMethod && (
@@ -145,15 +145,15 @@ const DesktopTestimonialCard = ({
           
           <div className="flex items-center gap-2 mb-6">
             {testimonial.paymentMethod === 'paypal' && (
-              <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-1 rounded-full">
-                <PayPalIcon className="w-3 h-3 text-blue-400" />
-                <span className="text-xs text-blue-300">PayPal</span>
+              <div className="flex items-center gap-1 bg-[#393939] px-2 py-1 rounded-full">
+                <PayPalIcon className="w-3 h-3 text-[#CCCCCC]" />
+                <span className="text-xs text-[#CCCCCC]">PayPal</span>
               </div>
             )}
             {testimonial.paymentMethod === 'bank' && (
-              <div className="flex items-center gap-1 bg-green-500/10 px-2 py-1 rounded-full">
-                <Landmark className="w-3 h-3 text-green-400" />
-                <span className="text-xs text-green-300">Transferencia</span>
+              <div className="flex items-center gap-1 bg-[#393939] px-2 py-1 rounded-full">
+                <Landmark className="w-3 h-3 text-[#CCCCCC]" />
+                <span className="text-xs text-[#CCCCCC]">Transferencia</span>
               </div>
             )}
             {!testimonial.paymentMethod && (
@@ -238,17 +238,17 @@ const ModernTestimonialsSection = () => {
   }, [mobileEmblaApi, onMobileSelect]);
 
   return (
-    <section className="py-12 md:py-16 relative overflow-hidden bg-[#FEF9F3]">
+    <section className="py-12 md:py-16 relative overflow-hidden bg-[#E75333]">
 
 
       <div className="container-custom relative z-0 max-w-5xl mx-auto px-4">
         {/* Main heading */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#0E1726' }}>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#FFFFFF' }}>
             Ahora es posible
           </h2>
 
-          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#0E1726' }}>
+          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#FFFFFF' }}>
             {t("experienciasUsuarios").replace(/Flasti/g, "flasti").replace(/<[^>]*>/g, '')}
           </p>
         </div>
@@ -318,9 +318,9 @@ const ModernTestimonialsSection = () => {
           {testimonials.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 rounded-full transition-all ${
+              className={`w-2 h-2 rounded-full transition-all testimonial-indicator ${
                 index === selectedIndex
-                  ? "bg-[#3C66CD] scale-125 w-8"
+                  ? "active scale-125"
                   : "bg-[#232323]"
               }`}
               onClick={() => scrollTo(index)}

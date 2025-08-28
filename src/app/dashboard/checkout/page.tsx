@@ -24,6 +24,7 @@ import facebookPixelService from '@/lib/facebook-pixel-service';
 import unifiedTrackingService from '@/lib/unified-tracking-service';
 import FacebookPixelDebug from '@/components/debug/FacebookPixelDebug';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from "@/components/ui/card";
@@ -32,13 +33,14 @@ import { CheckIcon, Zap, Infinity, AlertTriangle, Sparkles, Shield, HeadphonesIc
 import Script from "next/script";
 import Link from "next/link";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import CheckoutHeader from "@/components/layout/CheckoutHeader";
+
 import PayPalLogo from "@/components/icons/PayPalLogo";
 import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
 
 const CheckoutContent = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
   
   // Constante para el máximo número de intentos
   const MAX_HOTMART_LOAD_ATTEMPTS = 3;
@@ -49,7 +51,7 @@ const CheckoutContent = () => {
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
 
   // Estado para el precio base
-  const [price] = useState(10); // Precio base en USD
+  const [price] = useState(7); // Precio base en USD
   
   // Estados para descuentos (mantenidos por compatibilidad pero siempre en falso)
   const [discountApplied] = useState(false);
@@ -361,12 +363,14 @@ const CheckoutContent = () => {
         currency: 'ARS',
         transaction_id: transactionData?.id || null,
         status: transactionData ? 'completed' : 'form_submitted',
+        user_id: user?.id || null, // 🎯 AGREGAR USER_ID
         created_at: new Date().toISOString(),
         metadata: {
           discount_applied: discountApplied,
           final_discount_applied: finalDiscountApplied,
           user_agent: navigator.userAgent,
-          referrer: document.referrer || null
+          referrer: document.referrer || null,
+          user_email: user?.email || null // 🎯 AGREGAR EMAIL DEL USUARIO AUTENTICADO
         }
       };
 
@@ -488,7 +492,7 @@ const CheckoutContent = () => {
       setIsSubmittingMercadoPagoForm(true);
 
       // Precio base en ARS
-      const amountARS = 11500;
+      const amountARS = 6900;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -521,7 +525,7 @@ const CheckoutContent = () => {
       setIsSubmittingMercadoPagoForm(false);
 
       // En caso de error, redirigir a registro
-      window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+      window.location.href = "https://flasti.com/register";
     }
   };
 
@@ -536,12 +540,14 @@ const CheckoutContent = () => {
         currency: 'USD',
         transaction_id: transactionData?.id || null,
         status: transactionData ? 'completed' : 'form_submitted',
+        user_id: user?.id || null, // 🎯 AGREGAR USER_ID
         created_at: new Date().toISOString(),
         metadata: {
           discount_applied: discountApplied,
           final_discount_applied: finalDiscountApplied,
           user_agent: navigator.userAgent,
-          referrer: document.referrer || null
+          referrer: document.referrer || null,
+          user_email: user?.email || null // 🎯 AGREGAR EMAIL DEL USUARIO AUTENTICADO
         }
       };
 
@@ -739,7 +745,7 @@ const CheckoutContent = () => {
 
     try {
       // Precio base en ARS
-      const amountARS = 11500; // 11.500 ARS precio base
+      const amountARS = 6900; // 6.900 ARS precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1272,27 +1278,7 @@ const CheckoutContent = () => {
     unifiedTrackingService.trackInitiateCheckout();
   }, []);
 
-  useEffect(() => {
-    if (!isCountryKnown) return;
 
-    const currentPriceUSD = parseFloat(price);
-    let eventValue = currentPriceUSD;
-    let eventCurrency = 'USD';
-
-    if (isArgentina) {
-        eventCurrency = 'ARS';
-        eventValue = 11500; // Precio base en ARS
-    }
-
-    // Track página de checkout vista con servicio unificado
-    unifiedTrackingService.trackPageView('Checkout Page', {
-      content_category: 'checkout',
-      value: eventValue,
-      currency: eventCurrency
-    });
-
-    // InitiateCheckout ya se dispara una sola vez al cargar la página
-  }, [price, isArgentina, isCountryKnown]);
 
   // Efecto para tracking cuando se completa información de pago de PayPal
   useEffect(() => {
@@ -1396,7 +1382,7 @@ const CheckoutContent = () => {
   return (
     <>
       <div className="min-h-screen mobile-smooth-scroll" style={{ background: "#101010" }}>
-      <CheckoutHeader />
+
 
       {/* Eliminado Exit Intent Popup */}
 
@@ -1404,23 +1390,23 @@ const CheckoutContent = () => {
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-8">
           {/* Columna derecha - Resumen de compra (aparece primero en móvil) */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 mb-2 lg:mb-0">
-            <Card className="bg-[#232323] p-6 rounded-xl">
+            <Card className="bg-[#232323] p-6 rounded-3xl">
               <div className="flex justify-between items-center mb-2">
                 <div>
-                  <h2 className="text-2xl text-white"
+                  <h2 className="text-lg md:text-xl text-white"
                     style={{
                       fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                       fontWeight: 600,
                       letterSpacing: '-0.01em'
                     }}
-                  >flasti</h2>
-                  <p className="text-sm text-white/70">Acceso exclusivo a la plataforma</p>
+                  >Desbloquea todas tus microtareas ahora</h2>
+                  <p className="text-sm text-white/70">Acceso exclusivo</p>
                 </div>
-                <div className="bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1 whitespace-nowrap md:-mt-7">
+                <div className="text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1 whitespace-nowrap md:-mt-7" style={{ backgroundColor: '#3C66CD' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Pago Seguro
+                  Premium
                 </div>
               </div>
 
@@ -1432,28 +1418,24 @@ const CheckoutContent = () => {
                   {/* Mostrar precio en USD cuando se selecciona PayPal o cuando no es Argentina */}
                   {(selectedPaymentMethod === "paypal" || !isArgentina) ? (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">                          <span className="text-xl font-bold text-white">
-                            $ 10 USD
-                          </span>
-                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded whitespace-nowrap">
-                          {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-bold text-white">
+                          $ 7 USD
                         </span>
-                      </div>
-                      <div className="flex items-center mt-1">
-                        <span className="text-xs line-through text-red-500">$50</span>
+                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
+                          Microtareas ilimitadas
+                        </span>
                       </div>
                     </div>
                   ) : (
                     <div className="flex flex-col">
-                      <div className="flex items-center justify-between">                          <span className="text-xl font-bold text-white">
-                            AR$ 11.500
-                          </span>
-                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded whitespace-nowrap">
-                          {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-bold text-white">
+                          AR$ 6.900
                         </span>
-                      </div>
-                      <div className="flex items-center mt-1">
-                        <span className="text-xs line-through text-red-500">AR$ 57.500</span>
+                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
+                          Microtareas ilimitadas
+                        </span>
                       </div>
                     </div>
                   )}
@@ -1467,28 +1449,22 @@ const CheckoutContent = () => {
                       <>
                         <div className="flex items-center gap-2">
                           <span className="text-2xl font-bold text-white">
-                            $ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD
+                            $ 7 USD
                           </span>
-                          <div className="flex items-center gap-1">
-                            <span className="text-xs line-through text-red-500">$50</span>
-                            <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1 whitespace-nowrap">
-                              {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
-                            </span>
-                          </div>
+                          <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl ml-1 whitespace-nowrap">
+                            Microtareas ilimitadas
+                          </span>
                         </div>
                       </>
                     ) : (
                       <>
                         <div className="flex items-center gap-2">
                           <span className="text-2xl font-bold text-white">
-                            AR$ {finalDiscountApplied ? "5.750" : (discountApplied ? "9.200" : "11.500")}
+                            AR$ 6.900
                           </span>
-                          <div className="flex items-center gap-1">
-                            <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                            <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1 whitespace-nowrap">
-                              {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
-                            </span>
-                          </div>
+                          <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl ml-1 whitespace-nowrap">
+                            Microtareas ilimitadas
+                          </span>
                         </div>
                       </>
                     )}
@@ -1500,7 +1476,7 @@ const CheckoutContent = () => {
 
               {/* Etiqueta de ahorro llamativa (como caja separada pero compacta) */}
               {/* Versión móvil - Diseño más compacto */}
-              <div className="md:hidden mb-3 mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-2 rounded-lg border border-[#22c55e]/30 flex items-center justify-between shadow-sm shadow-[#22c55e]/10">
+              <div className="md:hidden mb-3 mt-3" style={{ display: 'none' }}>
                 <div className="flex items-center gap-1">
                   <div className="w-5 h-5 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3 w-3 text-[#22c55e]" />
@@ -1526,7 +1502,7 @@ const CheckoutContent = () => {
               </div>
 
               {/* Versión desktop - Diseño original */}
-              <div className="hidden md:flex mb-3 mt-3 bg-gradient-to-r from-[#22c55e]/20 to-[#16a34a]/20 py-2 px-3 rounded-lg border border-[#22c55e]/30 items-center justify-between shadow-sm shadow-[#22c55e]/10">
+              <div className="hidden" style={{ display: 'none' }}>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
                     <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
@@ -1594,25 +1570,7 @@ const CheckoutContent = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="text-[#101010]" size={16} />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-white">Suite completa</h4>
-                    <p className="text-xs text-white/70">Acceso a todas las funciones premium</p>
-                  </div>
-                </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                    <Gift className="text-[#101010]" size={16} />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-white">Actualizaciones gratuitas</h4>
-                    <p className="text-xs text-white/70">Nuevas funciones sin costo adicional</p>
-                  </div>
-                </div>
               </div>
 
 
@@ -1631,7 +1589,7 @@ const CheckoutContent = () => {
             <div className="space-y-4">
 
               {/* Moneda local - Hotmart o Mercado Pago */}
-              <Card className={`border bg-[#232323] overflow-hidden rounded-xl mobile-card ${selectedPaymentMethod === "hotmart" ? "border-white" : ""}`}>
+              <Card className={`border bg-[#232323] overflow-hidden rounded-3xl mobile-card ${selectedPaymentMethod === "hotmart" ? "border-white" : ""}`}>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -1737,7 +1695,7 @@ const CheckoutContent = () => {
                             <div>
                               <h3 className="font-medium mb-1 text-white">Pago en pesos argentinos</h3>
                               <p className="text-sm text-white/70">
-                                <span className="sm:inline block">Activa tu acceso al instante</span>
+                                <span className="sm:inline block">Desbloquea al instante</span>
                                 <span className="sm:inline block"> de forma rápida y segura.</span>
                               </p>
                             </div>
@@ -1755,28 +1713,19 @@ const CheckoutContent = () => {
                           <div className="flex justify-between items-center mb-3 p-3 bg-[#101010] rounded-lg">
                             <div className="flex flex-col">
                               <span className="text-sm text-white">Total</span>
-                              {/* Etiqueta de ahorro para usuarios de Argentina */}
-                              <span className="text-xs text-green-500 font-medium mt-1">
-                                Ahorras AR$ {finalDiscountApplied ? "51.750" : (discountApplied ? "48.300" : "46.000")}
-                              </span>
                             </div>
                             <div className="flex flex-col items-end">
-                              <div className="flex items-center gap-3">
-                                {isArgentina ? (
-                                  <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                                ) : (
-                                  <span className="text-sm line-through text-red-500">$50 USD</span>
-                                )}
-                                <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-black px-1 py-0.5 rounded ml-1 whitespace-nowrap">
-                                  {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                              <div className="flex items-center gap-2">
+                                <div className="font-bold text-white">
+                                  {isArgentina ? (
+                                    <span className="text-lg">AR$ 6.900</span>
+                                  ) : (
+                                    <span>$ 7 USD</span>
+                                  )}
+                                </div>
+                                <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
+                                  Microtareas ilimitadas
                                 </span>
-                              </div>
-                              <div className="font-bold text-white mt-1">
-                                {isArgentina ? (
-                                  <span className="text-lg">AR$ {finalDiscountApplied ? "5.750" : (discountApplied ? "9.200" : "11.500")}</span>
-                                ) : (
-                                  <span>$ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD</span>
-                                )}
                               </div>
                             </div>
                           </div>
@@ -1791,7 +1740,7 @@ const CheckoutContent = () => {
                               </div>
                               <div>
                                 <h3 className="text-sm font-semibold text-white">Ingresa tus datos</h3>
-                                <p className="text-xs text-white/60">Necesarios para completar tu acceso</p>
+                                <p className="text-xs text-white/60">Necesarios para desbloquear tu acceso</p>
                               </div>
                             </div>
 
@@ -1927,7 +1876,7 @@ const CheckoutContent = () => {
               </Card>
 
               {/* PayPal */}
-              <Card className={`border bg-[#232323] overflow-hidden rounded-xl mobile-card ${selectedPaymentMethod === "paypal" ? "border-white" : ""}`}>
+              <Card className={`border bg-[#232323] overflow-hidden rounded-3xl mobile-card ${selectedPaymentMethod === "paypal" ? "border-white" : ""}`}>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -1963,7 +1912,7 @@ const CheckoutContent = () => {
                       <div>
                         <h3 className="font-medium mb-1 text-white">Pago con PayPal</h3>
                         <p className="text-sm text-white/70">
-                          <span className="sm:inline block">Activa tu acceso al instante</span>
+                          <span className="sm:inline block">Desbloquea al instante</span>
                           <span className="sm:inline block"> de forma rápida y segura.</span>
                         </p>
                       </div>
@@ -1975,19 +1924,14 @@ const CheckoutContent = () => {
                     <div className="flex justify-between items-center mb-3 p-3 bg-[#101010] rounded-lg">
                       <div className="flex flex-col">
                         <span className="text-sm text-white">Total</span>
-                        {/* Etiqueta de ahorro siempre en USD para PayPal */}
-                        <span className="text-xs text-green-500 font-medium mt-1">
-                          Ahorras ${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD
-                        </span>
                       </div>
                       <div className="flex flex-col items-end">
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm line-through text-red-500">$50 USD</span>
-                          <span className="text-xs font-bold bg-green-500 text-black px-1.5 py-0.5 rounded">
-                            {finalDiscountApplied ? "90%" : (discountApplied ? "84%" : "80%")} OFF
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-white">$ 7 USD</span>
+                          <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
+                            Microtareas ilimitadas
                           </span>
                         </div>
-                        <span className="font-bold text-white mt-1">$ {finalDiscountApplied ? "5" : (discountApplied ? "8" : "10")} USD</span>
                       </div>
                     </div>
 
@@ -2002,7 +1946,7 @@ const CheckoutContent = () => {
                           </div>
                           <div>
                             <h3 className="text-sm font-semibold text-white">Ingresa tus datos</h3>
-                            <p className="text-xs text-white/60">Necesarios para completar tu acceso</p>
+                            <p className="text-xs text-white/60">Necesarios para desbloquear tu acceso</p>
                           </div>
                         </div>
 
@@ -2215,22 +2159,22 @@ const CheckoutContent = () => {
               )}
 
               {/* Mensaje sobre el proceso después del pago */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl border-2 border-dashed border-blue-400/30 backdrop-blur-sm relative overflow-hidden">
+              <div className="mt-6 p-4 rounded-xl border-2 border-dashed backdrop-blur-sm relative overflow-hidden" style={{ backgroundColor: 'rgba(140, 206, 152, 0.05)', borderColor: '#28A745' }}>
                 {/* Decoración de fondo sutil */}
-                <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full bg-blue-400/5 blur-xl"></div>
-                <div className="absolute -bottom-2 -left-2 w-12 h-12 rounded-full bg-purple-400/5 blur-xl"></div>
+                <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full bg-[#28A745]/5 blur-xl"></div>
+                <div className="absolute -bottom-2 -left-2 w-12 h-12 rounded-full bg-[#28A745]/5 blur-xl"></div>
 
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-400/30">
-                      <svg className="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-6 h-6 rounded-full bg-[#28A745]/20 flex items-center justify-center border border-[#28A745]/30">
+                      <svg className="w-3.5 h-3.5 text-[#28A745]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h4 className="font-semibold text-sm text-blue-400">¿Cómo inicio sesión?</h4>
+                    <h4 className="font-semibold text-sm text-white">¿Qué hago después del pago?</h4>
                   </div>
-                  <p className="text-sm text-white/80 leading-relaxed pl-8">
-                    Después de completar el pago, serás llevado automáticamente a la página de registro, donde podrás crear tu cuenta y acceder de inmediato a tu panel personal. También recibirás un correo de bienvenida en tu bandeja de entrada con todos los detalles de tu acceso.
+                  <p className="text-sm text-white leading-relaxed pl-8">
+                    Después de completar tu pago no tendrás que preocuparte por nada: todas tus microtareas se habilitarán automáticamente, otorgándote acceso inmediato e ilimitado a ellas, que se renuevan diariamente para ofrecerte nuevas oportunidades desde tu panel personal.
                   </p>
                 </div>
               </div>

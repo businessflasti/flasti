@@ -27,9 +27,15 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
           <div className="hidden md:flex items-center gap-4">
             <a
               href="/login"
-              className="bg-white hover:bg-gray-100 text-black px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
+              className="bg-[#101010] hover:bg-[#1a1a1a] text-white border border-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
             >
               {t('iniciarSesion')}
+            </a>
+            <a
+              href="/register"
+              className="bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
+            >
+              Regístrate
             </a>
           </div>
 
@@ -37,9 +43,15 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
           <div className="flex md:hidden items-center gap-3">
             <a
               href="/login"
-              className="bg-white hover:bg-gray-100 text-black px-3 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
+              className="bg-[#101010] hover:bg-[#1a1a1a] text-white border border-white px-3 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
             >
               {t('iniciarSesion')}
+            </a>
+            <a
+              href="/register"
+              className="bg-white hover:bg-gray-200 text-black px-3 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
+            >
+              Regístrate
             </a>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 // BenefitsSection removed due to persistent errors
 import AdBlock from "@/components/ui/AdBlock";
+import AdBlockWrapper from "@/components/ui/AdBlockWrapper";
 import MainLayout from "@/components/layout/MainLayout";
 import StudiovaHeroSection from "@/components/sections/StudiovaHeroSection";
 import StatsSection from "@/components/sections/StatsSection";
@@ -11,8 +12,9 @@ import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import DashboardPreviewSection from "@/components/sections/DashboardPreviewSection";
 import ModernTestimonialsSection from "@/components/sections/ModernTestimonialsSection";
 import RegistrationFAQSection from "@/components/sections/RegistrationFAQSection";
-import SimplePricingSection from "@/components/sections/SimplePricingSection";
+
 import CTASection from "@/components/sections/CTASection";
+import CountriesSection from "@/components/sections/CountriesSection";
 
 // Memoización de componentes principales
 // const MemoBenefitsSection = React.memo(BenefitsSection);
@@ -85,39 +87,38 @@ export default function Home() {
       <div style={{ minHeight: "100vh", background: "#FEF9F3" }}>
         {/* Sección Studiova Hero (nueva) */}
         <StudiovaHeroSection />
+        
+        {/* Sección: Países disponibles */}
+        <CountriesSection />
+        
         {/* Sección Stats (nueva) */}
         <StatsSection />
+        
         {/* Sección Team (nueva) */}
         <TeamSection />
+        
         {/* Sección 2: Accede a Flasti y comienza a ganar - REMOVED DUE TO ERRORS */}
         {/* Sección 3: ¿Cómo funciona? */}
         <HowItWorksSection />
+        
         {/* Sección 4: Vista previa del Dashboard */}
         <DashboardPreviewSection />
+        
         {/* Sección 5: Lo que nuestra comunidad comparte */}
         <ModernTestimonialsSection />
+
         {/* Sección 6: FAQ */}
         <RegistrationFAQSection />
-        {/* Bloque de anuncio 1 */}
-        <div className="container-custom py-0">
-          <AdBlock adClient="ca-pub-8330194041691289" adSlot="1375086377" className="flex justify-center" />
-        </div>
-        {/* Sección 7: Un único pago, acceso de por vida */}
-        <div>
-          <SimplePricingSection />
-        </div>
         {/* Sección 8: Conoce a Flasti */}
-        <div>
-          <CTASection />
-        </div>
+        <CTASection />
+        
         {/* Bloque de anuncio 2 */}
-        <div className="container-custom py-6">
-          <AdBlock
-            adClient="ca-pub-8330194041691289"
-            adSlot="8886744888"
-            className="flex justify-center"
-          />
-        </div>
+        <AdBlockWrapper
+          adClient="ca-pub-8330194041691289"
+          adSlot="8886744888"
+          backgroundColor="bg-[#101010]"
+          padding="pt-1 pb-10"
+        />
       </div>
     </MainLayout>
   );

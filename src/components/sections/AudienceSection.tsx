@@ -34,7 +34,7 @@ const AudienceSection = () => {
 						<span className="text-gradient">
 							+500,000 personas
 						</span>{" "}
-						ya están ganando dinero completando microtrabajos en línea
+						ya están ganando dinero completando microtareas en línea
 					</h2>
 					<p className="text-2xl font-medium text-foreground/90">
 						¡No te quedes afuera!{" "}

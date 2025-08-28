@@ -155,9 +155,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       </div>
       <div className="card__title">{name}</div>
       <div className="card__subtitle">{role}</div>
-      <div className="card__wrapper">
-        <div className="card__tag">{buttonText1}</div>
-      </div>
 
       <style jsx>{`
         .card {
@@ -167,7 +164,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           position: relative;
           width: 300px;
-          height: 384px;
+          height: 340px; /* reducido desde 384px */
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -203,7 +200,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         }
 
         .card__title {
-          margin-top: 60px;
+          margin-top: 48px; /* reducido desde 60px */
           font-weight: 600;
           font-size: 18px;
           color: #FFFFFF;
@@ -211,29 +208,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         }
 
         .card__subtitle {
-          margin-top: 10px;
+          margin-top: 8px; /* reducido desde 10px */
           font-weight: 400;
           font-size: 13px;
           color: var(--submain-color);
           text-align: center;
           line-height: 1.4;
           padding: 0 15px;
-        }
-
-        .card__wrapper {
-          display: flex;
-          gap: 10px;
-        }
-
-        .card__tag {
-          margin-top: 15px;
-          padding: 6px 12px;
-          border-radius: 1.5rem;
-          font-weight: bold;
-          font-size: 12px;
-          color: #101010;
-          background: var(--main-color);
-          letter-spacing: 0.5px;
         }
       `}</style>
     </div>

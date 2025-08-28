@@ -27,7 +27,6 @@ export default function NotificationsPage() {
     <div className="w-full max-w-2xl mx-auto px-2 md:px-0 py-8">
       <Breadcrumbs />
       <div className="flex items-center gap-3 mb-6">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-primary"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/><path d="M12 8v4m0 4h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
         <h1 className="text-2xl md:text-3xl font-bold text-white">Notificaciones</h1>
       </div>
       <motion.div

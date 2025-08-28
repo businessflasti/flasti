@@ -58,7 +58,7 @@ class UnifiedTrackingService {
       await facebookEventDeduplication.trackInitiateCheckout({
         content_name: 'Flasti Access',
         content_category: 'platform_access',
-        value: 10,
+        value: 7,
         currency: 'USD',
         num_items: 1
       });
@@ -76,7 +76,7 @@ class UnifiedTrackingService {
       await facebookEventDeduplication.trackAddPaymentInfo({
         content_name: 'Flasti Access',
         content_category: 'platform_access',
-        value: 10,
+        value: 7,
         currency: 'USD',
         payment_method: paymentMethod
       });

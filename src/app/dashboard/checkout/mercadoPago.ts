@@ -99,7 +99,7 @@ export function loadMercadoPago(cachedPreferenceId: string | null = null, cached
 
   script.onerror = () => {
     console.error('❌ Error al cargar script de Mercado Pago');
-    createFallbackButton(mpContainer, 11500);
+    createFallbackButton(mpContainer, 6900);
   };
 
   document.body.appendChild(script);
@@ -116,7 +116,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
   // Verificar que MercadoPago está disponible
   if (!window.MercadoPago) {
     console.error('❌ MercadoPago no disponible');
-    createFallbackButton(mpContainer, 11500);
+    createFallbackButton(mpContainer, 6900);
     return;
   }
 
@@ -131,7 +131,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     });
 
     // Obtener precio actual
-    let amountARS = 11500;
+    let amountARS = 6900;
     const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
     const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
 
@@ -202,7 +202,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     });
   } catch (error) {
     console.error('❌ Error al inicializar:', error);
-    createFallbackButton(mpContainer, 11500);
+    createFallbackButton(mpContainer, 6900);
   }
 }
 
@@ -245,7 +245,7 @@ function createFallbackButton(container: HTMLElement, amount: number, initPoint?
       }, 1000);
     } else {
       setTimeout(() => {
-        window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+        window.location.href = "https://flasti.com/register";
       }, 2000);
     }
   });

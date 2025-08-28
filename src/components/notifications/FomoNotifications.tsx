@@ -435,15 +435,15 @@ export default function FomoNotifications() {
           <div className={`
             backdrop-blur-sm text-white rounded-lg shadow-xl p-2.5 flex items-center gap-3
             ${currentNotification.type === 'registration'
-              ? 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95 border border-[#3b82f6]/30 glow-blue-subtle'
-              : 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95 border border-[#10b981]/30 glow-green-subtle'}
+              ? 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95 border border-[#3b82f6]/30'
+              : 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95 border border-[#10b981]/30'}
           `}>
             <div className="flex-shrink-0 relative">
               {/* Logo de Flasti */}
               <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
                 {/* Usar una imagen estática directamente */}
                 <img
-                  src="/logo/isotipo.png"
+                  src="/logo/isotipo-web.png"
                   alt="Flasti"
                   width={18}
                   height={18}

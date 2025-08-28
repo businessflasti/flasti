@@ -30,7 +30,7 @@ import { Card } from '@/components/ui/card';
 import { Notification } from '@/components/ui/Notification';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Microtrabajos adicionales
+// Microtareas adicionales
 const additionalMicroJobs = [
   {
     id: 1,
@@ -219,7 +219,7 @@ export default function CasinoContent() {
         style={{ minWidth: 240 }}
       >
         <ArrowDownToLine size={22} className="mr-2" style={{ color: 'var(--casino-primary)' }} />
-        <span>Microtrabajos del día</span>
+        <span>Microtareas del día</span>
       </motion.div>
       {/* Offerwall MyLead Rewards */}
       {user?.id && (

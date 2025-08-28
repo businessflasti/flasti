@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from 'next/navigation';
 import { FiMenu, FiX, FiUser, FiGift, FiBell, FiLogOut, FiBarChart2, FiSettings, FiDollarSign, FiClock, FiHome, FiAward, FiMessageCircle } from "react-icons/fi";
 import Link from "next/link";
@@ -22,6 +22,34 @@ const sidebarItems = [
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
   const { profile, user, signOut } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [currentMonthYear, setCurrentMonthYear] = useState('');
+  
+  // Función para obtener el mes y año actual en español
+  const getCurrentMonthYear = () => {
+    const now = new Date();
+    const months = [
+      'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
+      'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
+    ];
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    return `${month} ${year}`;
+  };
+
+  // Efecto para actualizar el mes y año cada minuto
+  useEffect(() => {
+    const updateMonthYear = () => {
+      setCurrentMonthYear(getCurrentMonthYear());
+    };
+    
+    // Actualizar inmediatamente
+    updateMonthYear();
+    
+    // Actualizar cada minuto para detectar cambios de mes/año
+    const interval = setInterval(updateMonthYear, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
   
   // Función para obtener las iniciales del usuario
   const getInitials = (email: string | undefined, name: string | undefined) => {
@@ -142,10 +170,10 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                         }
                       }}
                     >
-                      <span className={`text-lg transition-transform ${isLoggingOut ? 'animate-spin' : 'group-hover:scale-110'}`} aria-hidden="true">
+                      <span className={`text-xl transition-transform ${isLoggingOut ? 'animate-spin' : 'group-hover:scale-110'}`} aria-hidden="true">
                         {isLoggingOut ? <FiSettings /> : item.icon}
                       </span>
-                      <span className="text-sm font-medium">
+                      <span className="text-base font-medium">
                         {isLoggingOut ? "Cerrando..." : item.name}
                       </span>
                     </button>
@@ -170,8 +198,8 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                         }
                       }}
                     >
-                      <span className="text-lg group-hover:scale-110 transition-transform" aria-hidden="true">{item.icon}</span>
-                      <span className="text-sm font-medium">{item.name}</span>
+                      <span className="text-xl group-hover:scale-110 transition-transform" aria-hidden="true">{item.icon}</span>
+                      <span className="text-base font-medium">{item.name}</span>
                     </Link>
                   )}
                   <Tooltip id={`sidebar-${item.name}`} place="right" />
@@ -181,11 +209,11 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
             <div className="flex-1" />
             {/* Etiqueta de usuario premium */}
             <div className="w-full flex justify-center mb-2">
-              <span className="inline-block bg-[#ec3f7c] text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md border border-[#232323] uppercase tracking-wide animate-pulse-slow">
-                Cuenta Premium
+              <span className="inline-block text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md border border-[#232323] uppercase tracking-wide" style={{ backgroundColor: '#ee5635' }}>
+                {currentMonthYear}
               </span>
             </div>
-            <div className="text-xs text-[#b0b0b0] opacity-60 mt-8" aria-label="Copyright">© {new Date().getFullYear()} Flasti Inc.</div>
+            <div className="text-xs text-[#b0b0b0] opacity-60 mt-8" aria-label="Copyright">© {new Date().getFullYear()} Flasti LLC.</div>
           </motion.aside>
         )}
       </AnimatePresence>

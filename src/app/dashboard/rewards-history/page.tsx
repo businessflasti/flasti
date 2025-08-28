@@ -149,7 +149,6 @@ export default function RewardsHistoryPage() {
       
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <Gift className="w-8 h-8 text-primary" />
         <h1 className="text-2xl md:text-3xl font-bold text-white">Historial de Recompensas</h1>
       </div>
 

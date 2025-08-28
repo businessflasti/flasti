@@ -41,7 +41,7 @@ export const sendWelcomeEmail = async (
         fullName: userName,
         email: userEmail
       }),
-      text: `¡Hola ${userName}! Te damos la bienvenida a Flasti. Tu pago ha sido procesado exitosamente y tu cuenta está lista. Accede a tu dashboard en: https://flasti.com/secure-registration-portal-7f9a2b3c5d8e`
+      text: `¡Hola ${userName}! Te damos la bienvenida a Flasti. Tu pago ha sido procesado exitosamente y tu cuenta está lista. Accede a tu dashboard en: https://flasti.com/register`
     };
 
     const result = await transporter.sendMail(mailOptions);

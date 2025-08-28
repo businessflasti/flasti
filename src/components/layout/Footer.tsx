@@ -293,7 +293,7 @@ const FooterComponent = () => {
             <div className="flex items-center gap-6 ml-6">
               <RankingCard />
               <p className="text-sm dark:text-foreground/60 text-foreground/80 text-left flex items-center h-8">
-                <span className="relative z-10">© {new Date().getFullYear()} Flasti Inc. {t('derechosReservados')}</span>
+                <span className="relative z-10">© {new Date().getFullYear()} Flasti LLC. {t('derechosReservados')}</span>
               </p>
             </div>
             <div className="flex items-center gap-4 mr-6 h-8">
@@ -304,7 +304,7 @@ const FooterComponent = () => {
 
           {/* Copyright móvil */}
           <div className="md:hidden mt-6 pt-6 border-t border-white/5 flex flex-col items-center">
-            <p className="text-xs font-medium dark:text-foreground/80 text-foreground/90 mb-1">© {new Date().getFullYear()} Flasti Inc.</p>
+            <p className="text-xs font-medium dark:text-foreground/80 text-foreground/90 mb-1">© {new Date().getFullYear()} Flasti LLC.</p>
             <p className="text-xs dark:text-foreground/60 text-foreground/80 text-center px-6 pb-2">{t('derechosReservados')}</p>
           </div>
         </div>

@@ -44,6 +44,29 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || undefined;
     // Enviar evento a la API de conversiones
     await hotmartTrackingService['sendServerSidePixelEvent']('Purchase', pixelEventData, userData, ip);
+    
+    // 🎯 ACTIVAR PREMIUM PARA EL USUARIO
+    try {
+      console.log('🚀 Activando premium para usuario PayPal con email:', buyerEmail);
+      
+      // Importar el servicio premium
+      const { activatePremiumByEmail } = await import('@/lib/premium-service');
+      
+      const premiumResult = await activatePremiumByEmail(
+        buyerEmail,
+        'paypal',
+        transactionId
+      );
+
+      if (premiumResult.success) {
+        console.log('✅ Premium activado exitosamente para:', buyerEmail);
+      } else {
+        console.error('❌ Error activando premium:', premiumResult.error);
+      }
+    } catch (premiumError) {
+      console.error('💥 Error inesperado activando premium:', premiumError);
+    }
+    
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error('Error en webhook de PayPal:', error);

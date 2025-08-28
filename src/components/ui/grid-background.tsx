@@ -6,7 +6,7 @@ interface GridBackgroundProps {
   children: React.ReactNode;
   className?: string;
   gridColor?: string;
-  gridSize?: string; // e.g. "40px"
+  gridSize?: string;
   backgroundColor?: string;
   maskEnabled?: boolean;
 }
@@ -25,15 +25,12 @@ export const GridBackground: React.FC<GridBackgroundProps> = ({
     backgroundSize: `${gridSize} ${gridSize}`,
   };
 
-  const maskStyle: React.CSSProperties = maskEnabled
-n    ? {
-        position: "relative",
-        overflow: "hidden",
-      }
+  const containerStyle: React.CSSProperties = maskEnabled
+    ? { position: "relative", overflow: "hidden" }
     : {};
 
   return (
-    <div className={`${className}`} style={maskStyle}>
+    <div className={className} style={containerStyle}>
       <div style={style} className="w-full h-full">
         {children}
       </div>

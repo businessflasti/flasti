@@ -4,56 +4,23 @@ import { Shield, Lightbulb, Lock, TrendingUp, Target, Rocket } from "lucide-reac
 import { useLanguage } from "@/contexts/LanguageContext";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { CTANewsBentoGrid } from "@/components/ui/cta-news-bento-grid";
-import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
+
 
 const CTASection = () => {
   const { language, t } = useLanguage();
   return (
-    <section className="pt-12 pb-24 lg:py-16 relative bg-[#FEF9F3]">
-      {/* Fondo de gradiente animado extendido que se extiende más allá de la sección */}
-      <div 
-        className="absolute pointer-events-none will-change-transform" 
-        style={{ 
-          top: '-40vh', 
-          left: '-25vw', 
-          right: '-25vw', 
-          bottom: '-40vh',
-          zIndex: 1,
-          transform: 'translateZ(0)' // Hardware acceleration
-        }}
-      >
-        <BackgroundGradientAnimation
-          gradientBackgroundStart="transparent"
-          gradientBackgroundEnd="transparent"
-          firstColor="60, 102, 205"
-          secondColor="234, 64, 133"
-          thirdColor="60, 102, 205"
-          size="60%"
-          blendingValue="multiply"
-          interactive={false}
-          containerClassName="w-full h-full will-change-transform"
-          className="opacity-18"
-        />
-        {/* Máscara de desvanecimiento para ocultar el corte superior */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to bottom, #FEF9F3 0%, transparent 15%, transparent 85%, #FEF9F3 100%)',
-            zIndex: 1
-          }}
-        />
-      </div>
-      <div className="container-custom relative z-30">
+    <section className="pt-6 pb-24 lg:py-16 relative bg-[#101010]">
+      <div className="container-custom relative">
         {/* Layout Desktop: Izquierda + Derecha | Móvil: Arriba + Abajo */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-start">
           
           {/* Lado Izquierdo - Contenido Actual */}
           <div className="w-full">
             <div className="mb-6 text-center lg:text-left">
-              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#0E1726' }}>
+              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
                 {language === 'es' ? 'Sobre nosotros' : language === 'en' ? 'About us' : 'Sobre nós'}
               </h3>
-              <p className="text-lg md:text-xl" style={{ color: '#0E1726' }}>
+              <p className="text-lg md:text-xl" style={{ color: '#FFFFFF' }}>
                 {language === 'es' ? 'Conocé la visión que impulsa nuestro trabajo' : language === 'en' ? 'Discover the vision that drives our work' : 'Conheça a visão que impulsiona nosso trabalho'}
               </p>
             </div>
@@ -123,10 +90,10 @@ const CTASection = () => {
           {/* Lado Derecho - Grid de Novedades */}
           <div className="w-full">
             <div className="mt-20 md:mt-0 mb-6 text-center lg:text-left">
-              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#0E1726' }}>
+              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
                 {language === 'es' ? 'Últimas Novedades' : language === 'en' ? 'Latest News' : 'Últimas Novidades'}
               </h3>
-              <p className="text-lg md:text-xl" style={{ color: '#0E1726' }}>
+              <p className="text-lg md:text-xl" style={{ color: '#FFFFFF' }}>
                 {language === 'es' ? 'Mantente al día con las últimas actualizaciones' : 
                  language === 'en' ? 'Stay up to date with the latest updates' : 
                  'Mantenha-se atualizado com as últimas atualizações'}

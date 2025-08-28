@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DollarSign, TrendingUp, Target, Gift } from 'lucide-react';
+import { Calendar, TrendingUp, Target, Gift } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Importar estilos de animaciones
@@ -184,8 +184,8 @@ export default function DashboardPage() {
                     ${userStats.todayEarnings.toFixed(2)}
                   </p>
                 </div>
-                <div className="p-3 bg-green-500/20 rounded-xl">
-                  <DollarSign className="w-6 h-6 text-green-400" />
+                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                  <Calendar className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
             </CardContent>
@@ -200,8 +200,8 @@ export default function DashboardPage() {
                     ${userStats.weekEarnings.toFixed(2)}
                   </p>
                 </div>
-                <div className="p-3 bg-blue-500/20 rounded-xl">
-                  <TrendingUp className="w-6 h-6 text-blue-400" />
+                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                  <TrendingUp className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
             </CardContent>
@@ -216,8 +216,8 @@ export default function DashboardPage() {
                     ${userStats.totalEarnings.toFixed(2)}
                   </p>
                 </div>
-                <div className="p-3 bg-purple-500/20 rounded-xl">
-                  <Target className="w-6 h-6 text-purple-400" />
+                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                  <Target className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
             </CardContent>
@@ -232,8 +232,8 @@ export default function DashboardPage() {
                     {userStats.totalTransactions}
                   </p>
                 </div>
-                <div className="p-3 bg-orange-500/20 rounded-xl">
-                  <Gift className="w-6 h-6 text-orange-400" />
+                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                  <Gift className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
             </CardContent>
@@ -249,12 +249,13 @@ export default function DashboardPage() {
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-2xl font-bold text-white">
-                      Microtrabajos disponibles
+                    <CardTitle className="font-bold text-white">
+                      <span className="md:hidden text-lg">Microtareas asignadas</span>
+                      <span className="hidden md:inline text-2xl">Microtareas asignadas para ti hoy</span>
                     </CardTitle>
                   </div>
                   {!isLoadingOffers && offers.length > 0 && (
-                    <Badge variant="outline" className="border-blue-500/30 text-blue-300 px-3 py-1.5 text-xs sm:px-2 sm:py-1 sm:text-sm min-w-[90px] sm:min-w-0 text-center sm:text-left">
+                    <Badge className="px-3 py-1.5 text-xs sm:px-2 sm:py-1 sm:text-sm min-w-[90px] sm:min-w-0 text-center sm:text-left border-0" style={{ backgroundColor: 'white', color: '#000000' }}>
                       {offers.length} disponibles
                     </Badge>
                   )}
@@ -273,7 +274,7 @@ export default function DashboardPage() {
                       </div>
                       <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
                     </div>
-                    <p className="text-gray-400 font-medium">Cargando trabajos...</p>
+                    <p className="text-gray-400 font-medium">Cargando microtareas...</p>
                   </div>
                 ) : (
                   <OffersList offers={offers} />

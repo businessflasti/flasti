@@ -225,7 +225,7 @@ export default function NosotrosPage() {
             Sé parte de Flasti y descubre un mundo de oportunidades. Juntos, estamos construyendo el futuro de la generación de ingresos en línea.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/checkout">
+            <Link href="/dashboard/checkout">
               <Button size="lg" className="min-w-[200px]">
                 Comenzar ahora
               </Button>

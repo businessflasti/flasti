@@ -13,6 +13,9 @@ const WEBHOOK_SECRET = process.env.MERCADOPAGO_WEBHOOK_SECRET;
  * Eventos: payment
  */
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  let logId: string | null = null;
+  
   try {
     console.log('🔔 Webhook de Mercado Pago recibido');
     console.log('📅 Timestamp:', new Date().toISOString());
@@ -31,6 +34,15 @@ export async function POST(request: NextRequest) {
     // Obtener datos del cuerpo de la solicitud
     const body = await request.json();
     console.log('📦 Payload del webhook:', JSON.stringify(body, null, 2));
+
+    // Registrar webhook recibido
+    const { data: logData } = await supabase.rpc('log_webhook', {
+      provider_param: 'mercadopago',
+      event_type_param: body.type || 'unknown',
+      status_param: 'received',
+      request_data_param: body
+    });
+    logId = logData;
 
     // Validar la firma del webhook si está configurada
     if (signature && WEBHOOK_SECRET) {
@@ -131,6 +143,72 @@ export async function POST(request: NextRequest) {
               console.error('Error al actualizar lead:', updateError);
             } else {
               console.log('Lead actualizado exitosamente');
+            }
+
+            // 🎯 ACTIVAR PREMIUM PARA EL USUARIO
+            try {
+              console.log('🚀 Activando premium para usuario con email:', matchingLead.email);
+              
+              // Importar el servicio premium
+              const { activatePremiumByEmail } = await import('@/lib/premium-service');
+              
+              const premiumResult = await activatePremiumByEmail(
+                matchingLead.email,
+                'mercadopago',
+                paymentData.id.toString()
+              );
+
+              if (premiumResult.success) {
+                console.log('✅ Premium activado exitosamente para:', matchingLead.email);
+                
+                // Actualizar log con éxito
+                if (logId) {
+                  await supabase.rpc('log_webhook', {
+                    provider_param: 'mercadopago',
+                    event_type_param: 'payment_processed',
+                    status_param: 'processed',
+                    user_email_param: matchingLead.email,
+                    transaction_id_param: paymentData.id.toString(),
+                    amount_param: paymentData.transaction_amount,
+                    premium_activated_param: true,
+                    processing_time_ms_param: Date.now() - startTime
+                  });
+                }
+              } else {
+                console.error('❌ Error activando premium:', premiumResult.error);
+                
+                // Actualizar log con error
+                if (logId) {
+                  await supabase.rpc('log_webhook', {
+                    provider_param: 'mercadopago',
+                    event_type_param: 'payment_processed',
+                    status_param: 'error',
+                    error_message_param: premiumResult.error,
+                    user_email_param: matchingLead.email,
+                    transaction_id_param: paymentData.id.toString(),
+                    amount_param: paymentData.transaction_amount,
+                    premium_activated_param: false,
+                    processing_time_ms_param: Date.now() - startTime
+                  });
+                }
+              }
+            } catch (premiumError) {
+              console.error('💥 Error inesperado activando premium:', premiumError);
+              
+              // Actualizar log con error
+              if (logId) {
+                await supabase.rpc('log_webhook', {
+                  provider_param: 'mercadopago',
+                  event_type_param: 'payment_processed',
+                  status_param: 'error',
+                  error_message_param: premiumError instanceof Error ? premiumError.message : 'Error desconocido',
+                  user_email_param: matchingLead.email,
+                  transaction_id_param: paymentData.id.toString(),
+                  amount_param: paymentData.transaction_amount,
+                  premium_activated_param: false,
+                  processing_time_ms_param: Date.now() - startTime
+                });
+              }
             }
 
             // Enviar email de bienvenida

@@ -120,6 +120,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 🎯 ACTIVAR PREMIUM PARA EL USUARIO
+    try {
+      console.log('🚀 Activando premium para usuario Hotmart con email:', email);
+      
+      // Importar el servicio premium
+      const { activatePremiumByEmail } = await import('@/lib/premium-service');
+      
+      const premiumResult = await activatePremiumByEmail(
+        email,
+        'hotmart',
+        transactionCode
+      );
+
+      if (premiumResult.success) {
+        console.log('✅ Premium activado exitosamente para:', email);
+      } else {
+        console.error('❌ Error activando premium:', premiumResult.error);
+      }
+    } catch (premiumError) {
+      console.error('💥 Error inesperado activando premium:', premiumError);
+    }
+
     return NextResponse.json(
       {
         status: 'success',

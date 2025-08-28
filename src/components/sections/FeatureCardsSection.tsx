@@ -25,13 +25,13 @@ const FeatureCardsSection = () => {
       title: t('aprovechaFlastiAI'),
       description: t('trabajaRapido')
     },
-    // 3. Completa nuevos microtrabajos
+    // 3. Completa nuevas microtareas
     {
       icon: <DollarSign className="h-6 w-6" />,
       iconColor: "text-[#3359b6]",
       gradientFrom: "from-[#3c66ce]/20",
       gradientTo: "to-[#3359b6]/20",
-      title: t('microtrabajosEnLinea'),
+      title: t('microtareasEnLinea'),
       description: t('generaIngresosTareas')
     },
     // 4. Soporte 24/7

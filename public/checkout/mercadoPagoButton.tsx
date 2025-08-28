@@ -45,7 +45,7 @@ const MercadoPagoButton: React.FC<MercadoPagoButtonProps> = ({ preferenceId, ini
           window.location.href = initPoint;
         } else {
           setTimeout(() => {
-            window.location.href = "https://flasti.com/secure-registration-portal-7f9a2b3c5d8e";
+            window.location.href = "https://flasti.com/register";
           }, 2000);
         }
       });

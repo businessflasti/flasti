@@ -16,7 +16,7 @@ const features = [
 	{
 		icon: <Laptop className="h-6 w-6 text-white" />,
 		title: "Desde tu casa",
-		description: "Completa microtrabajos desde la comodidad de tu hogar",
+		description: "Completa microtareas desde la comodidad de tu hogar",
 	},
 	{
 		icon: <Sparkles className="h-6 w-6 text-white" />,

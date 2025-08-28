@@ -7,7 +7,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { UserLevelProvider } from '@/contexts/UserLevelContext';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
-// import OnboardingModal from '@/components/dashboard/OnboardingModal';
 import analyticsService from '@/lib/analytics-service';
 
 // Importar estilos
@@ -50,7 +49,6 @@ export default function CasinoDashboardPage() {
           {/* <TipsBanner /> eliminado */}
           <CasinoContent />
         </CasinoLayout>
-        {/* <OnboardingModal /> eliminado */}
       </UserLevelProvider>
     </BalanceVisibilityProvider>
   );

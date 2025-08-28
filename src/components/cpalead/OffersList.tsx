@@ -9,6 +9,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAuth } from '@/contexts/AuthContext';
+import PremiumCardOverlay from '@/components/premium/PremiumCardOverlay';
+import { useRouter } from 'next/navigation';
+import { usePremiumStatus } from '@/components/premium/hooks/usePremiumStatus';
+import { useCardLockConfig } from '@/components/premium/hooks/useCardLockConfig';
+import { formatPremiumMessage } from '@/components/premium/utils/premiumUtils';
 
 interface OffersListProps {
   offers: CPALeadOffer[];
@@ -16,8 +21,36 @@ interface OffersListProps {
 
 const OffersList: React.FC<OffersListProps> = ({ offers }) => {
   const { user } = useAuth();
+  const router = useRouter();
   const [userCountry, setUserCountry] = useState<string>('');
   const [loading, setLoading] = useState(true);
+
+  // CSS para la animación de pulso azul
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse-blue {
+        0%, 100% {
+          background-color: #101010;
+          box-shadow: 0 0 0 0 rgba(60, 102, 205, 0.7);
+        }
+        50% {
+          background-color: #3c66cd;
+          box-shadow: 0 0 0 10px rgba(60, 102, 205, 0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+  
+  // Premium system hooks
+  const { isPremium, isLoading: premiumLoading } = usePremiumStatus();
+  const { shouldLockCard } = useCardLockConfig();
+
+  const handleUpgradeClick = () => {
+    router.push('/dashboard/premium');
+  };
 
   // Detectar país del usuario
   useEffect(() => {
@@ -223,17 +256,23 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     return trackingLink;
   };
 
-  if (loading) {
+  if (loading || premiumLoading) {
     return (
       <div className="text-center py-12">
-        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4 animate-pulse">
+        <div 
+          className="mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-4" 
+          style={{ 
+            backgroundColor: '#101010',
+            animation: 'pulse-blue 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+          }}
+        >
           <Globe className="w-12 h-12 text-muted-foreground animate-spin" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">
-          Detectando tu ubicación
+          {loading ? 'Analizando microtareas disponibles' : 'Verificando tu ubicación'}
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Cargando tareas...
+          Cargando microtareas...
         </p>
       </div>
     );
@@ -246,7 +285,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           <Tag className="w-12 h-12 text-muted-foreground" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">
-          Microtrabajos disponibles
+          Microtareas disponibles
         </h3>
         <p className="text-muted-foreground max-w-md mx-auto">
           {userCountry 
@@ -276,10 +315,20 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           </div>
         ) : (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredOffers.map((offer, index) => (
-            <li key={offer.id} className="group">
-              {/* Tarjeta de oferta */}
-              <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
+          {filteredOffers.map((offer, index) => {
+            const isLocked = shouldLockCard(offer, isPremium);
+            
+            return (
+              <li key={offer.id} className="group">
+                {/* Tarjeta de oferta con overlay premium */}
+                <PremiumCardOverlay
+                  isLocked={isLocked}
+                  onUnlockClick={() => handleUpgradeClick()}
+                  customMessage={formatPremiumMessage(offer)}
+                  showShimmer={true}
+                  blurIntensity="medium"
+                >
+                  <Card className="h-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-[#101010]">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
@@ -378,8 +427,10 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
                   </div>
                 </CardContent>
               </Card>
+                </PremiumCardOverlay>
             </li>
-          ))}
+            );
+          })}
           </ul>
         )}
 
@@ -387,10 +438,12 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         <div className="mt-8 p-4 bg-[#101010] rounded-lg border border-border/50">
           <div className="text-center">
             <p className="text-sm text-gray-300 font-medium">
-              Los microtrabajos se actualizan automáticamente. Revise periódicamente para acceder a nuevas oportunidades de ingresos.
+              Las microtareas se actualizan automáticamente. Revise periódicamente para acceder a nuevas oportunidades de ingresos.
             </p>
           </div>
         </div>
+
+
       </div>
     </TooltipProvider>
   );

@@ -17,7 +17,7 @@ const publicRoutes = [
   '/',
   '/login',
   '/register',
-  '/secure-registration-portal-7f9a2b3c5d8e',
+  '/welcome',
   '/api/auth',
   '/precios',
   '/contacto'
@@ -146,7 +146,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Verificar si es una redirección desde Hotmart
-  if ((pathname === '/register' || pathname === '/secure-registration-portal-7f9a2b3c5d8e') && searchParams.has('hotmart')) {
+  if (pathname === '/register' && searchParams.has('hotmart')) {
     const hotmartToken = searchParams.get('hotmart');
 
     if (hotmartToken) {
@@ -176,7 +176,7 @@ export const config = {
 
     // Rutas de autenticación
     '/register',
-    '/secure-registration-portal-7f9a2b3c5d8e',
+    '/welcome',
 
     // Rutas protegidas que requieren autenticación
     '/dashboard/:path*',

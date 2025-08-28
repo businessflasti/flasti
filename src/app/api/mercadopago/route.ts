@@ -30,8 +30,8 @@ export async function POST(request: Request) {
       ],
       back_urls: {
         success: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/payment-confirmation-9d4e7b2a8f1c6e3b`,
-        failure: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout`,
-        pending: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/checkout`,
+        failure: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/dashboard/checkout`,
+        pending: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/dashboard/checkout`,
       },
       notification_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://flasti.com'}/api/mercadopago/webhook`,
       auto_return: 'approved',

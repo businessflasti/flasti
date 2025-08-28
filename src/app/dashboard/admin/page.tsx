@@ -13,7 +13,8 @@ import {
   ShoppingCart,
   ArrowUpRight,
   Search,
-  Filter
+  Filter,
+  Activity
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { adminService } from '@/lib/admin-service';
@@ -40,6 +41,17 @@ function AdminDashboardContent() {
   const [users, setUsers] = useState<any[]>([]);
   const [pendingWithdrawals, setPendingWithdrawals] = useState<any[]>([]);
   const [supportTickets, setSupportTickets] = useState<any[]>([]);
+  
+  // Estados para gestión premium
+  const [premiumUserId, setPremiumUserId] = useState('');
+  const [premiumEmail, setPremiumEmail] = useState('');
+  const [isActivatingPremium, setIsActivatingPremium] = useState(false);
+  const [premiumStats, setPremiumStats] = useState({
+    totalPremium: 0,
+    totalFree: 0,
+    conversionRate: 0,
+    premiumToday: 0
+  });
 
   // Verificar si el usuario es administrador
   useEffect(() => {
@@ -126,9 +138,105 @@ function AdminDashboardContent() {
 
       // Cargar datos reales para las tablas
       loadRealData();
+      
+      // Cargar estadísticas premium
+      loadPremiumStats();
     } catch (error) {
       console.error('Error al cargar estadísticas:', error);
       toast.error('Error al cargar estadísticas');
+    }
+  };
+
+  // Cargar estadísticas premium
+  const loadPremiumStats = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('premium_users_stats')
+        .select('*')
+        .single();
+
+      if (!error && data) {
+        setPremiumStats({
+          totalPremium: data.total_premium_users || 0,
+          totalFree: data.total_free_users || 0,
+          conversionRate: data.premium_conversion_rate || 0,
+          premiumToday: data.premium_users_today || 0
+        });
+      }
+    } catch (error) {
+      console.error('Error cargando estadísticas premium:', error);
+    }
+  };
+
+  // Activar premium manualmente
+  const handleActivatePremium = async () => {
+    if (!premiumUserId && !premiumEmail) {
+      toast.error('Ingresa un UUID de usuario o email');
+      return;
+    }
+
+    setIsActivatingPremium(true);
+
+    try {
+      const response = await fetch('/api/admin/activate-premium', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: premiumUserId || undefined,
+          email: premiumEmail || undefined,
+          paymentMethod: 'manual_admin'
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Premium activado exitosamente');
+        setPremiumUserId('');
+        setPremiumEmail('');
+        loadPremiumStats(); // Recargar estadísticas
+      } else {
+        toast.error(result.error || 'Error activando premium');
+      }
+    } catch (error) {
+      console.error('Error activando premium:', error);
+      toast.error('Error activando premium');
+    } finally {
+      setIsActivatingPremium(false);
+    }
+  };
+
+  // Verificar estado premium
+  const handleCheckPremiumStatus = async () => {
+    if (!premiumUserId && !premiumEmail) {
+      toast.error('Ingresa un UUID de usuario o email');
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams();
+      if (premiumUserId) params.append('userId', premiumUserId);
+      if (premiumEmail) params.append('email', premiumEmail);
+
+      const response = await fetch(`/api/admin/activate-premium?${params}`);
+      const result = await response.json();
+
+      if (response.ok) {
+        const status = result.isPremium ? 'Premium' : 'Gratuito';
+        const activatedAt = result.activatedAt 
+          ? new Date(result.activatedAt).toLocaleString() 
+          : 'N/A';
+        const paymentMethod = result.paymentMethod || 'N/A';
+
+        toast.success(`Estado: ${status} | Activado: ${activatedAt} | Método: ${paymentMethod}`);
+      } else {
+        toast.error(result.error || 'Usuario no encontrado');
+      }
+    } catch (error) {
+      console.error('Error verificando estado premium:', error);
+      toast.error('Error verificando estado premium');
     }
   };
 
@@ -223,6 +331,12 @@ function AdminDashboardContent() {
               Gestionar Retiros
             </Button>
           </Link>
+          <Link href="/dashboard/admin/webhooks">
+            <Button className="flex items-center gap-2" variant="outline">
+              <Activity size={16} />
+              Monitor Webhooks
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -307,6 +421,10 @@ function AdminDashboardContent() {
           <TabsTrigger value="stats" className="flex items-center gap-2">
             <BarChart2 size={16} />
             <span>Estadísticas</span>
+          </TabsTrigger>
+          <TabsTrigger value="premium" className="flex items-center gap-2">
+            <CreditCard size={16} />
+            <span>Premium</span>
           </TabsTrigger>
         </TabsList>
 
@@ -662,6 +780,151 @@ function AdminDashboardContent() {
               </Button>
             </Link>
           </div>
+        </TabsContent>
+
+        <TabsContent value="premium" className="space-y-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold">Gestión Premium</h2>
+          </div>
+
+          {/* Estadísticas Premium */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <Card className="p-4 bg-card/50">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[#10b981]">{premiumStats.totalPremium}</p>
+                <p className="text-sm text-foreground/60">Usuarios Premium</p>
+              </div>
+            </Card>
+            <Card className="p-4 bg-card/50">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[#6b7280]">{premiumStats.totalFree}</p>
+                <p className="text-sm text-foreground/60">Usuarios Gratuitos</p>
+              </div>
+            </Card>
+            <Card className="p-4 bg-card/50">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[#9333ea]">{premiumStats.conversionRate}%</p>
+                <p className="text-sm text-foreground/60">Tasa Conversión</p>
+              </div>
+            </Card>
+            <Card className="p-4 bg-card/50">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[#facc15]">{premiumStats.premiumToday}</p>
+                <p className="text-sm text-foreground/60">Premium Hoy</p>
+              </div>
+            </Card>
+          </div>
+
+          {/* Panel de Activación Manual */}
+          <Card className="p-6">
+            <h3 className="text-lg font-medium mb-4">Activar Premium Manualmente</h3>
+            <p className="text-sm text-foreground/60 mb-6">
+              Puedes activar premium para un usuario usando su UUID o email. Solo necesitas uno de los dos campos.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">UUID del Usuario</label>
+                <Input
+                  placeholder="ej: 123e4567-e89b-12d3-a456-426614174000"
+                  value={premiumUserId}
+                  onChange={(e) => setPremiumUserId(e.target.value)}
+                  className="font-mono text-sm"
+                />
+                <p className="text-xs text-foreground/50 mt-1">
+                  Puedes encontrar el UUID en la tabla de usuarios arriba
+                </p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">O Email del Usuario</label>
+                <Input
+                  type="email"
+                  placeholder="usuario@ejemplo.com"
+                  value={premiumEmail}
+                  onChange={(e) => setPremiumEmail(e.target.value)}
+                />
+                <p className="text-xs text-foreground/50 mt-1">
+                  Alternativa si no tienes el UUID
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button 
+                onClick={handleActivatePremium}
+                disabled={isActivatingPremium || (!premiumUserId && !premiumEmail)}
+                className="bg-[#10b981] hover:bg-[#059669] text-white"
+              >
+                {isActivatingPremium ? (
+                  <>
+                    <div className="animate-spin mr-2">⟳</div>
+                    Activando...
+                  </>
+                ) : (
+                  'Activar Premium'
+                )}
+              </Button>
+              
+              <Button 
+                variant="outline"
+                onClick={handleCheckPremiumStatus}
+                disabled={!premiumUserId && !premiumEmail}
+              >
+                Verificar Estado
+              </Button>
+              
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  setPremiumUserId('');
+                  setPremiumEmail('');
+                }}
+              >
+                Limpiar
+              </Button>
+            </div>
+          </Card>
+
+          {/* Instrucciones */}
+          <Card className="p-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+            <h3 className="text-lg font-medium mb-3 text-blue-900 dark:text-blue-100">
+              📋 Instrucciones de Uso
+            </h3>
+            <div className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+              <p><strong>1. Activar Premium:</strong> Ingresa el UUID o email del usuario y haz clic en "Activar Premium"</p>
+              <p><strong>2. Verificar Estado:</strong> Usa "Verificar Estado" para comprobar si un usuario ya es premium</p>
+              <p><strong>3. Encontrar UUID:</strong> Ve a la pestaña "Usuarios" para ver los UUIDs de los usuarios registrados</p>
+              <p><strong>4. Resultado:</strong> Una vez activado, el usuario verá las microtareas desbloqueadas inmediatamente</p>
+            </div>
+          </Card>
+
+          {/* Acciones Rápidas */}
+          <Card className="p-6">
+            <h3 className="text-lg font-medium mb-4">Acciones Rápidas</h3>
+            <div className="flex flex-wrap gap-3">
+              <Button 
+                variant="outline" 
+                onClick={loadPremiumStats}
+                className="flex items-center gap-2"
+              >
+                <BarChart2 size={16} />
+                Actualizar Estadísticas
+              </Button>
+              
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  // Copiar ejemplo de UUID para testing
+                  navigator.clipboard.writeText('123e4567-e89b-12d3-a456-426614174000');
+                  toast.success('UUID de ejemplo copiado al portapapeles');
+                }}
+                className="flex items-center gap-2"
+              >
+                📋 Copiar UUID de Ejemplo
+              </Button>
+            </div>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

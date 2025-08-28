@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { ParallaxProvider } from "react-scroll-parallax";
-import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+
+
 
 function StudiovaHeroSection() {
     const scrollToStats = () => {
@@ -20,43 +20,11 @@ function StudiovaHeroSection() {
         }
     };
 
-    const words = [
-        {
-            text: "Comienza",
-        },
-        {
-            text: "a",
-        },
-        {
-            text: "trabajar",
-            className: "text-blue-400",
-        },
-    ];
+
     
     return (
         <ParallaxProvider>
-            <style jsx>{`
-                @keyframes gentle-float-1 {
-                    0%, 100% { transform: translateY(0px) translateX(0px); }
-                    25% { transform: translateY(-8px) translateX(2px); }
-                    50% { transform: translateY(-4px) translateX(-1px); }
-                    75% { transform: translateY(-12px) translateX(1px); }
-                }
-                @keyframes gentle-float-2 {
-                    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-                    33% { transform: translateY(-6px) translateX(-2px) rotate(1deg); }
-                    66% { transform: translateY(-10px) translateX(3px) rotate(-1deg); }
-                }
-                @keyframes gentle-sway {
-                    0%, 100% { transform: translateX(0px) rotate(0deg); }
-                    50% { transform: translateX(4px) rotate(2deg); }
-                }
 
-                @keyframes vertical-float {
-                    0%, 100% { transform: translateY(0px); }
-                    50% { transform: translateY(-15px); }
-                }
-            `}</style>
             <section className="relative flex items-start text-white bg-black h-full min-h-[70vh] pt-8">
                 {/* Imagen de fondo estática */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
@@ -84,19 +52,17 @@ function StudiovaHeroSection() {
                         <div className="flex flex-col gap-10 text-center lg:text-left">
 
 
-                            {/* Título principal con efecto typewriter */}
-                            <div className="space-y-4">
-                                <TypewriterEffectSmooth 
-                                    words={words} 
-                                    className="text-lg sm:text-xl md:text-3xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight text-center lg:text-left"
-                                />
+                            {/* Título principal responsive */}
+                            <div className="space-y-4 px-4 sm:px-6 lg:px-0">
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.1] tracking-tight text-center lg:text-left">
+                                    Comienza a <span className="text-blue-400">generar ingresos</span>
+                                </h1>
                             </div>
 
                             {/* Subtítulo descriptivo mejorado */}
-                            <TextGenerateEffect 
-                                words="Aprovecha el poder de internet y empieza ahora mismo a generar ingresos"
-                                className="text-white/80 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
-                            />
+                            <p className="text-white/80 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
+                                Empieza a trabajar completando microtareas en línea
+                            </p>
 
                             {/* Botón de acción principal con flecha - Solo desktop */}
                             <div className="hidden lg:flex justify-start pt-4">
@@ -117,16 +83,18 @@ function StudiovaHeroSection() {
                             {/* Tarjetas flotantes compactas - Solo móvil */}
                             <div className="lg:hidden relative pt-8 h-80">
                                 {/* Testimonial 1 - Móvil */}
-                                <div className="absolute top-0 left-4 bg-white rounded-3xl p-4 max-w-xs shadow-2xl" style={{animation: 'vertical-float 6s ease-in-out infinite'}}>
+                                <div className="absolute top-0 left-4 bg-white rounded-3xl p-4 max-w-xs shadow-2xl">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl flex items-center justify-center shadow-lg">
-                                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </div>
+                                        <img 
+                                            src="/images/paypal.png" 
+                                            alt="PayPal" 
+                                            className="w-10 h-10 object-cover rounded-lg shadow-lg"
+                                            data-noindex="true"
+                                            loading="lazy"
+                                        />
                                         <div className="flex-1">
                                             <p className="text-[#101010] font-semibold text-sm leading-relaxed">
-                                                "Trabajar en flasti es increíble"
+                                                Ha recibido $132.00 USD de Flasti LLC
                                             </p>
                                         </div>
                                     </div>
@@ -145,16 +113,22 @@ function StudiovaHeroSection() {
                                 </div>
 
                                 {/* Testimonial 2 - Móvil */}
-                                <div className="absolute top-20 right-4 bg-[#3C66CD] rounded-3xl p-4 max-w-xs shadow-2xl" style={{animation: 'vertical-float 8s ease-in-out infinite 2s'}}>
+                                <div className="absolute top-20 right-4 bg-[#3C66CD] rounded-3xl p-4 max-w-xs shadow-2xl">
+                                    {/* Hora de notificación */}
+                                    <div className="flex justify-end mb-2">
+                                        <span className="text-white/70 text-xs font-medium">1:31</span>
+                                    </div>
                                     <div className="flex items-start gap-3 mb-3">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl flex items-center justify-center shadow-lg">
-                                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                            </svg>
-                                        </div>
+                                        <img 
+                                            src="/images/banco.webp" 
+                                            alt="Banco" 
+                                            className="w-10 h-10 object-cover rounded-lg shadow-lg"
+                                            data-noindex="true"
+                                            loading="lazy"
+                                        />
                                         <div className="flex-1">
                                             <p className="text-white font-semibold text-sm leading-relaxed">
-                                                "Gracias a flasti puedo pasar más tiempo con mi familia"
+                                                Flasti LLC te envió $ 58 USD
                                             </p>
                                         </div>
                                     </div>
@@ -175,7 +149,7 @@ function StudiovaHeroSection() {
 
 
                                 {/* Estadística - Móvil - Movida hacia la derecha y más abajo */}
-                                <div className="absolute top-32 right-6 bg-gradient-to-br from-[#EC4184] to-[#d63384] backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-xl">
+                                <div className="absolute top-32 right-6 bg-gradient-to-br from-[#ee5635] to-[#cc4a2e] backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-xl">
                                     <div className="text-center">
                                         <p className="text-lg font-bold text-white">+100K</p>
                                         <p className="text-white/70 text-xs font-medium">Usuarios activos</p>
@@ -203,16 +177,18 @@ function StudiovaHeroSection() {
                         {/* Columna derecha - Elementos flotantes elegantes (solo desktop) */}
                         <div className="hidden lg:block relative h-full">
                             {/* Testimonial 1 - Diseño premium */}
-                            <div className="absolute top-16 right-12 bg-white rounded-3xl p-6 max-w-sm shadow-2xl hover:shadow-blue-500/10 transition-all duration-500" style={{animation: 'vertical-float 6s ease-in-out infinite'}}>
+                            <div className="absolute top-16 right-12 bg-white rounded-3xl p-6 max-w-sm shadow-2xl">
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl flex items-center justify-center shadow-lg">
-                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
+                                    <img 
+                                        src="/images/paypal.png" 
+                                        alt="PayPal" 
+                                        className="w-12 h-12 object-cover rounded-xl shadow-lg"
+                                        data-noindex="true"
+                                        loading="lazy"
+                                    />
                                     <div className="flex-1">
                                         <p className="text-[#101010] font-semibold text-base leading-relaxed">
-                                            "Trabajar en flasti es increíble"
+                                            Ha recibido $132.00 USD de Flasti LLC
                                         </p>
                                     </div>
                                 </div>
@@ -231,16 +207,18 @@ function StudiovaHeroSection() {
                             </div>
 
                             {/* Testimonial 2 - Diseño premium con delay */}
-                            <div className="absolute top-48 right-40 bg-[#3C66CD] rounded-3xl p-6 max-w-sm shadow-2xl hover:shadow-purple-500/10 transition-all duration-500" style={{animation: 'vertical-float 8s ease-in-out infinite 2s'}}>
+                            <div className="absolute top-48 right-40 bg-[#3C66CD] rounded-3xl p-6 max-w-sm shadow-2xl">
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl flex items-center justify-center shadow-lg">
-                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                        </svg>
-                                    </div>
+                                    <img 
+                                        src="/images/banco.webp" 
+                                        alt="Banco" 
+                                        className="w-12 h-12 object-cover rounded-xl shadow-lg"
+                                        data-noindex="true"
+                                        loading="lazy"
+                                    />
                                     <div className="flex-1">
                                         <p className="text-white font-semibold text-base leading-relaxed">
-                                            "Gracias a flasti puedo pasar más tiempo con mi familia"
+                                            Flasti LLC te envió $ 58 USD
                                         </p>
                                     </div>
                                 </div>
@@ -261,7 +239,7 @@ function StudiovaHeroSection() {
 
 
                             {/* Elemento adicional - Estadística flotante */}
-                            <div className="absolute bottom-20 right-8 bg-gradient-to-br from-[#EC4184] to-[#d63384] backdrop-blur-2xl border border-white/20 rounded-3xl p-4 shadow-xl">
+                            <div className="absolute bottom-20 right-8 bg-gradient-to-br from-[#ee5635] to-[#cc4a2e] backdrop-blur-2xl border border-white/20 rounded-3xl p-4 shadow-xl">
                                 <div className="text-center">
                                     <p className="text-2xl font-bold text-white">+100K</p>
                                     <p className="text-white/70 text-xs font-medium">Usuarios activos</p>

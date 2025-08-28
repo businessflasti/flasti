@@ -11,8 +11,8 @@ const TrustedBySection = () => {
     { value: "+$250,000", label: t('generadosPorUsuarios'), icon: <TrendingUp className="h-5 w-5" /> },
     // 2. +5,000 usuarios activos
     { value: "+5,000", label: "Usuarios activos", icon: <Users className="h-5 w-5" /> },
-    // 3. +1,200 microtrabajos completados
-    { value: "+1,200", label: t('microtrabajosCompletados'), icon: <Briefcase className="h-5 w-5" /> }
+    // 3. +1,200 microtareas completadas
+    { value: "+1,200", label: t('microtareasCompletadas'), icon: <Briefcase className="h-5 w-5" /> }
   ];
   return (
     <section className="py-16 relative overflow-hidden">
@@ -25,7 +25,7 @@ const TrustedBySection = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold font-outfit mb-4 text-white dark:text-white light:text-black">Ingresa a un mundo de oportunidades</h2>
           <p className="text-foreground/60 max-w-3xl mx-auto">
-            Personas de todo el mundo ya están ganando dinero completando microtrabajos en línea
+            Personas de todo el mundo ya están ganando dinero completando microtareas en línea
           </p>
         </div>
 

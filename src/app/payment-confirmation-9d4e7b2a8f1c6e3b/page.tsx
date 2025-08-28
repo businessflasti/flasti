@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+
 import { CheckCircle, ArrowRight, Shield, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -20,7 +20,7 @@ export default function GraciasPorTuPagoPage() {
         const { default: unifiedTrackingService } = await import('@/lib/unified-tracking-service');
         await unifiedTrackingService.trackPurchase({
           transaction_id: 'flasti_purchase_' + Date.now(),
-          value: 10,
+          value: 7,
           currency: 'USD',
           payment_method: 'completed',
           content_name: 'Flasti Access'
@@ -42,13 +42,8 @@ export default function GraciasPorTuPagoPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#101010] via-[#1a1a1a] to-[#101010]">
-      {/* Elementos decorativos de fondo sutiles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[#9333ea]/5 blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-[#ec4899]/5 blur-3xl"></div>
-      </div>
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center p-4 lg:p-8">
+      <div className="min-h-screen flex items-center justify-center p-4 lg:p-8">
         <div className="w-full max-w-7xl mx-auto">
           <Card className="bg-[#1a1a1a]/90 backdrop-blur-xl border-gray-800/50 shadow-2xl overflow-hidden">
             {/* Layout horizontal para desktop, vertical para móvil */}
@@ -109,20 +104,19 @@ export default function GraciasPorTuPagoPage() {
                     </div>
                   </div>
 
-                  {/* Botón de registro para móvil */}
+                  {/* Botón de inicio para móvil */}
                   <div className="pt-6 lg:hidden">
                     <p className="text-white font-medium mb-4 text-lg">
-                      Complete su registro para comenzar
+                      Accede a tu panel personal
                     </p>
-                    <Link href="/secure-registration-portal-7f9a2b3c5d8e">
-                      <Button 
-                        size="lg"
-                        className="bg-white hover:bg-gray-100 text-[#101010] font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base"
-                      >
-                        <span>Completar Registro</span>
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
-                    </Link>
+                    <Button 
+                      size="lg"
+                      className="bg-white hover:bg-gray-100 text-[#101010] font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base"
+                      onClick={() => window.location.href = '/dashboard'}
+                    >
+                      <span>Ir a inicio</span>
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -158,20 +152,19 @@ export default function GraciasPorTuPagoPage() {
                     </div>
                   </div>
 
-                  {/* Botón de registro para desktop */}
+                  {/* Botón de inicio para desktop */}
                   <div className="hidden lg:block pt-6">
                     <p className="text-white font-medium mb-4 text-lg">
-                      Completa su registro para comenzar
+                      Accede a tu panel personal
                     </p>
-                    <Link href="/secure-registration-portal-7f9a2b3c5d8e">
-                      <Button 
-                        size="lg"
-                        className="bg-white hover:bg-gray-100 text-[#101010] font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base"
-                      >
-                        <span>Completar Registro</span>
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
-                    </Link>
+                    <Button 
+                      size="lg"
+                      className="bg-white hover:bg-gray-100 text-[#101010] font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base"
+                      onClick={() => window.location.href = '/dashboard'}
+                    >
+                      <span>Ir a inicio</span>
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -190,7 +183,7 @@ export default function GraciasPorTuPagoPage() {
                 </div>
                 <div className="text-center md:text-right">
                   <p className="text-gray-500 text-xs">
-                    © {new Date().getFullYear()} Flasti Inc. Todos los derechos reservados.
+                    © {new Date().getFullYear()} Flasti LLC. Todos los derechos reservados.
                   </p>
                 </div>
               </div>

@@ -3,7 +3,6 @@
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { GridBackground } from "@/components/ui/grid-background";
 import ProfileCard from "@/components/ui/profile-card";
 import { DollarSign, GraduationCap, Home, Clock } from "lucide-react";
 import { motion } from "motion/react";
@@ -14,11 +13,11 @@ const TeamSection = React.memo(() => {
   const teamMembers = [
     {
       name: "Gana dinero",
-      role: "Genera ingresos todos los días completando microtrabajos",
+      role: "Genera ingresos todos los días completando microtareas",
       buttonText1: "Rentable",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative">
-          <motion.div 
+          <motion.div
             className="absolute inset-0 bg-[linear-gradient(144deg,#D35400,#3C66CD_50%,#D35400)]"
             initial={{ backgroundPosition: "0 50%" }}
             animate={{ backgroundPosition: ["0 50%", "100% 50%", "0 50%"] }}
@@ -38,7 +37,7 @@ const TeamSection = React.memo(() => {
       buttonText1: "Accesible",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative">
-          <motion.div 
+          <motion.div
             className="absolute inset-0 bg-[linear-gradient(144deg,#D35400,#3C66CD_50%,#D35400)]"
             initial={{ backgroundPosition: "0 50%" }}
             animate={{ backgroundPosition: ["0 50%", "100% 50%", "0 50%"] }}
@@ -58,7 +57,7 @@ const TeamSection = React.memo(() => {
       buttonText1: "Cómodo",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative">
-          <motion.div 
+          <motion.div
             className="absolute inset-0 bg-[linear-gradient(144deg,#D35400,#3C66CD_50%,#D35400)]"
             initial={{ backgroundPosition: "0 50%" }}
             animate={{ backgroundPosition: ["0 50%", "100% 50%", "0 50%"] }}
@@ -78,7 +77,7 @@ const TeamSection = React.memo(() => {
       buttonText1: "Flexible",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative">
-          <motion.div 
+          <motion.div
             className="absolute inset-0 bg-[linear-gradient(144deg,#D35400,#3C66CD_50%,#D35400)]"
             initial={{ backgroundPosition: "0 50%" }}
             animate={{ backgroundPosition: ["0 50%", "100% 50%", "0 50%"] }}
@@ -95,19 +94,13 @@ const TeamSection = React.memo(() => {
   ];
 
   return (
-    <GridBackground 
-      className="py-24 relative overflow-hidden"
-      gridColor="#B0B0B0"
-      gridSize="40px"
-      backgroundColor="#FEF9F3"
-      maskEnabled={true}
-    >
+    <div className="py-24 relative overflow-hidden" style={{ backgroundColor: '#101010' }}>
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#0E1726' }}>
-            Ganancia colectiva
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#FFFFFF' }}>
+            Únete a nuestra comunidad
           </h2>
-          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#0E1726' }}>
+          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#FFFFFF' }}>
             Miles de personas en todo el mundo ya están ganando dinero con nuestra plataforma
           </p>
         </div>
@@ -127,7 +120,7 @@ const TeamSection = React.memo(() => {
           ))}
         </div>
       </div>
-    </GridBackground>
+    </div>
   );
 });
 

@@ -241,7 +241,7 @@ const HeroSection = React.memo(function HeroSection() {
                 <AnimatedCounter value={stats.microtasksCompleted} />
               </p>
               <p className="text-[10px] sm:text-sm text-foreground/60 whitespace-normal">
-                <span className="block sm:inline">{t('microtrabajos')}</span>{' '}
+                <span className="block sm:inline">{t('microtareas')}</span>{' '}
                 <span className="block sm:inline">{t('completados')}</span>
               </p>
             </div>

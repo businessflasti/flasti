@@ -20,17 +20,25 @@ export function PlaceholdersAndVanishInput({
   const [animating, setAnimating] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+  
   const startAnimation = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    
+    startTimeRef.current = Date.now();
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-    }, 3000);
+    }, 6000);
   }, [placeholders.length]);
+  
   const handleVisibilityChange = useCallback(() => {
     if (document.visibilityState !== "visible" && intervalRef.current) {
-      clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
+      clearInterval(intervalRef.current);
       intervalRef.current = null;
-    } else if (document.visibilityState === "visible") {
-      startAnimation(); // Restart the interval when the tab becomes visible
+    } else if (document.visibilityState === "visible" && !intervalRef.current) {
+      startAnimation();
     }
   }, [startAnimation]);
 
@@ -41,10 +49,11 @@ export function PlaceholdersAndVanishInput({
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [handleVisibilityChange, startAnimation]);
+  }, [placeholders.length]); // Solo depende de placeholders.length para evitar re-renders innecesarios
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);

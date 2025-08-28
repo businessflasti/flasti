@@ -9,8 +9,7 @@ const StatsSection = () => {
   const [hasAnimated, setHasAnimated] = useState(false);
   
   const placeholders = [
-    "Un microtrabajo suma, hacerlo juntos multiplica",
-    "La nueva forma de trabajar, está en tus manos",
+    "Una microtarea suma, hacerla juntos multiplica",
     "Generá ingresos con lo que ya sabés hacer",
   ];
 
@@ -23,8 +22,8 @@ const StatsSection = () => {
     console.log("submitted");
   };
   const stats = [
-    { number: 24000000, display: '24M+', label: t('generadosPorUsuarios') },
-    { number: 1300000, display: '1.3M+', label: t('microtrabajosCompletados') },
+    { number: 24000000, display: '$24M+', label: t('generadosPorUsuarios') },
+    { number: 1300000, display: '1.3M+', label: t('microtareasCompletadas') },
     { number: 100000, display: '100K+', label: t('personasFormanParte') },
   ];
   useEffect(() => {
@@ -64,7 +63,7 @@ const StatsSection = () => {
     <section
       id="stats-section"
       ref={sectionRef}
-      className="bg-[#FEF9F3] text-white py-28 px-6"
+      className="bg-[#E75333] py-28 px-6"
     >
       <div className="container-custom max-w-[1200px] mb-16 text-center">
         <div className="flex flex-col items-center gap-3 mb-4">
@@ -85,8 +84,8 @@ const StatsSection = () => {
           </div>
         </div>
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: '#0E1726' }}>
-            El poder de nuestra comunidad
+          <h2 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: '#FFFFFF' }}>
+            Regístrate y comienza ahora
           </h2>
           <div className="mt-8 max-w-2xl mx-auto">
             <PlaceholdersAndVanishInput
@@ -104,11 +103,11 @@ const StatsSection = () => {
               ref={(el) => { statsRef.current[i] = el; }}
               data-target={stat.number}
               className="text-5xl md:text-6xl font-extrabold mx-auto"
-              style={{ color: '#0E1726' }}
+              style={{ color: '#FFFFFF' }}
             >
               {stat.display}
             </div>
-            <p className="mt-2 text-base md:text-lg text-center" style={{ color: '#0E1726' }}>{stat.label}</p>
+            <p className="mt-2 text-base md:text-lg text-center" style={{ color: '#FFFFFF' }}>{stat.label}</p>
           </div>
         ))}
       </div>

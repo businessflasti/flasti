@@ -483,7 +483,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
                             Para que disfrutes de todo lo que hemos preparado para ti, simplemente regístrate e inicia sesión pinchando en el botón de aquí abajo.
                         </div>
                         <div class="cta-button-container">
-                            <a href="https://flasti.com/secure-registration-portal-7f9a2b3c5d8e" class="cta-button">
+                            <a href="https://flasti.com/register" class="cta-button">
                                 REGISTRARME AHORA
                             </a>
                         </div>

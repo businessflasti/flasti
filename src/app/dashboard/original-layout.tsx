@@ -3,7 +3,6 @@
 import { UserLevelProvider } from '@/contexts/UserLevelContext';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import OnboardingModal from '@/components/dashboard/OnboardingModal';
 import GamificationProviders from '@/components/providers/GamificationProviders';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useEffect } from 'react';
@@ -25,7 +24,6 @@ export default function OriginalLayout({
           <GamificationProviders>
             <div className="original-layout">
               {children}
-              <OnboardingModal />
             </div>
           </GamificationProviders>
         </UserLevelProvider>

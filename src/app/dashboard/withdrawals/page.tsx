@@ -11,7 +11,8 @@ import { useState, useEffect } from 'react';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
-import { DollarSign, CreditCard, AlertCircle, CheckCircle } from 'lucide-react';
+import { DollarSign, CreditCard, AlertCircle, CheckCircle, Landmark, ArrowRightLeft, Wallet } from 'lucide-react';
+import PayPalIcon from '@/components/icons/PayPalIcon';
 
 interface UserBalance {
   balance: number;
@@ -180,7 +181,6 @@ export default function WithdrawalsPage() {
       
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <DollarSign className="w-8 h-8 text-primary" />
         <h1 className="text-2xl md:text-3xl font-bold text-white">Solicitar Retiro</h1>
       </div>
 
@@ -255,14 +255,14 @@ export default function WithdrawalsPage() {
               </div>
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
             </div>
-            <p className="text-gray-400 font-medium">Cargando formulario de retiro...</p>
+            <p className="text-gray-400 font-medium">Cargando métodos de retiro...</p>
           </div>
         ) : (
           <div className="bg-[#232323] border border-white/10 rounded-lg">
             <div className="p-6 border-b border-white/10">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <CreditCard className="w-5 h-5" />
-                Solicitar Retiro
+                <ArrowRightLeft className="w-5 h-5" />
+                Elige tu método de retiro
               </h2>
             </div>
             <div className="p-6">
@@ -322,12 +322,25 @@ export default function WithdrawalsPage() {
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Método de retiro
                   </label>
-                  <div className="flex gap-3">
+                  <div className="space-y-3">
                     <div className="flex-1 flex items-center gap-3 p-4 bg-primary/10 border border-primary/20 rounded-lg">
-                      <CreditCard className="w-5 h-5 text-white" />
+                      <PayPalIcon className="w-5 h-5 text-white" />
                       <span className="font-medium text-white">PayPal</span>
                       <Badge className="ml-auto bg-green-500/20 text-green-400 border-green-500/30">
                         Disponible
+                      </Badge>
+                    </div>
+                    
+                    <div className="flex-1 flex items-center gap-3 p-4 bg-gray-500/10 border border-gray-500/20 rounded-lg opacity-60 cursor-not-allowed">
+                      <Landmark className="w-5 h-5 text-gray-400" />
+                      <div className="flex-1">
+                        <span className="font-medium text-gray-400 block">Transferencia Bancaria</span>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Completa mínimo 5 microtareas para desbloquear retiros en tu moneda local
+                        </p>
+                      </div>
+                      <Badge className="ml-auto bg-gray-500/20 text-gray-400 border-gray-500/30">
+                        Pendiente
                       </Badge>
                     </div>
                   </div>

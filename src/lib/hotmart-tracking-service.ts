@@ -105,7 +105,7 @@ class HotmartTrackingService {
           event_name: eventName,
           event_time: Math.floor(Date.now() / 1000),
           action_source: 'website',
-          event_source_url: 'https://flasti.com/checkout',
+          event_source_url: 'https://flasti.com/dashboard/checkout',
           user_data: {
             em: userData.email ? this.hashEmail(userData.email) : undefined,
             fn: userData.firstName ? this.hashString(userData.firstName) : undefined,

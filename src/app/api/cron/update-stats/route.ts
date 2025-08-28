@@ -34,7 +34,7 @@ export async function GET() {
     // Para "generados por usuarios", incrementar entre $500 y $2000
     const generatedIncrement = getRandomIncrement(500, 2000);
     
-    // Para "microtrabajos completados", incrementar entre 10 y 50
+    // Para "microtareas completadas", incrementar entre 10 y 50
     const microtasksIncrement = getRandomIncrement(10, 50);
     
     // Llamar a nuestra API para actualizar los contadores

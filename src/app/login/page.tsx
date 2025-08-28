@@ -98,10 +98,48 @@ export default function LoginPage() {
         setLoginStep('');
         toast.error(getLoginErrorMessage(error));
       } else {
-        setLoginStep('Cargando perfil...');
+        setLoginStep('Verificando configuración...');
         toast.success('Inicio de sesión exitoso');
-        console.log('Redirigiendo al dashboard...');
-        setTimeout(() => router.push('/dashboard'), 500);
+        
+        // Verificar si el usuario ya completó el onboarding usando sistema dual
+        console.log('Verificando onboarding para email:', email);
+        
+        try {
+          // 1. Verificar localStorage primero (más rápido)
+          const localOnboardingByEmail = localStorage.getItem(`onboarding_completed_${email}`);
+          
+          if (localOnboardingByEmail === 'true') {
+            console.log('Usuario ya completó onboarding (localStorage), redirigiendo al dashboard...');
+            setTimeout(() => router.push('/dashboard'), 500);
+            return;
+          }
+          
+          // 2. Si no está en localStorage, verificar en base de datos
+          console.log('Verificando onboarding en base de datos...');
+          const response = await fetch('/api/user/onboarding-status');
+          
+          if (response.ok) {
+            const { hasCompletedOnboarding } = await response.json();
+            
+            if (hasCompletedOnboarding) {
+              console.log('Usuario ya completó onboarding (BD), actualizando localStorage y redirigiendo...');
+              // Sincronizar localStorage con BD
+              localStorage.setItem(`onboarding_completed_${email}`, 'true');
+              setTimeout(() => router.push('/dashboard'), 500);
+              return;
+            }
+          }
+          
+          // 3. Si no está completado en ningún lado, ir a welcome
+          console.log('Usuario no ha completado onboarding, redirigiendo a welcome...');
+          setTimeout(() => router.push('/welcome'), 500);
+          
+        } catch (error) {
+          console.error('Error al verificar onboarding:', error);
+          // En caso de error, asumir que no ha completado onboarding (más seguro)
+          console.log('Error en verificación, redirigiendo a welcome por seguridad...');
+          setTimeout(() => router.push('/welcome'), 500);
+        }
       }
     } catch (error) {
       console.error('Error inesperado:', error);
@@ -137,11 +175,13 @@ export default function LoginPage() {
         <div className="w-full max-w-md order-1 lg:order-2 flex flex-col justify-center lg:-mt-4">
           {/* Logo centrado */}
           <div className="flex justify-center mb-8 lg:mb-6">
-            <Logo size="lg" />
+            <Link href="/">
+              <Logo size="lg" />
+            </Link>
           </div>
 
           <div className="text-center mb-8 lg:mb-6">
-            <h1 className="text-2xl font-bold mb-2 text-white">Bienvenido de nuevo</h1>
+            <h1 className="text-2xl font-bold mb-2 text-white">Bienvenido</h1>
             <p className="text-muted-foreground">Inicia sesión en tu cuenta</p>
           </div>
 
@@ -240,6 +280,16 @@ export default function LoginPage() {
                 </div>
               </Button>
             </div>
+          </div>
+
+          {/* Enlace a register */}
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-400">
+              ¿No tienes cuenta en Flasti?{' '}
+              <Link href="/register" className="text-white hover:underline font-medium">
+                Regístrate
+              </Link>
+            </p>
           </div>
         </div>
       </div>

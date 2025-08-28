@@ -1,0 +1,88 @@
+/* Animaciones personalizadas para el PageLoader */
+
+.spinner-outer {
+  animation: spin-smooth 2s linear infinite;
+}
+
+.spinner-inner {
+  animation: spin-reverse 1.5s linear infinite;
+}
+
+.logo-pulse {
+  animation: logo-breathe 2s ease-in-out infinite;
+}
+
+.orbital-dots {
+  animation: orbital-rotation 3s linear infinite;
+}
+
+.loading-dots {
+  animation: loading-bounce 1.4s ease-in-out infinite both;
+}
+
+.loading-dots:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes spin-smooth {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes logo-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes orbital-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loading-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Mejoras de rendimiento */
+.spinner-outer,
+.spinner-inner,
+.logo-pulse,
+.orbital-dots {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

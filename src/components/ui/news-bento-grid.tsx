@@ -17,8 +17,8 @@ const BannerImage = ({ src }: { src: string }) => (
 export const NewsBentoGrid: React.FC = () => {
   const newsItems = [
     {
-      title: "Julio 2025: Más microtrabajos disponibles",
-      description: "Esta semana se sumaron nuevas empresas al ecosistema de Flasti. Eso significa más microtrabajos activos para todos los usuarios registrados",
+      title: "Julio 2025: Más microtareas disponibles",
+      description: "Esta semana se sumaron nuevas empresas al ecosistema de Flasti. Eso significa más microtareas activas para todos los usuarios registrados",
       image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/banner1.png",
     },
     {

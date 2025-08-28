@@ -36,7 +36,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
   const isInternalPage = pathname?.startsWith('/dashboard');
   const isContactPage = pathname === '/contacto';
   const isHomePage = pathname === '/';
-  const isCheckoutPage = pathname === '/checkout';
+  const isCheckoutPage = pathname === '/dashboard/checkout';
   // No mostrar el chat en páginas del dashboard
   const shouldShowChat = !disableChat && !isInternalPage;
 

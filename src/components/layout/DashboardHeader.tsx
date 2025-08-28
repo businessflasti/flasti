@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBalanceVisibility } from '@/contexts/BalanceVisibilityContext';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, profile, signOut } = useAuth();
@@ -11,9 +11,14 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
   const { isBalanceVisible, toggleBalanceVisibility } = useBalanceVisibility();
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   
   // Ocultar balance solo en la página principal del dashboard
   const isMainDashboard = pathname === '/dashboard' || pathname === '/dashboard/';
+  // Detectar si estamos en la página de checkout
+  const isCheckoutPage = pathname === '/dashboard/checkout';
+  // Detectar si estamos en la página de premium
+  const isPremiumPage = pathname === '/dashboard/premium';
 
   // Función para obtener las iniciales del usuario
   const getInitials = (email: string | undefined, name: string | undefined) => {
@@ -55,9 +60,11 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
 
     return (
       <header
-        className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10"
+        className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10 relative sticky top-0 z-50"
         style={{ minHeight: 64 }}
       >
+        {/* Gradiente azul en el borde inferior */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3C66CD] to-transparent"></div>
         <div className="flex items-center justify-between w-full">
           {/* Logo y título/balance */}
           <div className="flex items-center gap-2 sm:gap-3 md:gap-5 lg:ml-56 w-1/3 sm:w-auto justify-start ml-2 sm:ml-4 md:ml-0">
@@ -74,7 +81,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 }}
               />
             </a>
-            {/* Mostrar título en dashboard principal, balance en otras páginas */}
+            {/* Mostrar título en dashboard principal, "Medios de pago" en checkout, "Upgrade Premium" en premium, balance en otras páginas */}
             {isMainDashboard ? (
               <div className="text-left">
                 <div className="text-xs sm:text-sm md:text-lg font-bold text-white leading-tight">
@@ -85,9 +92,34 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                   <span className="hidden md:inline">Bienvenido de vuelta, {user?.email?.split('@')[0] || 'Usuario'}</span>
                 </div>
               </div>
+            ) : isCheckoutPage ? (
+              <div className="text-left">
+                <div className="text-sm sm:text-base md:text-lg font-semibold text-white leading-tight">
+                  Medios de pago
+                </div>
+              </div>
+            ) : isPremiumPage ? (
+              <button 
+                onClick={() => router.back()}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#232323] hover:bg-[#1a1a1a] active:bg-[#151515] transition-all duration-200 group touch-manipulation select-none ml-2 md:ml-0"
+                aria-label="Volver atrás"
+                type="button"
+              >
+                <svg 
+                  className="w-4 h-4 text-white transition-colors duration-200 pointer-events-none" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span className="text-sm font-medium text-white transition-colors duration-200 pointer-events-none">
+                  Volver
+                </span>
+              </button>
             ) : (
-              <div className="user-balance hidden md:flex items-center justify-center">
-                <div className="user-balance-amount text-lg font-bold text-white text-center">
+              <div className="user-balance flex items-center justify-center">
+                <div className="user-balance-amount text-sm sm:text-lg font-bold text-white text-center">
                   <span>${profile?.balance?.toFixed(2) ?? '0.00'} USD</span>
                 </div>
               </div>
