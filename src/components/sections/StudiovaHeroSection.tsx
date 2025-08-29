@@ -114,10 +114,6 @@ function StudiovaHeroSection() {
 
                                 {/* Testimonial 2 - Móvil */}
                                 <div className="absolute top-20 right-4 bg-[#3C66CD] rounded-3xl p-4 max-w-xs shadow-2xl">
-                                    {/* Hora de notificación */}
-                                    <div className="flex justify-end mb-2">
-                                        <span className="text-white/70 text-xs font-medium">1:31</span>
-                                    </div>
                                     <div className="flex items-start gap-3 mb-3">
                                         <img 
                                             src="/images/banco.webp" 

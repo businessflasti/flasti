@@ -148,7 +148,7 @@ export default function RegisterPage() {
       <div className="container mx-auto flex justify-center gap-x-24 gap-y-12 flex-col lg:flex-row lg:items-stretch">
         {/* Bloque de anuncio */}
         <div className="order-2 lg:order-1 flex flex-col justify-center lg:mt-16">
-          <AdBlock adClient="ca-pub-8330194041691289" adSlot="2159902041" alwaysVisible />
+          <AdBlock adClient="ca-pub-8330194041691289" adSlot="1375086377" alwaysVisible />
         </div>
         
         {/* Formulario de Registro - Estilo moderno y compacto */}

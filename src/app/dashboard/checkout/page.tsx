@@ -1381,12 +1381,12 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll" style={{ background: "#101010" }}>
+      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8" style={{ background: "#101010" }}>
 
 
       {/* Eliminado Exit Intent Popup */}
 
-      <div className="container-custom py-6 lg:py-12">
+      <div className="container-custom py-4 md:py-6 lg:py-12">
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-8">
           {/* Columna derecha - Resumen de compra (aparece primero en móvil) */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 mb-2 lg:mb-0">

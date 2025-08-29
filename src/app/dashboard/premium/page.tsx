@@ -50,7 +50,7 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] py-8 px-4 relative">
+    <div className="min-h-screen bg-[#101010] pt-4 md:pt-8 pb-16 md:pb-8 px-4 relative">
       {/* Fondo de imagen solo en desktop */}
       <div 
         className="hidden md:block fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
@@ -61,7 +61,7 @@ const PremiumPage = () => {
       
       {/* Layout responsive: Desktop 2 columnas, Móvil 1 columna */}
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
           
           {/* Columna izquierda: Imagen/FAQ (Desktop) - Abajo (Móvil) */}
           <div className="lg:w-1/2 order-2 lg:order-1">
@@ -96,7 +96,7 @@ const PremiumPage = () => {
             </div>
 
             {/* FAQ Section fuera de la tarjeta principal */}
-            <div className="space-y-4">
+            <div className="space-y-4 mb-8">
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
@@ -122,7 +122,7 @@ const PremiumPage = () => {
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
                     <span style={{ color: '#AEAEB0' }}>El acceso a la plataforma es gratuito, sin embargo, debido a abusos reiterados y accesos no autorizados por parte de algunos usuarios, se implementó este pago único para desbloquear y trabajar con microtareas. Esta medida funciona como un filtro necesario que garantiza un entorno profesional, seguro y exclusivo, destinado únicamente a quienes están verdaderamente comprometidos a trabajar con seriedad, responsabilidad y compromiso en nuestra plataforma. Este pago es definitivo y otorga acceso de por vida a todas las microtareas, las cuales se renuevan diariamente para brindarte nuevas oportunidades de forma constante. Estamos totalmente seguros de la efectividad de nuestro sistema comprobado y de tu capacidad para aprovecharlo, por lo que sabemos que recuperarás y superarás tu inversión rápidamente, incluso en estas mismas primeras horas, tal como lo están logrando numerosos usuarios satisfechos en este preciso momento.</span>
@@ -361,10 +361,10 @@ const PremiumPage = () => {
 
             <Button 
               onClick={handleCheckoutNavigation}
-              className="w-full py-6 text-xl font-bold bg-gradient-to-r from-[#FF7F50] to-[#FF4500] hover:from-[#E6723D] hover:to-[#E63E00] border-0 flex items-center justify-center gap-3 focus:outline-none focus:ring-0 focus:border-white/10 rounded-3xl"
+              className="w-full py-6 text-lg md:text-xl font-bold bg-gradient-to-r from-[#FF7F50] to-[#FF4500] hover:from-[#E6723D] hover:to-[#E63E00] border-0 flex items-center justify-center gap-3 focus:outline-none focus:ring-0 focus:border-white/10 rounded-3xl"
             >
               QUIERO DESBLOQUEAR YA
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-7 md:w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 18l6-6-6-6"/>
               </svg>
             </Button>

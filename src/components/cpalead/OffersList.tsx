@@ -271,9 +271,16 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         <h3 className="text-xl font-semibold text-foreground mb-2">
           {loading ? 'Analizando microtareas disponibles' : 'Verificando tu ubicación'}
         </h3>
-        <p className="text-muted-foreground max-w-md mx-auto">
+        <p className="text-muted-foreground max-w-md mx-auto mb-4">
           Cargando microtareas...
         </p>
+        <Button
+          onClick={() => window.location.reload()}
+          variant="outline"
+          className="mt-2 bg-[#2a2a2a] border-[#404040] text-white hover:bg-[#3a3a3a] hover:border-[#505050] transition-all"
+        >
+          Actualizar página
+        </Button>
       </div>
     );
   }
