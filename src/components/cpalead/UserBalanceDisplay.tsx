@@ -217,7 +217,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
                       variant="ghost"
                       size="sm"
                       onClick={() => setIsVisible(!isVisible)}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 hover:bg-white hover:text-black transition-colors"
                     >
                       {isVisible ? (
                         <EyeOff className="w-4 h-4" />
@@ -238,7 +238,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
                       size="sm"
                       onClick={handleRefresh}
                       disabled={isLoading}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 hover:bg-white hover:text-black transition-colors"
                     >
                       <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                     </Button>

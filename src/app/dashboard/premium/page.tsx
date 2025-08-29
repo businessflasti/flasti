@@ -50,7 +50,7 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] pt-4 md:pt-8 pb-16 md:pb-8 px-4 relative">
+    <div className="min-h-screen bg-[#101010] pt-0 md:pt-8 pb-16 md:pb-8 px-4 relative">
       {/* Fondo de imagen solo en desktop */}
       <div 
         className="hidden md:block fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
@@ -60,7 +60,7 @@ const PremiumPage = () => {
       ></div>
       
       {/* Layout responsive: Desktop 2 columnas, Móvil 1 columna */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mt-2 md:mt-0">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
           
           {/* Columna izquierda: Imagen/FAQ (Desktop) - Abajo (Móvil) */}
@@ -108,13 +108,13 @@ const PremiumPage = () => {
                     }
                   }}
                 >
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
                       <div className="text-[#101010]">
                         <Info className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white">¿Por qué debo hacer un pago único para desbloquear las microtareas?</span>
+                    <span className="font-medium text-white leading-relaxed">¿Por qué debo hacer un pago único para desbloquear las microtareas?</span>
                   </div>
                   <div className="text-white">
                     {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -142,13 +142,13 @@ const PremiumPage = () => {
                     }
                   }}
                 >
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
                       <div className="text-[#101010]">
                         <MapPin className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white">¿Puedo empezar a trabajar desde mi ubicación actual ahora?</span>
+                    <span className="font-medium text-white leading-relaxed">¿Puedo empezar a trabajar desde mi ubicación actual ahora?</span>
                   </div>
                   <div className="text-white">
                     {isSecondQuestionOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -176,13 +176,13 @@ const PremiumPage = () => {
                     }
                   }}
                 >
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
                       <div className="text-[#101010]">
                         <Shield className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white">¿Cómo me respalda la garantía?</span>
+                    <span className="font-medium text-white leading-relaxed">¿Cómo me respalda la garantía?</span>
                   </div>
                   <div className="text-white">
                     {isThirdQuestionOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}

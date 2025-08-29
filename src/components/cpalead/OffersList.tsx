@@ -277,7 +277,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
         <Button
           onClick={() => window.location.reload()}
           variant="outline"
-          className="mt-2 bg-[#2a2a2a] border-[#404040] text-white hover:bg-[#3a3a3a] hover:border-[#505050] transition-all"
+          className="mt-2 bg-[#2a2a2a] border-[#404040] text-white hover:bg-[#1f1f1f] hover:border-[#505050] hover:text-white transition-all duration-200"
         >
           Actualizar página
         </Button>

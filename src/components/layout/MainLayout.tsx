@@ -92,7 +92,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
         {/* Contenido principal */}
         <main
           className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all' : ''}`}
-          style={isInternalPage ? { background: '#101010' } : {}}
+          style={isInternalPage ? { background: '#101010', paddingTop: '0' } : {}}
         >
           {children}
         </main>
