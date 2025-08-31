@@ -59,13 +59,8 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
 
     // Desactivado: ya no mostramos el tour para nuevos usuarios
-    // Siempre establecemos que el usuario ya ha visto el tour
-    try {
-      localStorage.setItem(`flasti_hasSeenContextTour_${user.id}`, 'true');
-      setIsActive(false);
-    } catch (error) {
-      console.error('Error al guardar el estado del tour:', error);
-    }
+    // El tour contextual está deshabilitado por defecto
+    setIsActive(false);
   }, [user]);
 
   const startTour = () => {
@@ -76,11 +71,7 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   const endTour = () => {
     setIsActive(false);
     setCurrentStep(0);
-
-    // Guardar que el usuario ha visto el tour
-    if (user) {
-      localStorage.setItem(`flasti_hasSeenContextTour_${user.id}`, 'true');
-    }
+    // Ya no guardamos en localStorage - el tour contextual está deshabilitado
   };
 
   const nextStep = () => {

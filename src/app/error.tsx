@@ -11,24 +11,22 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Opcionalmente registrar el error en un servicio de reporte
     console.error(error);
   }, [error]);
 
   return (
-    <div className="container-custom py-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="glass-card rounded-xl p-6 space-y-6 text-center">
-          <h2 className="text-3xl font-bold text-gradient">Algo salió mal</h2>
-          <p className="text-muted-foreground">
-            Lo sentimos, ha ocurrido un error al cargar la página principal.
+    <div className="min-h-screen flex items-center justify-center bg-[#101010] p-6">
+      <div className="max-w-2xl w-full">
+        <div className="bg-[#232323] rounded-2xl p-8 space-y-6 text-center">
+          <h2 className="text-3xl font-bold text-white">Algo salió mal</h2>
+          <p className="text-white/80">
+            Lo sentimos, ha ocurrido un error al cargar la página. Puedes intentar recargar o volver más tarde.
           </p>
-          <Button
-            onClick={reset}
-            className="glow-effect mt-4"
-          >
-            Intentar de nuevo
-          </Button>
+          <div className="flex justify-center">
+            <Button onClick={reset} className="bg-[#3C66CE] text-white hover:opacity-90">
+              Intentar de nuevo
+            </Button>
+          </div>
         </div>
       </div>
     </div>

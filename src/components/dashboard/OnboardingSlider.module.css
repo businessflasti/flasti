@@ -1,0 +1,373 @@
+/* Contenedor principal */
+.container {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón de toggle (pestaña) */
+.toggleButton {
+  width: 100%;
+  background: linear-gradient(135deg, #232323 0%, #2a2a2a 100%);
+  border: none; /* quitar borde para que la pestaña quede sin borde */
+  border-radius: 12px 12px 0 0;
+  padding: 0.75rem 1.5rem; /* Menos padding vertical */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 2; /* asegurar sobreposición */
+  box-shadow: none; /* eliminar cualquier sombra que genere franja */
+}
+
+.toggleButtonClosed {
+  border-radius: 12px !important;
+}
+
+/* Estilos para imagen de fondo en la pestaña (ajustada: menos oscura para mostrar rostros) */
+.toggleBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18; /* aumentado para que los rostros sean más visibles (antes 0.12) */
+  z-index: 0;
+  transform: translateY(-6%); /* Subir la imagen ligeramente para mostrar los ojos */
+  object-position: center 36%; /* ajustar la posición vertical para enfocar los ojos */
+  display: block;
+  border-radius: 12px 12px 0 0; /* asegurar que la imagen sigue el radio de la pestaña */
+  filter: brightness(1.04) saturate(1.04); /* ligera mejora para que los rostros se noten más */
+  pointer-events: none;
+}
+
+/* Capa oscura ligera sobre la imagen para que el título y la flecha resalten */
+.toggleButton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.06)); /* menos oscura que antes */
+  border-radius: 12px 12px 0 0;
+  z-index: 1; /* entre la imagen (0) y el contenido (2) */
+  pointer-events: none;
+}
+
+/* Cuando la pestaña está cerrada, asegurar que la imagen mantenga la misma posición/recorte que cuando está abierta */
+.toggleButtonClosed .toggleBg {
+  transform: translateY(-6%) !important; /* mantener la posición visual actual */
+  object-position: center 36% !important; /* mantener el foco */
+  position: absolute !important;
+  top: -2px !important;
+  left: -2px !important;
+  width: calc(100% + 4px) !important;
+  height: calc(100% + 4px) !important;
+  border-radius: 12px 12px 0 0 !important; /* mantener radios */
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
+
+.toggleContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 2; /* asegurar que el texto y el icono estén por encima de la imagen y overlay */
+}
+
+/* Contenedor del slider */
+.sliderContainer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #232323 0%, #2a2a2a 100%);
+  border: none; /* Sin borde cuando está cerrado */
+  border-radius: 0 0 12px 12px;
+  margin-top: -2px; /* solapar con la pestaña incluso cuando está cerrado para eliminar la franja */
+}
+
+.sliderContainer.open {
+  max-height: 550px; /* Más altura para escritorio también */
+  border: none; /* quitar borde del contenido al abrir para mantener coherencia con la pestaña */
+  border-top: none;
+  margin-top: -2px; /* solapar ligeramente para eliminar la franja visible */
+}
+
+.sliderContent {
+  padding: 2rem 1.5rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+.sliderContainer.open .sliderContent {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Indicadores de progreso */
+.progressIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem; /* Mucho más espacio */
+}
+
+.progressDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progressDot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+/* Simplificar marcador activo: color blanco fijo, sin animación ni sombra */
+.progressDot.active {
+  background: white !important;
+  transform: none !important; /* quitar escalado animado */
+  box-shadow: none !important; /* quitar brillo/sombra */
+}
+
+/* Desactivar pseudo-elemento animado que rodea al punto activo */
+.progressDot.active::after {
+  display: none !important;
+  animation: none !important;
+  content: none !important;
+}
+
+/* Contenido del paso */
+.stepContent {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Asegurar alineación izquierda para los pasos numerados */
+.stepContent div[style*="backgroundColor"] {
+  text-align: left !important;
+}
+
+.stepContent div[style*="backgroundColor"] p {
+  text-align: left !important;
+}
+
+.stepIcon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem; /* Más espacio después del ícono */
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stepTitle {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+.stepDescription {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+.stepBody {
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+
+.stepText {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Controles de navegación */
+.navigationControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none !important; /* eliminar borde existente */
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: transparent !important;
+  box-shadow: none !important; /* evitar efecto que genere líneas visibles */
+}
+
+.navButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.navButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.stepCounter {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  font-weight: 500;
+  min-width: 60px;
+  text-align: center;
+}
+
+.closeButton {
+  background: white;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 60px;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.closeButton:active {
+  transform: translateY(0);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .toggleButton {
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .toggleButtonClosed {
+    border-radius: 12px !important;
+  }
+  
+  .toggleText {
+    font-size: 0.9rem;
+  }
+  
+  .sliderContainer.open {
+    max-height: 800px; /* Aún más altura para acomodar el padding superior adicional */
+  }
+  
+  .sliderContent {
+    padding: 1.75rem 0.875rem 1rem 0.875rem; /* Más padding superior para los puntos */
+  }
+  
+  .stepContent {
+    margin-bottom: 0.75rem; /* Aún menos margen inferior */
+  }
+  
+  .stepBody {
+    text-align: left !important; /* Alinear todo el contenido del paso a la izquierda */
+  }
+  
+  /* Forzar alineación izquierda en móviles para los pasos numerados */
+  .stepContent div[style*="backgroundColor"] {
+    text-align: left !important;
+  }
+  
+  .stepContent div[style*="backgroundColor"] p {
+    text-align: left !important;
+  }
+  
+  .stepContent div[style*="backgroundColor"] div {
+    justify-content: flex-start !important;
+  }
+  
+  .stepTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.375rem; /* Menos espacio */
+  }
+  
+  .stepDescription {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem; /* Menos espacio */
+  }
+  
+  .stepText {
+    font-size: 0.8rem;
+    text-align: left !important; /* Alinear texto a la izquierda en móviles */
+  }
+  
+  .progressIndicators {
+    margin-bottom: 2rem; /* Mucho más espacio entre puntos e ícono en móviles */
+  }
+  
+  .stepIcon {
+    margin-bottom: 1.75rem; /* Aún más espacio en móviles */
+  }
+  
+  .navButton {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .stepCounter {
+    font-size: 0.75rem;
+    min-width: 50px;
+  }
+  
+  .closeButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: 50px;
+  }
+  
+  /* Estilos específicos para el contenido del paso 2 en móviles */
+  .stepContent div[style*="backgroundColor"] {
+    margin: 0 !important;
+    padding: 0.75rem !important;
+  }
+  
+  .stepContent div[style*="backgroundColor"] div {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .stepContent div[style*="backgroundColor"] div:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Estados de hover mejorados */
+.toggleButton::before {
+  display: none; /* ocultar el brillo que podía crear una franja */
+}

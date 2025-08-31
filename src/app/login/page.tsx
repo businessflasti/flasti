@@ -8,22 +8,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { FormEvent, useState, useEffect, useRef } from "react";
-import { AuthError, useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
 import AdBlock from "@/components/ui/AdBlock";
 
-const getLoginErrorMessage = (error: AuthError): string => {
+const getLoginErrorMessage = (error: any): string => {
   const defaultMessage = 'Error al iniciar sesión';
-  if (!error.message) return defaultMessage;
+  const message = error?.message || error?.msg || String(error || '');
+  if (!message) return defaultMessage;
 
-  if (error.message.includes('Invalid login')) {
+  if (String(message).includes('Invalid login')) {
     return 'Correo o contraseña incorrectos';
   }
-  if (error.message.includes('not confirmed')) {
+  if (String(message).includes('not confirmed')) {
     return 'Correo no confirmado. Por favor, verifica tu bandeja de entrada';
   }
-  return error.message;
+  return String(message);
 };
 
 export default function LoginPage() {
@@ -46,7 +47,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch (err) {
       console.error("AdSense error:", err);
     }
@@ -100,46 +101,9 @@ export default function LoginPage() {
       } else {
         setLoginStep('Verificando configuración...');
         toast.success('Inicio de sesión exitoso');
-        
-        // Verificar si el usuario ya completó el onboarding usando sistema dual
-        console.log('Verificando onboarding para email:', email);
-        
-        try {
-          // 1. Verificar localStorage primero (más rápido)
-          const localOnboardingByEmail = localStorage.getItem(`onboarding_completed_${email}`);
-          
-          if (localOnboardingByEmail === 'true') {
-            console.log('Usuario ya completó onboarding (localStorage), redirigiendo al dashboard...');
-            setTimeout(() => router.push('/dashboard'), 500);
-            return;
-          }
-          
-          // 2. Si no está en localStorage, verificar en base de datos
-          console.log('Verificando onboarding en base de datos...');
-          const response = await fetch('/api/user/onboarding-status');
-          
-          if (response.ok) {
-            const { hasCompletedOnboarding } = await response.json();
-            
-            if (hasCompletedOnboarding) {
-              console.log('Usuario ya completó onboarding (BD), actualizando localStorage y redirigiendo...');
-              // Sincronizar localStorage con BD
-              localStorage.setItem(`onboarding_completed_${email}`, 'true');
-              setTimeout(() => router.push('/dashboard'), 500);
-              return;
-            }
-          }
-          
-          // 3. Si no está completado en ningún lado, ir a welcome
-          console.log('Usuario no ha completado onboarding, redirigiendo a welcome...');
-          setTimeout(() => router.push('/welcome'), 500);
-          
-        } catch (error) {
-          console.error('Error al verificar onboarding:', error);
-          // En caso de error, asumir que no ha completado onboarding (más seguro)
-          console.log('Error en verificación, redirigiendo a welcome por seguridad...');
-          setTimeout(() => router.push('/welcome'), 500);
-        }
+        // Redirigir siempre al dashboard sin verificar onboarding
+        setTimeout(() => router.push('/dashboard'), 500);
+        return;
       }
     } catch (error) {
       console.error('Error inesperado:', error);

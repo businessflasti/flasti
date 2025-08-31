@@ -29,7 +29,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch (err) {
       console.error("AdSense error:", err);
     }
@@ -128,9 +128,9 @@ export default function RegisterPage() {
       toast.dismiss(loadingToast);
       toast.success('¡Registro exitoso! Redirigiendo...');
 
-      // Esperar un momento para que el contexto se actualice y luego redirigir a welcome
+      // Redirigir directamente al dashboard en vez de a welcome
       setTimeout(() => {
-        router.push('/welcome');
+        router.push('/dashboard');
       }, 500);
 
     } catch (error: any) {

@@ -6,14 +6,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
 import CasinoDashboardPage from './casino-page';
-import OffersList from '@/components/cpalead/OffersList';
+import OffersListNew from '@/components/cpalead/OffersListNew';
 import UserBalanceDisplay from '@/components/cpalead/UserBalanceDisplay';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, TrendingUp, Target, Gift } from 'lucide-react';
+import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import OnboardingSlider from '@/components/dashboard/OnboardingSlider';
 
 // Importar estilos de animaciones
 import "./animations.css";
@@ -38,25 +39,49 @@ export default function DashboardPage() {
   });
   const [isLoadingOffers, setIsLoadingOffers] = useState(true);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
+  const [cpaLeadData, setCpaLeadData] = useState<{
+    userCountry: string;
+    refreshing: boolean;
+    handleRefresh: () => void;
+  } | null>(null);
 
-  // Obtener ofertas de CPALead
-  const fetchOffers = async () => {
+  // Obtener ofertas de CPALead con filtrado por país
+  const fetchOffers = async (forceRefresh = false) => {
     try {
       setIsLoadingOffers(true);
       
-      const response = await fetch('/api/cpalead/offers');
+      // Obtener país del usuario desde localStorage
+      const userCountry = localStorage.getItem('userCountry');
+      
+      // Construir URL con parámetros
+      const params = new URLSearchParams();
+      if (userCountry && userCountry !== 'GLOBAL') {
+        params.append('country', userCountry);
+      }
+      if (forceRefresh) {
+        params.append('refresh', 'true');
+      }
+      
+      const url = `/api/cpalead/offers${params.toString() ? `?${params.toString()}` : ''}`;
+      console.log('🔄 Solicitando ofertas desde:', url);
+      
+      const response = await fetch(url);
       const result = await response.json();
       
       if (result.success) {
         setOffers(result.data);
-        console.log(`CPALead: Cargadas ${result.count} ofertas`);
+        console.log(`✅ CPALead: Cargadas ${result.count} ofertas para ${result.requestedCountry || 'detección automática'}`);
+        
+        if (result.stats) {
+          console.log('📊 Estadísticas de ofertas:', result.stats);
+        }
       } else {
-        console.error('Error fetching CPALead offers:', result.message);
+        console.error('❌ Error fetching CPALead offers:', result.message);
         toast.error('Error al cargar las ofertas');
         setOffers([]);
       }
     } catch (error) {
-      console.error('Error fetching CPALead offers:', error);
+      console.error('❌ Error fetching CPALead offers:', error);
       toast.error('Error al cargar las ofertas');
       setOffers([]);
     } finally {
@@ -122,6 +147,34 @@ export default function DashboardPage() {
     fetchUserStats();
   }, [user?.id]);
 
+  // Recargar ofertas cuando se detecte o cambie el país del usuario
+  useEffect(() => {
+    const handleCountryChange = () => {
+      const currentCountry = localStorage.getItem('userCountry');
+      if (currentCountry && currentCountry !== 'GLOBAL') {
+        console.log('🌍 País detectado/cambiado, recargando ofertas para:', currentCountry);
+        fetchOffers(true); // Force refresh
+      }
+    };
+
+    // Escuchar cambios en localStorage
+    window.addEventListener('storage', handleCountryChange);
+    
+    // También verificar periódicamente si se detectó el país
+    const countryCheckInterval = setInterval(() => {
+      const currentCountry = localStorage.getItem('userCountry');
+      if (currentCountry && currentCountry !== 'GLOBAL' && offers.length === 0) {
+        console.log('🔄 País disponible, recargando ofertas...');
+        fetchOffers();
+      }
+    }, 5000); // Verificar cada 5 segundos
+
+    return () => {
+      window.removeEventListener('storage', handleCountryChange);
+      clearInterval(countryCheckInterval);
+    };
+  }, [offers.length]);
+
   // Configurar actualización en tiempo real del saldo
   useEffect(() => {
     if (!user?.id) return;
@@ -152,12 +205,62 @@ export default function DashboardPage() {
     };
   }, [user?.id]);
 
+  // Actualizar elementos del DOM cuando cambien los datos de CPA Lead
+  useEffect(() => {
+    if (cpaLeadData) {
+      // Actualizar elementos de escritorio
+      const countryElement = document.getElementById('country-info');
+      const refreshButton = document.getElementById('refresh-button') as HTMLButtonElement;
+      
+      // Actualizar elementos móviles
+      const countryElementMobile = document.getElementById('country-info-mobile');
+      const refreshButtonMobile = document.getElementById('refresh-button-mobile') as HTMLButtonElement;
+      
+      // Escritorio - país
+      if (countryElement) {
+        const spanElement = countryElement.querySelector('span');
+        if (spanElement) {
+          spanElement.textContent = `País: ${cpaLeadData.userCountry}`;
+        }
+      }
+      
+      // Móvil - país
+      if (countryElementMobile) {
+        const spanElement = countryElementMobile.querySelector('span');
+        if (spanElement) {
+          spanElement.textContent = cpaLeadData.userCountry;
+        }
+      }
+      
+      // Escritorio - botón
+      if (refreshButton) {
+        refreshButton.disabled = cpaLeadData.refreshing;
+        const spanElement = refreshButton.querySelector('span');
+        if (spanElement) {
+          spanElement.textContent = cpaLeadData.refreshing ? 'Actualizando...' : 'Actualizar';
+        }
+        refreshButton.onclick = cpaLeadData.handleRefresh;
+      }
+      
+      // Móvil - botón
+      if (refreshButtonMobile) {
+        refreshButtonMobile.disabled = cpaLeadData.refreshing;
+        const spanElement = refreshButtonMobile.querySelector('span');
+        if (spanElement) {
+          spanElement.textContent = cpaLeadData.refreshing ? 'Actualizando...' : 'Actualizar';
+        }
+        refreshButtonMobile.onclick = cpaLeadData.handleRefresh;
+      }
+    }
+  }, [cpaLeadData]);
+
   return (
     <div className="min-h-screen bg-[#101010]">
       {/* Container principal con mejor padding y max-width */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         
-
+        {/* Slider de onboarding colapsible */}
+        <OnboardingSlider />
 
         {/* Contador de saldo en ancho completo */}
         {user?.id && (
@@ -250,18 +353,66 @@ export default function DashboardPage() {
           <TabsContent value="offers" className="space-y-6">
             <Card className="bg-[#232323] border-white/10">
               <CardHeader className="pb-4">
+                {/* Título */}
+                <div className="mb-3">
+                  <CardTitle className="font-bold text-white">
+                    <span className="text-lg md:text-2xl">Microtareas asignadas para ti hoy</span>
+                  </CardTitle>
+                </div>
+                
+                {/* Controles debajo del título */}
                 <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="font-bold text-white">
-                      <span className="md:hidden text-lg">Microtareas asignadas</span>
-                      <span className="hidden md:inline text-2xl">Microtareas asignadas para ti hoy</span>
-                    </CardTitle>
+                  {/* Versión móvil - compacta */}
+                  <div className="flex md:hidden items-center space-x-2 text-xs">
+                    <div className="flex items-center space-x-1 text-gray-400" id="country-info-mobile">
+                      <Globe className="w-3 h-3 text-white" />
+                      <span className="text-xs">--</span>
+                    </div>
+                    {!isLoadingOffers && offers.length > 0 && (
+                      <Badge className="px-2 py-1 text-xs border border-gray-600 bg-transparent text-gray-300">
+                        {offers.length} disponibles
+                      </Badge>
+                    )}
                   </div>
-                  {!isLoadingOffers && offers.length > 0 && (
-                    <Badge className="px-3 py-1.5 text-xs sm:px-2 sm:py-1 sm:text-sm min-w-[90px] sm:min-w-0 text-center sm:text-left border-0" style={{ backgroundColor: 'white', color: '#000000' }}>
-                      {offers.length} disponibles
-                    </Badge>
-                  )}
+                  
+                  {/* Versión escritorio */}
+                  <div className="hidden md:flex items-center space-x-4">
+                    {/* País */}
+                    <div className="flex items-center space-x-2 text-gray-400" id="country-info">
+                      <Globe className="w-4 h-4 text-white" />
+                      <span className="text-sm">País: --</span>
+                    </div>
+                    
+                    {/* Badge de disponibles */}
+                    {!isLoadingOffers && offers.length > 0 && (
+                      <Badge className="px-3 py-1.5 text-xs border border-gray-600 bg-transparent text-gray-300">
+                        {offers.length} disponibles
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  {/* Botones de actualizar */}
+                  <div className="flex">
+                    {/* Botón escritorio */}
+                    <button 
+                      id="refresh-button"
+                      className="hidden md:flex items-center space-x-2 px-3 py-1.5 text-xs bg-white text-black rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      disabled
+                    >
+                      <RefreshCw className="w-3 h-3" />
+                      <span>Actualizar</span>
+                    </button>
+                    
+                    {/* Botón móvil */}
+                    <button 
+                      id="refresh-button-mobile"
+                      className="flex md:hidden items-center space-x-1 px-2 py-1 text-xs bg-white text-black rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      disabled
+                    >
+                      <RefreshCw className="w-3 h-3" />
+                      <span>Actualizar</span>
+                    </button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
@@ -280,7 +431,7 @@ export default function DashboardPage() {
                     <p className="text-gray-400 font-medium">Cargando microtareas...</p>
                   </div>
                 ) : (
-                  <OffersList offers={offers} />
+                  <OffersListNew onDataUpdate={setCpaLeadData} />
                 )}
               </CardContent>
             </Card>

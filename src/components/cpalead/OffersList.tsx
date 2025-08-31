@@ -84,24 +84,43 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     const detectCountry = async () => {
+      console.log('🌍 Iniciando detección robusta de país...');
+      
+      // Primero verificar si ya tenemos un país guardado y es reciente
+      const savedCountry = localStorage.getItem('userCountry');
+      const savedTimestamp = localStorage.getItem('userCountryTimestamp');
+      const now = Date.now();
+      const oneHour = 60 * 60 * 1000; // 1 hora en milisegundos
+
+      if (savedCountry && savedTimestamp && (now - parseInt(savedTimestamp)) < oneHour) {
+        console.log(`✅ Usando país guardado (válido por 1h): ${savedCountry}`);
+        setUserCountry(savedCountry.toUpperCase());
+        setLoading(false);
+        return;
+      }
+
       let detected = false;
       let retries = 0;
       const maxRetries = 3;
+      let bestGuess = null;
+      const detectionResults: { service: string; country: string | null; confidence: number }[] = [];
 
       while (!detected && retries < maxRetries) {
+        console.log(`🔄 Intento ${retries + 1} de detección de país...`);
+        
         for (const service of geoServices) {
           if (detected) break;
 
           try {
-            console.log(`Intento ${retries + 1}: Detectando país con ${service.name}...`);
+            console.log(`🌐 Consultando ${service.name}...`);
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000); // Aumentado a 5 segundos
+            const timeoutId = setTimeout(() => controller.abort(), 8000); // Aumentado a 8 segundos
 
             const response = await fetch(service.url, {
               signal: controller.signal,
               headers: {
                 'Accept': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (compatible; Flasti/1.0)',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                 'Cache-Control': 'no-cache',
                 'Pragma': 'no-cache'
               },
@@ -111,7 +130,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
             clearTimeout(timeoutId);
 
             if (!response.ok && service.name !== 'cloudflare') {
-              throw new Error(`Error en respuesta de ${service.name}`);
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
             const data = service.name === 'cloudflare' 
@@ -120,40 +139,136 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
 
             const countryCode = service.extract(data);
 
-            if (countryCode) {
-              console.log(`País detectado con ${service.name}:`, countryCode);
-              // Guardar en localStorage para futuros accesos
-              localStorage.setItem('userCountry', countryCode.toUpperCase());
-              setUserCountry(countryCode.toUpperCase());
-              detected = true;
-              break;
+            if (countryCode && countryCode.length === 2) {
+              const upperCountry = countryCode.toUpperCase();
+              console.log(`✅ ${service.name} detectó: ${upperCountry}`);
+              
+              // Asignar confianza basada en el servicio
+              let confidence = 1;
+              if (service.name === 'cloudflare') confidence = 0.9; // Cloudflare es muy confiable
+              if (service.name === 'ipapi') confidence = 0.8;
+              if (service.name === 'ipinfo') confidence = 0.7;
+              if (service.name === 'bigdatacloud') confidence = 0.6;
+
+              detectionResults.push({
+                service: service.name,
+                country: upperCountry,
+                confidence
+              });
+
+              // Si es un servicio de alta confianza, usar inmediatamente
+              if (confidence >= 0.8) {
+                console.log(`🎯 Alta confianza con ${service.name}, usando: ${upperCountry}`);
+                localStorage.setItem('userCountry', upperCountry);
+                localStorage.setItem('userCountryTimestamp', now.toString());
+                setUserCountry(upperCountry);
+                detected = true;
+                break;
+              } else if (!bestGuess || confidence > bestGuess.confidence) {
+                bestGuess = { country: upperCountry, confidence, service: service.name };
+              }
+            } else {
+              console.warn(`⚠️ ${service.name} devolvió código inválido:`, countryCode);
             }
           } catch (error) {
-            console.warn(`Error con ${service.name}:`, error);
+            console.warn(`❌ Error con ${service.name}:`, error instanceof Error ? error.message : error);
             continue;
           }
+
+          // Pequeña pausa entre servicios para evitar rate limiting
+          await delay(500);
         }
 
         if (!detected) {
           retries++;
           if (retries < maxRetries) {
-            console.log(`Reintentando detección de país en 2 segundos...`);
-            await delay(2000); // Esperar 2 segundos entre reintentos
+            console.log(`⏳ Esperando 3 segundos antes del siguiente intento...`);
+            await delay(3000);
           }
         }
       }
 
-      if (!detected) {
-        console.warn('No se pudo detectar el país después de varios intentos');
-        // Intentar usar el país guardado anteriormente
-        const savedCountry = localStorage.getItem('userCountry');
-        if (savedCountry) {
-          console.log('Usando país guardado previamente:', savedCountry);
-          setUserCountry(savedCountry);
-        } else {
-          setUserCountry('ALL');
+      // Si no se detectó con alta confianza, usar la mejor opción disponible
+      if (!detected && bestGuess) {
+        console.log(`🤔 Usando mejor estimación: ${bestGuess.country} (${bestGuess.service}, confianza: ${bestGuess.confidence})`);
+        localStorage.setItem('userCountry', bestGuess.country);
+        localStorage.setItem('userCountryTimestamp', now.toString());
+        setUserCountry(bestGuess.country);
+        detected = true;
+      }
+
+      // Consenso entre múltiples servicios
+      if (!detected && detectionResults.length > 1) {
+        const countryVotes: { [key: string]: number } = {};
+        detectionResults.forEach(result => {
+          if (result.country) {
+            countryVotes[result.country] = (countryVotes[result.country] || 0) + result.confidence;
+          }
+        });
+
+        const winner = Object.entries(countryVotes).reduce((a, b) => a[1] > b[1] ? a : b);
+        if (winner[1] > 1) { // Al menos confianza combinada > 1
+          console.log(`🗳️ Consenso detectado: ${winner[0]} (puntuación: ${winner[1].toFixed(2)})`);
+          localStorage.setItem('userCountry', winner[0]);
+          localStorage.setItem('userCountryTimestamp', now.toString());
+          setUserCountry(winner[0]);
+          detected = true;
         }
       }
+
+      // Fallback final
+      if (!detected) {
+        console.warn('⚠️ No se pudo detectar el país después de todos los intentos');
+        
+        // Intentar usar país guardado anteriormente (aunque sea viejo)
+        if (savedCountry) {
+          console.log(`🔄 Usando país guardado anterior: ${savedCountry}`);
+          setUserCountry(savedCountry.toUpperCase());
+        } else {
+          // Detectar por zona horaria como último recurso
+          try {
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const timezoneCountryMap: { [key: string]: string } = {
+              'America/Argentina': 'AR',
+              'America/Mexico': 'MX',
+              'America/Bogota': 'CO',
+              'America/Lima': 'PE',
+              'America/Santiago': 'CL',
+              'America/Sao_Paulo': 'BR',
+              'Europe/Madrid': 'ES',
+              'America/New_York': 'US',
+              'America/Los_Angeles': 'US',
+              'Europe/London': 'GB',
+              'Europe/Paris': 'FR',
+              'Europe/Berlin': 'DE',
+              'Asia/Tokyo': 'JP',
+              'Australia/Sydney': 'AU'
+            };
+
+            const detectedByTimezone = Object.entries(timezoneCountryMap).find(([tz]) => 
+              timezone.includes(tz.split('/')[1])
+            );
+
+            if (detectedByTimezone) {
+              console.log(`🕐 Detectado por zona horaria: ${detectedByTimezone[1]} (${timezone})`);
+              setUserCountry(detectedByTimezone[1]);
+            } else {
+              console.log('🌐 Usando fallback global');
+              setUserCountry('GLOBAL');
+            }
+          } catch (timezoneError) {
+            console.warn('Error detectando por zona horaria:', timezoneError);
+            setUserCountry('GLOBAL');
+          }
+        }
+      }
+
+      console.log('📊 Resumen de detección:', {
+        detected,
+        attempts: retries + 1,
+        services: detectionResults.length,
+        finalCountry: userCountry
+      });
 
       setLoading(false);
     };
@@ -189,30 +304,126 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     }
   }, [offers, userCountry]);
 
-  // Filtrar ofertas por país del usuario
+  // Sistema robusto de filtrado de ofertas por país
   const filteredOffers = useMemo(() => {
-    // Si no hay país detectado o es 'ALL', mostrar todas las ofertas
-    if (!userCountry || userCountry === 'ALL') return offers;
-    
-    return offers.filter(offer => {
-      // Si no hay país especificado en la oferta, asumimos que es global
-      if (!offer.country) return true;
+    console.log('🔍 Iniciando filtrado de ofertas...');
+    console.log(`País detectado: ${userCountry}`);
+    console.log(`Total ofertas recibidas: ${offers.length}`);
+
+    // Si no hay país detectado, mostrar mensaje de carga
+    if (!userCountry) {
+      console.log('⏳ País no detectado aún, mostrando todas las ofertas temporalmente');
+      return offers;
+    }
+
+    // Mapeo de códigos de país para mejorar la compatibilidad
+    const countryMappings: { [key: string]: string[] } = {
+      'AR': ['ar', 'argentina', 'arg'],
+      'US': ['us', 'usa', 'united states', 'america'],
+      'MX': ['mx', 'mexico', 'méxico'],
+      'CO': ['co', 'colombia'],
+      'PE': ['pe', 'peru', 'perú'],
+      'CL': ['cl', 'chile'],
+      'BR': ['br', 'brazil', 'brasil'],
+      'ES': ['es', 'spain', 'españa'],
+      'UK': ['uk', 'gb', 'united kingdom', 'england'],
+      'CA': ['ca', 'canada'],
+      'AU': ['au', 'australia'],
+      'DE': ['de', 'germany', 'deutschland'],
+      'FR': ['fr', 'france'],
+      'IT': ['it', 'italy', 'italia'],
+      'NL': ['nl', 'netherlands', 'holland'],
+      'BE': ['be', 'belgium'],
+      'PT': ['pt', 'portugal'],
+      'IN': ['in', 'india'],
+      'PH': ['ph', 'philippines'],
+      'TH': ['th', 'thailand'],
+      'VN': ['vn', 'vietnam'],
+      'ID': ['id', 'indonesia'],
+      'MY': ['my', 'malaysia'],
+      'SG': ['sg', 'singapore'],
+      'JP': ['jp', 'japan'],
+      'KR': ['kr', 'korea', 'south korea'],
+      'CN': ['cn', 'china'],
+      'TW': ['tw', 'taiwan'],
+      'HK': ['hk', 'hong kong'],
+      'ZA': ['za', 'south africa'],
+      'EG': ['eg', 'egypt'],
+      'NG': ['ng', 'nigeria'],
+      'KE': ['ke', 'kenya'],
+      'GH': ['gh', 'ghana']
+    };
+
+    // Obtener variaciones del país del usuario
+    const userCountryVariations = countryMappings[userCountry.toUpperCase()] || [userCountry.toLowerCase()];
+    userCountryVariations.push(userCountry.toLowerCase(), userCountry.toUpperCase());
+
+    console.log(`🌍 Variaciones de país para ${userCountry}:`, userCountryVariations);
+
+    const filtered = offers.filter(offer => {
+      // Si no hay país especificado en la oferta, verificar si es realmente global
+      if (!offer.country || offer.country.trim() === '') {
+        console.log(`🌐 Oferta sin país específico (global): ${offer.title.substring(0, 30)}...`);
+        return true; // Incluir ofertas globales
+      }
+
+      const offerCountry = offer.country.toLowerCase().trim();
       
-      try {
-        const offerCountry = (offer.country || '').toLowerCase();
-        const userCountryLower = userCountry.toLowerCase();
-        
-        // Lista de valores que indican que la oferta es global
-        const globalValues = ['all', 'all_countries', 'worldwide', 'global', '*'];
-        
-        // Si la oferta es global o coincide con el país del usuario
-        return globalValues.includes(offerCountry) || offerCountry === userCountryLower;
-      } catch (error) {
-        console.warn('Error al procesar oferta:', error);
-        // En caso de error, incluir la oferta por defecto
+      // Lista expandida de valores que indican ofertas globales
+      const globalValues = [
+        'all', 'all_countries', 'worldwide', 'global', '*', 'international',
+        'any', 'universal', 'multi', 'multiple', 'various', 'mixed',
+        'tier1', 'tier2', 'tier3', 'tier 1', 'tier 2', 'tier 3',
+        'english', 'spanish', 'portuguese', 'french', 'german'
+      ];
+
+      // Verificar si es una oferta global
+      if (globalValues.some(global => offerCountry.includes(global))) {
+        console.log(`🌐 Oferta global detectada: ${offer.title.substring(0, 30)}... (${offer.country})`);
         return true;
       }
+
+      // Verificar coincidencia exacta con el país del usuario
+      const isMatch = userCountryVariations.some(variation => 
+        offerCountry === variation || 
+        offerCountry.includes(variation) ||
+        variation.includes(offerCountry)
+      );
+
+      if (isMatch) {
+        console.log(`✅ Oferta para ${userCountry}: ${offer.title.substring(0, 30)}... (${offer.country})`);
+      } else {
+        console.log(`❌ Oferta no compatible: ${offer.title.substring(0, 30)}... (${offer.country}) - Usuario: ${userCountry}`);
+      }
+
+      return isMatch;
     });
+
+    // Estadísticas de filtrado
+    console.log('📊 Estadísticas de filtrado:');
+    console.log(`  - Ofertas totales: ${offers.length}`);
+    console.log(`  - Ofertas filtradas: ${filtered.length}`);
+    console.log(`  - Porcentaje mostrado: ${offers.length > 0 ? ((filtered.length / offers.length) * 100).toFixed(1) : 0}%`);
+
+    // Mostrar países únicos en las ofertas para debug
+    const uniqueCountries = [...new Set(offers.map(o => o.country).filter(Boolean))];
+    console.log(`  - Países disponibles en ofertas:`, uniqueCountries);
+
+    // Si no hay ofertas para el país específico, mostrar ofertas globales como fallback
+    if (filtered.length === 0) {
+      console.log('🔄 No hay ofertas específicas para el país, mostrando ofertas globales...');
+      const globalOffers = offers.filter(offer => {
+        if (!offer.country || offer.country.trim() === '') return true;
+        const offerCountry = offer.country.toLowerCase().trim();
+        const globalValues = ['all', 'worldwide', 'global', '*', 'international'];
+        return globalValues.some(global => offerCountry.includes(global));
+      });
+      
+      console.log(`🌐 Ofertas globales encontradas: ${globalOffers.length}`);
+      return globalOffers;
+    }
+
+    return filtered;
   }, [offers, userCountry]);
 
 
@@ -285,21 +496,42 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
     );
   }
 
-  if (!offers || offers.length === 0 || (userCountry && filteredOffers.length === 0)) {
+  if (!offers || offers.length === 0 || (userCountry && userCountry !== 'GLOBAL' && filteredOffers.length === 0)) {
+    // Obtener nombre del país para mostrar
+    const countryNames: { [key: string]: string } = {
+      'AR': 'Argentina', 'US': 'Estados Unidos', 'MX': 'México', 'CO': 'Colombia',
+      'PE': 'Perú', 'CL': 'Chile', 'BR': 'Brasil', 'ES': 'España', 'UK': 'Reino Unido',
+      'CA': 'Canadá', 'AU': 'Australia', 'DE': 'Alemania', 'FR': 'Francia', 'IT': 'Italia'
+    };
+    
+    const countryName = userCountry ? (countryNames[userCountry] || userCountry) : 'tu ubicación';
+    
     return (
       <div className="text-center py-12">
         <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
           <Tag className="w-12 h-12 text-muted-foreground" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">
-          Microtareas disponibles
+          {userCountry && userCountry !== 'GLOBAL' ? `Microtareas para ${countryName}` : 'Microtareas disponibles'}
         </h3>
-        <p className="text-muted-foreground max-w-md mx-auto">
-          {userCountry 
-            ? `No hay tareas disponibles para ${userCountry} en este momento. Por favor, inténtalo de nuevo más tarde.`
-            : 'No se encontraron tareas en este momento. Por favor, inténtalo de nuevo más tarde.'
+        <p className="text-muted-foreground max-w-md mx-auto mb-4">
+          {userCountry && userCountry !== 'GLOBAL'
+            ? `No hay tareas específicas disponibles para ${countryName} en este momento. Nuestro sistema está buscando nuevas oportunidades para tu región.`
+            : 'Detectando tu ubicación para mostrarte las mejores oportunidades disponibles...'
           }
         </p>
+        
+        {userCountry && userCountry !== 'GLOBAL' && (
+          <div className="mt-6">
+            <Button
+              onClick={() => window.location.reload()}
+              variant="outline"
+              className="bg-[#2a2a2a] border-[#404040] text-white hover:bg-[#1f1f1f] hover:border-[#505050] hover:text-white transition-all duration-200"
+            >
+              Buscar nuevas ofertas
+            </Button>
+          </div>
+        )}
       </div>
     );
   }

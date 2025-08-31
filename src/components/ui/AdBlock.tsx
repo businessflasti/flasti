@@ -17,10 +17,9 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
 
   useEffect(() => {
     try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch (err) {
-      console.error("AdSense error:", err);
+      console.error('AdSense error:', err);
     }
 
     const adCheckTimeout = setTimeout(() => {

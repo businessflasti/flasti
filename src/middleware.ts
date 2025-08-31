@@ -17,7 +17,6 @@ const publicRoutes = [
   '/',
   '/login',
   '/register',
-  '/welcome',
   '/api/auth',
   '/precios',
   '/contacto'
@@ -176,7 +175,6 @@ export const config = {
 
     // Rutas de autenticación
     '/register',
-    '/welcome',
 
     // Rutas protegidas que requieren autenticación
     '/dashboard/:path*',
