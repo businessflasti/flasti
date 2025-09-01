@@ -286,7 +286,7 @@ export default function DashboardPage() {
                     ${userStats.todayEarnings.toFixed(2)}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
                   <Calendar className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
@@ -302,7 +302,7 @@ export default function DashboardPage() {
                     ${userStats.weekEarnings.toFixed(2)}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
                   <TrendingUp className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
@@ -318,7 +318,7 @@ export default function DashboardPage() {
                     ${userStats.totalEarnings.toFixed(2)}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
                   <Target className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
@@ -337,7 +337,7 @@ export default function DashboardPage() {
                     {userStats.totalTransactions}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl" style={{ backgroundColor: 'white' }}>
+                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
                   <Gift className="w-6 h-6" style={{ color: '#000000' }} />
                 </div>
               </div>
