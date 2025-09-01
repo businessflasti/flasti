@@ -49,6 +49,9 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [countriesList, setCountriesList] = useState<string[]>([]);
+  const [showCountryModal, setShowCountryModal] = useState(false);
+  const [selectedCountryManual, setSelectedCountryManual] = useState<string>('');
 
   // Premium system hooks
   const { isPremium, isLoading: premiumLoading } = usePremiumStatus();
@@ -70,8 +73,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     }
   }, [userCountry, refreshing, onDataUpdate]);
 
-  // Función para obtener ofertas
-  const fetchOffers = useCallback(async (forceRefresh = false) => {
+  // Función para obtener ofertas (ahora acepta country opcional)
+  const fetchOffers = useCallback(async (forceRefresh = false, countryParam?: string) => {
     try {
       if (forceRefresh) {
         setRefreshing(true);
@@ -86,8 +89,13 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       if (forceRefresh) {
         params.append('refresh', 'true');
       }
+      if (countryParam) {
+        params.append('country', countryParam);
+      }
 
-      const response = await fetch(`/api/cpalead/offers?${params.toString()}`, {
+      const url = `/api/cpalead/offers${params.toString() ? `?${params.toString()}` : ''}`;
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -121,6 +129,66 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       setRefreshing(false);
     }
   }, []);
+
+  // Nueva función: detectar país vía API server-side
+  const detectCountry = useCallback(async () => {
+    try {
+      // Intentar obtener país guardado en localStorage primero
+      const cached = typeof window !== 'undefined' ? localStorage.getItem('userCountry') : null;
+      if (cached) {
+        setUserCountry(cached);
+        // cargar ofertas con country cached
+        await fetchOffers(false, cached);
+        return;
+      }
+
+      // Llamada al endpoint server-side que usa ipapi -> ipinfo
+      const res = await fetch('/api/detect-country');
+      if (res.status === 200) {
+        const json = await res.json();
+        if (json?.country) {
+          setUserCountry(json.country);
+          localStorage.setItem('userCountry', json.country);
+          localStorage.setItem('userCountryTime', Date.now().toString());
+          await fetchOffers(false, json.country);
+          return;
+        }
+      }
+
+      // Si no se detectó país, obtener lista de países soportados por CPALead y mostrar selector
+      const listRes = await fetch('/api/cpalead/countries');
+      if (listRes.ok) {
+        const listJson = await listRes.json();
+        if (listJson?.success && Array.isArray(listJson.countries) && listJson.countries.length > 0) {
+          setCountriesList(listJson.countries);
+          setShowCountryModal(true);
+          return;
+        }
+      }
+
+      // Si todo falla, marcar error
+      setError('No se pudo detectar tu país y no hay países disponibles para seleccionar.');
+    } catch (error) {
+      console.error('Error detectando país:', error);
+      setError('Error al detectar país');
+    }
+  }, [fetchOffers]);
+
+  // Cargar ofertas al montar el componente: antes detectar país
+  useEffect(() => {
+    detectCountry();
+  }, [detectCountry]);
+
+  // Manejar selección manual del país
+  const handleConfirmManualCountry = async () => {
+    if (!selectedCountryManual) return;
+    setShowCountryModal(false);
+    setUserCountry(selectedCountryManual);
+    localStorage.setItem('userCountry', selectedCountryManual);
+    localStorage.setItem('userCountryTime', Date.now().toString());
+    // Aquí podríamos persistir en perfil del usuario si está logueado (no implementado)
+    await fetchOffers(false, selectedCountryManual);
+  };
 
   // Cargar ofertas al montar el componente
   useEffect(() => {
@@ -168,6 +236,36 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
         </div>
         <p className="text-gray-400 font-medium">Verificando tu ubicación…</p>
+
+        {/* Selector inline dentro del bloque de ofertas si corresponde */}
+        {showCountryModal && (
+          <div className="w-full max-w-2xl mt-6">
+            <Card className="bg-[#101010] border-gray-700">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
+                  <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
+
+                  <select
+                    className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
+                    value={selectedCountryManual}
+                    onChange={(e) => setSelectedCountryManual(e.target.value)}
+                  >
+                    <option value="">-- Selecciona --</option>
+                    {countriesList.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+
+                  <div className="flex justify-end gap-2">
+                    <button onClick={() => { setShowCountryModal(false); }} className="px-4 py-2 rounded bg-gray-700 text-white">Cancelar</button>
+                    <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     );
   }
@@ -205,6 +303,35 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   return (
     <div className="space-y-6">
 
+      {/* Si se requiere selección manual, mostrar selector dentro del bloque de ofertas */}
+      {showCountryModal && (
+        <div className="w-full max-w-4xl mx-auto">
+          <Card className="bg-[#101010] border-gray-700">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
+                <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
+
+                <select
+                  className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
+                  value={selectedCountryManual}
+                  onChange={(e) => setSelectedCountryManual(e.target.value)}
+                >
+                  <option value="">-- Selecciona --</option>
+                  {countriesList.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+
+                <div className="flex justify-end gap-2">
+                  <button onClick={() => { setShowCountryModal(false); }} className="px-4 py-2 rounded bg-gray-700 text-white">Cancelar</button>
+                  <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Lista de ofertas */}
       {offers.length === 0 ? (

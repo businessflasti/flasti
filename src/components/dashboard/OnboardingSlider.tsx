@@ -17,7 +17,8 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
       title: "Bienvenido a Flasti",
       description: "La plataforma líder global en generación de ingresos",
       icon: <Users className="w-8 h-8 text-blue-500" />,
-      content: "Completa microtareas sencillas y diseñadas para ti para generar ingresos de forma segura."
+      content: "Completa microtareas sencillas y diseñadas para ti para generar ingresos de forma segura.",
+      center: true
     },
     {
       title: "Cómo funciona",
@@ -44,13 +45,15 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
       title: "Herramientas",
       description: "Todo lo que necesitas en un solo lugar",
       icon: <Smartphone className="w-8 h-8" style={{ color: '#EA4085' }} />,
-      content: "Accede a microtareas diarias, estadísticas en tiempo real y un panel completo para gestionar tus ganancias."
+      content: "Accede a microtareas diarias, estadísticas en tiempo real y un panel completo para gestionar tus ganancias.",
+      center: true
     },
     {
       title: "Comienza a trabajar",
       description: "Tu panel te está esperando",
       icon: <DollarSign className="w-8 h-8 text-yellow-500" />,
-      content: "¡Todo está listo! Completa tus primeras microtareas asignadas y comienza a generar ingresos."
+      content: "¡Todo está listo! Completa tus primeras microtareas asignadas y comienza a generar ingresos.",
+      center: true
     }
   ];
 
@@ -129,7 +132,7 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
             
             <div className={styles.stepBody}>
               {typeof steps[currentStep].content === 'string' ? (
-                <p className={styles.stepText}>{steps[currentStep].content}</p>
+                <p className={`${styles.stepText} ${steps[currentStep].center ? styles.centerText : ''}`.trim()}>{steps[currentStep].content}</p>
               ) : (
                 steps[currentStep].content
               )}

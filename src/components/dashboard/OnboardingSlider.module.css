@@ -371,3 +371,7 @@
 .toggleButton::before {
   display: none; /* ocultar el brillo que podía crear una franja */
 }
+
+.centerText {
+  text-align: center !important;
+}
