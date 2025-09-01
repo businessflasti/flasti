@@ -10,7 +10,6 @@ import OffersListNew from '@/components/cpalead/OffersListNew';
 import UserBalanceDisplay from '@/components/cpalead/UserBalanceDisplay';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
@@ -368,11 +367,7 @@ export default function DashboardPage() {
                       <Globe className="w-3 h-3 text-white" />
                       <span className="text-xs">--</span>
                     </div>
-                    {!isLoadingOffers && offers.length > 0 && (
-                      <Badge className="px-2 py-1 text-xs border border-gray-600 bg-transparent text-gray-300">
-                        {offers.length} disponibles
-                      </Badge>
-                    )}
+                    {/* Contador de ofertas eliminado */}
                   </div>
                   
                   {/* Versión escritorio */}
@@ -383,12 +378,7 @@ export default function DashboardPage() {
                       <span className="text-sm">País: --</span>
                     </div>
                     
-                    {/* Badge de disponibles */}
-                    {!isLoadingOffers && offers.length > 0 && (
-                      <Badge className="px-3 py-1.5 text-xs border border-gray-600 bg-transparent text-gray-300">
-                        {offers.length} disponibles
-                      </Badge>
-                    )}
+                    {/* Contador de ofertas eliminado */}
                   </div>
                   
                   {/* Botones de actualizar */}

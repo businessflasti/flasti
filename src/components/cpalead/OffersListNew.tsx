@@ -131,15 +131,17 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   }, []);
 
   // Nueva función: detectar país vía API server-side
-  const detectCountry = useCallback(async () => {
+  const detectCountry = useCallback(async (force = false) => {
     try {
-      // Intentar obtener país guardado en localStorage primero
-      const cached = typeof window !== 'undefined' ? localStorage.getItem('userCountry') : null;
-      if (cached) {
-        setUserCountry(cached);
-        // cargar ofertas con country cached
-        await fetchOffers(false, cached);
-        return;
+      // Si no forzamos, intentar obtener país guardado en localStorage primero
+      if (!force) {
+        const cached = typeof window !== 'undefined' ? localStorage.getItem('userCountry') : null;
+        if (cached) {
+          setUserCountry(cached);
+          // cargar ofertas con country cached
+          await fetchOffers(false, cached);
+          return;
+        }
       }
 
       // Llamada al endpoint server-side que usa ipapi -> ipinfo
@@ -190,35 +192,31 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     await fetchOffers(false, selectedCountryManual);
   };
 
-  // Cargar ofertas al montar el componente
-  useEffect(() => {
-    fetchOffers();
-  }, [fetchOffers]);
-
-  // Auto-refresh cada 5 minutos
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log('🔄 Auto-refresh de tareas...');
-      fetchOffers(true);
-    }, 5 * 60 * 1000); // 5 minutos
-
-    return () => clearInterval(interval);
-  }, [fetchOffers]);
-
-  // Manejar click en refresh manual
-  const handleRefresh = () => {
-    fetchOffers(true);
+  // Manejar click en refresh manual: re-detectar país forzando (ignorar cache)
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setError(null);
+    setOffers([]);
+    setStats(null);
+    setUserCountry('');
+    // Forzar redetección y recarga de ofertas
+    await detectCountry(true);
+    setRefreshing(false);
   };
 
-  // Manejar click en oferta
-  const handleOfferClick = (offer: CPALeadOffer) => {
-    if (!user) {
-      router.push('/login');
-      return;
+  // Helper para nombre de país completo
+  const getCountryName = (code: string) => {
+    try {
+      // Preferir Español
+      if ((Intl as any).DisplayNames) {
+        const dn = new (Intl as any).DisplayNames(['es'], { type: 'region' });
+        return dn.of(code);
+      }
+    } catch (e) {
+      // fallback
     }
-
-    // Abrir oferta en nueva pestaña
-    window.open(offer.link, '_blank', 'noopener,noreferrer');
+    // Fallback simple: devolver mismo código si no se puede resolver
+    return code;
   };
 
   // Renderizar estado de carga
@@ -253,12 +251,11 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   >
                     <option value="">-- Selecciona --</option>
                     {countriesList.map((c) => (
-                      <option key={c} value={c}>{c}</option>
+                      <option key={c} value={c}>{c} - {getCountryName(c)}</option>
                     ))}
                   </select>
 
                   <div className="flex justify-end gap-2">
-                    <button onClick={() => { setShowCountryModal(false); }} className="px-4 py-2 rounded bg-gray-700 text-white">Cancelar</button>
                     <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
                   </div>
                 </div>
@@ -300,38 +297,39 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     );
   }
 
+  // Si se requiere selección manual, mostrar solo el selector dentro del bloque de ofertas
+  if (showCountryModal) {
+    return (
+      <div className="space-y-6 w-full max-w-4xl mx-auto">
+        <Card className="bg-[#101010] border-gray-700">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
+              <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
+
+              <select
+                className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
+                value={selectedCountryManual}
+                onChange={(e) => setSelectedCountryManual(e.target.value)}
+              >
+                <option value="">-- Selecciona --</option>
+                {countriesList.map((c) => (
+                  <option key={c} value={c}>{c} - {getCountryName(c)}</option>
+                ))}
+              </select>
+
+              <div className="flex justify-end gap-2">
+                <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-
-      {/* Si se requiere selección manual, mostrar selector dentro del bloque de ofertas */}
-      {showCountryModal && (
-        <div className="w-full max-w-4xl mx-auto">
-          <Card className="bg-[#101010] border-gray-700">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
-                <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
-
-                <select
-                  className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
-                  value={selectedCountryManual}
-                  onChange={(e) => setSelectedCountryManual(e.target.value)}
-                >
-                  <option value="">-- Selecciona --</option>
-                  {countriesList.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-
-                <div className="flex justify-end gap-2">
-                  <button onClick={() => { setShowCountryModal(false); }} className="px-4 py-2 rounded bg-gray-700 text-white">Cancelar</button>
-                  <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
 
       {/* Lista de ofertas */}
       {offers.length === 0 ? (
@@ -419,7 +417,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             <span>
                               Dispositivo: {(() => {
                                 const device = offer.device?.toLowerCase();
-                                if (device === 'all') return 'todos';
+                                if (device === 'all' || device === 'all_devices') return 'todos';
                                 if (device === 'desktop') return 'computadora';
                                 if (device === 'mobile') return 'móvil';
                                 return offer.device?.toLowerCase() || 'no especificado';

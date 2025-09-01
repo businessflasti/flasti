@@ -6,7 +6,6 @@ import { CPALeadOffer } from '@/lib/cpa-lead-api';
 import { ExternalLink, DollarSign, Globe, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAuth } from '@/contexts/AuthContext';
 import PremiumCardOverlay from '@/components/premium/PremiumCardOverlay';
@@ -575,11 +574,10 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
                         {offer.title}
                       </CardTitle>
                       <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="secondary" className="text-xs px-3 py-1 flex items-center gap-1.5">
-                          <DollarSign className="w-3 h-3" />
-                          {offer.amount} {offer.payout_currency}
-                        </Badge>
-
+                        <div className="flex items-center space-x-1 text-gray-400" id="country-info-mobile">
+                          <Globe className="w-3 h-3 text-white" />
+                          <span className="text-xs">--</span>
+                        </div>
                       </div>
                     </div>
                     
