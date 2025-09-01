@@ -80,11 +80,11 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   // Mostrar mensaje de error de conexión
   if (connectionError && retryCount >= 3) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-background p-4">
+      <div className="min-h-screen w-full flex items-center justify-center p-4" style={{ backgroundColor: '#101010' }}>
         <div className="max-w-md w-full">
-          <div className="glass-card rounded-xl p-8 space-y-6 text-center border border-[#3c66ce]/30">
-            <h2 className="text-3xl font-bold text-gradient">Problema de conexión</h2>
-            <p className="text-muted-foreground">
+          <div className="rounded-xl p-8 space-y-6 text-center" style={{ backgroundColor: '#232323' }}>
+            <h2 className="text-3xl font-bold text-white">Problema de conexión</h2>
+            <p className="text-white">
               La conexión con el servidor está tardando demasiado. Por favor, verifica tu conexión a internet e intenta de nuevo.
             </p>
             <div className="flex flex-col gap-3 mt-6">
@@ -94,13 +94,13 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
                   setRetryCount(0);
                   checkConnection();
                 }}
-                className="glow-effect w-full py-2 px-4 rounded-md bg-primary text-white font-medium"
+                className="w-full py-3 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
               >
                 Intentar de nuevo
               </button>
               <button
                 onClick={() => router.push('/')}
-                className="w-full py-2 px-4 rounded-md border border-border bg-transparent"
+                className="w-full py-3 px-4 rounded-lg border border-gray-600 bg-transparent text-white hover:bg-gray-700 transition-colors"
               >
                 Volver al inicio
               </button>
