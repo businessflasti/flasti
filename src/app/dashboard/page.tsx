@@ -357,6 +357,9 @@ export default function DashboardPage() {
                   <CardTitle className="font-bold text-white">
                     <span className="text-lg md:text-2xl">Microtareas asignadas para ti hoy</span>
                   </CardTitle>
+                  <CardDescription className="text-xs md:text-sm text-gray-400 mt-1">
+                    Las tareas se actualizan automáticamente, revise periódicamente para acceder a nuevas oportunidades de ingresos
+                  </CardDescription>
                 </div>
                 
                 {/* Controles debajo del título */}
