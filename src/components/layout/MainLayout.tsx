@@ -84,9 +84,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
 
         {/* Nuevo encabezado para dashboard y todas las páginas con sidebar */}
         {isInternalPage && (
-          <div className="w-full z-30 sticky top-0">
-            <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
-          </div>
+          <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
         )}
 
         {/* Contenido principal */}
