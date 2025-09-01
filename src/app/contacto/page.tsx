@@ -144,12 +144,9 @@ export default function ContactoPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Teléfono</h3>
               <p className="text-foreground/70 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
-              <a
-                href="tel:+123456789"
-                className="text-white hover:text-gray-200 transition-colors"
-              >
+              <span className="text-white">
                 +1 (234) 567-890
-              </a>
+              </span>
             </div>
           </div>
 
