@@ -60,14 +60,14 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
 
     return (
       <header
-        className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10 relative sticky top-0 z-50"
+        className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10 relative z-40"
         style={{ minHeight: 64 }}
       >
         {/* Gradiente azul en el borde inferior */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3C66CD] to-transparent"></div>
         <div className="flex items-center justify-between w-full">
           {/* Logo y título/balance */}
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-5 lg:ml-56 w-1/3 sm:w-auto justify-start ml-2 sm:ml-4 md:ml-0">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-5 flex-1 justify-start ml-2 sm:ml-4 md:ml-0">
             <a href="/dashboard" className="flex items-center justify-center flex-shrink-0">
               <Image
                 src="/logo/isotipo-web.png"
@@ -125,10 +125,10 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
               </div>
             )}
           </div>
-          <div className="flex items-center gap-3 sm:gap-6 lg:mr-16 md:mr-8 w-2/3 sm:w-auto justify-end">
-            {/* Usuario */}
-            <div className="user-profile flex items-center gap-2 sm:gap-3">
-              <div className="user-avatar w-9 h-9 rounded-full overflow-hidden">
+          <div className="flex items-center gap-3 sm:gap-6 mr-4 md:mr-8 justify-end flex-shrink-0">
+            {/* Usuario - Siempre visible */}
+            <div className="user-profile flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <div className="user-avatar w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-gray-600">
                 {profile?.avatar_url ? (
                   <Image
                     src={profile.avatar_url}
@@ -150,7 +150,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                   </div>
                 )}
               </div>
-              <span className="ml-1 sm:ml-2 text-xs sm:text-sm font-medium text-white truncate max-w-[80px] sm:max-w-none">
+              <span className="text-xs sm:text-sm font-medium text-white truncate max-w-[80px] sm:max-w-[120px] lg:max-w-none">
                 {profile?.name || user?.email?.split('@')[0] || 'Usuario'}
               </span>
             </div>

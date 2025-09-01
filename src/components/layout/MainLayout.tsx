@@ -75,16 +75,16 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
       >
         {/* Sidebar colapsable solo en dashboard */}
         {isInternalPage && (
-          <div className="fixed top-0 left-0 z-40 h-full">
+          <div className="fixed top-0 left-0 z-50 h-full">
             <Sidebar open={isMobile ? mobileMenuOpen : undefined} setOpen={isMobile ? setMobileMenuOpen : undefined} />
           </div>
         )}
 
-
-
         {/* Nuevo encabezado para dashboard y todas las páginas con sidebar */}
         {isInternalPage && (
-          <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
+          <div className="sticky top-0 z-40 w-full ml-0 lg:ml-56">
+            <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
+          </div>
         )}
 
         {/* Contenido principal */}
