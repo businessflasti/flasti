@@ -50,7 +50,7 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] pt-0 md:pt-8 pb-16 md:pb-8 px-4 relative">
+    <div className="min-h-screen bg-[#101010] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative">
       {/* Fondo de imagen solo en desktop */}
       <div 
         className="hidden md:block fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"

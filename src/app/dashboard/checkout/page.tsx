@@ -1381,7 +1381,7 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8" style={{ background: "#101010", paddingTop: "0" }}>
+      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0" style={{ background: "#101010" }}>
 
 
       {/* Eliminado Exit Intent Popup */}
