@@ -256,14 +256,14 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-[#101010]">
       {/* Container principal con mejor padding y max-width */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-16 md:pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8">
         
         {/* Slider de onboarding colapsible */}
         <OnboardingSlider />
 
         {/* Contador de saldo en ancho completo */}
         {user?.id && (
-          <div className="mb-8 lg:mb-12">
+          <div className="mb-4 lg:mb-6">
             <UserBalanceDisplay
               initialBalance={userStats.balance}
               userId={user.id}
@@ -274,9 +274,9 @@ export default function DashboardPage() {
         )}
 
         {/* Estadísticas mejoradas */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6">
           <Card className="bg-[#232323] border-green-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4 lg:p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-white">
@@ -294,7 +294,7 @@ export default function DashboardPage() {
           </Card>
 
           <Card className="bg-[#232323] border-blue-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4 lg:p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-white">Esta Semana</p>
@@ -310,7 +310,7 @@ export default function DashboardPage() {
           </Card>
 
           <Card className="bg-[#232323] border-purple-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4 lg:p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-white">Total Ganado</p>
@@ -326,7 +326,7 @@ export default function DashboardPage() {
           </Card>
 
           <Card className="bg-[#232323] border-orange-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4 lg:p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-white">
@@ -346,10 +346,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Contenido principal con tabs mejorado */}
-        <Tabs defaultValue="offers" className="space-y-8">
+        <Tabs defaultValue="offers" className="space-y-4">
 
-
-          <TabsContent value="offers" className="space-y-6">
+          <TabsContent value="offers" className="space-y-4">
             <Card className="bg-[#232323] border-white/10">
               <CardHeader className="pb-4">
                 {/* Título */}
@@ -430,7 +429,7 @@ export default function DashboardPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="dashboard" className="space-y-6">
+          <TabsContent value="dashboard" className="space-y-4">
             <div className="bg-slate-800/30 border border-white/10 backdrop-blur-sm rounded-2xl overflow-hidden">
               <CasinoDashboardPage />
             </div>
