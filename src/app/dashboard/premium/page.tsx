@@ -112,12 +112,12 @@ const PremiumPage = () => {
                   }}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
                       <div className="text-[#101010]">
                         <DollarSign className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white leading-relaxed">¿Cuánto dinero puedo ganar?</span>
+                    <span className="font-medium text-white leading-relaxed flex items-center mt-1">¿Cuánto dinero puedo ganar?</span>
                   </div>
                   <div className="text-white">
                     {isFourthQuestionOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -160,12 +160,12 @@ const PremiumPage = () => {
                   }}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
                       <div className="text-[#101010]">
                         <Info className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white leading-relaxed">¿Por qué debo hacer un pago único para desbloquear las microtareas?</span>
+                    <span className="font-medium text-white leading-relaxed flex items-center">¿Por qué debo hacer un pago único para desbloquear las microtareas?</span>
                   </div>
                   <div className="text-white">
                     {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
