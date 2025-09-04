@@ -65,7 +65,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
       >
         {/* Gradiente azul en el borde inferior */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3C66CD] to-transparent"></div>
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full max-w-[1920px] mx-auto">
           {/* Logo y título/balance */}
           <div className="flex items-center gap-2 sm:gap-3 md:gap-5 flex-1 justify-start ml-2 sm:ml-4 md:ml-0">
             <a href="/dashboard" className="flex items-center justify-center flex-shrink-0">
@@ -126,34 +126,36 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
             )}
           </div>
           <div className="flex items-center gap-3 sm:gap-6 mr-4 md:mr-8 justify-end flex-shrink-0">
-            {/* Usuario - Siempre visible */}
-            <div className="user-profile flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              <div className="user-avatar w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-gray-600">
-                {profile?.avatar_url ? (
-                  <Image
-                    src={profile.avatar_url}
-                    alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
-                    width={36}
-                    height={36}
-                    className="w-full h-full object-cover"
-                    priority
-                    onError={(e) => {
-                      e.currentTarget.src = '/images/default-avatar.png';
-                    }}
-                  />
-                ) : (
-                  <div 
-                    className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-sm"
-                    style={{ backgroundColor: avatarColor }}
-                  >
-                    {initials}
-                  </div>
-                )}
+            {/* Usuario - Solo visible en móvil */}
+            {isMobile && (
+              <div className="user-profile flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                <div className="user-avatar w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-gray-600">
+                  {profile?.avatar_url ? (
+                    <Image
+                      src={profile.avatar_url}
+                      alt={profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+                      width={36}
+                      height={36}
+                      className="w-full h-full object-cover"
+                      priority
+                      onError={(e) => {
+                        e.currentTarget.src = '/images/default-avatar.png';
+                      }}
+                    />
+                  ) : (
+                    <div 
+                      className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-sm"
+                      style={{ backgroundColor: avatarColor }}
+                    >
+                      {initials}
+                    </div>
+                  )}
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-white truncate max-w-[80px] sm:max-w-[120px]">
+                  {profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+                </span>
               </div>
-              <span className="text-xs sm:text-sm font-medium text-white truncate max-w-[80px] sm:max-w-[120px] lg:max-w-none">
-                {profile?.name || user?.email?.split('@')[0] || 'Usuario'}
-              </span>
-            </div>
+            )}
             {/* Menú hamburguesa solo en móvil */}
             {isMobile && (
               <button

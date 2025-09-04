@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Users, BarChart3, Smartphone, DollarSign, X } from 'lucide-react';
+import { useSwipeable } from 'react-swipeable';
 import styles from './OnboardingSlider.module.css';
 
 interface OnboardingSliderProps {
@@ -77,8 +78,39 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
     setIsOpen(false);
   };
 
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (currentStep < steps.length - 1) {
+        handleNext();
+      }
+      setIsDragging(false);
+    },
+    onSwipedRight: () => {
+      if (currentStep > 0) {
+        handlePrevious();
+      }
+      setIsDragging(false);
+    },
+    onSwipeStart: () => {
+      setIsDragging(true);
+    },
+    onSwiping: () => {
+      setIsDragging(true);
+    },
+    onTouchEndOrOnMouseUp: () => {
+      setIsDragging(false);
+    },
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+    delta: 10,
+    swipeDuration: 500,
+    touchEventOptions: { passive: true }
+  });
+
   return (
-    <div className={`${styles.container} ${className}`}>
+    <div className={`${styles.container} ${className}`} {...handlers}>
       {/* Pestaña colapsible */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -103,7 +135,7 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
 
       {/* Contenido del slider */}
       <div className={`${styles.sliderContainer} ${isOpen ? styles.open : ''}`}>
-        <div className={styles.sliderContent}>
+        <div className={`${styles.sliderContent} ${isDragging ? styles.grabbing : ''}`}>
           {/* Indicadores de progreso */}
           <div className={styles.progressIndicators}>
             {steps.map((_, index) => (
@@ -117,7 +149,7 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
           </div>
 
           {/* Contenido del paso actual */}
-          <div className={styles.stepContent}>
+          <div className={styles.stepContent} {...handlers}>
             <div className={styles.stepIcon}>
               {steps[currentStep].icon}
             </div>

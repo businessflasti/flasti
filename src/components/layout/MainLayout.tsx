@@ -31,6 +31,13 @@ interface MainLayoutProps {
   showStickyBanner?: boolean;
 }
 
+// Estilo global para prevenir scroll horizontal
+const globalStyle = `
+  body {
+    overflow-x: hidden;
+  }
+`;
+
 const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner = false }: MainLayoutProps) => {
   const pathname = usePathname();
   const isInternalPage = pathname?.startsWith('/dashboard');
@@ -93,9 +100,10 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
         <Header showStickyBanner={showStickyBanner} />
       )}
 
+      <style jsx global>{globalStyle}</style>
       <div
         ref={containerRef}
-        className={`min-h-screen flex flex-col relative mobile-app-container${(isInternalPage || isContactPage) ? '' : ' gradient-background'}`}
+        className={`min-h-screen flex flex-col mobile-app-container${(isInternalPage || isContactPage) ? '' : ' gradient-background'}`}
         style={(isInternalPage || isContactPage) ? { background: '#101010' } : {}}
       >
         {/* Sidebar colapsable solo en dashboard */}
@@ -118,8 +126,13 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
 
         {/* Contenido principal */}
         <main
-          className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all mobile-main-scroll' : 'mobile-main-scroll'}`}
-          style={isInternalPage ? { background: '#101010', paddingTop: '0' } : {}}
+          className={`flex-grow relative hardware-accelerated overflow-x-hidden ${isInternalPage ? 'ml-0 lg:ml-56 transition-all mobile-main-scroll' : 'mobile-main-scroll'}`}
+          style={isInternalPage ? { 
+            background: '#101010',
+            paddingTop: '0',
+            position: 'relative',
+            zIndex: 1
+          } : {}}
         >
           {children}
         </main>

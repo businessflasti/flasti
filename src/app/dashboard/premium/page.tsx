@@ -11,10 +11,7 @@ import { useRouter } from 'next/navigation';
 const PremiumPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isSecondQuestionOpen, setIsSecondQuestionOpen] = useState(false);
-  const [isThirdQuestionOpen, setIsThirdQuestionOpen] = useState(false);
-  const [isFourthQuestionOpen, setIsFourthQuestionOpen] = useState(false);
+  const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
   const [isArgentina, setIsArgentina] = useState(false);
 
   // Detectar si el usuario es de Argentina
@@ -102,14 +99,7 @@ const PremiumPage = () => {
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
-                  onClick={() => {
-                    setIsFourthQuestionOpen(!isFourthQuestionOpen);
-                    if (!isFourthQuestionOpen) {
-                      setIsLoginOpen(false);
-                      setIsSecondQuestionOpen(false);
-                      setIsThirdQuestionOpen(false);
-                    }
-                  }}
+                  onClick={() => setActiveQuestion(activeQuestion === 0 ? null : 0)}
                 >
                   <div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
@@ -120,12 +110,12 @@ const PremiumPage = () => {
                     <span className="font-medium text-white leading-relaxed flex items-center mt-1">¿Cuánto dinero puedo ganar?</span>
                   </div>
                   <div className="text-white">
-                    {isFourthQuestionOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    {activeQuestion === 0 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isFourthQuestionOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 0 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
                     <span style={{ color: '#AEAEB0' }}>
@@ -151,13 +141,7 @@ const PremiumPage = () => {
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
-                  onClick={() => {
-                    setIsLoginOpen(!isLoginOpen);
-                    if (!isLoginOpen) {
-                      setIsSecondQuestionOpen(false);
-                      setIsThirdQuestionOpen(false);
-                    }
-                  }}
+                  onClick={() => setActiveQuestion(activeQuestion === 1 ? null : 1)}
                 >
                   <div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
@@ -168,12 +152,12 @@ const PremiumPage = () => {
                     <span className="font-medium text-white leading-relaxed flex items-center">¿Por qué debo hacer un pago único para desbloquear las microtareas?</span>
                   </div>
                   <div className="text-white">
-                    {isLoginOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    {activeQuestion === 1 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isLoginOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 1 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
                     <span style={{ color: '#AEAEB0' }}>El acceso a la plataforma es gratuito, sin embargo, debido a abusos reiterados y accesos no autorizados por parte de algunos usuarios, se implementó este pago único para desbloquear y trabajar con microtareas. Esta medida funciona como un filtro necesario que garantiza un entorno profesional, seguro y exclusivo, destinado únicamente a quienes están verdaderamente comprometidos a trabajar con seriedad, responsabilidad y compromiso en nuestra plataforma. Este pago es definitivo y otorga acceso de por vida a todas las microtareas, las cuales se renuevan diariamente para brindarte nuevas oportunidades de forma constante. Estamos totalmente seguros de la efectividad de nuestro sistema comprobado y de tu capacidad para aprovecharlo, por lo que sabemos que recuperarás y superarás tu inversión rápidamente, incluso en estas mismas primeras horas, tal como lo están logrando numerosos usuarios satisfechos en este preciso momento.</span>
@@ -185,13 +169,7 @@ const PremiumPage = () => {
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
-                  onClick={() => {
-                    setIsSecondQuestionOpen(!isSecondQuestionOpen);
-                    if (!isSecondQuestionOpen) {
-                      setIsLoginOpen(false);
-                      setIsThirdQuestionOpen(false);
-                    }
-                  }}
+                  onClick={() => setActiveQuestion(activeQuestion === 2 ? null : 2)}
                 >
                   <div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
@@ -202,12 +180,12 @@ const PremiumPage = () => {
                     <span className="font-medium text-white leading-relaxed">¿Puedo empezar a trabajar desde mi ubicación actual ahora?</span>
                   </div>
                   <div className="text-white">
-                    {isSecondQuestionOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    {activeQuestion === 2 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isSecondQuestionOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 2 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
                     <span style={{ color: '#AEAEB0' }}>Sí, ahora mismo puedes completar microtareas desde tu ubicación actual. Nuestro sistema detectó automáticamente tu país y te asignó tareas específicas diseñadas para ser realizadas exclusivamente desde tu región. Esto garantiza que siempre tengas oportunidades diarias adaptadas a tu contexto particular. Estamos comprometidos a brindarle apoyo desde este primer momento y a ayudarle a maximizar las posibilidades que ofrece nuestra plataforma.</span>
@@ -219,13 +197,7 @@ const PremiumPage = () => {
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
-                  onClick={() => {
-                    setIsThirdQuestionOpen(!isThirdQuestionOpen);
-                    if (!isThirdQuestionOpen) {
-                      setIsLoginOpen(false);
-                      setIsSecondQuestionOpen(false);
-                    }
-                  }}
+                  onClick={() => setActiveQuestion(activeQuestion === 3 ? null : 3)}
                 >
                   <div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
@@ -236,12 +208,12 @@ const PremiumPage = () => {
                     <span className="font-medium text-white leading-relaxed">¿Cómo me respalda la garantía?</span>
                   </div>
                   <div className="text-white">
-                    {isThirdQuestionOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    {activeQuestion === 3 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${isThirdQuestionOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 3 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
                     <span style={{ color: '#AEAEB0' }}>En Flasti, tu satisfacción es nuestra prioridad. Por eso, cuentas con una garantía incondicional de 7 días. Estamos tan seguros de que te encantará trabajar en nuestra plataforma que tu pago está completamente respaldado. Si, por algún motivo, no cumplimos tus expectativas o no estás completamente satisfecho, podrás solicitar un reembolso del 100% de tu dinero, sin tener que dar justificaciones ni llenar formularios interminables con preguntas incómodas. Comienza sin preocupaciones. ¡Tu inversión está completamente protegida!</span>
