@@ -103,7 +103,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
       <style jsx global>{globalStyle}</style>
       <div
         ref={containerRef}
-        className={`min-h-screen flex flex-col relative overflow-x-hidden overflow-y-auto overscroll-none ${(isInternalPage || isContactPage) ? '' : 'gradient-background'}`}
+        className={`min-h-screen flex flex-col relative ${(isInternalPage || isContactPage) ? '' : 'gradient-background'}`}
         style={(isInternalPage || isContactPage) ? { background: '#101010' } : {}}
       >
         {/* Sidebar colapsable solo en dashboard */}

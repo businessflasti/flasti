@@ -26,9 +26,11 @@
 }
 
 /* Desactiva el pull-to-refresh y mejora el desplazamiento en móviles */
-body {
+html {
   overscroll-behavior-y: none;
-  touch-action: pan-x pan-y;
+}
+
+body {
   -webkit-overflow-scrolling: touch;
 }
 
