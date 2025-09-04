@@ -26,8 +26,9 @@
   /* Reservar espacio para el header sticky para evitar que el contenido se vea cortado por la barra superior. */
    /* Fijar la altura disponible para que el <main> tenga un área de scroll
      consistente (viewport menos la altura del header). */
-   height: calc(100svh - var(--dashboard-header-height, 64px));
-   height: calc(100vh - var(--dashboard-header-height, 64px)); /* fallback */
+  min-height: 100svh;
+  min-height: 100vh; /* fallback */
+  overflow-y: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
