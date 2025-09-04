@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, Suspense } from 'react';
+import React, { memo, Suspense, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Footer from "@/components/layout/Footer";
 import DashboardHeader from "@/components/layout/DashboardHeader";
@@ -55,6 +55,30 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
+  // Refs para medir la altura del header y exponerla como variable CSS
+  const headerWrapperRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const setHeaderHeight = () => {
+      const headerHeight = headerWrapperRef.current?.offsetHeight ?? 64;
+      if (containerRef.current) {
+        containerRef.current.style.setProperty('--dashboard-header-height', `${headerHeight}px`);
+      } else {
+        document.documentElement.style.setProperty('--dashboard-header-height', `${headerHeight}px`);
+      }
+    };
+
+    // Inicial y en cambios de tamaño/orientación
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight);
+    window.addEventListener('orientationchange', setHeaderHeight);
+    return () => {
+      window.removeEventListener('resize', setHeaderHeight);
+      window.removeEventListener('orientationchange', setHeaderHeight);
+    };
+  }, [isInternalPage]);
+
   return (
     <ToastProvider>
       {/* Banner - Solo en páginas principales - NO STICKY */}
@@ -70,26 +94,31 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
       )}
 
       <div
-        className={`min-h-screen flex flex-col relative overflow-hidden mobile-app-container${(isInternalPage || isContactPage) ? '' : ' gradient-background'}`}
+        ref={containerRef}
+        className={`min-h-screen flex flex-col relative mobile-app-container${(isInternalPage || isContactPage) ? '' : ' gradient-background'}`}
         style={(isInternalPage || isContactPage) ? { background: '#101010' } : {}}
       >
         {/* Sidebar colapsable solo en dashboard */}
         {isInternalPage && (
           <div className="fixed top-0 left-0 z-50 h-full">
-            <Sidebar open={isMobile ? mobileMenuOpen : undefined} setOpen={isMobile ? setMobileMenuOpen : undefined} />
+            {isMobile ? (
+              <Sidebar open={mobileMenuOpen} setOpen={setMobileMenuOpen} />
+            ) : (
+              <Sidebar />
+            )}
           </div>
         )}
 
         {/* Nuevo encabezado para dashboard y todas las páginas con sidebar */}
         {isInternalPage && (
-          <div className="sticky top-0 z-40 w-full ml-0 lg:ml-56">
+          <div className="sticky top-0 z-40 w-full ml-0 lg:ml-56" ref={headerWrapperRef}>
             <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
           </div>
         )}
 
         {/* Contenido principal */}
         <main
-          className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all' : ''}`}
+          className={`flex-grow relative z-10 hardware-accelerated ${isInternalPage ? 'ml-0 lg:ml-56 transition-all mobile-main-scroll' : 'mobile-main-scroll'}`}
           style={isInternalPage ? { background: '#101010', paddingTop: '0' } : {}}
         >
           {children}

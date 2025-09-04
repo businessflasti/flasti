@@ -12,7 +12,22 @@
 
   /* Contenedor principal con scroll */
   .mobile-app-container {
-    height: 100vh;
+    /* Usar svh evita recorte por la barra de direcciones en móviles modernos
+       y min-height permite que el contenido crezca más allá de la pantalla. */
+    min-height: 100svh;
+    min-height: 100vh; /* fallback para navegadores que no soportan svh */
+    /* El scroll se delega al <main> para que el header pueda permanecer sticky
+       (si el scroll está en el mismo contenedor que el elemento sticky, el comportamiento
+       de sticky puede variar según el navegador). */
+  }
+
+  /* Clase para aplicar scroll al contenedor principal de contenido (main) en móvil */
+  .mobile-main-scroll {
+  /* Reservar espacio para el header sticky para evitar que el contenido se vea cortado por la barra superior. */
+   /* Fijar la altura disponible para que el <main> tenga un área de scroll
+     consistente (viewport menos la altura del header). */
+   height: calc(100svh - var(--dashboard-header-height, 64px));
+   height: calc(100vh - var(--dashboard-header-height, 64px)); /* fallback */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;

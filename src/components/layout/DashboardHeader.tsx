@@ -60,7 +60,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
 
     return (
       <header
-        className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10 relative z-40"
+        className="w-full flex items-center px-3 sm:px-6 bg-[#101010] border-b border-white/10 sticky top-0 z-40"
         style={{ minHeight: 64 }}
       >
         {/* Gradiente azul en el borde inferior */}
