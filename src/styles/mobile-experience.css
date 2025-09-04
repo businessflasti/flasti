@@ -25,11 +25,11 @@
   min-width: var(--mobile-touch-target);
 }
 
-/* Mejora la experiencia de desplazamiento en dispositivos móviles */
-.mobile-smooth-scroll {
+/* Desactiva el pull-to-refresh y mejora el desplazamiento en móviles */
+body {
+  overscroll-behavior-y: none;
+  touch-action: pan-x pan-y;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  overscroll-behavior-y: contain;
 }
 
 /* Evita el zoom no deseado en inputs en iOS */

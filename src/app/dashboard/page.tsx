@@ -254,7 +254,7 @@ export default function DashboardPage() {
   }, [cpaLeadData]);
 
   return (
-    <div className="min-h-screen bg-[#101010]">
+    <div className="min-h-screen bg-[#101010] overscroll-none">
       {/* Container principal con mejor padding y max-width */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8">
         
