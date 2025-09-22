@@ -42,6 +42,23 @@ interface OffersListNewProps {
 const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const { user } = useAuth();
   const router = useRouter();
+
+  // Helper para limpiar HTML y decodificar entidades
+  const cleanHtmlText = (text: string): string => {
+    if (!text) return '';
+    
+    return text
+      .replace(/<[^>]*>/g, '') // Remover tags HTML
+      .replace(/&nbsp;/g, ' ') // Reemplazar &nbsp; con espacios
+      .replace(/&amp;/g, '&') // Decodificar &amp;
+      .replace(/&lt;/g, '<') // Decodificar &lt;
+      .replace(/&gt;/g, '>') // Decodificar &gt;
+      .replace(/&quot;/g, '"') // Decodificar &quot;
+      .replace(/&#39;/g, "'") // Decodificar &#39;
+      .replace(/&#x27;/g, "'") // Decodificar &#x27;
+      .replace(/&hellip;/g, '...') // Decodificar &hellip;
+      .trim();
+  };
   const [offers, setOffers] = useState<CPALeadOffer[]>([]);
   const [stats, setStats] = useState<OffersStats | null>(null);
   const [userCountry, setUserCountry] = useState<string>('');
@@ -117,6 +134,21 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         
         console.log(`✅ ${data.count} tareas obtenidas para ${data.country}`);
         console.log('📊 Estadísticas:', data.stats);
+        console.log('🔍 Primeras 3 ofertas:', data.data.slice(0, 3));
+        
+        // Verificar si las ofertas tienen los campos necesarios
+        data.data.forEach((offer, index) => {
+          if (index < 3) {
+            console.log(`Oferta ${index + 1}:`, {
+              id: offer.id,
+              title: offer.title,
+              amount: offer.amount,
+              link: offer.link,
+              description: offer.description?.substring(0, 100),
+              hasCreatives: !!offer.creatives?.url
+            });
+          }
+        });
       } else {
         throw new Error(data.message || 'Error desconocido');
       }
@@ -131,55 +163,73 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   }, []);
 
   // Nueva función: detectar país vía API server-side
-  const detectCountry = useCallback(async (force = false) => {
+  const detectCountry = async (force = false) => {
     try {
+      console.log('🌍 Iniciando detección de país...', { force });
+      
       // Si no forzamos, intentar obtener país guardado en localStorage primero
       if (!force) {
         const cached = typeof window !== 'undefined' ? localStorage.getItem('userCountry') : null;
-        if (cached) {
+        if (cached && cached !== 'null') {
+          console.log('🌍 País desde cache:', cached);
           setUserCountry(cached);
-          // cargar ofertas con country cached
           await fetchOffers(false, cached);
           return;
         }
       }
 
+      console.log('🌍 Detectando país vía API...');
+      
       // Llamada al endpoint server-side que usa ipapi -> ipinfo
       const res = await fetch('/api/detect-country');
-      if (res.status === 200) {
-        const json = await res.json();
-        if (json?.country) {
-          setUserCountry(json.country);
-          localStorage.setItem('userCountry', json.country);
-          localStorage.setItem('userCountryTime', Date.now().toString());
-          await fetchOffers(false, json.country);
-          return;
-        }
+      const json = await res.json();
+      
+      console.log('🌍 Respuesta de detección:', { status: res.status, data: json });
+      
+      if (json?.country && json.country.length === 2) {
+        console.log('🌍 País detectado:', json.country);
+        setUserCountry(json.country);
+        localStorage.setItem('userCountry', json.country);
+        localStorage.setItem('userCountryTime', Date.now().toString());
+        await fetchOffers(false, json.country);
+        return;
       }
 
+      console.log('🌍 No se pudo detectar país, mostrando selector...');
+      
       // Si no se detectó país, obtener lista de países soportados por CPALead y mostrar selector
       const listRes = await fetch('/api/cpalead/countries');
       if (listRes.ok) {
         const listJson = await listRes.json();
         if (listJson?.success && Array.isArray(listJson.countries) && listJson.countries.length > 0) {
+          console.log('🌍 Países disponibles:', listJson.countries.length);
           setCountriesList(listJson.countries);
           setShowCountryModal(true);
+          setLoading(false); // Importante: detener el loading aquí
           return;
         }
       }
 
-      // Si todo falla, marcar error
-      setError('No se pudo detectar tu país y no hay países disponibles para seleccionar.');
+      // Si todo falla, usar US como fallback
+      console.log('🌍 Usando US como fallback');
+      setUserCountry('US');
+      localStorage.setItem('userCountry', 'US');
+      await fetchOffers(false, 'US');
+      
     } catch (error) {
-      console.error('Error detectando país:', error);
-      setError('Error al detectar país');
+      console.error('❌ Error detectando país:', error);
+      // En caso de error, usar US como fallback
+      console.log('🌍 Error - usando US como fallback');
+      setUserCountry('US');
+      localStorage.setItem('userCountry', 'US');
+      await fetchOffers(false, 'US');
     }
-  }, [fetchOffers]);
+  };
 
   // Cargar ofertas al montar el componente: antes detectar país
   useEffect(() => {
     detectCountry();
-  }, [detectCountry]);
+  }, []); // Remover dependencia para evitar bucles
 
   // Manejar selección manual del país
   const handleConfirmManualCountry = async () => {
@@ -202,6 +252,17 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     // Forzar redetección y recarga de ofertas
     await detectCountry(true);
     setRefreshing(false);
+  };
+
+  // Manejar click en oferta
+  const handleOfferClick = (offer: CPALeadOffer) => {
+    if (!user) {
+      router.push('/auth/login');
+      return;
+    }
+
+    // Abrir la oferta en una nueva ventana
+    window.open(offer.link, '_blank', 'noopener,noreferrer');
   };
 
   // Helper para nombre de país completo
@@ -368,7 +429,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <CardTitle className="text-lg text-white line-clamp-2 mb-2">
-                            {offer.title}
+                            {cleanHtmlText(offer.title)}
                           </CardTitle>
                           <div className="flex items-center space-x-2 mb-2">
                             <Badge 
@@ -407,7 +468,19 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                       <div className="space-y-3">
                         {offer.description && (
                           <CardDescription className="text-gray-400 line-clamp-2">
-                            {offer.description.replace(/<[^>]*>/g, '')}
+                            {(() => {
+                              const cleanDescription = cleanHtmlText(offer.description);
+                              
+                              // Debug: mostrar descripción original vs limpia para las primeras ofertas
+                              if (offers.indexOf(offer) < 3) {
+                                console.log(`Descripción oferta ${offers.indexOf(offer) + 1}:`, {
+                                  original: offer.description.substring(0, 100),
+                                  cleaned: cleanDescription.substring(0, 100)
+                                });
+                              }
+                              
+                              return cleanDescription;
+                            })()}
                           </CardDescription>
                         )}
                         
@@ -433,7 +506,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                           disabled={!user || isLocked}
                         >
                           <ExternalLink className="w-4 h-4 mr-2" />
-                          {offer.conversion || 'Completar Tarea'}
+                          {cleanHtmlText(offer.conversion) || 'Completar Tarea'}
                         </Button>
                         
                         {/* Botón decorativo motivador */}

@@ -81,7 +81,10 @@ export async function detectUserCountry(): Promise<string> {
       try {
         const response = await fetch(service, { 
           method: 'GET',
-          headers: { 'Accept': 'application/json' }
+          headers: { 
+            'Accept': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
         });
         
         if (response.ok) {
@@ -138,16 +141,19 @@ export async function getAllOffersFromCpaLead(forceRefresh = false): Promise<CPA
     }
 
     console.log('🔄 CPALead: Obteniendo ofertas frescas de la API...');
+    console.log('🔧 CPALead: URL base:', CPALEAD_CONFIG.BASE_URL);
+    console.log('🔧 CPALead: API Key (primeros 8 chars):', CPALEAD_CONFIG.API_KEY.substring(0, 8) + '...');
     
     const params = new URLSearchParams({
       id: CPALEAD_CONFIG.ID,
       api_key: CPALEAD_CONFIG.API_KEY,
-      format: 'JSON',
+      format: 'json', // Cambiar a minúsculas
       limit: '350', // Obtener el máximo de ofertas
       sort: 'payout_desc' // Ordenar por pago descendente
     });
 
     const url = `${CPALEAD_CONFIG.BASE_URL}/offers?${params.toString()}`;
+    console.log('🌐 CPALead: URL completa:', url);
 
     // Realizar la solicitud GET
     const controller = new AbortController();
@@ -156,8 +162,8 @@ export async function getAllOffersFromCpaLead(forceRefresh = false): Promise<CPA
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Flasti.com/1.0'
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
       signal: controller.signal
     });
@@ -166,6 +172,15 @@ export async function getAllOffersFromCpaLead(forceRefresh = false): Promise<CPA
 
     if (!response.ok) {
       console.error('CPALead: Error en la respuesta HTTP:', response.status, response.statusText);
+      return offersCache?.data || [];
+    }
+
+    // Verificar el content-type antes de parsear JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error('CPALead: Respuesta no es JSON, content-type:', contentType);
+      const textResponse = await response.text();
+      console.error('CPALead: Respuesta recibida (primeros 500 chars):', textResponse.substring(0, 500));
       return offersCache?.data || [];
     }
 
@@ -288,7 +303,7 @@ export async function getReversalsFromCpaLead(startDate: string, endDate: string
       api_key: CPALEAD_CONFIG.API_KEY,
       date_start: startDate,
       date_end: endDate,
-      format: 'JSON'
+      format: 'json' // Cambiar a minúsculas
     });
 
     const url = `${CPALEAD_CONFIG.BASE_URL}/reversals?${params.toString()}`;
@@ -301,8 +316,8 @@ export async function getReversalsFromCpaLead(startDate: string, endDate: string
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Flasti.com/1.0'
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
       signal: controller.signal
     });
