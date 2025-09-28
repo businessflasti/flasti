@@ -51,7 +51,7 @@ const CheckoutContent = () => {
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
 
   // Estado para el precio base
-  const [price] = useState(7); // Precio base en USD
+  const [price] = useState(3.9); // Precio base en USD (actualizado a $3.90)
   
   // Estados para descuentos (mantenidos por compatibilidad pero siempre en falso)
   const [discountApplied] = useState(false);
@@ -214,7 +214,8 @@ const CheckoutContent = () => {
       }
     }
   }, []);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
+  // Inicializar con 'hotmart' para que la sección "Moneda local" esté abierta por defecto
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("hotmart");
   const [isHotmartPreloaded, setIsHotmartPreloaded] = useState(false);
   const [isArgentina, setIsArgentina] = useState(false);
   const [isCountryKnown, setIsCountryKnown] = useState(false);    // Estados para los popups
@@ -491,8 +492,8 @@ const CheckoutContent = () => {
       // Deshabilitar el botón y mostrar loading
       setIsSubmittingMercadoPagoForm(true);
 
-      // Precio base en ARS
-      const amountARS = 6900;
+  // Precio base en ARS (actualizado a ARS 1000)
+  const amountARS = 1000;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -745,7 +746,7 @@ const CheckoutContent = () => {
 
     try {
       // Precio base en ARS
-      const amountARS = 6900; // 6.900 ARS precio base
+  const amountARS = 1000; // ARS 1.000 precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1357,12 +1358,7 @@ const CheckoutContent = () => {
     }
   }, []);
 
-  // Ya no seleccionamos automáticamente ningún método de pago
-  // para que el usuario elija manualmente
-  useEffect(() => {
-    // Inicialmente, ningún método de pago está seleccionado
-    setSelectedPaymentMethod(null);
-  }, []);
+  // Nota: seleccionamos 'hotmart' por defecto arriba para mostrar Moneda local al cargar.
 
   // Se eliminó el efecto de popup y sistema de descuentos
 
@@ -1399,79 +1395,26 @@ const CheckoutContent = () => {
                       fontWeight: 600,
                       letterSpacing: '-0.01em'
                     }}
-                  >Desbloquea todas tus microtareas ahora</h2>
-                  <p className="text-sm text-white/70">Acceso exclusivo</p>
+                  >¡Desbloquea todas tus microtareas ahora!</h2>
                 </div>
-                <div className="text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1 whitespace-nowrap md:-mt-7" style={{ backgroundColor: '#3C66CD' }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Premium
-                </div>
+                {/* Etiqueta Premium y subtítulo eliminados por solicitud */}
               </div>
 
-              <div className="bg-[#101010] rounded-xl p-4 mt-4 mb-4 relative">
+                <div className="bg-[#101010] rounded-xl p-4 mt-4 mb-4 relative">
                 {/* Eliminada banderita del país detectado */}
 
-                {/* Versión móvil - Diseño más compacto */}
-                <div className="md:hidden">
-                  {/* Mostrar precio en USD cuando se selecciona PayPal o cuando no es Argentina */}
-                  {(selectedPaymentMethod === "paypal" || !isArgentina) ? (
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl font-bold text-white">
-                          $ 7 USD
-                        </span>
-                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
-                          Microtareas ilimitadas
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl font-bold text-white">
-                          AR$ 6.900
-                        </span>
-                        <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
-                          Microtareas ilimitadas
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                {/* Versión móvil: etiqueta superior eliminada; la etiqueta única se muestra debajo del título */}
 
-                {/* Versión desktop - Diseño original */}
-                <div className="hidden md:block">
-                  <div className="flex items-center gap-2 mb-1">
-                    {/* Mostrar precio en USD cuando se selecciona PayPal o cuando no es Argentina */}
-                    {(selectedPaymentMethod === "paypal" || !isArgentina) ? (
-                      <>
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl font-bold text-white">
-                            $ 7 USD
-                          </span>
-                          <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl ml-1 whitespace-nowrap">
-                            Microtareas ilimitadas
-                          </span>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl font-bold text-white">
-                            AR$ 6.900
-                          </span>
-                          <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl ml-1 whitespace-nowrap">
-                            Microtareas ilimitadas
-                          </span>
-                        </div>
-                      </>
-                    )}
+                {/* Versión desktop: etiqueta superior eliminada; la etiqueta única se muestra debajo del título */}
+
+                <div className="mt-2">
+                  <div className="flex items-start">
+                    <span className="text-[13px] sm:text-xs font-bold bg-green-500 text-white px-3 py-0.5 rounded-3xl whitespace-nowrap">
+                      Microtareas ilimitadas
+                    </span>
                   </div>
+                  <p className="text-xs text-white/70 md:whitespace-nowrap mt-2">Pago único - Sin suscripciones ni cargos recurrentes</p>
                 </div>
-
-                <p className="text-xs text-white/70 md:whitespace-nowrap mt-2">Pago único - Sin suscripciones ni cargos recurrentes</p>
               </div>
 
               {/* Etiqueta de ahorro llamativa (como caja separada pero compacta) */}
@@ -1718,9 +1661,9 @@ const CheckoutContent = () => {
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white">
                                   {isArgentina ? (
-                                    <span className="text-lg">AR$ 6.900</span>
+                                    <span className="text-lg">AR$ 1.000</span>
                                   ) : (
-                                    <span>$ 7 USD</span>
+                                    <span>$ 3.90 USD</span>
                                   )}
                                 </div>
                                 <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
@@ -1927,7 +1870,7 @@ const CheckoutContent = () => {
                       </div>
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white">$ 7 USD</span>
+                          <span className="font-bold text-white">$ 3.90 USD</span>
                           <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
                             Microtareas ilimitadas
                           </span>

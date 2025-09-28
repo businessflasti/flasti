@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
             name: { given_name: 'Test', surname: 'User' }
           },
           purchase_units: [{
-            amount: { value: '7.00', currency_code: 'USD' }
+            amount: { value: '3.90', currency_code: 'USD' }
           }]
         };
         break;
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           purchase: {
             transaction: 'test_transaction_' + Date.now(),
             offer: { code: 'test_offer' },
-            price: { currency: 'USD', value: 7.00 },
+            price: { currency: 'USD', value: 3.90 },
             buyer: { email: 'test@example.com' }
           }
         };

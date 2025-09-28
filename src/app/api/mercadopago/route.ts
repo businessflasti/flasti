@@ -10,6 +10,9 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { price, title, quantity = 1, currency = 'ARS', unitPrice } = body;
 
+  // Si es moneda ARS y no se envía unitPrice, usar el precio fijo AR$1000
+  const resolvedUnitPrice = (currency === 'ARS' && (unitPrice === undefined || unitPrice === null)) ? 1000 : (unitPrice || (price ? parseFloat(price) : 0));
+
     // Validar los datos
     if (!price && !unitPrice) {
       return NextResponse.json(
@@ -25,7 +28,7 @@ export async function POST(request: Request) {
           title: title || 'Acceso a Flasti',
           quantity: quantity,
           currency_id: currency,
-          unit_price: unitPrice || parseFloat(price),
+          unit_price: resolvedUnitPrice,
         },
       ],
       back_urls: {

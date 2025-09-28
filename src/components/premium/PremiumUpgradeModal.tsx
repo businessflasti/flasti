@@ -162,7 +162,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
-                        <span className="text-2xl font-bold">$10</span>
+                        <span className="text-2xl font-bold">$3.90</span>
                         <span className="text-foreground/70 text-xs ml-1">USD</span>
                       </div>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">80% OFF</span>
@@ -191,7 +191,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                     <>
                       <div className="flex items-center w-full">
                         <div className="flex items-center">
-                          <span className="text-4xl font-bold">$10</span>
+                          <span className="text-4xl font-bold">$3.90</span>
                           <span className="text-foreground/70 text-sm ml-2">USD</span>
                         </div> 
                         <div className="flex items-center gap-1 ml-3">

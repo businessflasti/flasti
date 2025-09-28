@@ -81,7 +81,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 }}
               />
             </a>
-            {/* Mostrar título en dashboard principal, "Medios de pago" en checkout, "Upgrade Premium" en premium, balance en otras páginas */}
+            {/* Mostrar título en dashboard principal, "Información de pago" en checkout, "Upgrade Premium" en premium, balance en otras páginas */}
             {isMainDashboard ? (
               <div className="text-left">
                 <div className="text-xs sm:text-sm md:text-lg font-bold text-white leading-tight">

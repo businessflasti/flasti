@@ -7,33 +7,67 @@ import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRouter } from 'next/navigation';
+import { CountryPriceService } from '@/lib/country-price-service';
 
 const PremiumPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
   const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+  const [countryPrice, setCountryPrice] = useState<{
+    countryCode: string;
+    price: number;
+    currencySymbol: string;
+    currencyCode: string;
+  }>({
+    countryCode: '',
+    price: 3.90,
+    currencySymbol: '$',
+    currencyCode: 'USD'
+  });
   const [isArgentina, setIsArgentina] = useState(false);
-
-  // Detectar si el usuario es de Argentina
+  
+  // Detectar país y obtener precio correspondiente
   useEffect(() => {
-    const detectCountry = async () => {
+    const detectCountryAndPrice = async () => {
       try {
-        const savedCountry = localStorage.getItem('userCountry');
-        if (savedCountry) {
-          setIsArgentina(savedCountry === 'AR');
-          return;
+        // Intentar obtener el país del localStorage primero
+        const savedCountry = localStorage.getItem('flastiUserCountry');
+        let countryCode = savedCountry;
+
+        if (!countryCode) {
+          // Si no hay país guardado, detectar mediante API
+          const response = await fetch('https://ipapi.co/json/');
+          const data = await response.json();
+          countryCode = data.country_code;
+          
+          if (countryCode) {
+            localStorage.setItem('flastiUserCountry', countryCode);
+            // Establecer si el usuario es de Argentina
+            setIsArgentina(countryCode === 'AR');
+          }
         }
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        const isAR = data.country_code === 'AR';
-        localStorage.setItem('userCountry', isAR ? 'AR' : 'OTHER');
-        setIsArgentina(isAR);
+
+        if (countryCode) {
+          // Obtener precio específico para el país
+          const countryPriceData = await CountryPriceService.getCountryPrice(countryCode);
+          
+          if (countryPriceData) {
+            setCountryPrice({
+              countryCode: countryPriceData.country_code,
+              price: countryPriceData.price,
+              currencySymbol: countryPriceData.currency_symbol,
+              currencyCode: countryPriceData.currency_code
+            });
+          }
+        }
       } catch (error) {
-        setIsArgentina(false);
+        console.error('Error al detectar país o obtener precio:', error);
+        // Mantener valores por defecto en USD
       }
     };
+
     if (typeof window !== 'undefined') {
-      detectCountry();
+      detectCountryAndPrice();
     }
   }, []);
 
@@ -131,7 +165,7 @@ const PremiumPage = () => {
 
                       <br />
                       <br />
-                      Con solo completar unas pocas microtareas, recuperarás tu inversión de $7 y seguirás generando ganancias. Tú decides hasta dónde llegar, elige tu camino y empieza a ganar
+                      Con solo completar una microtarea, recuperas tu inversión y seguirás generando ganancias. Tú decides hasta dónde llegar, elige tu camino y empieza a ganar
                     </span>
                   </div>
                 </div>
@@ -260,15 +294,7 @@ const PremiumPage = () => {
         <Card className="bg-[#232323] overflow-hidden relative h-full rounded-3xl border-0">
 
 
-          {/* Etiqueta "Pago Seguro" más esquinada */}
-          <div className="absolute right-4 top-4 md:right-6 md:top-7">
-            <div className="bg-[#3C66CD] text-white text-xs font-bold py-1 px-3 rounded-3xl flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Premium
-            </div>
-          </div>
+
 
           <div className="p-8 relative z-10">       
      <div className="flex items-center mb-6 mt-6 md:mt-0">
@@ -277,9 +303,7 @@ const PremiumPage = () => {
               </div>
               <div>
                 <h3 className="text-lg text-white group-hover:text-white transition-all duration-300">Desbloquea todas tus microtareas ahora</h3>
-                <p className="text-foreground/70">
-                  Acceso exclusivo
-                </p>
+
               </div>
             </div>
 
@@ -289,7 +313,7 @@ const PremiumPage = () => {
                 {isArgentina ? (
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold">AR$ 6.900</span>
+                      <span className="text-xl font-bold">AR$ 1.000</span>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
                     </div>
                   </div>
@@ -297,8 +321,8 @@ const PremiumPage = () => {
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
-                        <span className="text-2xl font-bold">$7</span>
-                        <span className="text-foreground/70 text-xs ml-1">USD</span>
+                        <span className="text-2xl font-bold">{countryPrice.currencySymbol}{countryPrice.price % 1 === 0 ? countryPrice.price.toFixed(0) : countryPrice.price.toFixed(2)}</span>
+                        <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
                       </div>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
                     </div>
@@ -312,7 +336,7 @@ const PremiumPage = () => {
                   {isArgentina ? (
                     <>
                       <div className="flex items-center w-full">
-                        <span className="text-2xl font-bold">AR$ 6.900</span>
+                        <span className="text-2xl font-bold">AR$ 1.000</span>
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
                         </div>
@@ -322,8 +346,8 @@ const PremiumPage = () => {
                     <>
                       <div className="flex items-center w-full">
                         <div className="flex items-center">
-                          <span className="text-4xl font-bold">$7</span>
-                          <span className="text-foreground/70 text-sm ml-2">USD</span>
+                          <span className="text-4xl font-bold">{countryPrice.currencySymbol}{countryPrice.price % 1 === 0 ? countryPrice.price.toFixed(0) : countryPrice.price.toFixed(2)}</span>
+                          <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
                         </div> 
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
@@ -392,16 +416,7 @@ const PremiumPage = () => {
               </svg>
             </Button>
 
-            <div className="flex justify-center mt-4 mb-2">
-              <div className="px-3 py-2 rounded-xl flex items-center gap-1.5 border-0" style={{ background: '#1A1A1A' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                <p className="text-[10px] text-foreground/70">
-                  Pago seguro con paypal o moneda local
-                </p>
-              </div>
-            </div>
+
           </div>
         </Card>
             </div>

@@ -116,7 +116,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
   // Verificar que MercadoPago está disponible
   if (!window.MercadoPago) {
     console.error('❌ MercadoPago no disponible');
-    createFallbackButton(mpContainer, 6900);
+  createFallbackButton(mpContainer, 1000);
     return;
   }
 
@@ -131,7 +131,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     });
 
     // Obtener precio actual
-    let amountARS = 6900;
+  let amountARS = 1000;
     const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
     const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
 
@@ -161,13 +161,22 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
       console.log('✅ PreferenceId obtenido:', data.id);
 
       // Crear contenedor para el botón
-      const buttonContainer = document.createElement('div');
-      buttonContainer.id = 'mp-button-container';
-      mpContainer.appendChild(buttonContainer);
+          // Evitar crear duplicados en caso de llamadas concurrentes
+          let buttonContainer = document.getElementById('mp-button-container') as HTMLDivElement | null;
+          if (buttonContainer && (window as any).mercadoPagoButtonCreated) {
+            console.log('Mercado Pago button ya creado — evitando duplicado');
+            return;
+          }
+
+          if (!buttonContainer) {
+            buttonContainer = document.createElement('div');
+            buttonContainer.id = 'mp-button-container';
+            mpContainer.appendChild(buttonContainer);
+          }
 
       // Crear botón de Mercado Pago
       const bricksBuilder = mp.bricks();
-      bricksBuilder.create('wallet', 'mp-button-container', {
+  bricksBuilder.create('wallet', 'mp-button-container', {
         initialization: {
           preferenceId: data.id,
         },
@@ -195,6 +204,13 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
           }
         }
       });
+
+      // Marcar que el botón fue creado para evitar duplicados
+      try {
+        (window as any).mercadoPagoButtonCreated = true;
+      } catch (err) {
+        // noop
+      }
     })
     .catch(error => {
       console.error('❌ Error al obtener preferenceId:', error);
@@ -202,7 +218,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     });
   } catch (error) {
     console.error('❌ Error al inicializar:', error);
-    createFallbackButton(mpContainer, 6900);
+  createFallbackButton(mpContainer, 1000);
   }
 }
 

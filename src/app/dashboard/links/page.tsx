@@ -364,11 +364,11 @@ export default function MyLinksPage() {
                           <div className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full flex items-center gap-1 flex-wrap">
                             <span>{link.apps?.commission_rates?.[level] || commission}% comisión</span>
                             <span className="font-bold">=</span>
-                            <span className="font-bold">${((link.app_id === 1 ? 5 : link.app_id === 2 ? 7 : link.apps?.price || 0) * (link.apps?.commission_rates?.[level] || commission) / 100).toFixed(2)} USD</span>
+                            <span className="font-bold">${((link.app_id === 1 ? 5 : link.app_id === 2 ? 3.90 : link.apps?.price || 0) * (link.apps?.commission_rates?.[level] || commission) / 100).toFixed(2)} USD</span>
                             <span>por venta</span>
                           </div>
                           <div className="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full">
-                            Precio: ${link.app_id === 1 ? 5 : link.app_id === 2 ? 7 : link.apps?.price || 0} USD
+                            Precio: ${link.app_id === 1 ? 5 : link.app_id === 2 ? 3.90 : link.apps?.price || 0} USD
                           </div>
                         </div>
                       </div>
@@ -406,10 +406,10 @@ export default function MyLinksPage() {
                             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                           </svg>
                           <span>Ganancias potenciales: </span>
-                          <span className="font-bold text-green-500">${((link.clicks || 0) * (link.app_id === 1 ? 5 : link.app_id === 2 ? 7 : link.apps?.price || 0) * (link.apps?.commission_rates?.[level] || commission) / 100).toFixed(2)} USD</span>
+                          <span className="font-bold text-green-500">${((link.clicks || 0) * (link.app_id === 1 ? 5 : link.app_id === 2 ? 3.90 : link.apps?.price || 0) * (link.apps?.commission_rates?.[level] || commission) / 100).toFixed(2)} USD</span>
                         </div>
                         <div className="text-xs text-foreground/50 ml-5 pl-0">
-                          ({link.clicks || 0} clics × ${((link.app_id === 1 ? 5 : link.app_id === 2 ? 7 : link.apps?.price || 0) * (link.apps?.commission_rates?.[level] || commission) / 100).toFixed(2)} USD por venta)
+                          ({link.clicks || 0} clics × ${((link.app_id === 1 ? 5 : link.app_id === 2 ? 3.90 : link.apps?.price || 0) * (link.apps?.commission_rates?.[level] || commission) / 100).toFixed(2)} USD por venta)
                         </div>
                       </div>
                     </div>

@@ -337,6 +337,12 @@ function AdminDashboardContent() {
               Monitor Webhooks
             </Button>
           </Link>
+          <Link href="/dashboard/admin/country-prices">
+            <Button className="flex items-center gap-2" variant="outline">
+              <DollarSign size={16} />
+              Precios por País
+            </Button>
+          </Link>
         </div>
       </div>
 

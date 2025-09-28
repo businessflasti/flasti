@@ -95,7 +95,7 @@ const FinalOfferPopup2 = ({ isOpen, onClose, onApplyCoupon }: FinalOfferPopupPro
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <span className="text-xs text-white/70">Precio hoy:</span>
-                  <span className="text-base text-white/80 line-through">$10 USD</span>
+                  <span className="text-base text-white/80 line-through">$7.80 USD</span>
                 </div>
                 <div className="flex flex-col items-end">
                   <span className="text-xs text-white/70">Precio final:</span>

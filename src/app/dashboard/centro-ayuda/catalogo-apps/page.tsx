@@ -101,9 +101,9 @@ export default function CatalogoAppsPage() {
                       Herramienta de inteligencia artificial para crear contenido, responder preguntas y automatizar tareas.
                     </p>
                     <div className="flex items-center justify-between mt-4">
-                      <span className="text-primary font-semibold">$7 USD</span>
+                      <span className="text-primary font-semibold">$3.90 USD</span>
                       <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
-                        50% comisión ($3.50)
+                        50% comisión ($1.95)
                       </span>
                     </div>
                   </div>

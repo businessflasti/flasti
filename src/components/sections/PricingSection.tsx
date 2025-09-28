@@ -139,9 +139,9 @@ const PricingSection = () => {
 
               <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-3xl border border-white/10">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-4xl font-bold">$10</span>
+                  <span className="text-4xl font-bold">$3.90</span>
                   <span className="text-foreground/70 text-sm ml-2">USD</span>
-                  <span className="ml-2 text-sm line-through text-foreground/50">$100</span>
+                  <span className="ml-2 text-sm line-through text-foreground/50">$19.50</span>
                   <span className="ml-2 text-xs text-[#22c55e] font-medium bg-[#22c55e]/10 px-2 py-0.5 rounded-full">{t('descuento')}</span>
                 </div>
                 <p className="text-sm text-foreground/70">

@@ -244,7 +244,7 @@ const ExitIntentPopup = ({ isOpen, onClose, onApplyCoupon, onApplyFinalDiscount,
               <div className="space-y-3 sm:space-y-4 relative">
                 <div className="bg-gradient-to-r from-[#ef4444]/20 to-[#f97316]/20 p-3 sm:p-4 rounded-lg border border-[#ef4444]/30 shadow-sm shadow-[#ef4444]/20">
                   <p className="text-[10px] sm:text-xs md:text-sm text-white text-center">
-                    Acepto que al cerrar esta ventana <span className="font-bold text-[#ef4444]">renuncio</span> a esta super oferta de <span className="font-bold text-[#22c55e]">{isArgentina ? "AR$ 5.750" : "$5 USD"}</span> y <span className="font-bold text-[#ef4444]">no volveré a tenerla disponible.</span>
+                    Acepto que al cerrar esta ventana <span className="font-bold text-[#ef4444]">renuncio</span> a esta super oferta de <span className="font-bold text-[#22c55e]">{isArgentina ? "AR$ 1.000" : "$3.90 USD"}</span> y <span className="font-bold text-[#ef4444]">no volveré a tenerla disponible.</span>
                   </p>
                 </div>
 
@@ -345,9 +345,9 @@ const ExitIntentPopup = ({ isOpen, onClose, onApplyCoupon, onApplyFinalDiscount,
                     <div className="flex flex-col">
                       <span className="text-xs text-white/70">Precio hoy:</span>
                       {isArgentina ? (
-                        <span className="text-sm text-white/80 line-through">AR$ 11.500</span>
+                        <span className="text-sm text-white/80 line-through">AR$ 2.000</span>
                       ) : (
-                        <span className="text-base text-white/80 line-through">$10 USD</span>
+                        <span className="text-base text-white/80 line-through">$7.80 USD</span>
                       )}
                     </div>
                     <div className="flex flex-col items-end">

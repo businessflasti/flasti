@@ -122,8 +122,8 @@ const LimitedOfferSection = () => {
                 </div>
 
                 <div className="mb-6">
-                  <div className="text-5xl font-bold text-[#22c55e]">$10</div>
-                  <div className="text-sm text-foreground/70">/o $11.704 pesos 🇦🇷</div>
+                  <div className="text-5xl font-bold text-[#22c55e]">$3.90</div>
+                  <div className="text-sm text-foreground/70">/o $1.000 pesos 🇦🇷</div>
                 </div>
 
                 <hr className="border-white/10 mb-6" />
