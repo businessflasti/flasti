@@ -12,8 +12,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const country = searchParams.get('country');
     const forceRefresh = searchParams.get('refresh') === 'true';
+    const getRealOffers = searchParams.get('real') === 'true'; // Nuevo parámetro para obtener ofertas reales
     
-    console.log('🚀 CPALead API: Solicitando ofertas...', { country, forceRefresh });
+    console.log('🚀 CPALead API: Solicitando ofertas...', { country, forceRefresh, getRealOffers });
 
     // Detectar país si no se proporciona
     let targetCountry = country;
@@ -24,33 +25,59 @@ export async function GET(request: NextRequest) {
 
     // Obtener ofertas filtradas por país
     const offers = await getOffersFromCpaLead(targetCountry, forceRefresh);
+    
+    // Lógica de respaldo: si el país tiene 0 o 10 o menos ofertas, usar España como respaldo visual
+    // PERO solo si no se solicitan las ofertas reales (real=true)
+    let displayOffers = offers;
+    let isUsingSpainFallback = false;
+    let originalOffers = offers; // Guardar las ofertas originales
+    
+    if (!getRealOffers && offers.length <= 10 && targetCountry !== 'ES') {
+      console.log(`🇪🇸 CPALead API: País ${targetCountry} tiene ${offers.length} ofertas (≤10), usando España como respaldo visual`);
+      const spainOffers = await getOffersFromCpaLead('ES', forceRefresh);
+      if (spainOffers.length > 0) {
+        displayOffers = spainOffers;
+        isUsingSpainFallback = true;
+        console.log(`🇪🇸 CPALead API: Mostrando ${spainOffers.length} ofertas de España para ${targetCountry}`);
+      }
+    } else if (getRealOffers) {
+      console.log(`👑 CPALead API: Solicitadas ofertas reales para ${targetCountry}, omitiendo respaldo`);
+    }
 
-    // Estadísticas detalladas
+    // Estadísticas detalladas (usar las ofertas que se van a mostrar)
     const stats = {
-      total: offers.length,
-      fastPay: offers.filter(o => o.is_fast_pay).length,
-      avgPayout: offers.length > 0 ? 
-        (offers.reduce((sum, o) => sum + parseFloat(o.amount || '0'), 0) / offers.length).toFixed(2) : '0',
-      maxPayout: offers.length > 0 ? 
-        Math.max(...offers.map(o => parseFloat(o.amount || '0'))).toFixed(2) : '0',
-      minPayout: offers.length > 0 ? 
-        Math.min(...offers.map(o => parseFloat(o.amount || '0'))).toFixed(2) : '0',
-      devices: [...new Set(offers.map(o => o.device))],
-      payoutTypes: [...new Set(offers.map(o => o.payout_type))],
-      fastPayPercentage: offers.length > 0 ? 
-        ((offers.filter(o => o.is_fast_pay).length / offers.length) * 100).toFixed(1) : '0'
+      total: displayOffers.length,
+      fastPay: displayOffers.filter(o => o.is_fast_pay).length,
+      avgPayout: displayOffers.length > 0 ? 
+        (displayOffers.reduce((sum, o) => sum + parseFloat(o.amount || '0'), 0) / displayOffers.length).toFixed(2) : '0',
+      maxPayout: displayOffers.length > 0 ? 
+        Math.max(...displayOffers.map(o => parseFloat(o.amount || '0'))).toFixed(2) : '0',
+      minPayout: displayOffers.length > 0 ? 
+        Math.min(...displayOffers.map(o => parseFloat(o.amount || '0'))).toFixed(2) : '0',
+      devices: [...new Set(displayOffers.map(o => o.device))],
+      payoutTypes: [...new Set(displayOffers.map(o => o.payout_type))],
+      fastPayPercentage: displayOffers.length > 0 ? 
+        ((displayOffers.filter(o => o.is_fast_pay).length / displayOffers.length) * 100).toFixed(1) : '0'
     };
 
     console.log('📊 CPALead API: Estadísticas de ofertas:', stats);
 
     return NextResponse.json({
       success: true,
-      data: offers,
-      count: offers.length,
+      data: displayOffers,
+      count: displayOffers.length,
       stats,
-      country: targetCountry,
+      country: targetCountry, // Mantener el país original en la respuesta
       timestamp: new Date().toISOString(),
-      cached: !forceRefresh
+      cached: !forceRefresh,
+      // Información adicional para el frontend
+      isUsingSpainFallback,
+      originalCount: originalOffers.length, // Cantidad real de ofertas del país
+      fallbackInfo: isUsingSpainFallback ? {
+        originalCountry: targetCountry,
+        fallbackCountry: 'ES',
+        reason: `País ${targetCountry} tiene ${originalOffers.length} ofertas (≤10)`
+      } : null
     });
 
   } catch (error) {

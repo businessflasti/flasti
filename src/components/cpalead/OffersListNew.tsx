@@ -33,6 +33,14 @@ interface OffersResponse {
   timestamp: string;
   cached: boolean;
   message?: string;
+  // Nuevos campos para el sistema de respaldo
+  isUsingSpainFallback?: boolean;
+  originalCount?: number;
+  fallbackInfo?: {
+    originalCountry: string;
+    fallbackCountry: string;
+    reason: string;
+  } | null;
 }
 
 interface OffersListNewProps {
@@ -69,6 +77,14 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const [countriesList, setCountriesList] = useState<string[]>([]);
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [selectedCountryManual, setSelectedCountryManual] = useState<string>('');
+  // Nuevos estados para el sistema de respaldo
+  const [isUsingSpainFallback, setIsUsingSpainFallback] = useState(false);
+  const [originalOffers, setOriginalOffers] = useState<CPALeadOffer[]>([]);
+  const [fallbackInfo, setFallbackInfo] = useState<{
+    originalCountry: string;
+    fallbackCountry: string;
+    reason: string;
+  } | null>(null);
 
   // Premium system hooks
   const { isPremium, isLoading: premiumLoading } = usePremiumStatus();
@@ -109,6 +125,11 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       if (countryParam) {
         params.append('country', countryParam);
       }
+      // Si el usuario es premium, solicitar ofertas reales (sin respaldo de España)
+      if (isPremium) {
+        params.append('real', 'true');
+        console.log('👑 Usuario premium: solicitando ofertas reales sin respaldo');
+      }
 
       const url = `/api/cpalead/offers${params.toString() ? `?${params.toString()}` : ''}`;
 
@@ -131,8 +152,13 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         setStats(data.stats);
         setUserCountry(data.country);
         setLastUpdate(new Date(data.timestamp).toLocaleTimeString());
+        setIsUsingSpainFallback(data.isUsingSpainFallback || false);
+        setFallbackInfo(data.fallbackInfo || null);
         
         console.log(`✅ ${data.count} tareas obtenidas para ${data.country}`);
+        if (data.isUsingSpainFallback) {
+          console.log(`🇪🇸 Usando respaldo de España: ${data.fallbackInfo?.reason}`);
+        }
         console.log('📊 Estadísticas:', data.stats);
         console.log('🔍 Primeras 3 ofertas:', data.data.slice(0, 3));
         
@@ -391,6 +417,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
   return (
     <div className="space-y-6">
+
+
 
       {/* Lista de ofertas */}
       {offers.length === 0 ? (

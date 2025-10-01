@@ -57,23 +57,36 @@ export default function FomoNotifications() {
       try {
         // Primero verificar si ya tenemos la información guardada en localStorage
         const savedCountry = localStorage.getItem('flastiUserCountry');
+        const savedTime = localStorage.getItem('flastiUserCountryTime');
 
-        if (savedCountry) {
-          setUserCountry(savedCountry);
-          return;
+        // Si hay país guardado y es reciente (menos de 1 hora), usarlo
+        if (savedCountry && savedTime) {
+          const now = Date.now();
+          const oneHour = 60 * 60 * 1000;
+          if (now - parseInt(savedTime) < oneHour) {
+            setUserCountry(savedCountry);
+            return;
+          }
         }
 
-        // Si no hay información guardada, usar el servicio de geolocalización
+        // Si no hay información guardada o es muy antigua, usar el servicio de geolocalización
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
 
-        // Guardar el país en localStorage para futuras visitas
-        localStorage.setItem('flastiUserCountry', data.country_code);
-        setUserCountry(data.country_code);
+        // Solo guardar si realmente detectamos un país válido
+        if (data.country_code && data.country_code.length === 2) {
+          localStorage.setItem('flastiUserCountry', data.country_code);
+          localStorage.setItem('flastiUserCountryTime', Date.now().toString());
+          setUserCountry(data.country_code);
+        } else {
+          // Si no se detecta país válido, usar el guardado anteriormente o RANDOM
+          setUserCountry(savedCountry || 'RANDOM');
+        }
       } catch (error) {
         console.error('Error al detectar el país:', error);
-        // Si hay un error, usar un país por defecto o mostrar notificaciones aleatorias
-        setUserCountry('RANDOM');
+        // Si hay un error, usar el país guardado anteriormente o RANDOM
+        const savedCountry = localStorage.getItem('flastiUserCountry');
+        setUserCountry(savedCountry || 'RANDOM');
       }
     };
 

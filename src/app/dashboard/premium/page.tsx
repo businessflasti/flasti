@@ -25,6 +25,19 @@ const PremiumPage = () => {
     currencyCode: 'USD'
   });
   const [isArgentina, setIsArgentina] = useState(false);
+
+  // Función para formatear el precio según el país
+  const formatPrice = (price: number, countryCode: string) => {
+    // Solo Colombia y Paraguay usan 3 decimales
+    if (countryCode === 'CO' || countryCode === 'PY') {
+      return price.toFixed(3);
+    }
+    // Otros países: mostrar sin decimales si es número entero, sino 2 decimales
+    if (price % 1 === 0) {
+      return price.toFixed(0);
+    }
+    return price.toFixed(2);
+  };
   
   // Detectar país y obtener precio correspondiente
   useEffect(() => {
@@ -321,7 +334,7 @@ const PremiumPage = () => {
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
-                        <span className="text-2xl font-bold">{countryPrice.currencySymbol}{countryPrice.price % 1 === 0 ? countryPrice.price.toFixed(0) : countryPrice.price.toFixed(2)}</span>
+                        <span className="text-2xl font-bold">{countryPrice.currencySymbol}{formatPrice(countryPrice.price, countryPrice.countryCode)}</span>
                         <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
                       </div>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
@@ -346,7 +359,7 @@ const PremiumPage = () => {
                     <>
                       <div className="flex items-center w-full">
                         <div className="flex items-center">
-                          <span className="text-4xl font-bold">{countryPrice.currencySymbol}{countryPrice.price % 1 === 0 ? countryPrice.price.toFixed(0) : countryPrice.price.toFixed(2)}</span>
+                          <span className="text-4xl font-bold">{countryPrice.currencySymbol}{formatPrice(countryPrice.price, countryPrice.countryCode)}</span>
                           <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
                         </div> 
                         <div className="flex items-center gap-1 ml-3">

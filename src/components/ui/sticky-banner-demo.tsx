@@ -10,7 +10,7 @@ interface StickyBannerDemoProps {
 }
 
 export function StickyBannerDemo({
-  message = "¡Cerrá septiembre ganando más! Descubrí las novedades y aprovechá al máximo",
+  message = "¡Empieza octubre ganando más! Descubrí las novedades y aprovechá al máximo",
   linkText = "Ver más",
   linkHref = "#"
 }: StickyBannerDemoProps) {
@@ -18,7 +18,7 @@ export function StickyBannerDemo({
     return (
       <StickyBanner className="bg-[#3C66CD]">
         <p className="mx-0 text-sm sm:text-base text-white drop-shadow-md leading-relaxed pr-8">
-          <span className="font-bold">¡Cerrá septiembre ganando más!</span> Descubrí las novedades y aprovechá al máximo
+          <span className="font-bold">¡Empieza octubre ganando más!</span> Descubrí las novedades y aprovechá al máximo
         </p>
       </StickyBanner>
     );

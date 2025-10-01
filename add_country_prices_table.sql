@@ -32,7 +32,7 @@ INSERT INTO public.country_prices (country_code, country_name, price, currency_c
     ('CO', 'Colombia', 0, 'COP', '$'),
     ('PE', 'Perú', 0, 'PEN', 'S/'),
     ('MX', 'México', 0, 'MXN', '$'),
-    ('PA', 'Panamá', 0, 'USD', '$'),
+    ('PA', 'Panamá', 0, 'PAB', 'B/.'),
     ('GT', 'Guatemala', 0, 'GTQ', 'Q'),
     ('DO', 'República Dominicana', 0, 'DOP', 'RD$'),
     ('PY', 'Paraguay', 0, 'PYG', '₲'),

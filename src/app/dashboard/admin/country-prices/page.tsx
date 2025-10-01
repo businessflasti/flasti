@@ -27,6 +27,8 @@ export default function Page() {
     setLoading(false);
   };
 
+
+
   // Manejar cambios en los precios
   const handlePriceChange = (countryCode: string, newPrice: string) => {
     setPrices(currentPrices =>
@@ -111,11 +113,13 @@ export default function Page() {
               <span className="text-lg font-medium">{price.currency_symbol}</span>
               <Input
                 type="number"
-                value={price.price}
+                value={price.country_code === 'CO' || price.country_code === 'PY' ? 
+                  price.price.toFixed(3) : 
+                  price.price.toString()}
                 onChange={(e) => handlePriceChange(price.country_code, e.target.value)}
                 className="w-full"
                 min="0"
-                step="0.01"
+                step={price.country_code === 'CO' || price.country_code === 'PY' ? "0.001" : "0.01"}
               />
             </div>
             
