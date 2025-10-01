@@ -25,6 +25,7 @@ const PremiumPage = () => {
     currencyCode: 'USD'
   });
   const [isArgentina, setIsArgentina] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Función para formatear el precio según el país
   const formatPrice = (price: number, countryCode: string) => {
@@ -39,50 +40,116 @@ const PremiumPage = () => {
     return price.toFixed(2);
   };
   
-  // Detectar país y obtener precio correspondiente
-  useEffect(() => {
-    const detectCountryAndPrice = async () => {
+  // Función para detectar país y obtener precio
+  const detectCountryAndPrice = async () => {
       try {
-        // Intentar obtener el país del localStorage primero
-        const savedCountry = localStorage.getItem('flastiUserCountry');
-        let countryCode = savedCountry;
+        // Intentar obtener el país desde múltiples fuentes (prioridad)
+        let countryCode = 
+          localStorage.getItem('flastiUserCountry') ||  // Premium específico
+          localStorage.getItem('userCountry') ||        // Dashboard general
+          null;
 
+        console.log('🌍 Premium: País desde localStorage:', countryCode);
+
+        // Si no hay país guardado, detectar mediante API
         if (!countryCode) {
-          // Si no hay país guardado, detectar mediante API
+          console.log('🌍 Premium: Detectando país via API...');
           const response = await fetch('https://ipapi.co/json/');
           const data = await response.json();
           countryCode = data.country_code;
           
           if (countryCode) {
+            // Guardar en ambas claves para sincronización
             localStorage.setItem('flastiUserCountry', countryCode);
-            // Establecer si el usuario es de Argentina
-            setIsArgentina(countryCode === 'AR');
+            localStorage.setItem('userCountry', countryCode);
+            console.log('🌍 Premium: País detectado y guardado:', countryCode);
+          }
+        } else {
+          // Sincronizar ambas claves si solo existe una
+          if (!localStorage.getItem('flastiUserCountry')) {
+            localStorage.setItem('flastiUserCountry', countryCode);
+          }
+          if (!localStorage.getItem('userCountry')) {
+            localStorage.setItem('userCountry', countryCode);
           }
         }
 
+        // Establecer si el usuario es de Argentina
+        setIsArgentina(countryCode === 'AR');
+
         if (countryCode) {
+          console.log('🌍 Premium: Obteniendo precio para:', countryCode);
           // Obtener precio específico para el país
           const countryPriceData = await CountryPriceService.getCountryPrice(countryCode);
           
           if (countryPriceData) {
+            console.log('💰 Premium: Precio obtenido:', countryPriceData);
             setCountryPrice({
               countryCode: countryPriceData.country_code,
               price: countryPriceData.price,
               currencySymbol: countryPriceData.currency_symbol,
               currencyCode: countryPriceData.currency_code
             });
+          } else {
+            console.log('⚠️ Premium: No se encontró precio para:', countryCode);
           }
         }
+        setIsInitialized(true);
       } catch (error) {
-        console.error('Error al detectar país o obtener precio:', error);
+        console.error('❌ Premium: Error al detectar país o obtener precio:', error);
         // Mantener valores por defecto en USD
+        setIsInitialized(true);
       }
     };
+
+  // Detectar país y obtener precio correspondiente
+  useEffect(() => {
 
     if (typeof window !== 'undefined') {
       detectCountryAndPrice();
     }
+
+    // Escuchar cambios en localStorage para sincronización entre páginas
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'userCountry' || e.key === 'flastiUserCountry') {
+        console.log('🔄 Premium: Cambio detectado en localStorage:', e.key, '→', e.newValue);
+        if (e.newValue && e.newValue !== 'null') {
+          detectCountryAndPrice();
+        }
+      }
+    };
+
+    // Listener para cambios en localStorage desde otras pestañas/páginas
+    window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
+
+  // Efecto adicional para re-detectar cuando la página se vuelve visible
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('👁️ Premium: Página visible, re-verificando país...');
+        // Pequeño delay para asegurar que localStorage esté actualizado
+        setTimeout(() => {
+          const currentCountry = localStorage.getItem('userCountry') || localStorage.getItem('flastiUserCountry');
+          if (currentCountry && currentCountry !== countryPrice.countryCode) {
+            console.log('🔄 Premium: País cambió, actualizando precio...');
+            detectCountryAndPrice();
+          }
+        }, 100);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [countryPrice.countryCode]);
 
   // Función para navegar al checkout
   const handleCheckoutNavigation = () => {
@@ -334,7 +401,13 @@ const PremiumPage = () => {
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
-                        <span className="text-2xl font-bold">{countryPrice.currencySymbol}{formatPrice(countryPrice.price, countryPrice.countryCode)}</span>
+                        <span className="text-2xl font-bold">
+                          {!isInitialized ? (
+                            <span className="animate-pulse">...</span>
+                          ) : (
+                            `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
+                          )}
+                        </span>
                         <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
                       </div>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
@@ -359,7 +432,13 @@ const PremiumPage = () => {
                     <>
                       <div className="flex items-center w-full">
                         <div className="flex items-center">
-                          <span className="text-4xl font-bold">{countryPrice.currencySymbol}{formatPrice(countryPrice.price, countryPrice.countryCode)}</span>
+                          <span className="text-4xl font-bold">
+                            {!isInitialized ? (
+                              <span className="animate-pulse">...</span>
+                            ) : (
+                              `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
+                            )}
+                          </span>
                           <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
                         </div> 
                         <div className="flex items-center gap-1 ml-3">
