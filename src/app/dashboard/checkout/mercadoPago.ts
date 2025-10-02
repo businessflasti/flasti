@@ -116,7 +116,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
   // Verificar que MercadoPago está disponible
   if (!window.MercadoPago) {
     console.error('❌ MercadoPago no disponible');
-  createFallbackButton(mpContainer, 1000);
+  createFallbackButton(mpContainer, 2990);
     return;
   }
 
@@ -131,7 +131,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     });
 
     // Obtener precio actual
-  let amountARS = 1000;
+  let amountARS = 2990;
     const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
     const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
 
@@ -218,7 +218,7 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
     });
   } catch (error) {
     console.error('❌ Error al inicializar:', error);
-  createFallbackButton(mpContainer, 1000);
+  createFallbackButton(mpContainer, 2990);
   }
 }
 

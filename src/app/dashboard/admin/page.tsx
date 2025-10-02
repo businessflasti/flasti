@@ -14,7 +14,8 @@ import {
   ArrowUpRight,
   Search,
   Filter,
-  Activity
+  Activity,
+  Globe
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { adminService } from '@/lib/admin-service';
@@ -318,7 +319,7 @@ function AdminDashboardContent() {
             Gestiona usuarios, retiros y estadísticas de la plataforma
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <Link href="/dashboard/admin/add-balance">
             <Button className="flex items-center gap-2">
               <DollarSign size={16} />
@@ -341,6 +342,12 @@ function AdminDashboardContent() {
             <Button className="flex items-center gap-2" variant="outline">
               <DollarSign size={16} />
               Precios por País
+            </Button>
+          </Link>
+          <Link href="/dashboard/admin/country-assignments">
+            <Button className="flex items-center gap-2" variant="outline">
+              <Globe size={16} />
+              Asignación de Países
             </Button>
           </Link>
         </div>

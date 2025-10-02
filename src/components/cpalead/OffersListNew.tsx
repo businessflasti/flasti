@@ -30,10 +30,19 @@ interface OffersResponse {
   count: number;
   stats: OffersStats;
   country: string;
+  offerCountry?: string;
   timestamp: string;
   cached: boolean;
   message?: string;
-  // Nuevos campos para el sistema de respaldo
+  // Nuevos campos para el sistema de asignación manual
+  isUsingManualMapping?: boolean;
+  mappingInfo?: {
+    userCountry: string;
+    offerCountry: string;
+    notes: string | null;
+    reason: string;
+  } | null;
+  // Campos antiguos (mantener compatibilidad)
   isUsingSpainFallback?: boolean;
   originalCount?: number;
   fallbackInfo?: {
@@ -77,12 +86,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const [countriesList, setCountriesList] = useState<string[]>([]);
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [selectedCountryManual, setSelectedCountryManual] = useState<string>('');
-  // Nuevos estados para el sistema de respaldo
-  const [isUsingSpainFallback, setIsUsingSpainFallback] = useState(false);
-  const [originalOffers, setOriginalOffers] = useState<CPALeadOffer[]>([]);
-  const [fallbackInfo, setFallbackInfo] = useState<{
-    originalCountry: string;
-    fallbackCountry: string;
+  // Estados para el sistema de asignación manual
+  const [isUsingManualMapping, setIsUsingManualMapping] = useState(false);
+  const [mappingInfo, setMappingInfo] = useState<{
+    userCountry: string;
+    offerCountry: string;
+    notes: string | null;
     reason: string;
   } | null>(null);
 
@@ -152,12 +161,13 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         setStats(data.stats);
         setUserCountry(data.country);
         setLastUpdate(new Date(data.timestamp).toLocaleTimeString());
-        setIsUsingSpainFallback(data.isUsingSpainFallback || false);
-        setFallbackInfo(data.fallbackInfo || null);
+        setIsUsingManualMapping(data.isUsingManualMapping || false);
+        setMappingInfo(data.mappingInfo || null);
         
         console.log(`✅ ${data.count} tareas obtenidas para ${data.country}`);
-        if (data.isUsingSpainFallback) {
-          console.log(`🇪🇸 Usando respaldo de España: ${data.fallbackInfo?.reason}`);
+        if (data.isUsingManualMapping) {
+          console.log(`🎯 Asignación manual: ${data.mappingInfo?.userCountry} → ${data.mappingInfo?.offerCountry}`);
+          console.log(`📝 Razón: ${data.mappingInfo?.reason}`);
         }
         console.log('📊 Estadísticas:', data.stats);
         console.log('🔍 Primeras 3 ofertas:', data.data.slice(0, 3));
@@ -417,8 +427,6 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
   return (
     <div className="space-y-6">
-
-
 
       {/* Lista de ofertas */}
       {offers.length === 0 ? (

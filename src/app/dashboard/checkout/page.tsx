@@ -492,8 +492,8 @@ const CheckoutContent = () => {
       // Deshabilitar el botón y mostrar loading
       setIsSubmittingMercadoPagoForm(true);
 
-  // Precio base en ARS (actualizado a ARS 1000)
-  const amountARS = 1000;
+  // Precio base en ARS (actualizado a ARS 2990)
+  const amountARS = 2990;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -746,7 +746,7 @@ const CheckoutContent = () => {
 
     try {
       // Precio base en ARS
-  const amountARS = 1000; // ARS 1.000 precio base
+  const amountARS = 2990; // ARS 2.990 precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1661,7 +1661,7 @@ const CheckoutContent = () => {
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white">
                                   {isArgentina ? (
-                                    <span className="text-lg">AR$ 1.000</span>
+                                    <span className="text-lg">AR$ 2.990</span>
                                   ) : (
                                     <span>$ 3.90 USD</span>
                                   )}

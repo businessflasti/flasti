@@ -393,7 +393,13 @@ const PremiumPage = () => {
                 {isArgentina ? (
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold">AR$ 1.000</span>
+                      <span className="text-xl font-bold">
+                        {!isInitialized ? (
+                          <span className="animate-pulse">...</span>
+                        ) : (
+                          `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
+                        )}
+                      </span>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
                     </div>
                   </div>
@@ -422,7 +428,16 @@ const PremiumPage = () => {
                   {isArgentina ? (
                     <>
                       <div className="flex items-center w-full">
-                        <span className="text-2xl font-bold">AR$ 1.000</span>
+                        <div className="flex items-center">
+                          <span className="text-4xl font-bold">
+                            {!isInitialized ? (
+                              <span className="animate-pulse">...</span>
+                            ) : (
+                              `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
+                            )}
+                          </span>
+                          <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
+                        </div>
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
                         </div>

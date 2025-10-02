@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOffersFromCpaLead, detectUserCountry } from '@/lib/cpa-lead-api';
+import { createClient } from '@supabase/supabase-js';
+
+// Cliente de Supabase con service role para leer asignaciones
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 /**
  * GET - Obtener ofertas de CPALead filtradas por país del usuario
@@ -23,26 +30,38 @@ export async function GET(request: NextRequest) {
       console.log('🌍 CPALead API: País detectado automáticamente:', targetCountry);
     }
 
-    // Obtener ofertas filtradas por país
-    const offers = await getOffersFromCpaLead(targetCountry, forceRefresh);
-    
-    // Lógica de respaldo: si el país tiene 0 o 10 o menos ofertas, usar España como respaldo visual
-    // PERO solo si no se solicitan las ofertas reales (real=true)
-    let displayOffers = offers;
-    let isUsingSpainFallback = false;
-    let originalOffers = offers; // Guardar las ofertas originales
-    
-    if (!getRealOffers && offers.length <= 10 && targetCountry !== 'ES') {
-      console.log(`🇪🇸 CPALead API: País ${targetCountry} tiene ${offers.length} ofertas (≤10), usando España como respaldo visual`);
-      const spainOffers = await getOffersFromCpaLead('ES', forceRefresh);
-      if (spainOffers.length > 0) {
-        displayOffers = spainOffers;
-        isUsingSpainFallback = true;
-        console.log(`🇪🇸 CPALead API: Mostrando ${spainOffers.length} ofertas de España para ${targetCountry}`);
+    // 🆕 NUEVO SISTEMA: Verificar si hay una asignación manual para este país
+    let offerCountry = targetCountry; // Por defecto, usar el país del usuario
+    let isUsingManualMapping = false;
+    let mappingInfo = null;
+
+    if (!getRealOffers) {
+      const { data: mapping } = await supabaseAdmin
+        .from('country_offer_mappings')
+        .select('*')
+        .eq('user_country', targetCountry)
+        .eq('is_active', true)
+        .single();
+
+      if (mapping) {
+        offerCountry = mapping.offer_country;
+        isUsingManualMapping = true;
+        mappingInfo = {
+          userCountry: targetCountry,
+          offerCountry: mapping.offer_country,
+          notes: mapping.notes,
+          reason: 'Asignación manual del administrador'
+        };
+        console.log(`🎯 CPALead API: Asignación manual encontrada: ${targetCountry} → ${offerCountry}`);
       }
-    } else if (getRealOffers) {
-      console.log(`👑 CPALead API: Solicitadas ofertas reales para ${targetCountry}, omitiendo respaldo`);
     }
+
+    // Obtener ofertas del país asignado (puede ser el original o el mapeado)
+    const offers = await getOffersFromCpaLead(offerCountry, forceRefresh);
+    
+    // Ya no usamos la lógica automática de España, solo las asignaciones manuales
+    let displayOffers = offers;
+    let originalOffers = offers;
 
     // Estadísticas detalladas (usar las ofertas que se van a mostrar)
     const stats = {
@@ -67,17 +86,17 @@ export async function GET(request: NextRequest) {
       data: displayOffers,
       count: displayOffers.length,
       stats,
-      country: targetCountry, // Mantener el país original en la respuesta
+      country: targetCountry, // País del usuario
+      offerCountry: offerCountry, // País de las ofertas mostradas
       timestamp: new Date().toISOString(),
       cached: !forceRefresh,
-      // Información adicional para el frontend
-      isUsingSpainFallback,
-      originalCount: originalOffers.length, // Cantidad real de ofertas del país
-      fallbackInfo: isUsingSpainFallback ? {
-        originalCountry: targetCountry,
-        fallbackCountry: 'ES',
-        reason: `País ${targetCountry} tiene ${originalOffers.length} ofertas (≤10)`
-      } : null
+      // 🆕 Nueva información sobre asignaciones manuales
+      isUsingManualMapping,
+      mappingInfo,
+      // Mantener compatibilidad con código anterior
+      isUsingSpainFallback: false, // Ya no se usa
+      originalCount: originalOffers.length,
+      fallbackInfo: null
     });
 
   } catch (error) {
