@@ -1,0 +1,22 @@
+{
+  "name": "Flasti - Ganancia colectiva",
+  "short_name": "Flasti",
+  "description": "Genera ingresos completando microtareas en línea",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "/logo/isotipo-web.png",
+      "sizes": "360x354",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo/isotipo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

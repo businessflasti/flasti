@@ -3,8 +3,8 @@ import { supabase } from '@/lib/supabase';
 import crypto from 'crypto';
 import hotmartTrackingService from '@/lib/hotmart-tracking-service';
 
-// Configuración de Mercado Pago desde variables de entorno
-const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || 'APP_USR-1617533183479702-120313-16aa8293896b850ec41b7f267dac332e-224528502';
+// Configuración de Mercado Pago desde variables de entorno - Nueva Cuenta
+const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || 'APP_USR-8400251779300797-100517-207f2ff90eec04a47316d5974b5474ce-1068552659';
 const WEBHOOK_SECRET = process.env.MERCADOPAGO_WEBHOOK_SECRET;
 
 /**

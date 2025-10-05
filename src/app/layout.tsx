@@ -4,6 +4,8 @@ import { Metadata } from "next";
 import ClientLayout from "@/components/layout/ClientLayout";
 import YandexMetrica from "@/components/analytics/YandexMetrica";
 import FacebookPixel from "@/components/analytics/FacebookPixel";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import StructuredData from "@/components/seo/StructuredData";
 
 
 const inter = Inter({
@@ -13,26 +15,59 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Flasti | Ganancia colectiva",
-  description: "Genera ingresos completando microtareas en línea. Accede a la plataforma y comienza a trabajar desde casa sin experiencia previa.",
+  title: "Flasti | Ganar Dinero Online con Microtareas Pagadas",
+  description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa. Gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios en 20+ países.",
+  keywords: [
+    "ganar dinero online",
+    "trabajo en línea",
+    "microtareas pagadas",
+    "como ganar dinero en internet",
+    "trabajo desde casa",
+    "ingresos extra online",
+    "ganar dinero sin experiencia",
+    "plataforma de microtareas",
+    "generar ingresos por internet",
+    "trabajo remoto flexible",
+    "ganar dinero desde casa",
+    "trabajos online pagados",
+    "microtareas remuneradas",
+    "ingresos pasivos online",
+    "trabajar por internet"
+  ],
   icons: {
-    icon: "/logo/isotipo-web.png",
-    apple: "/logo/isotipo-web.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo/isotipo-web.png", sizes: "32x32", type: "image/png" },
+      { url: "/logo/isotipo.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/logo/isotipo-web.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
   },
-  metadataBase: new URL('https://flasti.net'),
+  metadataBase: new URL('https://flasti.com'),
   robots: {
-    index: true, // La página SÍ se indexa
+    index: true,
     follow: true,
     nocache: false,
     googleBot: {
-      index: true, // La página SÍ se indexa
+      index: true,
       follow: true,
-      noimageindex: true, // Las imágenes NO se indexan
+      noimageindex: true,
       'max-video-preview': -1,
-      'max-image-preview': 'none', // No mostrar previews de imágenes
+      'max-image-preview': 'none',
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'google-site-verification-code',
+    yandex: 'yandex-verification-code',
+    other: {
+      'msvalidate.01': 'bing-verification-code',
+    },
+  },
+  category: 'technology',
+  classification: 'Online Platform, Microtasks, Remote Work, Income Generation',
   other: {
     'link': [
       {
@@ -42,11 +77,11 @@ export const metadata: Metadata = {
         type: 'image/png'
       }
     ],
-    // Meta tags adicionales para evitar indexación de imágenes
     'googlebot': 'index, follow, noimageindex',
     'bingbot': 'index, follow, noimageindex',
     'robots': 'index, follow, noimageindex',
   },
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -55,13 +90,37 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Flasti",
-    title: "Flasti | Ganancia colectiva",
-    description: "Genera ingresos completando microtareas en línea. Accede a la plataforma y comienza a trabajar desde casa sin experiencia previa.",
+    title: "Flasti | Ganar Dinero Online con Microtareas Pagadas",
+    description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa. Gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios.",
+    url: "https://flasti.com",
+    locale: "es_ES",
+    images: [
+      {
+        url: "https://flasti.com/logo/logo-web.png",
+        width: 1067,
+        height: 372,
+        alt: "Flasti - Plataforma de microtareas pagadas para ganar dinero online",
+        type: "image/png",
+      },
+      {
+        url: "https://flasti.com/logo/isotipo-web.png",
+        width: 360,
+        height: 354,
+        alt: "Flasti Logo",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Flasti | Ganancia colectiva",
-    description: "Genera ingresos completando microtareas en línea. Accede a la plataforma y comienza a trabajar desde casa sin experiencia previa.",
+    site: "@flasti",
+    creator: "@flasti",
+    title: "Flasti | Ganar Dinero Online con Microtareas Pagadas",
+    description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa. Gana de $1 a $20 USD por tarea.",
+    images: ["https://flasti.com/logo/logo-web.png"],
+  },
+  alternates: {
+    canonical: "https://flasti.com",
   },
 };
 
@@ -73,6 +132,12 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Structured Data for SEO */}
+        <StructuredData />
+
+        {/* Google Analytics */}
+        <GoogleAnalytics />
+
         {/* Yandex Metrica - Colocado lo más cerca posible del head */}
         <YandexMetrica />
 

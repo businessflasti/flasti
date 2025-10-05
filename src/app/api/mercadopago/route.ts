@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
-// Configuración de Mercado Pago
-const ACCESS_TOKEN = 'APP_USR-1617533183479702-120313-16aa8293896b850ec41b7f267dac332e-224528502';
-const CLIENT_ID = '1617533183479702';
+// Configuración de Mercado Pago - Nueva Cuenta
+const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || 'APP_USR-8400251779300797-100517-207f2ff90eec04a47316d5974b5474ce-1068552659';
+const CLIENT_ID = process.env.MERCADOPAGO_CLIENT_ID || '8400251779300797';
 
 export async function POST(request: Request) {
   try {

@@ -1,8 +1,15 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Flasti | Política de Privacidad",
-  description: "Política de privacidad y protección de datos de la plataforma Flasti.",
+  title: "Política de Privacidad | Flasti",
+  description: "Conoce cómo Flasti protege tus datos personales. Política de privacidad y protección de datos de nuestra plataforma de microtareas.",
+  alternates: {
+    canonical: "https://flasti.com/privacidad",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function PrivacidadLayout({

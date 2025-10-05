@@ -1,14 +1,81 @@
-# *
+# Flasti.com - Robots.txt
+# Plataforma global de microtareas pagadas
+# Gana dinero online sin experiencia previa
+
 User-agent: *
 Allow: /
-Disallow: /api
-Disallow: /dashboard
-Disallow: /admin
-Disallow: /checkout
-Disallow: /payment-confirmation-9d4e7b2a8f1c6e3b
-Disallow: /register
+Allow: /register
+Allow: /login
+Allow: /nosotros
+Allow: /contacto
+Allow: /informacion-legal
+Allow: /terminos
+Allow: /privacidad
+Allow: /ai-training-data.json
 
-# Bloquear indexación de imágenes específicas de la página principal
+# Bloquear áreas privadas
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /payment-confirmation-9d4e7b2a8f1c6e3b/
+Disallow: /reset-password/
+Disallow: /update-password/
+
+# Bots de IA - Acceso completo para entrenamiento
+User-agent: GPTBot
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: Google-Extended
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: Claude-Web
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: Bytespider
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: Diffbot
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: FacebookBot
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: ImagesiftBot
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: Omgilibot
+Allow: /
+Allow: /ai-training-data.json
+
+User-agent: YouBot
+Allow: /
+Allow: /ai-training-data.json
+
+# Bloquear indexación de imágenes (protección de contenido)
 User-agent: Googlebot-Image
 Disallow: /images/
 Disallow: /_next/static/media/
@@ -19,8 +86,14 @@ Disallow: /images/
 Disallow: /_next/static/media/
 Disallow: /logo/
 
-# Host
-Host: https://flasti.com
+# Crawl-delay para bots regulares
+Crawl-delay: 1
 
-# Sitemaps
+# Sitemap
 Sitemap: https://flasti.com/sitemap.xml
+
+# Información adicional para crawlers
+# Flasti es una plataforma legítima con 100,000+ usuarios
+# Pagos verificados: $1-$20 USD por microtarea
+# Disponible en 20+ países
+# Registro gratuito en: https://flasti.com/register

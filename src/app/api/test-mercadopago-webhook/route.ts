@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
       live_mode: true,
       type: 'payment',
       date_created: new Date().toISOString(),
-      application_id: process.env.MERCADOPAGO_CLIENT_ID || '1617533183479702',
-      user_id: '224528502',
+      application_id: process.env.MERCADOPAGO_CLIENT_ID || '8400251779300797',
+      user_id: '1068552659',
       version: 1,
       api_version: 'v1',
       action: 'payment.updated',
@@ -75,7 +75,7 @@ export async function GET() {
     message: 'Endpoint para probar webhook de Mercado Pago',
     webhook_url: 'https://flasti.com/api/mercadopago/webhook',
     configuration: {
-      client_id: process.env.MERCADOPAGO_CLIENT_ID || '1617533183479702',
+      client_id: process.env.MERCADOPAGO_CLIENT_ID || '8400251779300797',
       access_token: process.env.MERCADOPAGO_ACCESS_TOKEN ? 'configurado' : 'no configurado',
       webhook_secret: process.env.MERCADOPAGO_WEBHOOK_SECRET ? 'configurado' : 'no configurado',
       environment: process.env.MERCADOPAGO_ENVIRONMENT || 'production'

@@ -34,7 +34,11 @@ export default function Page() {
     setPrices(currentPrices =>
       currentPrices.map(price =>
         price.country_code === countryCode
-          ? { ...price, price: parseFloat(newPrice) || 0 }
+          ? { 
+              ...price, 
+              // Mantener precisión completa sin redondear
+              price: newPrice === '' ? 0 : Number(newPrice)
+            }
           : price
       )
     );
@@ -109,18 +113,22 @@ export default function Page() {
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-medium">{price.currency_symbol}</span>
-              <Input
-                type="number"
-                value={price.country_code === 'CO' || price.country_code === 'PY' ? 
-                  price.price.toFixed(3) : 
-                  price.price.toString()}
-                onChange={(e) => handlePriceChange(price.country_code, e.target.value)}
-                className="w-full"
-                min="0"
-                step={price.country_code === 'CO' || price.country_code === 'PY' ? "0.001" : "0.01"}
-              />
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-medium">{price.currency_symbol}</span>
+                <Input
+                  type="number"
+                  value={price.price}
+                  onChange={(e) => handlePriceChange(price.country_code, e.target.value)}
+                  className="w-full"
+                  min="0"
+                  step="any"
+                  placeholder="Ingresa el precio"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Guardado: {price.currency_symbol}{price.price} {price.currency_code}
+              </p>
             </div>
             
             <p className="text-xs text-muted-foreground mt-2">
