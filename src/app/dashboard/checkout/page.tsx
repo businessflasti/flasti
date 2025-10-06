@@ -502,7 +502,7 @@ const CheckoutContent = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: 'Acceso a Flasti',
+          title: 'Membresía Premium Flasti',
           unitPrice: amountARS,
           currency: 'ARS',
           quantity: 1
@@ -755,7 +755,7 @@ const CheckoutContent = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: 'Acceso a Flasti',
+          title: 'Membresía Premium Flasti',
           unitPrice: amountARS,
           currency: 'ARS',
           quantity: 1

@@ -25,7 +25,10 @@ export async function POST(request: Request) {
     const preference = {
       items: [
         {
-          title: title || 'Acceso a Flasti',
+          title: title || 'Membresía Premium Flasti',
+          description: 'Acceso completo a la plataforma Flasti para generar ingresos con microtareas',
+          picture_url: 'https://flasti.com/logo/logo-web.png',
+          category_id: 'services',
           quantity: quantity,
           currency_id: currency,
           unit_price: resolvedUnitPrice,
