@@ -35,7 +35,7 @@ function cleanupDuplicateButtons(): void {
 export function loadMercadoPago(cachedPreferenceId: string | null = null, cachedInitPoint: string | null = null, containerId: string = 'mp-wallet-container'): void {
   if (typeof window === 'undefined') return;
 
-  console.log('🚀 Carga rápida de Mercado Pago iniciada...');
+  console.log('🚀 Cargando botón de Mercado Pago...');
 
   const mpContainer = document.getElementById(containerId);
   if (!mpContainer) {
@@ -43,226 +43,100 @@ export function loadMercadoPago(cachedPreferenceId: string | null = null, cached
     return;
   }
 
-  // Limpiar solo el contenedor específico
-  mpContainer.innerHTML = '';
-
-  // Mostrar mensaje de carga más elegante
-  const loadingDiv = document.createElement('div');  // Mismo fondo oscuro del contenedor
-  loadingDiv.style.background = '#181824';
-  loadingDiv.style.minHeight = '60px';
-  loadingDiv.style.borderRadius = '8px';
-  loadingDiv.style.overflow = 'hidden';
-  loadingDiv.style.position = 'relative';
-  loadingDiv.className = 'flex items-center justify-center py-4 text-white/70';
-  loadingDiv.innerHTML = `
-    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
-    <span class="text-sm">Cargando Mercado Pago...</span>
-  `;
-  mpContainer.appendChild(loadingDiv);
-
-  // Verificar si el script ya está cargado y MercadoPago está disponible
-  const existingScript = document.getElementById('mercadopago-script');
-  if (existingScript && window.MercadoPago) {
-    // Si ya está cargado y disponible, crear el botón directamente
-    console.log('⚡ Script ya cargado, creando botón inmediatamente');
-    createMercadoPagoButton(mpContainer);
-    return;
-  }
-
-  // Si el script existe pero MercadoPago no está disponible, esperar un poco
-  if (existingScript && !window.MercadoPago) {
-    console.log('⏳ Script cargando, esperando...');
-    setTimeout(() => {
-      if (window.MercadoPago) {
-        createMercadoPagoButton(mpContainer);
-      } else {
-        console.log('⚠️ Timeout esperando MercadoPago, recargando script');
-        loadMercadoPago(cachedPreferenceId, cachedInitPoint, containerId);
-      }
-    }, 1000);
-    return;
-  }
-
-  // Crear script de Mercado Pago solo si no existe
-  const script = document.createElement('script');
-  script.src = 'https://sdk.mercadopago.com/js/v2';
-  script.async = true;
-  script.id = 'mercadopago-script';
-
-  script.onload = () => {
-    console.log('✅ Script de Mercado Pago cargado');
-    createMercadoPagoButton(mpContainer);
-  };
-
-  script.onerror = () => {
-    console.error('❌ Error al cargar script de Mercado Pago');
-    createFallbackButton(mpContainer, 6900);
-  };
-
-  document.body.appendChild(script);
-}
-
-/**
- * Función para crear el botón de Mercado Pago
- */
-function createMercadoPagoButton(mpContainer: HTMLElement): void {
-
   // Limpiar el contenedor
   mpContainer.innerHTML = '';
 
-  // Verificar que MercadoPago está disponible
-  if (!window.MercadoPago) {
-    console.error('❌ MercadoPago no disponible');
-  createFallbackButton(mpContainer, 2990);
-    return;
-  }
-
-  // El feedback visual de error del formulario ahora se maneja en page.tsx para consistencia con PayPal.
-
-  try {
-    console.log('🔧 Inicializando Mercado Pago...');
-
-    // Inicializar Mercado Pago
-    const mp = new window.MercadoPago('APP_USR-c40ff253-7e56-4772-b16c-453133f3aa39', {
-      locale: 'es-AR'
-    });
-
-    // Obtener precio actual
-  let amountARS = 2990;
-    const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
-    const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
-
-    if (finalDiscountApplied) {
-      amountARS = 5750;
-    } else if (discountApplied) {
-      amountARS = 9200;
-    }
-
-    console.log(`💰 Precio: AR$ ${amountARS.toLocaleString('es-AR')}`);
-
-    // Crear preferencia y botón
-    fetch('/api/mercadopago', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: 'Acceso a Flasti',
-        unitPrice: amountARS,
-        currency: 'ARS',
-        quantity: 1
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('✅ PreferenceId obtenido:', data.id);
-
-      // Crear contenedor para el botón
-          // Evitar crear duplicados en caso de llamadas concurrentes
-          let buttonContainer = document.getElementById('mp-button-container') as HTMLDivElement | null;
-          if (buttonContainer && (window as any).mercadoPagoButtonCreated) {
-            console.log('Mercado Pago button ya creado — evitando duplicado');
-            return;
-          }
-
-          if (!buttonContainer) {
-            buttonContainer = document.createElement('div');
-            buttonContainer.id = 'mp-button-container';
-            mpContainer.appendChild(buttonContainer);
-          }
-
-      // Crear botón de Mercado Pago
-      const bricksBuilder = mp.bricks();
-  bricksBuilder.create('wallet', 'mp-button-container', {
-        initialization: {
-          preferenceId: data.id,
-        },
-        customization: {
-          texts: {
-            action: `Pagar AR$ ${amountARS.toLocaleString('es-AR')}`,
-            valueProp: ''
-          },
-          visual: {
-            hideValueProp: true,
-            buttonBackground: '#009ee3',
-            borderRadius: '8px'
-          }
-        },
-        callbacks: {
-          onReady: () => {
-            console.log('🎉 Botón de Mercado Pago listo');
-          },
-          onError: (error: any) => {
-            console.error('❌ Error en botón:', error);
-            createFallbackButton(mpContainer, amountARS, data.init_point);
-          },
-          onSubmit: () => {
-            console.log('💳 Pago iniciado');
-          }
-        }
-      });
-
-      // Marcar que el botón fue creado para evitar duplicados
-      try {
-        (window as any).mercadoPagoButtonCreated = true;
-      } catch (err) {
-        // noop
-      }
-    })
-    .catch(error => {
-      console.error('❌ Error al obtener preferenceId:', error);
-      createFallbackButton(mpContainer, amountARS);
-    });
-  } catch (error) {
-    console.error('❌ Error al inicializar:', error);
-  createFallbackButton(mpContainer, 2990);
-  }
+  // Crear el botón directamente (más rápido y confiable)
+  createMercadoPagoButton(mpContainer);
 }
 
-// Función auxiliar para crear un botón de respaldo
+/**
+ * Función para crear el botón de Mercado Pago (usando nuestro diseño propio)
+ */
+function createMercadoPagoButton(mpContainer: HTMLElement): void {
+  // Limpiar el contenedor
+  mpContainer.innerHTML = '';
+
+  // Obtener precio actual
+  let amountARS = 2990;
+  const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
+  const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
+
+  if (finalDiscountApplied) {
+    amountARS = 5750;
+  } else if (discountApplied) {
+    amountARS = 9200;
+  }
+
+  console.log(`💰 Precio: AR$ ${amountARS.toLocaleString('es-AR')}`);
+
+  // Crear botón directamente (más rápido y confiable)
+  createFallbackButton(mpContainer, amountARS);
+}
+
+// Función para crear el botón oficial de Mercado Pago (diseño propio)
 function createFallbackButton(container: HTMLElement, amount: number, initPoint?: string): void {
   // Limpiar completamente el contenedor
   while (container.firstChild) {
     container.removeChild(container.firstChild);
   }
 
-  const errorMessage = document.createElement('div');
-  errorMessage.className = 'text-red-500 text-center text-sm mb-3';
-  errorMessage.textContent = 'Hubo un problema al conectar con Mercado Pago. Puedes usar este botón alternativo:';
-  container.appendChild(errorMessage);
-
   const button = document.createElement('button');
-  button.className = 'w-full py-3 px-4 bg-[#22c55e] hover:bg-[#16a34a] text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2';
+  button.className = 'w-full py-3.5 px-6 bg-[#FEE74E] hover:bg-[#FFD700] font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-3 shadow-md hover:shadow-lg transform hover:scale-[1.02]';
+  button.style.fontSize = '20px';
+  button.style.marginTop = '-5px';
   button.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="14" x="2" y="5" rx="2" />
-      <line x1="2" x2="22" y1="10" y2="10" />
-    </svg>
-    Pagar AR$ ${amount.toLocaleString('es-AR')}
+    <img src="/redes/mp.png" alt="Mercado Pago" width="28" height="28" style="object-fit: contain;" />
+    <span style="color: #112081; font-weight: 700;">Mercado Pago</span>
   `;
 
   button.addEventListener('click', () => {
     button.disabled = true;
+    button.className = 'w-full py-3.5 px-6 bg-[#FFD700] font-semibold rounded-lg flex items-center justify-center gap-3 shadow-md cursor-not-allowed opacity-90';
     button.innerHTML = `
-      <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <svg class="animate-spin h-5 w-5" style="color: #112081;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
-      Procesando pago...
+      <span style="color: #112081;">Redirigiendo a Mercado Pago...</span>
     `;
 
-    // Si hay un initPoint, abrir esa URL, de lo contrario ir a la página de registro
+    // Si hay un initPoint, abrir esa URL, de lo contrario crear una nueva preferencia
     if (initPoint) {
       setTimeout(() => {
-        window.open(initPoint, '_blank');
-      }, 1000);
+        window.location.href = initPoint;
+      }, 500);
     } else {
-      setTimeout(() => {
-        window.location.href = "https://flasti.com/register";
-      }, 2000);
+      // Crear preferencia y redirigir
+      fetch('/api/mercadopago', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: 'Acceso completo a Flasti – Microtareas ilimitadas',
+          unitPrice: amount,
+          currency: 'ARS',
+          quantity: 1
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.init_point) {
+          window.location.href = data.init_point;
+        } else {
+          console.error('No se recibió init_point');
+          button.innerHTML = '<span style="color: white;">Error al procesar. Intenta de nuevo.</span>';
+          button.disabled = false;
+          button.className = 'w-full py-3.5 px-6 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-3';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        button.innerHTML = '<span style="color: white;">Error al procesar. Intenta de nuevo.</span>';
+        button.disabled = false;
+        button.className = 'w-full py-3.5 px-6 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-3';
+      });
     }
   });
 

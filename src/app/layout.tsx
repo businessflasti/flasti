@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Flasti | Ganar Dinero Online con Microtareas Pagadas",
-  description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa. Gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios en 20+ países.",
+  title: "Flasti | Microtareas en línea",
+  description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa y gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
   keywords: [
     "ganar dinero online",
     "trabajo en línea",
@@ -90,8 +90,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Flasti",
-    title: "Flasti | Ganar Dinero Online con Microtareas Pagadas",
-    description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa. Gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios.",
+    title: "Flasti | Microtareas en línea",
+    description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa",
     url: "https://flasti.com",
     locale: "es_ES",
     images: [
@@ -115,8 +115,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@flasti",
     creator: "@flasti",
-    title: "Flasti | Ganar Dinero Online con Microtareas Pagadas",
-    description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa. Gana de $1 a $20 USD por tarea.",
+    title: "Flasti | Microtareas en línea",
+    description: "Genera ingresos completando microtareas en línea. Trabajo desde casa sin experiencia previa",
     images: ["https://flasti.com/logo/logo-web.png"],
   },
   alternates: {
