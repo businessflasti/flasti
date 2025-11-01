@@ -219,9 +219,9 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
               </button>
             ) : isPremiumPage || isAdminUsersPage ? (
               <button 
-                onClick={() => router.push('/dashboard/admin')}
+                onClick={() => window.location.href = 'https://flasti.com/dashboard'}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#161b22]/80 backdrop-blur-xl hover:bg-[#21262d] active:bg-[#151515] transition-all duration-200 group touch-manipulation select-none ml-2 md:ml-0 border-0 shadow-lg"
-                aria-label="Volver al panel admin"
+                aria-label="Volver al dashboard"
                 type="button"
               >
                 <svg 
