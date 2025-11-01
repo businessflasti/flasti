@@ -46,33 +46,44 @@ export function useSeasonalTheme() {
 
   const loadActiveTheme = async (fromBroadcast = false) => {
     try {
-      console.log('🎨 Cargando tema desde Supabase...');
+      console.log('🎨 [useSeasonalTheme] Iniciando carga desde Supabase...');
+      
+      // Primero verificar si hay algún tema activo
+      const { data: allThemes, error: listError } = await supabase
+        .from('seasonal_themes')
+        .select('theme_name, is_active');
+      
+      console.log('🎨 [useSeasonalTheme] Todos los temas en DB:', allThemes, 'Error:', listError);
+      
       const { data, error } = await supabase
         .from('seasonal_themes')
-        .select('theme_name')
+        .select('theme_name, is_active')
         .eq('is_active', true)
-        .single();
+        .maybeSingle(); // Usar maybeSingle en lugar de single para evitar error si no hay resultados
+
+      console.log('🎨 [useSeasonalTheme] Respuesta de Supabase:', { data, error });
 
       if (!error && data) {
         const themeName = data.theme_name as ThemeName;
-        console.log('🎨 Tema cargado desde Supabase:', themeName, fromBroadcast ? '(desde broadcast)' : '');
+        console.log('✅ [useSeasonalTheme] Tema activo encontrado:', themeName);
         setActiveTheme(themeName);
         
         // Guardar en localStorage para carga rápida en próximas visitas
         try {
           localStorage.setItem(THEME_CACHE_KEY, themeName);
           localStorage.setItem(THEME_CACHE_TIMESTAMP_KEY, Date.now().toString());
+          console.log('✅ [useSeasonalTheme] Tema guardado en localStorage');
           
           // Notificar a otras pestañas/ventanas
           if (!fromBroadcast && typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: themeName }));
           }
-        } catch (error) {
-          console.error('Error caching theme:', error);
+        } catch (cacheError) {
+          console.error('❌ [useSeasonalTheme] Error caching theme:', cacheError);
         }
       } else {
         // Si no hay tema activo o hay error, usar default
-        console.log('🎨 Sin tema activo en Supabase, usando default', error ? `(error: ${error.message})` : '');
+        console.warn('⚠️ [useSeasonalTheme] Sin tema activo en Supabase, usando default', error ? `Error: ${error.message}` : 'No data');
         setActiveTheme('default');
         try {
           localStorage.setItem(THEME_CACHE_KEY, 'default');
