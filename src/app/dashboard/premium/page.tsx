@@ -224,9 +224,9 @@ const PremiumPage = () => {
     router.push('/dashboard/checkout');
   };
 
-  // Función para volver al dashboard
+  // Función para volver al dashboard - URL completa para evitar caché
   const handleGoBack = () => {
-    router.push('/dashboard');
+    window.location.href = 'https://flasti.com/dashboard';
   };
 
   return (
