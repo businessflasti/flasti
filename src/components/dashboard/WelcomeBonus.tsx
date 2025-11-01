@@ -152,7 +152,10 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
             <Sparkles className={`w-4 h-4 ${styles.sparkle2}`} />
           </div>
           <div className={styles.bonusText}>
-            <h3 className={styles.bonusTitle}>¡Bienvenido a Flasti!</h3>
+            <h3 className={styles.bonusTitle}>
+              <span className="md:hidden">¡Bienvenido!</span>
+              <span className="hidden md:inline">¡Bienvenido a Flasti!</span>
+            </h3>
             <p className={styles.bonusAmount}>$0.75 USD</p>
             <p className={`${styles.bonusDescription} text-xs md:text-xs`}>
               Completa la tarea y gana tu primera recompensa
