@@ -4,18 +4,33 @@ import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 import { useEffect } from 'react';
 
 export default function SeasonalThemeEffects() {
-  const { activeTheme } = useSeasonalTheme();
+  const { activeTheme, loading } = useSeasonalTheme();
 
   useEffect(() => {
     // Aplicar clase al body para estilos globales
-    document.body.className = `theme-${activeTheme}`;
+    if (!loading) {
+      document.body.className = `theme-${activeTheme}`;
+      console.log('🎨 Clase de tema aplicada al body:', `theme-${activeTheme}`);
+    }
     
     return () => {
       document.body.className = '';
     };
-  }, [activeTheme]);
+  }, [activeTheme, loading]);
 
-  if (activeTheme === 'default') return null;
+  // No renderizar nada mientras carga
+  if (loading) {
+    console.log('🎨 SeasonalThemeEffects: Cargando tema...');
+    return null;
+  }
+
+  // No renderizar efectos si es tema default
+  if (activeTheme === 'default') {
+    console.log('🎨 SeasonalThemeEffects: Tema default, sin efectos');
+    return null;
+  }
+
+  console.log('🎨 SeasonalThemeEffects: Renderizando efectos para tema:', activeTheme);
 
   return (
     <>

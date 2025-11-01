@@ -9,9 +9,9 @@ const THEME_CHANGE_EVENT = 'flasti_theme_changed';
 const CACHE_DURATION = 10 * 1000; // 10 segundos - caché muy corto para actualizaciones rápidas
 
 export function useSeasonalTheme() {
-  // Cargar tema desde localStorage inmediatamente para evitar flash
-  const getCachedTheme = (): ThemeName => {
-    if (typeof window === 'undefined') return 'default';
+  // Cargar tema desde localStorage inmediatamente para evitar flash, pero sin asumir 'default'
+  const getCachedTheme = (): ThemeName | null => {
+    if (typeof window === 'undefined') return null;
     
     try {
       const cached = localStorage.getItem(THEME_CACHE_KEY);
@@ -27,10 +27,11 @@ export function useSeasonalTheme() {
       console.error('Error reading theme cache:', error);
     }
     
-    return 'default';
+    return null; // No asumir 'default', esperar a cargar desde Supabase
   };
 
-  const [activeTheme, setActiveTheme] = useState<ThemeName>(getCachedTheme());
+  const cachedTheme = getCachedTheme();
+  const [activeTheme, setActiveTheme] = useState<ThemeName>(cachedTheme || 'default');
   const [loading, setLoading] = useState(true);
 
   const clearThemeCache = () => {
@@ -45,6 +46,7 @@ export function useSeasonalTheme() {
 
   const loadActiveTheme = async (fromBroadcast = false) => {
     try {
+      console.log('🎨 Cargando tema desde Supabase...');
       const { data, error } = await supabase
         .from('seasonal_themes')
         .select('theme_name')
@@ -53,10 +55,10 @@ export function useSeasonalTheme() {
 
       if (!error && data) {
         const themeName = data.theme_name as ThemeName;
-        console.log('🎨 Tema actualizado en tiempo real:', themeName, fromBroadcast ? '(desde broadcast)' : '');
+        console.log('🎨 Tema cargado desde Supabase:', themeName, fromBroadcast ? '(desde broadcast)' : '');
         setActiveTheme(themeName);
         
-        // Guardar en localStorage para carga rápida
+        // Guardar en localStorage para carga rápida en próximas visitas
         try {
           localStorage.setItem(THEME_CACHE_KEY, themeName);
           localStorage.setItem(THEME_CACHE_TIMESTAMP_KEY, Date.now().toString());
@@ -68,15 +70,20 @@ export function useSeasonalTheme() {
         } catch (error) {
           console.error('Error caching theme:', error);
         }
-      } else if (error) {
-        // Si no hay tema activo, usar default
-        console.log('🎨 Sin tema activo, usando default');
+      } else {
+        // Si no hay tema activo o hay error, usar default
+        console.log('🎨 Sin tema activo en Supabase, usando default', error ? `(error: ${error.message})` : '');
         setActiveTheme('default');
-        localStorage.setItem(THEME_CACHE_KEY, 'default');
-        localStorage.setItem(THEME_CACHE_TIMESTAMP_KEY, Date.now().toString());
+        try {
+          localStorage.setItem(THEME_CACHE_KEY, 'default');
+          localStorage.setItem(THEME_CACHE_TIMESTAMP_KEY, Date.now().toString());
+        } catch (e) {
+          console.error('Error caching default theme:', e);
+        }
       }
     } catch (error) {
       console.error('Error loading theme:', error);
+      setActiveTheme('default');
     } finally {
       setLoading(false);
     }
