@@ -43,15 +43,23 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   useEffect(() => {
     const loadThemeLogo = async () => {
       try {
+        if (activeTheme === 'default') {
+          setThemeLogo(null);
+          return;
+        }
+
         const { data, error } = await supabase
           .from('seasonal_themes')
           .select('logo_url')
           .eq('theme_name', activeTheme)
+          .eq('is_active', true)
           .single();
 
         if (!error && data?.logo_url) {
+          console.log('🎨 Logo temático cargado:', data.logo_url);
           setThemeLogo(data.logo_url);
         } else {
+          console.log('🎨 Sin logo temático, usando logo por defecto');
           setThemeLogo(null);
         }
       } catch (error) {
@@ -61,6 +69,27 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
     };
 
     loadThemeLogo();
+
+    // Suscripción en tiempo real para cambios en el logo del tema
+    const channel = supabase
+      .channel('theme_logo_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'seasonal_themes',
+        },
+        () => {
+          console.log('🎨 Cambio detectado en logo de tema, recargando...');
+          loadThemeLogo();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [activeTheme]);
 
   // Obtener dimensiones según el tamaño

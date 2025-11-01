@@ -79,7 +79,19 @@ export default function ThemesManagement() {
 
       if (error) throw error;
 
-      toast.success(`Tema "${getThemeDisplayName(themeName)}" activado`);
+      // Limpiar caché de tema inmediatamente en esta pestaña
+      try {
+        localStorage.removeItem('flasti_active_theme');
+        localStorage.removeItem('flasti_theme_timestamp');
+        console.log('🎨 Caché de tema limpiado después de activación');
+        
+        // Notificar a otras pestañas/ventanas
+        window.dispatchEvent(new CustomEvent('flasti_theme_changed', { detail: themeName }));
+      } catch (cacheError) {
+        console.error('Error clearing cache:', cacheError);
+      }
+
+      toast.success(`Tema "${getThemeDisplayName(themeName)}" activado - Cambios aplicados en tiempo real`);
       loadThemes();
     } catch (error) {
       console.error('Error activating theme:', error);

@@ -224,9 +224,9 @@ const PremiumPage = () => {
     router.push('/dashboard/checkout');
   };
 
-  // Función para ir hacia atrás
+  // Función para volver al dashboard
   const handleGoBack = () => {
-    router.back();
+    router.push('/dashboard');
   };
 
   return (
