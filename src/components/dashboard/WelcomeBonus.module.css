@@ -1,0 +1,548 @@
+/* Tarjeta del bono con fondo sólido */
+.bonusCard {
+  position: relative;
+  width: 100%;
+  background: #0B0F17;
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-clip: padding-box;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.7s ease;
+}
+
+.bonusCard:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Brillo superior glassmorphism */
+.bonusCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  z-index: 1;
+}
+
+.bonusGlow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+  animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.bonusContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 1;
+}
+
+.bonusIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 12px;
+  color: white;
+  flex-shrink: 0;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.sparkle1, .sparkle2 {
+  position: absolute;
+  color: white;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.sparkle1 {
+  top: -4px;
+  right: -4px;
+}
+
+.sparkle2 {
+  bottom: -4px;
+  left: -4px;
+  animation-delay: 0.75s;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.bonusText {
+  flex: 1;
+}
+
+.bonusTitle {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.bonusAmount {
+  color: #fbbf24;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.bonusDescription {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}
+
+.claimButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.claimButton:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+.claimButton:active {
+  transform: translateY(0) scale(1);
+}
+
+/* Popup */
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(11, 15, 23, 0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 9999;
+  padding-top: 3.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.popupContent {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botón X para cerrar */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.closeButton:active {
+  transform: scale(0.95);
+}
+
+.popupHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.popupTitle {
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 1rem 0 0.5rem;
+}
+
+.popupSubtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.wordHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.hintLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hintWord {
+  color: #fbbf24;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.letterBoxes {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: nowrap;
+  overflow-x: visible;
+  padding: 0.75rem 0.5rem;
+}
+
+.letterBox {
+  width: 45px;
+  height: 55px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.letterBox:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.letterBox.active {
+  border-color: #fbbf24;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+  transform: scale(1.05);
+}
+
+.letterBox.correct {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  border-color: #4ade80;
+  animation: correctPulse 0.5s ease;
+}
+
+@keyframes correctPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.instruction {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}
+
+.instruction strong {
+  color: #fbbf24;
+  font-size: 1.25rem;
+}
+
+/* Animación de éxito */
+.successAnimation {
+  text-align: center;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.checkCircle {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 0 40px rgba(74, 222, 128, 0.6);
+}
+
+@keyframes successPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.successTitle {
+  color: #4ade80;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  animation: slideDown 0.5s ease 0.3s both;
+  text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.successAmount {
+  color: #fbbf24;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  animation: slideDown 0.5s ease 0.4s both;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+}
+
+.successMessage {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  animation: slideDown 0.5s ease 0.5s both;
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confettiPiece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(600px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Desktop - Alineación perfecta con el video */
+@media (min-width: 769px) {
+  .bonusCard {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .bonusContent {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .bonusIcon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .bonusTitle {
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .bonusAmount {
+    font-size: 1.35rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .bonusDescription {
+    font-size: 0.75rem;
+  }
+
+  .claimButton {
+    padding: 0.65rem 1.3rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bonusCard {
+    padding: 1rem;
+  }
+
+  .bonusContent {
+    flex-direction: row;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .bonusIcon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+  }
+
+  .bonusText {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .bonusTitle {
+    font-size: 0.7rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
+  }
+
+  .bonusAmount {
+    font-size: 1.1rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .bonusDescription {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+
+  .claimButton {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .claimButton span {
+    display: inline;
+  }
+
+  .popupOverlay {
+    padding-top: 3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .popupContent {
+    padding: 2rem 1.5rem;
+    max-width: 95%;
+    max-height: 85vh;
+  }
+
+  .popupTitle {
+    font-size: 1.5rem;
+  }
+
+  .hintWord {
+    font-size: 1.25rem;
+    letter-spacing: 0.3rem;
+  }
+
+  .letterBox {
+    width: 35px;
+    height: 45px;
+    font-size: 1.25rem;
+  }
+
+  .letterBoxes {
+    gap: 0.35rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .successTitle {
+    font-size: 1.5rem;
+  }
+
+  .successAmount {
+    font-size: 2rem;
+  }
+}

@@ -179,7 +179,7 @@ export default function CountryAssignmentsPage() {
         </div>
 
         {/* Formulario para nueva asignación */}
-        <Card className="bg-[#232323] border-white/10">
+        <Card className="bg-[#1a1a1a] border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Plus className="w-5 h-5" />
@@ -253,7 +253,7 @@ export default function CountryAssignmentsPage() {
         </Card>
 
         {/* Lista de asignaciones */}
-        <Card className="bg-[#232323] border-white/10">
+        <Card className="bg-[#1a1a1a] border-white/10">
           <CardHeader>
             <CardTitle className="text-white">
               Asignaciones Activas ({mappings.length})
@@ -337,7 +337,7 @@ export default function CountryAssignmentsPage() {
         </Card>
 
         {/* Información adicional */}
-        <Card className="bg-[#232323] border-yellow-500/20">
+        <Card className="bg-[#1a1a1a] border-yellow-500/20">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-yellow-500/10 rounded-lg">

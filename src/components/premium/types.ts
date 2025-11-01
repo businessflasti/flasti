@@ -23,6 +23,7 @@ export interface PremiumCardOverlayProps {
   blurIntensity?: 'light' | 'medium' | 'heavy';
   className?: string;
   children: React.ReactNode;
+  taskNumber?: number;
 }
 
 export interface CardLockRule {

@@ -111,14 +111,6 @@ export default function Home() {
         <RegistrationFAQSection />
         {/* Sección 8: Conoce a Flasti */}
         <CTASection />
-        
-        {/* Bloque de anuncio 2 */}
-        <AdBlockWrapper
-          adClient="ca-pub-8330194041691289"
-          adSlot="8886744888"
-          backgroundColor="bg-[#101010]"
-          padding="pt-1 pb-10"
-        />
       </div>
     </MainLayout>
   );

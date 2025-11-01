@@ -4,7 +4,7 @@ import Logo from "@/components/ui/logo";
 
 const CheckoutHeader = () => {
   return (
-    <header className="w-full py-3 border-b border-[#232323] bg-[#101010] backdrop-blur-md">
+    <header className="w-full py-3 border-b border-[#1a1a1a] bg-[#101010] backdrop-blur-md">
       <div className="container-custom flex items-center justify-between">
         <div className="flex items-center">
           <Logo />

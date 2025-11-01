@@ -11,7 +11,7 @@ export interface ToastProps {
 const typeMap = {
   success: "bg-green-600 text-white",
   error: "bg-red-600 text-white",
-  info: "bg-[#232323] text-white border border-[#101010]",
+  info: "bg-[#1a1a1a] text-white border border-[#101010]",
 };
 
 export const Toast: React.FC<ToastProps> = ({ open, message, type = "info", onClose }) => (

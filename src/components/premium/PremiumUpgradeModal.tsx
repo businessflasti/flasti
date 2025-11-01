@@ -120,7 +120,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
         </button>
 
         {/* Contenido del pricing - Extraído de SimplePricingSection */}
-        <Card className="bg-[#232323] overflow-hidden relative h-full rounded-3xl border-0">
+        <Card className="bg-[#1a1a1a] overflow-hidden relative h-full rounded-3xl border-0">
           <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
 
           <div className="absolute right-2 top-2 md:right-3 md:top-3">

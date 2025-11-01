@@ -11,6 +11,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { DollarSign, TrendingUp, RotateCcw, Gift } from 'lucide-react';
+import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 interface RewardSummary {
   total_earnings: number;
@@ -144,7 +145,9 @@ export default function RewardsHistoryPage() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
+      <SeasonalGarland />
+      <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 relative z-10">
       <Breadcrumbs />
       
       {/* Header */}
@@ -155,15 +158,21 @@ export default function RewardsHistoryPage() {
       {/* Estadísticas de resumen */}
       {!loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <DollarSign className="w-5 h-5 text-green-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 group-hover:scale-110 transition-all duration-300 border border-green-300/20">
+                  <DollarSign className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Ganado</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Ganado</p>
+                  <p className="text-xl font-bold text-white">
                     {formatCurrency(summary.total_earnings)}
                   </p>
                 </div>
@@ -171,15 +180,21 @@ export default function RewardsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <TrendingUp className="w-5 h-5 text-blue-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 group-hover:scale-110 transition-all duration-300 border border-blue-300/20">
+                  <TrendingUp className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Aprobadas</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Aprobadas</p>
+                  <p className="text-xl font-bold text-white">
                     {summary.approved_count}
                   </p>
                 </div>
@@ -187,15 +202,21 @@ export default function RewardsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-500/20 rounded-lg">
-                  <RotateCcw className="w-5 h-5 text-red-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-red-400 via-red-500 to-red-600 group-hover:scale-110 transition-all duration-300 border border-red-300/20">
+                  <RotateCcw className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Revertidas</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Revertidas</p>
+                  <p className="text-xl font-bold text-white">
                     {summary.reversed_count}
                   </p>
                 </div>
@@ -203,15 +224,21 @@ export default function RewardsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <Gift className="w-5 h-5 text-purple-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 group-hover:scale-110 transition-all duration-300 border border-purple-300/20">
+                  <Gift className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Tareas</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Tareas</p>
+                  <p className="text-xl font-bold text-white">
                     {rewards.length}
                   </p>
                 </div>
@@ -242,7 +269,12 @@ export default function RewardsHistoryPage() {
             <p className="text-gray-400 font-medium">Cargando historial de recompensas...</p>
           </div>
         ) : (
-          <div className="bg-[#232323] border border-white/10 rounded-lg">
+          <div 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <div className="p-6 border-b border-white/10">
               <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2 flex-wrap">
                 <Gift className="w-5 h-5" />
@@ -315,6 +347,7 @@ export default function RewardsHistoryPage() {
           </div>
         )}
       </motion.div>
+      </div>
     </div>
   );
 }

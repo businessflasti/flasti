@@ -31,7 +31,7 @@ export function TipsBanner() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -16 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-xl mx-auto bg-[#232323] border border-[#333] rounded-lg shadow-md px-4 py-3 flex items-center gap-3 mb-4"
+        className="w-full max-w-xl mx-auto bg-[#1a1a1a] border border-[#333] rounded-lg shadow-md px-4 py-3 flex items-center gap-3 mb-4"
         role="status"
         aria-live="polite"
       >

@@ -160,21 +160,53 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         .card {
           --main-color: #fff;
           --submain-color: #ccc;
-          --bg-color: #232323;
+          --bg-color: #0D1117;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           position: relative;
           width: 300px;
-          height: 340px; /* reducido desde 384px */
+          height: 340px;
           display: flex;
           flex-direction: column;
           align-items: center;
           border-radius: 1.5rem;
-          background: var(--bg-color);
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(40px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          border-radius: 1.5rem 1.5rem 0 0;
+        }
+
+        .card:hover {
+          border-color: rgba(255, 255, 255, 0.2);
+          transform: translateY(-8px);
+          box-shadow: 0 0 60px rgba(110, 64, 255, 0.15), 0 0 40px rgba(110, 64, 255, 0.1), inset 0 0 60px rgba(110, 64, 255, 0.15);
         }
 
         .card__img {
           height: 192px;
           width: 100%;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .card__img::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+          pointer-events: none;
         }
 
         .card__img svg {
@@ -186,12 +218,21 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           position: absolute;
           width: 114px;
           height: 114px;
-          background: var(--bg-color);
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           border-radius: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
           top: calc(50% - 57px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+
+        .card:hover .card__avatar {
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 255, 255, 0.2);
+          transform: scale(1.05);
         }
 
         .card__avatar svg {

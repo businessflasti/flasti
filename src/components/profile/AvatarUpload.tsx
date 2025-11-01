@@ -241,7 +241,9 @@ export default function AvatarUpload() {
 
       {/* Texto informativo */}
       <h3 className="text-lg font-semibold mt-2 mb-1">
-        {profile?.name || user?.email?.split('@')[0] || 'Usuario'}
+        {profile?.first_name 
+          ? `${profile.first_name} ${profile.last_name || ''}`.trim()
+          : (profile?.name || user?.email?.split('@')[0] || '')}
       </h3>
       <div className="flex items-center gap-2 mb-4">
         <span className="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full">

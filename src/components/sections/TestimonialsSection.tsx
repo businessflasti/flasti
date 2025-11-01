@@ -54,7 +54,7 @@ const TestimonialCard = ({
 	};
 }) => {
 	return (
-		<Card className="bg-[#232323] p-8 rounded-3xl flex flex-col h-full transition-colors group">
+		<Card className="bg-[#1a1a1a] p-8 rounded-3xl flex flex-col h-full transition-colors group">
 			<div className="flex items-start gap-4 mb-6">
 				<div className="flex-shrink-0">
 					<div className="w-14 h-14 rounded-3xl overflow-hidden group-hover:scale-110 transition-transform duration-500">
@@ -207,7 +207,7 @@ const TestimonialsSection = React.memo(() => {
 						<div className="flex justify-center items-center gap-8 mt-12">
 							<button
 								onClick={prevTestimonial}
-								className="w-14 h-14 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-all hover:scale-110"
+								className="w-14 h-14 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-all hover:scale-110"
 								aria-label="Previous testimonial"
 							>
 								<ChevronLeft className="h-6 w-6" />
@@ -221,7 +221,7 @@ const TestimonialsSection = React.memo(() => {
 										className={`w-3 h-3 rounded-full transition-all ${
 											index === currentIndex
 												? "bg-white scale-125 w-12"
-												: "bg-[#232323] hover:bg-white/50"
+												: "bg-[#1a1a1a] hover:bg-white/50"
 										}`}
 										aria-label={`Go to testimonial ${index + 1}`}
 									/>
@@ -230,7 +230,7 @@ const TestimonialsSection = React.memo(() => {
 
 							<button
 								onClick={nextTestimonial}
-								className="w-14 h-14 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-all hover:scale-110"
+								className="w-14 h-14 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-all hover:scale-110"
 								aria-label="Next testimonial"
 							>
 								<ChevronRight className="h-6 w-6" />
@@ -293,7 +293,7 @@ const TestimonialsSection = React.memo(() => {
 									className={`w-3 h-3 rounded-full transition-all ${
 										index === currentIndex
 											? "bg-white scale-110"
-											: "bg-[#232323]"
+											: "bg-[#1a1a1a]"
 									}`}
 									aria-label={`Go to testimonial ${index + 1}`}
 								/>
@@ -302,7 +302,7 @@ const TestimonialsSection = React.memo(() => {
 
 						<button
 							onClick={prevTestimonial}
-							className="absolute top-12 left-20 w-10 h-10 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-colors"
+							className="absolute top-12 left-20 w-10 h-10 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-colors"
 							aria-label="Previous testimonial"
 						>
 							<ChevronLeft className="h-6 w-6" />
@@ -310,7 +310,7 @@ const TestimonialsSection = React.memo(() => {
 
 						<button
 							onClick={nextTestimonial}
-							className="absolute top-12 right-20 w-10 h-10 rounded-full bg-[#232323] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-colors"
+							className="absolute top-12 right-20 w-10 h-10 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-colors"
 							aria-label="Next testimonial"
 						>
 							<ChevronRight className="h-6 w-6" />

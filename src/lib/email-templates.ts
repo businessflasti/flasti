@@ -461,7 +461,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
         <div class="email-container">
             <div class="header">
                 <div class="logo-container">
-                    <img src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/Isotipo.png" alt="Flasti Logo" class="logo-image" />
+                    <img src="${process.env.NEXT_PUBLIC_APP_URL || 'https://flasti.com'}/images/principal/Isotipo.png" alt="Flasti Logo" class="logo-image" />
                 </div>
             </div>
 

@@ -13,6 +13,7 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { DollarSign, CreditCard, AlertCircle, CheckCircle, Landmark, ArrowRightLeft, Wallet } from 'lucide-react';
 import PayPalIcon from '@/components/icons/PayPalIcon';
+import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 interface UserBalance {
   balance: number;
@@ -114,6 +115,12 @@ export default function WithdrawalsPage() {
       return;
     }
     
+    // Validación de mínimo $1 USD
+    if (Number(amount) < 1) {
+      toast.error('El monto mínimo de retiro es $1.00 USD');
+      return;
+    }
+    
     if (!destination || !destination.includes('@')) {
       toast.error('Debes ingresar un email de PayPal válido.');
       return;
@@ -176,7 +183,9 @@ export default function WithdrawalsPage() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6">
+    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
+      <SeasonalGarland />
+      <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6 relative z-10">
       <Breadcrumbs />
       
       {/* Header */}
@@ -187,15 +196,21 @@ export default function WithdrawalsPage() {
       {/* Información del saldo */}
       {!pageLoading && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <DollarSign className="w-5 h-5 text-green-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 group-hover:scale-110 transition-all duration-300 border border-green-300/20">
+                  <DollarSign className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Saldo Disponible</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Saldo Disponible</p>
+                  <p className="text-xl font-bold text-white">
                     {formatCurrency(userBalance.balance)}
                   </p>
                 </div>
@@ -203,15 +218,21 @@ export default function WithdrawalsPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-blue-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 group-hover:scale-110 transition-all duration-300 border border-blue-300/20">
+                  <CheckCircle className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Ganado</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Ganado</p>
+                  <p className="text-xl font-bold text-white">
                     {formatCurrency(userBalance.total_earnings)}
                   </p>
                 </div>
@@ -219,15 +240,21 @@ export default function WithdrawalsPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <CreditCard className="w-5 h-5 text-purple-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 group-hover:scale-110 transition-all duration-300 border border-purple-300/20">
+                  <CreditCard className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Retirado</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Retirado</p>
+                  <p className="text-xl font-bold text-white">
                     {formatCurrency(userBalance.total_withdrawals)}
                   </p>
                 </div>
@@ -258,7 +285,12 @@ export default function WithdrawalsPage() {
             <p className="text-gray-400 font-medium">Cargando métodos de retiro...</p>
           </div>
         ) : (
-          <div className="bg-[#232323] border border-white/10 rounded-lg">
+          <div 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <div className="p-6 border-b border-white/10">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <ArrowRightLeft className="w-5 h-5" />
@@ -288,7 +320,7 @@ export default function WithdrawalsPage() {
                     </label>
                     <Input
                       type="number"
-                      min="0.01"
+                      min="1"
                       step="0.01"
                       max={userBalance.balance}
                       value={amount}
@@ -296,8 +328,8 @@ export default function WithdrawalsPage() {
                       placeholder="Introduce tu monto"
                       className="bg-background border-border focus:border-primary"
                     />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Máximo disponible: {formatCurrency(userBalance.balance)}
+                    <p className="text-xs text-blue-400/80 mt-1">
+                      Mínimo: $1.00 USD
                     </p>
                   </div>
 
@@ -368,6 +400,7 @@ export default function WithdrawalsPage() {
           </div>
         )}
       </motion.div>
+      </div>
     </div>
   );
 }

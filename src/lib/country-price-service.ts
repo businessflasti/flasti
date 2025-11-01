@@ -7,6 +7,7 @@ export interface CountryPrice {
   price: number;
   currency_code: string;
   currency_symbol: string;
+  is_locked?: boolean;
   updated_at: string;
   created_at: string;
 }
@@ -69,17 +70,22 @@ export class CountryPriceService {
 
   /**
    * Actualiza múltiples precios por país a la vez
-   * @param prices Array de objetos con código de país y precio
+   * @param prices Array de objetos con código de país, precio y estado de bloqueo
    */
   static async updateMultipleCountryPrices(
-    prices: Array<{ country_code: string; price: number }>
+    prices: Array<{ country_code: string; price: number; is_locked?: boolean }>
   ): Promise<boolean> {
     try {
       // Actualizar precios uno por uno
       for (const priceData of prices) {
+        const updateData: any = { price: priceData.price };
+        if (priceData.is_locked !== undefined) {
+          updateData.is_locked = priceData.is_locked;
+        }
+
         const { error } = await supabase
           .from('country_prices')
-          .update({ price: priceData.price })
+          .update(updateData)
           .eq('country_code', priceData.country_code.toUpperCase());
 
         if (error) {

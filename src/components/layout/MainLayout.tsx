@@ -104,7 +104,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
       <div
         ref={containerRef}
         className={`min-h-screen flex flex-col relative ${(isInternalPage || isContactPage) ? '' : 'gradient-background'}`}
-        style={(isInternalPage || isContactPage) ? { background: '#101010' } : {}}
+        style={(isInternalPage || isContactPage) ? { background: '#0B1017' } : {}}
       >
         {/* Sidebar colapsable solo en dashboard */}
         {isInternalPage && (
@@ -128,7 +128,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
         <main
           className={`flex-grow relative hardware-accelerated overflow-x-hidden ${isInternalPage ? 'ml-0 lg:ml-56 transition-all mobile-main-scroll' : 'mobile-main-scroll'}`}
           style={isInternalPage ? { 
-            background: '#101010',
+            background: '#0B1017',
             paddingTop: '0',
             position: 'relative',
             zIndex: 1

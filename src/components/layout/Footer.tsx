@@ -51,7 +51,7 @@ const FooterComponent = () => {
         <div className="container-custom relative z-10">
           {/* Sello de seguridad elegante - Versión escritorio */}
           <div className="hidden md:block mb-10 pb-6 border-b border-white/5">
-            <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#232323'}}>
+            <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#1a1a1a'}}>
               <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
                 <div className="flex items-center">
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2">
@@ -79,7 +79,7 @@ const FooterComponent = () => {
 
           {/* Sello de seguridad elegante - Versión móvil */}
           <div className="md:hidden mb-8 pb-4 border-b border-white/5">
-            <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#232323' }}>
+            <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#1a1a1a' }}>
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center">
@@ -196,7 +196,7 @@ const FooterComponent = () => {
             </div>
 
             <div className="flex justify-center mb-4">
-              <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 px-4 py-1 rounded-full" style={{ background: '#232323' }}>
+              <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 px-4 py-1 rounded-full" style={{ background: '#1a1a1a' }}>
                 {t('gananciaColectiva')}
               </p>
             </div>
@@ -206,7 +206,7 @@ const FooterComponent = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="rounded-xl p-4" style={{ background: '#232323' }}>
+              <div className="rounded-xl p-4" style={{ background: '#1a1a1a' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('empresa')}
                 </h4>
@@ -224,7 +224,7 @@ const FooterComponent = () => {
                 </ul>
               </div>
 
-              <div className="rounded-xl p-4" style={{ background: '#232323' }}>
+              <div className="rounded-xl p-4" style={{ background: '#1a1a1a' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('legal')}
                 </h4>
@@ -242,7 +242,7 @@ const FooterComponent = () => {
                 </ul>
               </div>
 
-              <div className="rounded-xl p-3" style={{ background: '#232323' }}>
+              <div className="rounded-xl p-3" style={{ background: '#1a1a1a' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('recursos')}
                 </h4>
@@ -260,12 +260,12 @@ const FooterComponent = () => {
                 </ul>
               </div>
 
-              <div className="rounded-xl p-3 flex flex-col items-center justify-center gap-3" style={{ background: '#232323' }}>
+              <div className="rounded-xl p-3 flex flex-col items-center justify-center gap-3" style={{ background: '#1a1a1a' }}>
                 <SocialIcons />
                 <FeedbackTab />
               </div>
 
-              <div className="rounded-xl p-4" style={{ background: '#232323' }}>
+              <div className="rounded-xl p-4" style={{ background: '#1a1a1a' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('soporte')}
                 </h4>
@@ -281,7 +281,7 @@ const FooterComponent = () => {
                 </div>
               </div>
 
-              <div className="rounded-xl p-4 flex items-center justify-center" style={{ background: '#232323' }}>
+              <div className="rounded-xl p-4 flex items-center justify-center" style={{ background: '#1a1a1a' }}>
                 <RankingCard />
               </div>
             </div>

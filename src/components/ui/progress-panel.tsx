@@ -22,7 +22,7 @@ export function ProgressPanel() {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full max-w-xl mx-auto bg-[#232323] rounded-xl shadow-lg p-4 mb-6 flex flex-col gap-4 border border-[#333]"
+      className="w-full max-w-xl mx-auto bg-[#1a1a1a] rounded-xl shadow-lg p-4 mb-6 flex flex-col gap-4 border border-[#333]"
       role="region"
       aria-label="Panel de progreso y logros"
     >

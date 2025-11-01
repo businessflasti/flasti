@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
+import WeeklyTopRanking from '@/components/dashboard/WeeklyTopRanking';
+import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 interface UserBalanceDisplayProps {
   initialBalance: number;
@@ -29,6 +31,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   currency = 'USD',
   showControls = true 
 }) => {
+  const { activeTheme } = useSeasonalTheme();
   const [balance, setBalance] = useState(initialBalance);
   const [balanceStats, setBalanceStats] = useState<BalanceStats>({
     balance: initialBalance,
@@ -170,102 +173,84 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
 
   return (
     <TooltipProvider>
-      <Card className="bg-[#232323] border-primary/20">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white">
-                <DollarSign className="w-5 h-5 text-[#101010]" />
+      <Card 
+        className="relative backdrop-blur-2xl border border-white/10 h-full flex flex-col rounded-3xl overflow-hidden"
+        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
+      >
+        {/* Brillo superior glassmorphism */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <CardContent className="p-4 flex-1 flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 flex-1">
+              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white flex-shrink-0">
+                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-[#101010]" />
               </div>
               
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    Tu Saldo
+              <div className="flex flex-col flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs sm:text-sm font-medium text-muted-foreground">
+                    Balance
                   </span>
                   {balanceStats.todayEarnings > 0 && (
-                    <Badge variant="secondary" className="text-xs flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" />
+                    <Badge variant="secondary" className="text-[10px] sm:text-xs flex items-center gap-1">
+                      <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                       Hoy: {formatCurrency(balanceStats.todayEarnings)}
                     </Badge>
                   )}
                 </div>
                 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mt-1">
                   {isVisible ? (
-                    <span className="text-2xl font-bold text-white">
+                    <span className="text-xl sm:text-2xl font-bold text-white">
                       {formatCurrency(balance)}
                     </span>
                   ) : (
-                    <span className="text-2xl font-bold text-muted-foreground">
+                    <span className="text-xl sm:text-2xl font-bold text-muted-foreground">
                       ••••••
                     </span>
                   )}
                   
                   {isLoading && (
-                    <RefreshCw className="w-4 h-4 text-muted-foreground animate-spin" />
+                    <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground animate-spin" />
                   )}
                 </div>
               </div>
             </div>
 
             {showControls && (
-              <div className="flex items-center gap-2">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setIsVisible(!isVisible)}
-                      className="h-8 w-8 p-0 hover:bg-white hover:text-black transition-colors"
-                    >
-                      {isVisible ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {isVisible ? 'Ocultar saldo' : 'Mostrar saldo'}
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleRefresh}
-                      disabled={isLoading}
-                      className="h-8 w-8 p-0 hover:bg-white hover:text-black transition-colors"
-                    >
-                      <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Actualizar saldo
-                  </TooltipContent>
-                </Tooltip>
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsVisible(!isVisible)}
+                    className="h-8 w-8 p-0 hover:bg-white hover:text-black transition-colors flex-shrink-0"
+                  >
+                    {isVisible ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {isVisible ? 'Ocultar saldo' : 'Mostrar saldo'}
+                </TooltipContent>
+              </Tooltip>
             )}
           </div>
 
           {/* Información adicional */}
           {isVisible && (
             <div className="mt-3 pt-3 border-t border-primary/20">
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <div className="flex items-center gap-4">
-                  <span>Total ganado: {formatCurrency(balanceStats.totalEarnings)}</span>
-                </div>
-                
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                  <span>En vivo</span>
-                </div>
+              <div className="flex items-center justify-between text-[10px] sm:text-xs text-muted-foreground">
+                <span>Total ganado: {formatCurrency(balanceStats.totalEarnings)}</span>
               </div>
             </div>
           )}
+          
+          {/* Top 3 Ranking Semanal */}
+          <WeeklyTopRanking />
         </CardContent>
       </Card>
     </TooltipProvider>

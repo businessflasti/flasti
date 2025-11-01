@@ -13,14 +13,15 @@ import {
 } from "lucide-react";
 import TawkToWidget from "@/components/chat/TawkToWidget";
 import ChatButton from "@/components/chat/ChatButton";
+import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 export default function SupportPage() {
   const router = useRouter();
   const { user, profile } = useAuth();
 
   const [formState, setFormState] = useState({
-    name: profile?.name || user?.email?.split('@')[0] || "",
-    email: user?.email || "",
+    name: "",
+    email: "",
     subject: "",
     message: "",
   });
@@ -31,9 +32,13 @@ export default function SupportPage() {
 
   // Actualizar el formulario cuando se carguen los datos del usuario
   useEffect(() => {
+    const displayName = profile?.first_name 
+      ? `${profile.first_name} ${profile.last_name || ''}`.trim() 
+      : '';
+    
     setFormState(prev => ({
       ...prev,
-      name: profile?.name || user?.email?.split('@')[0] || prev.name,
+      name: displayName,
       email: user?.email || prev.email,
     }));
   }, [user, profile]);
@@ -113,24 +118,31 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative">
+    <div className="min-h-screen bg-[#0B1017] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
+      <SeasonalGarland />
       {/* Widget de chat para soporte */}
       <TawkToWidget showBubble={true} />
       
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
             Centro de Soporte
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Hola {profile?.name || user?.email?.split('@')[0] || 'Usuario'}, estamos aquí para ayudarte. Si tienes alguna pregunta, problema técnico o necesitas asistencia, no dudes en contactarnos.
+            Estamos aquí para ayudarte. Si tienes alguna pregunta, problema técnico o necesitas asistencia, no dudes en contactarnos.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="p-6 rounded-xl transition-all duration-300 flex flex-col items-center text-center bg-[#232323]">
-            <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-4">
-              <Mail className="w-6 h-6 text-blue-400" />
+          <div 
+            className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 relative group"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 border border-blue-300/20">
+              <Mail className="w-7 h-7 text-white drop-shadow-lg" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Email de Soporte</h3>
             <p className="text-gray-400 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
@@ -142,9 +154,15 @@ export default function SupportPage() {
             </a>
           </div>
 
-          <div className="p-6 rounded-xl transition-all duration-300 flex flex-col items-center text-center bg-[#232323]">
-            <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center mb-4">
-              <MessageCircle className="w-6 h-6 text-green-400" />
+          <div 
+            className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 relative group"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 border border-green-300/20">
+              <MessageCircle className="w-7 h-7 text-white drop-shadow-lg" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Chat en vivo</h3>
             <p className="text-gray-400 mb-4">Habla con nuestro equipo en tiempo real</p>
@@ -157,9 +175,15 @@ export default function SupportPage() {
             />
           </div>
 
-          <div className="p-6 rounded-xl transition-all duration-300 flex flex-col items-center text-center bg-[#232323]">
-            <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center mb-4">
-              <Phone className="w-6 h-6 text-purple-400" />
+          <div 
+            className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 relative group"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 border border-purple-300/20">
+              <Phone className="w-7 h-7 text-white drop-shadow-lg" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Soporte Telefónico</h3>
             <p className="text-gray-400 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
@@ -169,7 +193,12 @@ export default function SupportPage() {
           </div>
         </div>
 
-        <div className="p-8 md:p-10 rounded-2xl relative overflow-hidden bg-[#232323]">
+        <div 
+          className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10"
+          style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+        >
+          {/* Brillo superior glassmorphism */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
             Enviar solicitud de soporte
           </h2>
@@ -188,6 +217,7 @@ export default function SupportPage() {
                   placeholder="Tu nombre"
                   required
                   className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white"
+                  autoComplete="off"
                 />
               </div>
 

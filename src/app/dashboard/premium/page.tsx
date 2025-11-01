@@ -1,18 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Zap, Shield, HeadphonesIcon, Infinity, Gift, Wallet, ChevronDown, ChevronUp, UserRound, DollarSign, MapPin, Key, Star, Info, Lock } from 'lucide-react';
+import { X, Sparkles, Zap, Shield, HeadphonesIcon, Infinity, Gift, Wallet, ChevronDown, ChevronUp, UserRound, DollarSign, MapPin, Key, Star, Info, Lock, Clock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRouter } from 'next/navigation';
 import { CountryPriceService } from '@/lib/country-price-service';
+import CountryFlag from '@/components/ui/CountryFlag';
+import ModernTestimonialsSection from '@/components/sections/ModernTestimonialsSection';
+import WeeklyTopRanking from '@/components/dashboard/WeeklyTopRanking';
+import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 const PremiumPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
-  const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+  const { activeTheme } = useSeasonalTheme();
+  const [activeQuestion, setActiveQuestion] = useState<number | null>(0);
   const [countryPrice, setCountryPrice] = useState<{
     countryCode: string;
     price: number;
@@ -26,6 +31,35 @@ const PremiumPage = () => {
   });
   const [isArgentina, setIsArgentina] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
+  const [currentDate, setCurrentDate] = useState('');
+  const [countryName, setCountryName] = useState('');
+
+  // Mapeo de códigos de país a nombres completos
+  const countryNames: { [key: string]: string } = {
+    'AR': 'Argentina',
+    'US': 'Estados Unidos',
+    'MX': 'México',
+    'CO': 'Colombia',
+    'CL': 'Chile',
+    'PE': 'Perú',
+    'EC': 'Ecuador',
+    'VE': 'Venezuela',
+    'BO': 'Bolivia',
+    'PY': 'Paraguay',
+    'UY': 'Uruguay',
+    'BR': 'Brasil',
+    'ES': 'España',
+    'GT': 'Guatemala',
+    'HN': 'Honduras',
+    'SV': 'El Salvador',
+    'NI': 'Nicaragua',
+    'CR': 'Costa Rica',
+    'PA': 'Panamá',
+    'DO': 'República Dominicana',
+    'CU': 'Cuba',
+    'PR': 'Puerto Rico'
+  };
 
   // Función para formatear el precio según el país
   const formatPrice = (price: number, countryCode: string) => {
@@ -79,6 +113,10 @@ const PremiumPage = () => {
 
         if (countryCode) {
           console.log('🌍 Premium: Obteniendo precio para:', countryCode);
+          
+          // Establecer nombre del país
+          setCountryName(countryNames[countryCode] || countryCode);
+          
           // Obtener precio específico para el país
           const countryPriceData = await CountryPriceService.getCountryPrice(countryCode);
           
@@ -151,6 +189,36 @@ const PremiumPage = () => {
     };
   }, [countryPrice.countryCode]);
 
+  // Actualizar hora local cada segundo
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      
+      // Formatear hora
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      setCurrentTime(`${hours}:${minutes}`);
+      
+      // Formatear fecha
+      const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+      
+      const dayName = days[now.getDay()];
+      const day = now.getDate();
+      const monthName = months[now.getMonth()];
+      
+      setCurrentDate(`${dayName} ${day} ${monthName}`);
+    };
+
+    // Actualizar inmediatamente
+    updateDateTime();
+
+    // Actualizar cada minuto
+    const interval = setInterval(updateDateTime, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Función para navegar al checkout
   const handleCheckoutNavigation = () => {
     router.push('/dashboard/checkout');
@@ -162,24 +230,111 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative">
-      {/* Fondo de imagen solo en desktop */}
-      <div 
-        className="hidden md:block fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
-        style={{
-          backgroundImage: 'url(/images/premium.png)'
-        }}
-      ></div>
+    <div className="min-h-screen bg-[#0B0F17] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
+      {/* Guirnalda temática */}
+      {activeTheme === 'halloween' && (
+        <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+          <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
+            <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
+            {[...Array(25)].map((_, i) => {
+              const x = (i * 48) + 24;
+              const y = 10 + Math.sin(i * 0.5) * 8;
+              const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
+              const color = colors[i % colors.length];
+              return (
+                <g key={`light-${i}`}>
+                  <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
+                  <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
+                </g>
+              );
+            })}
+          </svg>
+          <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
+            <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
+            {[...Array(10)].map((_, i) => {
+              const x = (i * 40) + 20;
+              const y = 8 + Math.sin(i * 0.5) * 5;
+              const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
+              const color = colors[i % colors.length];
+              return (
+                <g key={`light-mobile-${i}`}>
+                  <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
+                  <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+      )}
       
+      {activeTheme === 'christmas' && (
+        <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+          <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
+            <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
+            {[...Array(25)].map((_, i) => {
+              const x = (i * 48) + 24;
+              const y = 10 + Math.sin(i * 0.5) * 8;
+              const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
+              const color = colors[i % colors.length];
+              return (
+                <g key={`light-${i}`}>
+                  <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
+                  <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
+                </g>
+              );
+            })}
+          </svg>
+          <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
+            <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
+            {[...Array(10)].map((_, i) => {
+              const x = (i * 40) + 20;
+              const y = 8 + Math.sin(i * 0.5) * 5;
+              const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
+              const color = colors[i % colors.length];
+              return (
+                <g key={`light-mobile-${i}`}>
+                  <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
+                  <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+      )}
+      
+
+
       {/* Layout responsive: Desktop 2 columnas, Móvil 1 columna */}
-      <div className="max-w-7xl mx-auto mt-2 md:mt-0">
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
           
           {/* Columna izquierda: Imagen/FAQ (Desktop) - Abajo (Móvil) */}
           <div className="lg:w-1/2 order-2 lg:order-1">
             {/* Bloque de imagen del dashboard - Solo visible en desktop */}
-            <div className="hidden lg:block mb-8">
-              <div className="bg-gradient-to-br from-[#232323] to-[#1a1a1a] rounded-3xl p-6 relative overflow-hidden">
+            <div className="hidden lg:block mb-4">
+              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#0F1319' }}>
+                {/* Badge de ubicación y punto verde - Solo móvil - Arriba de la imagen */}
+                <div className="md:hidden flex justify-between items-center mb-3">
+                  {countryPrice.countryCode && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-sm whitespace-nowrap">
+                      <CountryFlag countryCode={countryPrice.countryCode} size="sm" />
+                      <span className="text-white font-semibold text-[10px]">
+                        {countryPrice.countryCode}
+                      </span>
+                      <span className="text-white/40 text-[10px]">•</span>
+                      <span className="text-white/70 text-[10px]">
+                        {currentDate || 'Cargando...'}
+                      </span>
+                    </div>
+                  )}
+                  {/* Punto verde decorativo */}
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                </div>
+                
                 {/* Imagen del dashboard */}
                 <div className="relative mb-4">
                   <img 
@@ -202,15 +357,13 @@ const PremiumPage = () => {
                   </p>
                 </div>
                 
-                {/* Elementos decorativos */}
-                <div className="absolute top-4 right-4 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               </div>
             </div>
 
             {/* FAQ Section fuera de la tarjeta principal */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-4 mb-6 lg:mb-4">
               {/* Cuarta pregunta expandible - NUEVA (ahora primera) */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
+              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 0 ? null : 0)}
@@ -247,12 +400,17 @@ const PremiumPage = () => {
                       <br />
                       Con solo completar una microtarea, recuperas tu inversión y seguirás generando ganancias. Tú decides hasta dónde llegar, elige tu camino y empieza a ganar
                     </span>
+                    
+                    {/* Weekly Top Ranking */}
+                    <div className="mt-6 -ml-11">
+                      <WeeklyTopRanking />
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Pregunta original 1 */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
+              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 1 ? null : 1)}
@@ -280,7 +438,7 @@ const PremiumPage = () => {
               </div>
 
               {/* Pregunta original 2 */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
+              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 2 ? null : 2)}
@@ -308,7 +466,7 @@ const PremiumPage = () => {
               </div>
 
               {/* Pregunta original 3 */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all" style={{ background: '#232323' }}>
+              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 3 ? null : 3)}
@@ -341,7 +499,25 @@ const PremiumPage = () => {
           <div className="lg:w-1/2 order-1 lg:order-2">
             {/* Bloque de imagen solo visible en móvil - ARRIBA del pricing */}
             <div className="lg:hidden mb-6">
-              <div className="bg-gradient-to-br from-[#232323] to-[#1a1a1a] rounded-3xl p-6 relative overflow-hidden">
+              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#0F1319 !important', background: '#0F1319 !important' }}>
+                {/* Badge de ubicación y punto verde - Móvil - Arriba de la imagen */}
+                <div className="flex justify-between items-center mb-3">
+                  {countryPrice.countryCode && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/[0.03] backdrop-blur-xl border-0 shadow-sm whitespace-nowrap">
+                      <CountryFlag countryCode={countryPrice.countryCode} size="sm" />
+                      <span className="text-white font-semibold text-[10px]">
+                        {countryPrice.countryCode}
+                      </span>
+                      <span className="text-white/40 text-[10px]">•</span>
+                      <span className="text-white/70 text-[10px]">
+                        {currentDate || 'Cargando...'}
+                      </span>
+                    </div>
+                  )}
+                  {/* Punto verde decorativo */}
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                </div>
+                
                 {/* Imagen del dashboard */}
                 <div className="relative mb-4">
                   <img 
@@ -364,22 +540,30 @@ const PremiumPage = () => {
                   </p>
                 </div>
                 
-                {/* Elementos decorativos */}
-                <div className="absolute top-4 right-4 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               </div>
             </div>
 
+
+
             <div className="max-w-2xl mx-auto lg:mx-0">
         {/* Contenido del pricing - Extraído del modal */}
-        <Card className="bg-[#232323] overflow-hidden relative h-full rounded-3xl border-0">
+        <Card 
+          className="bg-white/[0.03] backdrop-blur-xl border border-white/10 overflow-hidden relative h-full rounded-3xl transition-all duration-700"
+          style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+        >
+          {/* Brillo superior glassmorphism */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
 
 
 
 
           <div className="p-8 relative z-10">       
-     <div className="flex items-center mb-6 mt-6 md:mt-0">
-              <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center mr-4 border-0">
-                <Lock className="w-7 h-7 text-[#101010]" />
+
+
+            <div className="flex items-center mb-6">
+              <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 flex items-center justify-center mr-4">
+                <Lock className="w-7 h-7 text-white drop-shadow-lg" />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
               </div>
               <div>
                 <h3 className="text-lg text-white group-hover:text-white transition-all duration-300">Desbloquea todas tus microtareas ahora</h3>
@@ -387,7 +571,7 @@ const PremiumPage = () => {
               </div>
             </div>
 
-            <div className="mb-8 bg-gradient-to-br from-[#FF7F50]/10 to-[#FF4500]/10 p-6 rounded-3xl relative">
+            <div className="mb-8 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 rounded-3xl relative">
               {/* Versión móvil - Diseño más compacto */}
               <div className="md:hidden">
                 {isArgentina ? (
@@ -471,64 +655,230 @@ const PremiumPage = () => {
 
 
             </div>       
-     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 lg:mb-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
-                  <Zap className="text-[#101010]" size={16} />
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                  <Zap className="text-white drop-shadow-lg" size={18} />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm">Acceso inmediato</h4>
-                  <p className="text-xs text-foreground/70">Comienza a generar ingresos ahora mismo</p>
+                  <h4 className="font-medium text-sm text-white">Acceso inmediato</h4>
+                  <p className="text-xs text-white/70">Comienza a generar ingresos ahora mismo</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
-                  <Infinity className="text-[#101010]" size={16} />
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                  <Infinity className="text-white drop-shadow-lg" size={18} />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm">Acceso de por vida</h4>
-                  <p className="text-xs text-foreground/70">Sin límites de tiempo ni renovaciones</p>
+                  <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
+                  <p className="text-xs text-white/70">Sin límites de tiempo ni renovaciones</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
-                  <Shield className="text-[#101010]" size={16} />
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                  <Shield className="text-white drop-shadow-lg" size={18} />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm">Garantía de 7 días</h4>
-                  <p className="text-xs text-foreground/70">Devolución del 100% si no estás satisfecho</p>
+                  <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
+                  <p className="text-xs text-white/70">Devolución del 100% si no estás satisfecho</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
-                  <HeadphonesIcon className="text-[#101010]" size={16} />
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                  <HeadphonesIcon className="text-white drop-shadow-lg" size={18} />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm">Soporte 24/7</h4>
-                  <p className="text-xs text-foreground/70">Asistencia personalizada paso a paso</p>
+                  <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
+                  <p className="text-xs text-white/70">Asistencia personalizada paso a paso</p>
                 </div>
               </div>
             </div>
 
+
+
             <Button 
               onClick={handleCheckoutNavigation}
-              className="w-full py-6 text-lg md:text-xl font-bold bg-gradient-to-r from-[#FF7F50] to-[#FF4500] hover:from-[#E6723D] hover:to-[#E63E00] border-0 flex items-center justify-center gap-3 focus:outline-none focus:ring-0 focus:border-white/10 rounded-3xl"
+              className="w-full py-7 text-xl md:text-2xl font-black bg-[#FF4500] hover:bg-[#FF5722] text-white flex items-center justify-center gap-3 focus:outline-none focus:ring-0 rounded-3xl transform hover:scale-105 transition-all duration-300"
             >
+              <Zap className="w-6 h-6" />
               QUIERO DESBLOQUEAR YA
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-7 md:w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 18l6-6-6-6"/>
-              </svg>
+              <Zap className="w-6 h-6" />
             </Button>
+
+
 
 
           </div>
         </Card>
             </div>
+            
+            {/* Bloque de Testimonios - Debajo del pricing en MÓVIL */}
+            <div className="mt-6 lg:hidden">
+              <Card className="bg-white/[0.03] backdrop-blur-xl border-0 overflow-hidden relative rounded-2xl">
+                <div className="p-4 md:p-6">
+                  {/* Título compacto */}
+                  <div className="text-center mb-4">
+                    <h2 className="text-lg md:text-xl font-bold text-white mb-1">
+                      Miles de usuarios ya están ganando dinero
+                    </h2>
+                    <p className="text-white/60 text-xs md:text-sm">
+                      Conoce las experiencias de aquellos que ya empezaron
+                    </p>
+                  </div>
+
+                  {/* Slider de testimonios */}
+                  <TestimonialsSlider />
+                </div>
+              </Card>
+            </div>
+            
+            {/* Bloque de Testimonios - Debajo del pricing en desktop */}
+            <div className="mt-4 hidden lg:block">
+              <Card className="bg-white/[0.03] backdrop-blur-xl border-0 overflow-hidden relative rounded-2xl">
+                <div className="p-4 md:p-6">
+                  {/* Título compacto */}
+                  <div className="text-center mb-4">
+                    <h2 className="text-lg md:text-xl font-bold text-white mb-1">
+                      Miles de usuarios ya están ganando dinero
+                    </h2>
+                    <p className="text-white/60 text-xs md:text-sm">
+                      Conoce las experiencias de aquellos que ya empezaron
+                    </p>
+                  </div>
+
+                  {/* Slider de testimonios */}
+                  <TestimonialsSlider />
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
+      </div>
+      
+    </div>
+  );
+};
+
+// Componente del slider de testimonios integrado
+const TestimonialsSlider = () => {
+  const { t } = useLanguage();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const testimonials = [
+    {
+      id: 1,
+      name: t("testimonial1Name"),
+      avatar: "/images/testimonials/profi1.jpg",
+      content: t("testimonial1Content"),
+      paymentMethod: "paypal",
+    },
+    {
+      id: 2,
+      name: t("testimonial2Name"),
+      avatar: "/images/testimonials/profi2.jpg",
+      content: t("testimonial2Content"),
+      paymentMethod: "bank",
+    },
+    {
+      id: 3,
+      name: t("testimonial3Name"),
+      avatar: "/images/testimonials/profi3.jpg",
+      content: t("testimonial3Content"),
+      paymentMethod: "paypal",
+    },
+    {
+      id: 4,
+      name: t("testimonial4Name"),
+      avatar: "/images/testimonials/profi4.jpg",
+      content: t("testimonial4Content"),
+      paymentMethod: "verified",
+    },
+  ];
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const currentTestimonial = testimonials[currentIndex];
+
+  return (
+    <div className="relative">
+      {/* Tarjeta de testimonio - Compacta */}
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 md:p-5">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center md:items-start">
+          {/* Avatar y nombre - Compacto */}
+          <div className="flex-shrink-0 flex md:flex-col items-center md:items-center gap-2 md:gap-1">
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden">
+              <Image
+                src={currentTestimonial.avatar}
+                alt={currentTestimonial.name}
+                width={56}
+                height={56}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-center">
+              <h3 className="font-semibold text-white text-sm md:text-base whitespace-nowrap">{currentTestimonial.name}</h3>
+            </div>
+          </div>
+
+          {/* Contenido del testimonio - Texto completo */}
+          <div className="flex-1 min-w-0">
+            <p className="text-white/75 text-xs md:text-sm leading-relaxed italic">
+              "{currentTestimonial.content}"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Controles de navegación - Compactos */}
+      <div className="flex items-center justify-center gap-3 mt-3">
+        <button
+          onClick={prevSlide}
+          className="w-7 h-7 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:bg-white/[0.05] flex items-center justify-center text-white transition-all"
+          aria-label="Anterior"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        {/* Indicadores - Compactos */}
+        <div className="flex gap-1.5">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${
+                index === currentIndex
+                  ? "bg-green-500 scale-125"
+                  : "bg-white/20"
+              }`}
+              aria-label={`Ir a testimonio ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={nextSlide}
+          className="w-7 h-7 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:bg-white/[0.05] flex items-center justify-center text-white transition-all"
+          aria-label="Siguiente"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
     </div>
   );

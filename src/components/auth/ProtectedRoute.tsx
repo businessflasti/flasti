@@ -82,7 +82,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     return (
       <div className="min-h-screen w-full flex items-center justify-center p-4" style={{ backgroundColor: '#101010' }}>
         <div className="max-w-md w-full">
-          <div className="rounded-xl p-8 space-y-6 text-center" style={{ backgroundColor: '#232323' }}>
+          <div className="rounded-xl p-8 space-y-6 text-center" style={{ backgroundColor: '#1a1a1a' }}>
             <h2 className="text-3xl font-bold text-white">Problema de conexión</h2>
             <p className="text-white">
               La conexión con el servidor está tardando demasiado. Por favor, verifica tu conexión a internet e intenta de nuevo.

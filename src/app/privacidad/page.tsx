@@ -9,13 +9,18 @@ export default function PrivacidadPage() {
   return (
     <MainLayout showHeader={true} disableChat={true}>
       <Suspense fallback={<div className="container-custom py-16 md:py-24">Cargando...</div>}>
-        <div className="container-custom py-16 md:py-24">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-            Política de Privacidad
-          </h1>
+        <div className="min-h-screen bg-[#0B1017]">
+          <div className="container-custom py-16 md:py-24">
+            <div className="max-w-3xl mx-auto">
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 text-white">
+                Política de Privacidad
+              </h1>
 
-          <div className="prose prose-invert prose-lg max-w-none">
+              <div className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl transition-all duration-700">
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                
+                <div className="relative z-10 prose prose-invert prose-lg max-w-none">
             <p>
               En Flasti valoramos tu confianza. Por eso, queremos que sepas cómo recopilamos y usamos tu información cuando accedes a nuestra plataforma y servicios.
             </p>
@@ -85,12 +90,14 @@ export default function PrivacidadPage() {
               Podés escribirnos en cualquier momento a <a href="mailto:access@flasti.com" className="text-primary hover:text-white">access@flasti.com</a>. Estamos para ayudarte.
             </p>
 
-            <p className="text-sm text-foreground/60 mt-12 pt-6 border-t border-white/10">
-              Última actualización: 23 de marzo de 2024
-            </p>
+                  <p className="text-sm text-foreground/60 mt-12 pt-6 border-t border-white/10">
+                    Última actualización: 23 de marzo de 2024
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
       </Suspense>
     </MainLayout>
   );

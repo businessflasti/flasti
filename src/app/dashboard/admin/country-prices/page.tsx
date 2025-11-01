@@ -1,142 +1,255 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { CountryPriceService, type CountryPrice } from '@/lib/country-price-service';
 import { toast } from 'sonner';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { DollarSign } from 'lucide-react';
+import Script from 'next/script';
+import CountryFlag from '@/components/ui/CountryFlag';
 
-export default function Page() {
+export default function CountryPricesPage() {
   const [prices, setPrices] = useState<CountryPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [hotmartLoaded, setHotmartLoaded] = useState(false);
+  const [lockedPrices, setLockedPrices] = useState<Set<string>>(new Set());
 
-  // Cargar precios al montar el componente
   useEffect(() => {
     loadPrices();
   }, []);
+
+  useEffect(() => {
+    if (hotmartLoaded && typeof window !== 'undefined') {
+      // @ts-ignore
+      if (window.checkoutElements) {
+        // @ts-ignore
+        const elements = window.checkoutElements.init('inlineCheckout', {
+          offer: '5h87lps7'
+        });
+        elements.mount('#inline_checkout');
+      }
+    }
+  }, [hotmartLoaded]);
+
+  // Escuchar evento del botón en el header
+  useEffect(() => {
+    const handleSaveEvent = () => {
+      handleSave();
+    };
+
+    window.addEventListener('saveCountryPrices', handleSaveEvent);
+    return () => window.removeEventListener('saveCountryPrices', handleSaveEvent);
+  }, [prices, saving]);
 
   const loadPrices = async () => {
     setLoading(true);
     const data = await CountryPriceService.getAllCountryPrices();
     setPrices(data);
+    
+    // Cargar estados de bloqueo desde la base de datos
+    const locked = new Set<string>();
+    data.forEach(price => {
+      if (price.is_locked) {
+        locked.add(price.country_code);
+      }
+    });
+    setLockedPrices(locked);
+    
     setLoading(false);
   };
 
-
-
-  // Manejar cambios en los precios
   const handlePriceChange = (countryCode: string, newPrice: string) => {
+    if (lockedPrices.has(countryCode)) {
+      toast.error('Este precio está bloqueado');
+      return;
+    }
+    
     setPrices(currentPrices =>
       currentPrices.map(price =>
         price.country_code === countryCode
-          ? { 
-              ...price, 
-              // Mantener precisión completa sin redondear
-              price: newPrice === '' ? 0 : Number(newPrice)
-            }
+          ? { ...price, price: newPrice === '' ? 0 : Number(newPrice) }
           : price
       )
     );
   };
 
-  // Guardar cambios
+  const toggleLock = (countryCode: string) => {
+    setLockedPrices(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(countryCode)) {
+        newSet.delete(countryCode);
+        toast.success('Precio desbloqueado');
+      } else {
+        newSet.add(countryCode);
+        toast.success('Precio bloqueado');
+      }
+      return newSet;
+    });
+
+    // Actualizar también en el array de precios
+    setPrices(currentPrices =>
+      currentPrices.map(price =>
+        price.country_code === countryCode
+          ? { ...price, is_locked: !lockedPrices.has(countryCode) }
+          : price
+      )
+    );
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
       const success = await CountryPriceService.updateMultipleCountryPrices(
         prices.map(p => ({
           country_code: p.country_code,
-          price: p.price
+          price: p.price,
+          is_locked: p.is_locked || false
         }))
       );
 
       if (success) {
-        toast.success('Precios actualizados correctamente');
-        loadPrices(); // Recargar precios para obtener timestamps actualizados
+        toast.success('Precios y bloqueos actualizados correctamente');
+        loadPrices();
       } else {
-        toast.error('Error al actualizar los precios');
+        toast.error('Error al actualizar');
       }
     } catch (error) {
-      console.error('Error al guardar precios:', error);
-      toast.error('Error al guardar los cambios');
+      console.error('Error:', error);
+      toast.error('Error al guardar');
     } finally {
       setSaving(false);
     }
   };
 
+
+
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin text-primary mr-2">⟳</div>
-      <span>Cargando precios...</span>
-    </div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin text-4xl mb-4">⟳</div>
+          <p className="text-white">Cargando...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto py-6 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Administrar Precios por País</h1>
-        <Button onClick={handleSave} disabled={saving}>
-          {saving ? 'Guardando...' : 'Guardar Cambios'}
-        </Button>
-      </div>
+    <>
+      <Script 
+        src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"
+        onLoad={() => setHotmartLoaded(true)}
+      />
+      
+      <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+        <div className="max-w-[1800px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            {/* Columna Izquierda: Precios */}
+            <div className="lg:col-span-2 space-y-6">
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {prices.map(price => (
-          <Card key={price.country_code} className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center">
-                <span className="text-2xl mr-2">
-                  {price.country_code === 'AR' ? '🇦🇷' :
-                   price.country_code === 'CO' ? '🇨🇴' :
-                   price.country_code === 'PE' ? '🇵🇪' :
-                   price.country_code === 'MX' ? '🇲🇽' :
-                   price.country_code === 'PA' ? '🇵🇦' :
-                   price.country_code === 'GT' ? '🇬🇹' :
-                   price.country_code === 'DO' ? '🇩🇴' :
-                   price.country_code === 'PY' ? '🇵🇾' :
-                   price.country_code === 'ES' ? '🇪🇸' :
-                   price.country_code === 'CR' ? '🇨🇷' :
-                   price.country_code === 'CL' ? '🇨🇱' :
-                   price.country_code === 'UY' ? '🇺🇾' :
-                   price.country_code === 'BO' ? '🇧🇴' :
-                   price.country_code === 'HN' ? '🇭🇳' : '🌎'}
-                </span>
-                <div>
-                  <h3 className="font-medium">{price.country_name}</h3>
-                  <p className="text-sm text-muted-foreground">{price.currency_code}</p>
-                </div>
+              {/* Lista de Precios - Súper Compacta (2 por línea) */}
+              <Card className="bg-[#1a1a1a] border-blue-500/20">
+                <CardContent className="p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {prices.map(price => {
+                      // Abreviar nombres largos
+                      const shortName = price.country_name.length > 12 
+                        ? price.country_name.substring(0, 12) + '...' 
+                        : price.country_name;
+                      
+                      const isLocked = lockedPrices.has(price.country_code);
+                      
+                      return (
+                        <div 
+                          key={price.country_code}
+                          className="flex items-center gap-2 bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 hover:border-blue-500/30 transition-all"
+                        >
+                          {/* Bandera */}
+                          <CountryFlag countryCode={price.country_code} size="sm" />
+                          
+                          {/* Nombre del país - ancho fijo */}
+                          <div className="w-[90px]">
+                            <h3 className="font-bold text-white text-xs truncate" title={price.country_name}>
+                              {shortName}
+                            </h3>
+                          </div>
+                          
+                          {/* Código de moneda - ancho fijo */}
+                          <div className="text-xs text-gray-400 w-[35px]">
+                            {price.currency_code}
+                          </div>
+                          
+                          {/* Símbolo - ancho fijo */}
+                          <span className="text-white font-bold text-sm w-[20px]">
+                            {price.currency_symbol}
+                          </span>
+                          
+                          {/* Input precio - ancho fijo para todos */}
+                          <Input
+                            type="number"
+                            value={
+                              // Solo aplicar .toFixed(2) a los nuevos países USD
+                              ['US', 'VE', 'SV', 'EC', 'PR'].includes(price.country_code)
+                                ? price.price.toFixed(2)
+                                : price.price
+                            }
+                            onChange={(e) => handlePriceChange(price.country_code, e.target.value)}
+                            disabled={isLocked}
+                            className={`bg-[#1a1a1a] border-white/10 text-white font-bold h-8 text-xs w-[100px] ${
+                              isLocked ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            min="0"
+                            step={
+                              // Step de 0.01 solo para los nuevos países
+                              ['US', 'VE', 'SV', 'EC', 'PR'].includes(price.country_code)
+                                ? "0.01"
+                                : "any"
+                            }
+                          />
+                          
+                          {/* Botón de bloqueo/desbloqueo */}
+                          <button
+                            onClick={() => toggleLock(price.country_code)}
+                            className="text-gray-400 hover:text-white transition-colors"
+                            title={isLocked ? 'Desbloquear precio' : 'Bloquear precio'}
+                          >
+                            {isLocked ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-red-400">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-green-400">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Columna Derecha: Hotmart - Sticky que sigue el scroll */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-6">
+                <Card className="bg-[#1a1a1a] border-amber-500/20">
+                  <CardContent className="p-4">
+                    <div 
+                      id="inline_checkout" 
+                      className="bg-[#0a0a0a] rounded-lg overflow-hidden"
+                      style={{ minHeight: '400px', maxHeight: 'calc(100vh - 150px)', overflowY: 'auto' }}
+                    />
+                  </CardContent>
+                </Card>
               </div>
             </div>
-            
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-medium">{price.currency_symbol}</span>
-                <Input
-                  type="number"
-                  value={price.price}
-                  onChange={(e) => handlePriceChange(price.country_code, e.target.value)}
-                  className="w-full"
-                  min="0"
-                  step="any"
-                  placeholder="Ingresa el precio"
-                />
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Guardado: {price.currency_symbol}{price.price} {price.currency_code}
-              </p>
-            </div>
-            
-            <p className="text-xs text-muted-foreground mt-2">
-              Última actualización: {new Date(price.updated_at).toLocaleString()}
-            </p>
-          </Card>
-        ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

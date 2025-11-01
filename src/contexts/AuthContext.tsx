@@ -10,7 +10,7 @@ type AuthContextType = {
   user: User | null;
   profile: any | null;
   loading: boolean;
-  signUp: (email: string, password: string, phone: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, firstName?: string, lastName?: string, phone?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   signInWithFacebook: () => Promise<{ error: any }>;
@@ -316,9 +316,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user]);
 
   // Registrar un nuevo usuario - Solución ultra básica
-  const signUp = async (email: string, password: string, phone: string = '') => {
+  const signUp = async (email: string, password: string, firstName: string = '', lastName: string = '', phone: string = '') => {
     setLoading(true);
-    console.log('Iniciando proceso de registro ultra básico para:', email);
+    console.log('Iniciando proceso de registro ultra básico para:', email, firstName, lastName);
 
     try {
       // Verificar si el usuario ya existe intentando iniciar sesión
@@ -332,6 +332,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const basicProfile = {
             id: signInData.user.id,
             email: email,
+            first_name: firstName || '',
+            last_name: lastName || '',
             phone: phone || '',
             level: 1,
             balance: 0,
@@ -377,10 +379,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log('Usuario creado correctamente:', data.user.id);
       setUser(data.user);
 
-      // Crear perfil básico
+      // Crear perfil básico con nombre y apellido
       const profileData = {
         id: data.user.id,
         email: email,
+        first_name: firstName || '',
+        last_name: lastName || '',
         phone: phone || '',
         level: 1,
         balance: 0,
@@ -388,12 +392,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         created_at: new Date().toISOString()
       };
 
-      // Intentar crear perfil, pero no fallar si hay error
+      // Intentar crear perfil en user_profiles
       try {
-        await supabase.from('profiles').insert(profileData);
-        console.log('Perfil creado correctamente');
+        await supabase.from('user_profiles').upsert({
+          user_id: data.user.id,
+          email: email,
+          first_name: firstName || '',
+          last_name: lastName || '',
+          phone: phone || '',
+          level: 1,
+          balance: 0,
+          avatar_url: null
+        });
+        console.log('Perfil creado correctamente en user_profiles');
       } catch (e) {
-        console.log('Error al crear perfil, pero continuando');
+        console.log('Error al crear perfil en user_profiles, intentando profiles');
+        try {
+          await supabase.from('profiles').insert(profileData);
+          console.log('Perfil creado correctamente en profiles');
+        } catch (e2) {
+          console.log('Error al crear perfil, pero continuando');
+        }
       }
 
       // Establecer perfil en el estado

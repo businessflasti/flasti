@@ -52,7 +52,7 @@ export default function ProfilePage() {
             <p className="text-gray-400 font-medium">Cargando perfil...</p>
           </div>
         ) : (
-          <div className="bg-[#232323] border border-white/10 rounded-lg">
+          <div className="bg-[#1a1a1a] border border-white/10 rounded-lg">
             <div className="flex flex-col items-center gap-6 p-8">
               <AvatarUpload />
               <span className="font-semibold text-white">{user?.email}</span>

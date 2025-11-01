@@ -314,15 +314,27 @@ export default function MyLinksPage() {
 
         {/* Estadísticas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <Card className="p-4 border border-border/50 bg-card/50">
+          <Card 
+            className="p-4 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <div className="text-sm text-foreground/70">Total de enlaces</div>
             <div className="text-2xl font-bold mt-1">{stats.totalLinks}</div>
           </Card>
-          <Card className="p-4 border border-border/50 bg-card/50">
+          <Card 
+            className="p-4 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <div className="text-sm text-foreground/70">Clics totales</div>
             <div className="text-2xl font-bold mt-1">{stats.totalClicks}</div>
           </Card>
-          <Card className="p-4 border border-border/50 bg-card/50 sm:col-span-2 md:col-span-1">
+          <Card 
+            className="p-4 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative sm:col-span-2 md:col-span-1"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <div className="text-sm text-foreground/70">Ganancias potenciales</div>
             <div className="text-2xl font-bold mt-1 text-green-500">${stats.potentialEarnings.toFixed(2)} USD</div>
             <div className="text-xs text-foreground/60 mt-1">
@@ -342,7 +354,11 @@ export default function MyLinksPage() {
               <p className="text-xs text-foreground/50 mt-2">Si tarda demasiado, puedes intentar recargar la página</p>
             </div>
           ) : links.length === 0 ? (
-            <Card className="p-6 text-center border border-border/50 bg-card/50">
+            <Card 
+              className="p-6 text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative"
+              style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
               <AlertCircle className="mx-auto mb-2 text-foreground/70" size={24} />
               <h3 className="text-lg font-medium">No tienes enlaces generados</h3>
               <p className="text-foreground/70 mt-1">

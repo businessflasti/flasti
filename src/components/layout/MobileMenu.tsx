@@ -94,7 +94,11 @@ export const MobileMenu = () => {
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#10b981] border border-background shadow-sm translate-x-1/4 translate-y-1/2"></span>
             </div>
             <div>
-              <h3 className="font-medium">{profile?.name || user?.email?.split('@')[0] || 'Usuario'}</h3>
+              <h3 className="font-medium">
+                {profile?.first_name 
+                  ? `${profile.first_name} ${profile.last_name || ''}`.trim()
+                  : (profile?.name || user?.email?.split('@')[0] || '')}
+              </h3>
               <p className="text-sm text-foreground/60">Nivel {profile?.level || 1}</p>
             </div>
           </div>

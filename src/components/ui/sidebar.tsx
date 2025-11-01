@@ -2,11 +2,14 @@
 import { useState, useEffect } from "react";
 import { usePathname } from 'next/navigation';
 import { FiMenu, FiX, FiUser, FiGift, FiBell, FiLogOut, FiBarChart2, FiSettings, FiDollarSign, FiClock, FiHome, FiAward, FiMessageCircle } from "react-icons/fi";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Tooltip } from "react-tooltip";
+
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
+import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 const sidebarItems = [
   { name: "Inicio", icon: <FiHome />, href: "/dashboard", tooltip: "Inicio" },
@@ -20,9 +23,11 @@ const sidebarItems = [
 ];
 
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
-  const { profile, user, signOut } = useAuth();
+  const { profile, user, signOut, updateAvatar } = useAuth();
+  const { activeTheme } = useSeasonalTheme();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [currentMonthYear, setCurrentMonthYear] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
   
   // Función para obtener el mes y año actual en español
   const getCurrentMonthYear = () => {
@@ -51,6 +56,27 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
     return () => clearInterval(interval);
   }, []);
   
+  // Función para obtener el color del borde según el tema
+  const getThemeBorderColors = () => {
+    switch (activeTheme) {
+      case 'halloween':
+        return {
+          gradient: 'from-orange-500 via-purple-500 to-orange-600',
+          glow: 'from-orange-400 via-purple-500 to-orange-600'
+        };
+      case 'christmas':
+        return {
+          gradient: 'from-red-500 via-green-500 to-red-600',
+          glow: 'from-red-400 via-green-500 to-red-600'
+        };
+      default:
+        return {
+          gradient: 'from-blue-400 via-blue-500 to-blue-600',
+          glow: 'from-blue-400 via-blue-500 to-blue-600'
+        };
+    }
+  };
+
   // Función para obtener las iniciales del usuario
   const getInitials = (email: string | undefined, name: string | undefined) => {
     if (name) {
@@ -76,14 +102,19 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
   };
   
   const userEmail = user?.email || profile?.email || '';
-  const userName = profile?.full_name || user?.user_metadata?.full_name;
+  const userName = profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}`.trim() : (profile?.full_name || user?.user_metadata?.full_name);
   const initials = getInitials(userEmail, userName);
   const avatarColor = getAvatarColor(userEmail || userName || 'default');
   
   const hasCustomAvatar = profile?.avatar_url;
-  const color = '#232323';
   const pathname = usePathname();
-  // Eliminar el botón flotante, solo sidebar y overlay
+  
+  // Debug
+  useEffect(() => {
+    console.log('👤 Avatar URL:', profile?.avatar_url);
+    console.log('👤 Has Custom Avatar:', hasCustomAvatar);
+  }, [profile?.avatar_url, hasCustomAvatar]);
+  
   return (
     <>
       {/* Sidebar */}
@@ -95,47 +126,170 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -260, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 left-0 z-40 h-full w-56 bg-[#101010] border-r border-[#232323] flex flex-col items-center py-8 gap-2 shadow-xl lg:translate-x-0 lg:opacity-100"
+            className="fixed top-0 left-0 z-40 h-full w-56 bg-[#0B1017] flex flex-col items-center py-8 gap-2 lg:translate-x-0 lg:opacity-100"
             aria-label="Menú lateral"
             role="navigation"
             tabIndex={-1}
           >
-            <div className="mb-8 flex flex-col items-center">
-              <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden" style={{ borderColor: color, transition: 'border-color 0.3s' }}>
-                {hasCustomAvatar ? (
-                  <Image 
-                    src={profile.avatar_url} 
-                    alt="Avatar del usuario" 
-                    width={80} 
-                    height={80} 
-                    className="w-full h-full object-cover rounded-full" 
-                  />
-                ) : (
-                  <div 
-                    className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                    style={{ backgroundColor: avatarColor }}
-                  >
-                    {initials}
+
+            {/* Avatar premium con anillo azul - Clickeable para subir foto */}
+            <div className="mb-8 flex flex-col items-center relative">
+              {/* Input oculto para subir foto */}
+              <input
+                type="file"
+                id="avatar-upload"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file || !user) return;
+                  
+                  try {
+                    // Validar tipo de archivo
+                    if (!file.type.startsWith('image/')) {
+                      alert('Por favor, selecciona una imagen válida');
+                      return;
+                    }
+                    
+                    // Validar tamaño (máximo 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                      alert('La imagen es muy grande. Máximo 5MB');
+                      return;
+                    }
+                    
+                    // Subir a Supabase Storage
+                    const timestamp = Date.now();
+                    const fileName = `avatar-${user.id}-${timestamp}.${file.name.split('.').pop()}`;
+                    
+                    const { data, error } = await supabase.storage
+                      .from('avatars')
+                      .upload(fileName, file, {
+                        cacheControl: '0',
+                        upsert: true
+                      });
+                    
+                    if (error) {
+                      console.error('Error al subir a Supabase Storage:', error);
+                      alert(`Error al subir la imagen: ${error.message}`);
+                      return;
+                    }
+                    
+                    // Obtener URL pública
+                    const { data: urlData } = supabase.storage
+                      .from('avatars')
+                      .getPublicUrl(fileName);
+                    
+                    if (!urlData || !urlData.publicUrl) {
+                      alert('No se pudo obtener la URL de la imagen');
+                      return;
+                    }
+                    
+                    const publicUrlWithTimestamp = `${urlData.publicUrl}?t=${timestamp}`;
+                    
+                    // Actualizar perfil usando el contexto de Auth (igual que en página perfil)
+                    const { error: updateError } = await updateAvatar(publicUrlWithTimestamp);
+                    
+                    if (updateError) {
+                      console.error('Error al actualizar el perfil:', updateError);
+                      alert(`Error al actualizar el perfil: ${updateError.message}`);
+                      return;
+                    }
+                    
+                    // Actualizar refreshKey para forzar re-render
+                    setRefreshKey(prevKey => prevKey + 1);
+                    
+                    console.log('✅ Foto de perfil actualizada correctamente');
+                  } catch (error: any) {
+                    console.error('Error al subir foto:', error);
+                    alert(`Error al subir la foto: ${error.message || 'Intenta de nuevo'}`);
+                  }
+                  
+                  // Limpiar el input
+                  if (e.target) {
+                    e.target.value = '';
+                  }
+                }}
+              />
+              
+              {/* Avatar con borde - Color según tema - Clickeable */}
+              <button
+                onClick={() => document.getElementById('avatar-upload')?.click()}
+                className="relative w-20 h-20 rounded-full p-[3px] cursor-pointer hover:scale-105 transition-transform group"
+                style={{ 
+                  background: activeTheme === 'halloween' 
+                    ? '#ff6b00' 
+                    : activeTheme === 'christmas'
+                    ? '#c41e3a'
+                    : '#141820',
+                  filter: 'none', 
+                  boxShadow: 'none' 
+                }}
+              >
+                <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-[#101010]">
+                  {hasCustomAvatar ? (
+                    <>
+                      <Image 
+                        key={`sidebar-avatar-${refreshKey}`}
+                        src={`${profile.avatar_url}?t=${new Date().getTime()}-${refreshKey}`}
+                        alt="Avatar del usuario" 
+                        width={80} 
+                        height={80} 
+                        className="w-full h-full object-cover rounded-full" 
+                      />
+                      {/* Overlay hover para cambiar foto */}
+                      <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                    </>
+                  ) : (
+                    <div 
+                      className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl relative"
+                      style={{ backgroundColor: avatarColor }}
+                    >
+                      {/* Icono de cámara visible por defecto cuando no hay foto */}
+                      <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {/* Brillo superior */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
+                
+                {/* Badge "Subir foto" cuando no hay avatar */}
+                {!hasCustomAvatar && (
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                    Subir foto
                   </div>
                 )}
-              </div>
+              </button>
             </div>
-            <nav className="flex flex-col gap-2 w-full" aria-label="Navegación lateral" role="menu">
+
+            {/* Badge premium con mes y año - Movido arriba */}
+            <div className="w-full flex justify-center mb-6">
+              <span className="inline-block text-white text-xs font-bold px-4 py-2 rounded-full bg-[#161b22]/80 backdrop-blur-xl border-0 shadow-lg capitalize tracking-wide">
+                {currentMonthYear}
+              </span>
+            </div>
+
+            <nav className="flex flex-col gap-2 w-full px-3" aria-label="Navegación lateral" role="menu">
               {sidebarItems.map((item, idx) => (
                 <div key={item.name} className="relative">
                   {item.isLogout ? (
                     <button
                       type="button"
                       disabled={isLoggingOut}
-                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b0b0b0] group w-full text-left ${
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group w-full text-left ${
                         isLoggingOut 
-                          ? 'bg-[#232323] text-[#666] cursor-not-allowed' 
-                          : pathname === item.href 
-                            ? 'bg-[#3c66ce] text-white font-bold shadow-md' 
-                            : 'text-[#b0b0b0] hover:bg-[#232323] hover:text-white'
+                          ? 'bg-[#161b22]/80 backdrop-blur-xl text-gray-600 cursor-not-allowed' 
+                          : 'text-gray-400 hover:bg-[#161b22]/80 hover:backdrop-blur-xl hover:text-white'
                       }`}
-                      data-tooltip-id={`sidebar-${item.name}`}
-                      data-tooltip-content={isLoggingOut ? "Cerrando sesión..." : item.tooltip}
                       tabIndex={0}
                       role="menuitem"
                       aria-label={isLoggingOut ? "Cerrando sesión..." : item.tooltip}
@@ -173,16 +327,18 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                       <span className={`text-xl transition-transform ${isLoggingOut ? 'animate-spin' : 'group-hover:scale-110'}`} aria-hidden="true">
                         {isLoggingOut ? <FiSettings /> : item.icon}
                       </span>
-                      <span className="text-base font-medium">
+                      <span className="text-sm font-semibold">
                         {isLoggingOut ? "Cerrando..." : item.name}
                       </span>
                     </button>
                   ) : (
                     <Link
                       href={item.href}
-                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b0b0b0] group ${pathname === item.href ? 'bg-[#3c66ce] text-white font-bold shadow-md' : 'text-[#b0b0b0] hover:bg-[#232323] hover:text-white'}`}
-                      data-tooltip-id={`sidebar-${item.name}`}
-                      data-tooltip-content={item.tooltip}
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group relative overflow-hidden ${
+                        pathname === item.href 
+                          ? 'bg-[#161b22]/80 backdrop-blur-xl text-white font-bold shadow-lg' 
+                          : 'text-gray-400 hover:bg-[#161b22]/80 hover:backdrop-blur-xl hover:text-white'
+                      }`}
                       tabIndex={0}
                       role="menuitem"
                       aria-current={pathname === item.href ? 'page' : undefined}
@@ -198,22 +354,20 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                         }
                       }}
                     >
-                      <span className="text-xl group-hover:scale-110 transition-transform" aria-hidden="true">{item.icon}</span>
-                      <span className="text-base font-medium">{item.name}</span>
+                      <span className="text-lg group-hover:scale-110 transition-transform" aria-hidden="true">{item.icon}</span>
+                      <span className="text-sm font-semibold">{item.name}</span>
                     </Link>
                   )}
-                  <Tooltip id={`sidebar-${item.name}`} place="right" />
                 </div>
               ))}
             </nav>
             <div className="flex-1" />
-            {/* Etiqueta de usuario premium */}
-            <div className="w-full flex justify-center mb-2">
-              <span className="inline-block text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md border border-[#232323] uppercase tracking-wide" style={{ backgroundColor: '#ee5635' }}>
-                {currentMonthYear}
-              </span>
+
+            {/* Footer premium */}
+            <div className="text-xs text-gray-400 mt-2 flex items-center gap-1" aria-label="Copyright">
+              <span className="text-blue-500/60">©</span>
+              <span>{new Date().getFullYear()} Flasti LLC.</span>
             </div>
-            <div className="text-xs text-[#b0b0b0] opacity-60 mt-8" aria-label="Copyright">© {new Date().getFullYear()} Flasti LLC.</div>
           </motion.aside>
         )}
       </AnimatePresence>

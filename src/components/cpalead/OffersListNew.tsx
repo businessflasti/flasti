@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
 import { ExternalLink, DollarSign, Globe, Tag, RefreshCw, Zap } from 'lucide-react';
+import CountryFlag from '@/components/ui/CountryFlag';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -440,7 +441,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {offers.map((offer, index) => {
             const isLocked = shouldLockCard(offer, isPremium);
             
@@ -459,15 +460,19 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                 <PremiumCardOverlay
                   isLocked={isLocked}
                   onUnlockClick={() => router.push('/dashboard/premium')}
+                  taskNumber={index + 1}
                 >
-                  <Card className="bg-[#101010] border-gray-700 hover:border-blue-500 transition-all duration-300 h-full">
-                    <CardHeader className="pb-3">
+                  <Card 
+                    className={`relative bg-[#101010] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    style={isLocked ? { height: '360px' } : undefined}
+                  >
+                    <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className="text-lg text-white line-clamp-2 mb-2">
+                          <CardTitle className={`text-lg text-white line-clamp-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
                             {cleanHtmlText(offer.title)}
                           </CardTitle>
-                          <div className="flex items-center space-x-2 mb-2">
+                          <div className={`flex items-center space-x-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
                             <Badge 
                               variant="secondary" 
                               className="bg-green-900/50 text-green-300 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
@@ -500,10 +505,10 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                       </div>
                     </CardHeader>
                     
-                    <CardContent className="pt-0">
-                      <div className="space-y-3">
+                    <CardContent className={`pt-0 ${isLocked ? 'flex-1 flex flex-col' : ''}`}>
+                      <div className={isLocked ? 'space-y-4 flex-1 flex flex-col' : 'space-y-3'}>
                         {offer.description && (
-                          <CardDescription className="text-gray-400 line-clamp-2">
+                          <CardDescription className={`text-gray-400 line-clamp-2 ${isLocked ? 'mb-1' : ''}`}>
                             {(() => {
                               const cleanDescription = cleanHtmlText(offer.description);
                               
@@ -520,7 +525,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                           </CardDescription>
                         )}
                         
-                        <div className="flex items-center text-sm text-gray-500">
+                        <div className={`flex items-center text-sm text-gray-500 ${isLocked ? 'mb-1' : ''}`}>
                           <div className="flex items-center space-x-2">
                             <Tag className="w-4 h-4" />
                             <span>
@@ -535,28 +540,58 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                           </div>
                         </div>
                         
-                        <Button
-                          onClick={() => handleOfferClick(offer)}
-                          className="w-full text-white hover:opacity-90 transition-opacity"
-                          style={{ backgroundColor: '#3C66CE' }}
-                          disabled={!user || isLocked}
-                        >
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          {cleanHtmlText(offer.conversion) || 'Completar Tarea'}
-                        </Button>
-                        
-                        {/* Botón decorativo motivador */}
-                        <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#232323' }}>
-                          <span className="text-white text-sm font-medium flex items-center justify-center">
-                            <DollarSign className="w-4 h-4 mr-1" />
-                            Gana {offer.amount} {offer.payout_currency}
-                          </span>
-                        </div>
-                        
-                        {!user && (
-                          <p className="text-xs text-gray-500 text-center">
-                            Inicia sesión para acceder a las tareas
-                          </p>
+                        {isLocked ? (
+                          <div className="mt-auto space-y-3">
+                            <Button
+                              onClick={() => handleOfferClick(offer)}
+                              className="w-full text-white hover:opacity-90 transition-opacity"
+                              style={{ backgroundColor: '#3C66CE' }}
+                              disabled={!user || isLocked}
+                            >
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              {cleanHtmlText(offer.conversion) || 'Completar Tarea'}
+                            </Button>
+                            
+                            {/* Botón decorativo motivador */}
+                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
+                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                                <DollarSign className="w-4 h-4 mr-1" />
+                                Gana {offer.amount} {offer.payout_currency}
+                              </span>
+                            </div>
+                            
+                            {!user && (
+                              <p className="text-xs text-gray-500 text-center">
+                                Inicia sesión para acceder a las tareas
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            <Button
+                              onClick={() => handleOfferClick(offer)}
+                              className="w-full text-white hover:opacity-90 transition-opacity"
+                              style={{ backgroundColor: '#3C66CE' }}
+                              disabled={!user || isLocked}
+                            >
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              {cleanHtmlText(offer.conversion) || 'Completar Tarea'}
+                            </Button>
+                            
+                            {/* Botón decorativo motivador */}
+                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
+                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                                <DollarSign className="w-4 h-4 mr-1" />
+                                Gana {offer.amount} {offer.payout_currency}
+                              </span>
+                            </div>
+                            
+                            {!user && (
+                              <p className="text-xs text-gray-500 text-center">
+                                Inicia sesión para acceder a las tareas
+                              </p>
+                            )}
+                          </>
                         )}
                       </div>
                     </CardContent>

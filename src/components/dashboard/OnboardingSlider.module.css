@@ -79,17 +79,33 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(135deg, #232323 0%, #2a2a2a 100%);
-  border: none; /* Sin borde cuando está cerrado */
-  border-radius: 0 0 12px 12px;
-  margin-top: -2px; /* solapar con la pestaña incluso cuando está cerrado para eliminar la franja */
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  border-radius: 0 0 24px 24px;
+  margin-top: -2px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Brillo superior glassmorphism */
+.sliderContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  z-index: 1;
 }
 
 .sliderContainer.open {
-  max-height: 550px; /* Más altura para escritorio también */
-  border: none; /* quitar borde del contenido al abrir para mantener coherencia con la pestaña */
-  border-top: none;
-  margin-top: -2px; /* solapar ligeramente para eliminar la franja visible */
+  max-height: 550px;
+  border-color: rgba(255, 255, 255, 0.2);
+  margin-top: -2px;
 }
 
 .sliderContent {

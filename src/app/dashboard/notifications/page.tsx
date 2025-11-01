@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 export default function NotificationsPage() {
   const { user } = useAuth();
@@ -24,7 +25,9 @@ export default function NotificationsPage() {
   }, [user]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-2 md:px-0 py-8">
+    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
+      <SeasonalGarland />
+      <div className="w-full max-w-2xl mx-auto px-2 md:px-0 py-8 relative z-10">
       <Breadcrumbs />
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-white">Notificaciones</h1>
@@ -59,7 +62,13 @@ export default function NotificationsPage() {
             ) : (
               <div className="space-y-4">
                 {notifications.map((n: any) => (
-                  <div key={n.id} className={`bg-[#232323] border border-white/10 rounded-lg p-4 ${n.read ? 'opacity-60' : ''}`}>
+                  <div 
+                    key={n.id} 
+                    className={`bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl p-4 relative ${n.read ? 'opacity-60' : ''}`}
+                    style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                  >
+                    {/* Brillo superior glassmorphism */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                     <Notification
                       title={n.title}
                       message={n.message}
@@ -82,6 +91,7 @@ export default function NotificationsPage() {
           </div>
         )}
       </motion.div>
+      </div>
     </div>
   );
 }

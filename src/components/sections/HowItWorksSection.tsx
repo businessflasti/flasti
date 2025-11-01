@@ -1,14 +1,13 @@
 "use client";
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BackgroundGradient } from "@/components/ui/background-gradient";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const howItWorksImages = [
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso1-web.webp",
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso2.webp",
-  "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/paso3.webp"
+  "/images/principal/paso1-web.webp",
+  "/images/principal/paso2.webp",
+  "/images/principal/paso3.webp"
 ];
 
 const HowItWorksSection = React.memo(() => {
@@ -26,200 +25,152 @@ const HowItWorksSection = React.memo(() => {
       number: 1,
       title: t('registrateAhora'),
       description: t('registrateDesc'),
-      image: howItWorksImages[0]
+      image: howItWorksImages[0],
+      color: 'from-yellow-400 to-amber-500',
+      badge: 'Registro',
+      icon: '✓'
     },
     {
       number: 2,
       title: 'Completa microtareas',
       description: t('microtareasDesc'),
-      image: howItWorksImages[1]
+      image: howItWorksImages[1],
+      color: 'from-blue-400 to-cyan-500',
+      badge: 'Trabajo',
+      icon: '✓'
     },
     {
       number: 3,
       title: t('recogeTusRecompensas'),
       description: t('recogeTusRecompensasDesc'),
-      image: howItWorksImages[2]
+      image: howItWorksImages[2],
+      color: 'from-green-400 to-emerald-500',
+      badge: 'Retiro',
+      icon: '✓'
     }
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#E75333]">
+    <section className="py-24 relative overflow-hidden bg-[#0B1017]">
+
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center" style={{ color: '#FFFFFF' }}>{t('comoFunciona')}</h2>
-          <p className="max-w-2xl mx-auto text-center text-lg md:text-xl" style={{ color: '#FFFFFF' }}>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
+            {t('comoFunciona')}
+          </h2>
+          <p className="max-w-2xl mx-auto text-center text-lg md:text-xl text-white/70">
             {t('soloNecesitas')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
           {steps.map((step, index) => (
-            <div 
-              key={index} 
-              className={`floating-card ${step.number === 1 ? 'clickable-card' : ''}`}
+            <motion.div
+              key={index}
+              className={`group relative ${step.number === 1 ? 'cursor-pointer' : ''}`}
               onClick={() => handleCardClick(step.number)}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ 
+                duration: 0.5, 
+                delay: index * 0.15,
+                ease: "easeOut"
+              }}
+              whileHover={{ y: -10 }}
             >
-              <img 
-                className="image" 
-                alt={step.title} 
-                src={step.image}
-              />
-              <div className="heading">{step.title}</div>
-              <p className="description">{step.description}</p>
-              <div className="button-container">
-                <button className="step-button">
-                  <span>{step.number === 1 ? 'Registro' : step.number === 2 ? 'Trabajo' : 'Retiro'}</span>
-                  <span className="step-badge">✓</span>
-                </button>
+              {/* Tarjeta principal con glassmorphism */}
+              <div className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-700 shadow-2xl">
+                
+                {/* Efecto neón sutil al hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ 
+                    boxShadow: `inset 0 0 60px rgba(110, 64, 255, 0.15), 0 0 40px rgba(110, 64, 255, 0.1)` 
+                  }}
+                ></div>
+                
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                
+                {/* Número del paso - Esquina superior izquierda */}
+                <div className="absolute top-4 left-4 z-20">
+                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${step.color} flex items-center justify-center text-black font-black text-xl shadow-lg`}>
+                    {step.number}
+                  </div>
+                </div>
+
+                {/* Imagen */}
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110" 
+                    alt={step.title} 
+                    src={step.image}
+                  />
+                  {/* Overlay gradiente */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent"></div>
+                </div>
+
+                {/* Contenido */}
+                <div className="p-6 relative z-10">
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    {step.title}
+                  </h3>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                    {step.description}
+                  </p>
+
+                  {/* Badge con glassmorphism */}
+                  <div className="flex justify-center">
+                    <div className={`inline-flex items-center gap-2 bg-gradient-to-r ${step.color} text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg group-hover:scale-105 group-hover:shadow-2xl transition-all duration-300`}>
+                      <span>{step.badge}</span>
+                      <span className="bg-black/20 text-white px-2 py-0.5 rounded-full text-xs">
+                        {step.icon}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+
+              {/* Línea conectora con gradiente neón (solo entre tarjetas en desktop) */}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-1/2 -right-5 w-10 h-0.5 bg-gradient-to-r from-[#6E40FF]/40 to-transparent z-0"></div>
+              )}
+            </motion.div>
           ))}
         </div>
-
-        <style jsx>{`
-          .floating-card {
-            --dark: #212121;
-            --darker: #232323;
-            --semidark: #2c2c2c;
-            --lightgray: #e8e8e8;
-            --unit: 24px;
-            background-color: var(--darker);
-            border: calc(var(--unit) / 4) solid var(--darker);
-            border-radius: 1.5rem;
-            position: relative;
-            padding: var(--unit);
-            overflow: hidden;
-            max-width: 350px;
-            margin: 0 auto;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-          }
-
-          .clickable-card {
-            cursor: pointer;
-          }
-
-          .clickable-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-          }
-
-          .floating-card::before {
-            content: "";
-            position: absolute;
-            width: 120%;
-            height: 20%;
-            top: 40%;
-            left: -10%;
-            background: linear-gradient(144deg, #ee5635, #3C66CD 50%, #ee5635);
-            animation: keyframes-floating-light 2.5s infinite ease-in-out;
-            filter: blur(20px);
-          }
-
-          @keyframes keyframes-floating-light {
-            0% {
-              transform: rotate(-5deg) translateY(-5%);
-              opacity: 0.5;
-            }
-            50% {
-              transform: rotate(5deg) translateY(5%);
-              opacity: 1;
-            }
-            100% {
-              transform: rotate(-5deg) translateY(-5%);
-              opacity: 0.5;
-            }
-          }
-
-          /* Efecto de introducción eliminado */
-
-          .floating-card .image {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            border-radius: 1.5rem;
-            animation: keyframes-floating-img 10s ease-in-out infinite;
-          }
-
-          .floating-card:first-child .image {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-          }
-
-          @keyframes keyframes-floating-img {
-            0% {
-              transform: translate(-2%, 2%) scaleY(0.95) rotate(-1deg);
-            }
-            50% {
-              transform: translate(2%, -2%) scaleY(1) rotate(1deg);
-            }
-            100% {
-              transform: translate(-2%, 2%) scaleY(0.95) rotate(-1deg);
-            }
-          }
-
-          .floating-card .heading {
-            font-weight: 600;
-            font-size: 18px;
-            text-align: center;
-            margin-top: calc(var(--unit) * 0.75);
-            padding-block: calc(var(--unit) * 0.5);
-            color: #FFFFFF;
-            font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-            animation: keyframes-flash-text 3s infinite;
-          }
-
-          .floating-card .description {
-            font-size: 14px;
-            text-align: center;
-            color: #b0b0b0;
-            margin-bottom: calc(var(--unit) * 2);
-            line-height: 1.4;
-          }
-
-          @keyframes keyframes-flash-text {
-            0%, 100% {
-              opacity: 1;
-            }
-            50% {
-              opacity: 0.7;
-            }
-          }
-
-          .button-container {
-            display: flex;
-            justify-content: center;
-          }
-
-          .step-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background-color: white;
-            color: #000000;
-            padding: 8px 16px;
-            border-radius: 1.5rem;
-            border: none;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-          }
-
-          .step-button:hover {
-            background-color: #f5f5f5;
-          }
-
-          .step-badge {
-            background-color: #232323;
-            color: #FFFFFF;
-            padding: 2px 6px;
-            border-radius: 1.5rem;
-            font-size: 10px;
-          }
-        `}</style>
       </div>
+
+      <style jsx>{`
+        @keyframes pulse-github {
+          0%, 100% {
+            opacity: 0.15;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.3;
+            transform: scale(1.05);
+          }
+        }
+
+        @keyframes gradient-flow {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        .animate-pulse-github {
+          animation: pulse-github 10s ease-in-out infinite;
+        }
+
+        .animate-gradient-flow {
+          background-size: 200% auto;
+          animation: gradient-flow 5s linear infinite;
+        }
+      `}</style>
     </section>
   );
 });

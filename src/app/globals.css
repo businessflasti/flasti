@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 /* Importar fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Solitreo&display=swap');
 @import url('/fonts/noto-sans-display.css');
@@ -58,7 +60,18 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
   }
   body {
     font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    background-color: #101010 !important;
+    background-color: #0B1017 !important;
+    max-width: 100vw !important;
+  }
+  
+  html {
+    max-width: 100vw !important;
+  }
+  
+  /* Prevenir scroll horizontal sin romper sticky */
+  body > * {
+    max-width: 100vw;
+    overflow-x: clip;
   }
   p, span, li, ul, ol, a, label, input, textarea, button, div, section, article, main, small, strong, em, b, i {
     font-family: 'Segoe UI Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
@@ -156,9 +169,25 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
 }
 
 @keyframes pulse-slow {
-  0% { opacity: 0.5; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0.5; }
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-80px) translateX(40px);
+    opacity: 0.8;
+  }
 }
 
 @keyframes slideInRight {
@@ -176,6 +205,17 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
   0% { opacity: 0.7; transform: scale(0.95); }
   50% { opacity: 1; transform: scale(1.02); }
   100% { opacity: 0.7; transform: scale(0.95); }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer-text {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
 @layer base {
@@ -201,6 +241,22 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
     --input: 220 40% 12%;
     --ring: 341 65% 52%;
     --radius: 0.6rem;
+    
+    /* Stake Premium Theme Variables */
+    --stake-bg-primary: #0F212E;
+    --stake-bg-secondary: #1A2C38;
+    --stake-bg-tertiary: #213743;
+    --stake-text-primary: #FFFFFF;
+    --stake-text-secondary: #B1BAD3;
+    --stake-text-tertiary: #7F8EA3;
+    --stake-accent-primary: #1E90FF;
+    --stake-accent-casino: #00C67A;
+    --stake-accent-sports: #1DB4F9;
+    --stake-status-success: #00C67A;
+    --stake-status-error: #FF4757;
+    --stake-status-warning: #FFA502;
+    --stake-status-info: #1DB4F9;
+    --stake-overlay: rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -511,6 +567,140 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
   .title-hover-gradient {
     @apply group-hover:bg-gradient-to-r group-hover:from-[#3c66ce] group-hover:to-[#3359b6] group-hover:bg-clip-text group-hover:text-transparent;
   }
+
+  /* Stake Premium Theme Utilities */
+  .stake-bg-primary {
+    background-color: var(--stake-bg-primary);
+  }
+
+  .stake-bg-secondary {
+    background-color: var(--stake-bg-secondary);
+  }
+
+  .stake-bg-tertiary {
+    background-color: var(--stake-bg-tertiary);
+  }
+
+  .stake-text-primary {
+    color: var(--stake-text-primary);
+  }
+
+  .stake-text-secondary {
+    color: var(--stake-text-secondary);
+  }
+
+  .stake-text-tertiary {
+    color: var(--stake-text-tertiary);
+  }
+
+  .stake-card {
+    @apply stake-bg-secondary rounded-stake-xl shadow-stake-md transition-all duration-stake-normal;
+  }
+
+  .stake-card-hover {
+    @apply hover:scale-[1.02] hover:shadow-stake-lg hover:brightness-110;
+  }
+
+  .stake-button-primary {
+    @apply bg-[#1E90FF] text-white px-6 py-3 rounded-stake-lg font-semibold;
+    @apply transition-all duration-stake-normal ease-stake-ease-out;
+    @apply hover:bg-[#1873CC] hover:shadow-stake-glow;
+  }
+
+  .stake-button-secondary {
+    @apply stake-bg-tertiary stake-text-primary px-6 py-3 rounded-stake-lg font-semibold;
+    @apply transition-all duration-stake-normal ease-stake-ease-out;
+    @apply hover:stake-bg-secondary;
+  }
+
+  .stake-input {
+    @apply stake-bg-tertiary stake-text-primary border border-[#2A3F4F] rounded-stake-lg px-4 py-3;
+    @apply focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:border-transparent;
+    @apply transition-all duration-stake-fast;
+  }
+
+  .stake-sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-stake-lg stake-text-secondary;
+    @apply transition-all duration-stake-fast ease-stake-ease-out;
+    @apply hover:stake-bg-tertiary hover:stake-text-primary;
+  }
+
+  .stake-sidebar-item-active {
+    @apply stake-bg-tertiary stake-text-primary border-l-4 border-[#1E90FF];
+  }
+
+  .stake-overlay {
+    @apply fixed inset-0 bg-black/70 backdrop-blur-sm z-40;
+    @apply transition-opacity duration-stake-normal;
+  }
+
+  .stake-hero-gradient {
+    background: radial-gradient(circle at 50% 0%, rgba(30, 144, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--stake-bg-primary) 0%, #0A1520 100%);
+  }
+
+  .stake-category-card-casino {
+    @apply relative overflow-hidden rounded-stake-2xl shadow-stake-xl;
+    @apply transition-all duration-stake-normal ease-stake-ease-out;
+    @apply hover:scale-[1.02] hover:shadow-stake-glow-casino hover:brightness-110;
+  }
+
+  .stake-category-card-sports {
+    @apply relative overflow-hidden rounded-stake-2xl shadow-stake-xl;
+    @apply transition-all duration-stake-normal ease-stake-ease-out;
+    @apply hover:scale-[1.02] hover:shadow-stake-glow-sports hover:brightness-110;
+  }
+
+  .stake-game-card {
+    @apply stake-bg-secondary rounded-stake-xl overflow-hidden cursor-pointer;
+    @apply transition-all duration-stake-normal ease-stake-ease-out;
+    @apply hover:scale-[1.02] hover:shadow-stake-lg;
+  }
+
+  .stake-badge {
+    @apply inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .stake-badge-casino {
+    @apply bg-[#00C67A]/10 text-[#00C67A] border border-[#00C67A]/30;
+  }
+
+  .stake-badge-sports {
+    @apply bg-[#1DB4F9]/10 text-[#1DB4F9] border border-[#1DB4F9]/30;
+  }
+
+  .stake-skeleton {
+    @apply animate-pulse stake-bg-tertiary rounded-stake-lg;
+  }
+
+  .stake-divider {
+    @apply border-t border-[#2A3F4F];
+  }
+
+  /* Backdrop blur for header */
+  .stake-header-blur {
+    @apply backdrop-blur-md bg-[#0F212E]/80 border-b border-[#2A3F4F]/50;
+  }
+
+  /* Focus visible for accessibility */
+  .stake-focus-visible {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E90FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0F212E];
+  }
+
+  /* Animaciones para gamificación agresiva */
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  .animate-shimmer {
+    background-size: 200% auto;
+    animation: shimmer-text 3s linear infinite;
+  }
 }
 
 @layer utilities {
@@ -524,4 +714,41 @@ div[style*="position: fixed"][style*="bottom: 0px"][style*="right: 20px"][style*
     letter-spacing: -0.04em;
     line-height: 0.92;
   }
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Animaciones de pulse con colores específicos para indicador online */
+@keyframes pulse-green {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0);
+  }
+}
+
+@keyframes pulse-orange {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(251, 146, 60, 0);
+  }
+}
+
+.animate-pulse-green {
+  animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-pulse-orange {
+  animation: pulse-orange 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

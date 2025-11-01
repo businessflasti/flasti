@@ -51,7 +51,7 @@ const BenefitCard: React.FC<BenefitCardProps> = ({ title, description, icon, sta
           width: 100%;
           height: 350px;
           border-radius: 20px;
-          background: #232323;
+          background: #1a1a1a;
           padding: 5px;
           overflow: hidden;
           box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px 0px;

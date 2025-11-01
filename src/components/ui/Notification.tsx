@@ -11,7 +11,7 @@ const typeMap = {
   success: "bg-green-600 text-white",
   warning: "bg-yellow-600 text-white",
   danger: "bg-red-600 text-white",
-  info: "bg-[#232323] text-white border border-[#101010]",
+  info: "bg-[#1a1a1a] text-white border border-[#101010]",
 };
 
 export const Notification: React.FC<NotificationProps> = ({

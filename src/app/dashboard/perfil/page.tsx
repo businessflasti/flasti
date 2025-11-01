@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { Shield, Mail, User, Camera, Lock, X, Check } from 'lucide-react';
+import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 export default function PerfilPage() {
   const { user, profile, updateAvatar } = useAuth();
@@ -16,6 +17,11 @@ export default function PerfilPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
+  
+  // Estados para nombre y apellido
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [isUpdatingName, setIsUpdatingName] = useState(false);
   
   // Estados para subir avatar
   const [isUploading, setIsUploading] = useState(false);
@@ -39,6 +45,8 @@ export default function PerfilPage() {
 
         if (profileData) {
           setUserData(profileData);
+          setFirstName(profileData.first_name || '');
+          setLastName(profileData.last_name || '');
         }
       } catch (error) {
         console.error('Error al cargar datos del usuario:', error);
@@ -170,6 +178,52 @@ export default function PerfilPage() {
     setPreviewUrl(null);
   };
 
+  // Función para actualizar nombre y apellido
+  const handleUpdateName = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!firstName.trim()) {
+      toast.error('El nombre es requerido');
+      return;
+    }
+    
+    setIsUpdatingName(true);
+    
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          first_name: firstName.trim(),
+          last_name: lastName.trim()
+        })
+        .eq('user_id', user?.id);
+      
+      if (error) throw error;
+      
+      // Recargar datos locales
+      const { data: profileData } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', user?.id)
+        .single();
+      
+      if (profileData) {
+        setUserData(profileData);
+      }
+      
+      toast.success('Nombre actualizado correctamente. Recargando...');
+      
+      // Recargar la página para actualizar el contexto
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (error: any) {
+      console.error('Error:', error);
+      toast.error(`Error al actualizar: ${error.message}`);
+      setIsUpdatingName(false);
+    }
+  };
+
   // Función para cambiar la contraseña - VERSIÓN SIMPLE QUE FUNCIONA
   const handlePasswordChange = (e: React.FormEvent) => {
     e.preventDefault();
@@ -220,15 +274,25 @@ export default function PerfilPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] p-4">
+    <div className="min-h-screen bg-[#0B1017] p-4 relative overflow-hidden">
+      <SeasonalGarland />
+      
+      <div className="relative z-10">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold text-white mb-8">Mi Perfil</h1>
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Información del Usuario */}
-          <Card className="p-6 bg-[#1a1a1a] border-gray-800">
-            <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
-              <User className="h-5 w-5 text-blue-400 mr-2" />
+          <Card 
+            className="p-6 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+              <div className="relative p-2 rounded-xl bg-gradient-to-br from-[#6E40FF]/20 to-[#6E40FF]/5">
+                <User className="h-5 w-5 text-[#6E40FF]" />
+              </div>
               Información Personal
             </h2>
 
@@ -236,7 +300,7 @@ export default function PerfilPage() {
               <div className="flex items-center space-x-3">
                 {/* Avatar con funcionalidad de subida */}
                 <div className="relative">
-                  <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-gray-700 shadow-lg">
+                  <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-[#30363d] shadow-lg">
                     {profile?.avatar_url ? (
                       <img
                         key={`profile-avatar-${refreshKey}`}
@@ -254,18 +318,20 @@ export default function PerfilPage() {
                     )}
                   </div>
                   <button
-                    className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700 transition-colors"
+                    className="absolute bottom-0 right-0 bg-[#238636] text-white p-2 rounded-full shadow-md hover:bg-[#2ea043] transition-colors"
                     onClick={handleSelectFile}
                     aria-label="Cambiar foto de perfil"
                   >
                     <Camera size={14} />
                   </button>
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-lg font-semibold text-white">
-                    {userData?.name || user?.email?.split('@')[0] || 'Usuario'}
+                    {userData?.first_name 
+                      ? `${userData.first_name} ${userData.last_name || ''}`.trim()
+                      : (userData?.name || user?.email?.split('@')[0] || '')}
                   </h3>
-                  <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full inline-block mt-1">
                     Activo
                   </span>
                   <p className="text-xs text-gray-400 mt-1">
@@ -274,9 +340,11 @@ export default function PerfilPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <Mail className="h-4 w-4 text-blue-400 mr-2" />
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 hover:border-white/20 transition-all">
+                <div className="flex items-center mb-2 gap-2">
+                  <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5">
+                    <Mail className="h-3.5 w-3.5 text-[#2DE2E6]" />
+                  </div>
                   <span className="text-sm text-gray-400">Correo Electrónico</span>
                 </div>
                 <p className="text-white font-medium">
@@ -284,9 +352,11 @@ export default function PerfilPage() {
                 </p>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <Shield className="h-4 w-4 text-blue-400 mr-2" />
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 hover:border-white/20 transition-all">
+                <div className="flex items-center mb-2 gap-2">
+                  <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-[#238636]/20 to-[#238636]/5">
+                    <Shield className="h-3.5 w-3.5 text-[#3fb950]" />
+                  </div>
                   <span className="text-sm text-gray-400">Estado de la cuenta</span>
                 </div>
                 <p className="text-green-400 font-medium">Verificada</p>
@@ -295,9 +365,16 @@ export default function PerfilPage() {
           </Card>
 
           {/* Cambio de Contraseña */}
-          <Card className="p-6 bg-[#1a1a1a] border-gray-800">
-            <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
-              <Lock className="h-5 w-5 text-blue-400 mr-2" />
+          <Card 
+            className="p-6 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+              <div className="relative p-2 rounded-xl bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5">
+                <Lock className="h-5 w-5 text-[#2DE2E6]" />
+              </div>
               Cambiar Contraseña
             </h2>
 
@@ -311,7 +388,7 @@ export default function PerfilPage() {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white"
+                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 hover:border-[#8b949e]"
                   placeholder="Ingresa tu nueva contraseña"
                   required
                 />
@@ -329,7 +406,7 @@ export default function PerfilPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white"
+                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 hover:border-[#8b949e]"
                   placeholder="Confirma tu nueva contraseña"
                   required
                 />
@@ -337,7 +414,7 @@ export default function PerfilPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full bg-[#238636] hover:bg-[#2ea043] text-white shadow-lg shadow-[#238636]/20"
                 disabled={isLoading}
               >
                 {isLoading ? 'Actualizando...' : 'Cambiar Contraseña'}
@@ -375,7 +452,7 @@ export default function PerfilPage() {
             setIsDialogOpen(open);
           }}
         >
-          <DialogContent className="sm:max-w-md bg-[#1a1a1a] border-gray-800">
+          <DialogContent className="sm:max-w-md bg-[#161b22]/95 backdrop-blur-xl border-[#30363d]">
             <DialogHeader>
               <DialogTitle className="text-white">Previsualizar foto de perfil</DialogTitle>
             </DialogHeader>
@@ -385,7 +462,7 @@ export default function PerfilPage() {
                 Tu foto de perfil se mostrará en formato circular
               </p>
               {previewUrl && (
-                <div className="w-[200px] h-[200px] rounded-full overflow-hidden border-2 border-blue-500/20">
+                <div className="w-[200px] h-[200px] rounded-full overflow-hidden border-2 border-[#30363d]">
                   <img
                     src={previewUrl}
                     alt="Vista previa"
@@ -401,7 +478,7 @@ export default function PerfilPage() {
                 variant="outline"
                 onClick={handleCancel}
                 disabled={isUploading}
-                className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700"
+                className="bg-transparent border-[#30363d] text-[#c9d1d9] hover:bg-[#21262d] hover:border-[#8b949e]"
               >
                 <X size={16} className="mr-2" />
                 Cancelar
@@ -410,7 +487,7 @@ export default function PerfilPage() {
                 type="button"
                 onClick={uploadAvatar}
                 disabled={isUploading}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-[#238636] hover:bg-[#2ea043] text-white shadow-lg shadow-[#238636]/20"
               >
                 {isUploading ? (
                   <>
@@ -427,6 +504,7 @@ export default function PerfilPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
       </div>
     </div>
   );

@@ -1,38 +1,39 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Clock, CheckCircle, XCircle, Search } from "lucide-react";
-import { LanguageSelector } from "@/components/LanguageSelector";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { 
+  Clock, 
+  CheckCircle, 
+  XCircle, 
+  Search, 
+  DollarSign,
+  User,
+  Mail,
+  Calendar,
+  CreditCard,
+  FileText
+} from "lucide-react";
 import { WithdrawalRequest } from "@/lib/withdrawal-service";
-import { WithdrawalRequest as AdminWithdrawalRequest } from "@/lib/admin-service";
 import { toast } from 'sonner';
 
 export default function AdminWithdrawalsPage() {
-  const { t } = useLanguage();
   const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<WithdrawalRequest | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState<'all' | WithdrawalRequest['status']>('pending');
 
   useEffect(() => {
     const loadWithdrawals = async () => {
       try {
-        console.log('🔄 Cargando retiros desde admin-service...');
-        
-        // Cargar todas las solicitudes de retiro usando admin-service
         const { adminService } = await import('@/lib/admin-service');
         const allWithdrawals = await adminService.getWithdrawalRequests();
         
-        console.log('📋 Retiros cargados:', allWithdrawals.length);
-        
-        // Convertir formato de admin-service a withdrawal-service
         const formattedWithdrawals = allWithdrawals.map(w => ({
           id: w.id,
           user_id: w.user_id,
@@ -50,18 +51,13 @@ export default function AdminWithdrawalsPage() {
         setWithdrawals(formattedWithdrawals);
         setIsLoading(false);
 
-        // Configurar suscripción en tiempo real usando withdrawal-service
         const withdrawalService = (await import('@/lib/withdrawal-service')).default.getInstance();
         
-        // Suscribirse a nuevas solicitudes
         const unsubscribeNewRequest = withdrawalService.onRequestReceived((newRequest) => {
-          console.log('🆕 Nueva solicitud recibida:', newRequest);
           setWithdrawals((prevWithdrawals) => [newRequest, ...prevWithdrawals]);
         });
 
-        // Suscribirse a actualizaciones de estado
         const unsubscribeStatusUpdate = withdrawalService.onStatusUpdated((updatedRequest) => {
-          console.log('🔄 Solicitud actualizada:', updatedRequest);
           setWithdrawals((prevWithdrawals) => {
             const index = prevWithdrawals.findIndex((w) => w.id === updatedRequest.id);
             if (index !== -1) {
@@ -72,7 +68,6 @@ export default function AdminWithdrawalsPage() {
             return prevWithdrawals;
           });
 
-          // Si la solicitud seleccionada fue actualizada, actualizar también la selección
           if (selectedRequest && selectedRequest.id === updatedRequest.id) {
             setSelectedRequest(updatedRequest);
           }
@@ -83,7 +78,7 @@ export default function AdminWithdrawalsPage() {
           unsubscribeStatusUpdate();
         };
       } catch (error) {
-        console.error('💥 Error cargando retiros:', error);
+        console.error('Error cargando retiros:', error);
         setIsLoading(false);
       }
     };
@@ -93,42 +88,36 @@ export default function AdminWithdrawalsPage() {
 
   const handleApprove = async (request: WithdrawalRequest) => {
     try {
-      console.log('✅ Aprobando retiro:', request.id);
-      
       const { adminService } = await import('@/lib/admin-service');
       const success = await adminService.approveWithdrawal(request.id, 'admin-user-id');
 
       if (success) {
         toast.success('Retiro aprobado exitosamente');
         
-        // Actualizar la lista local
+        const updatedRequest = { 
+          ...request, 
+          status: 'completed' as WithdrawalRequest['status'], 
+          processed_at: new Date().toISOString() 
+        };
+        
         setWithdrawals(prev => prev.map(w => 
-          w.id === request.id 
-            ? { ...w, status: 'completed', processed_at: new Date().toISOString() }
-            : w
+          w.id === request.id ? updatedRequest : w
         ));
         
-        // Actualizar solicitud seleccionada si es la misma
         if (selectedRequest?.id === request.id) {
-          setSelectedRequest({ 
-            ...selectedRequest, 
-            status: 'completed', 
-            processed_at: new Date().toISOString() 
-          });
+          setSelectedRequest(updatedRequest);
         }
       } else {
         toast.error('Error al aprobar el retiro');
       }
     } catch (error) {
-      console.error('💥 Error aprobando retiro:', error);
+      console.error('Error aprobando retiro:', error);
       toast.error('Error al aprobar el retiro');
     }
   };
 
   const handleReject = async (request: WithdrawalRequest) => {
     try {
-      console.log('❌ Rechazando retiro:', request.id);
-      
       const { adminService } = await import('@/lib/admin-service');
       const success = await adminService.rejectWithdrawal(
         request.id, 
@@ -140,7 +129,6 @@ export default function AdminWithdrawalsPage() {
         toast.success('Retiro rechazado');
         setRejectionReason("");
         
-        // Actualizar la lista local
         setWithdrawals(prev => prev.map(w => 
           w.id === request.id 
             ? { 
@@ -157,7 +145,7 @@ export default function AdminWithdrawalsPage() {
         toast.error('Error al rechazar el retiro');
       }
     } catch (error) {
-      console.error('💥 Error rechazando retiro:', error);
+      console.error('Error rechazando retiro:', error);
       toast.error('Error al rechazar el retiro');
     }
   };
@@ -166,23 +154,23 @@ export default function AdminWithdrawalsPage() {
     switch (status) {
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1 text-amber-500 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full text-xs font-medium">
-            <Clock size={12} />
-            {t('pendiente') as string}
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold">
+            <Clock className="w-3 h-3" />
+            Pendiente
           </span>
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center gap-1 text-green-500 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full text-xs font-medium">
-            <CheckCircle size={12} />
-            {t('completado') as string}
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">
+            <CheckCircle className="w-3 h-3" />
+            Completado
           </span>
         );
       case 'rejected':
         return (
-          <span className="inline-flex items-center gap-1 text-red-500 bg-red-100 dark:bg-red-900/30 px-2 py-1 rounded-full text-xs font-medium">
-            <XCircle size={12} />
-            {t('rechazado') as string}
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold">
+            <XCircle className="w-3 h-3" />
+            Rechazado
           </span>
         );
       default:
@@ -194,254 +182,241 @@ export default function AdminWithdrawalsPage() {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('es', {
       year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
       hour: '2-digit',
       minute: '2-digit'
     }).format(date);
   };
 
-  const [filter, setFilter] = useState<'all' | WithdrawalRequest['status']>('all');
-  const [sortBy, setSortBy] = useState<'date' | 'amount'>('date');
-
-  // Filtrar, buscar y ordenar las solicitudes
   const filteredWithdrawals = withdrawals
     .filter(withdrawal => {
-      // Aplicar filtro de búsqueda por término
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
-        const matchesSearch = 
-          withdrawal.username.toLowerCase().includes(searchLower) ||
-          withdrawal.email.toLowerCase().includes(searchLower) ||
-          withdrawal.id.toLowerCase().includes(searchLower);
+        const matchesSearch = withdrawal.email.toLowerCase().includes(searchLower);
         if (!matchesSearch) return false;
       }
-      // Aplicar filtro por estado
       return filter === 'all' || withdrawal.status === filter;
     })
-    .sort((a, b) => {
-      if (sortBy === 'date') {
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-      }
-      return b.amount - a.amount;
-    });
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+  const stats = {
+    pending: withdrawals.filter(w => w.status === 'pending').length,
+    completed: withdrawals.filter(w => w.status === 'completed').length,
+    rejected: withdrawals.filter(w => w.status === 'rejected').length,
+    total: withdrawals.reduce((sum, w) => sum + w.amount, 0)
+  };
 
   return (
-    <div className="min-h-screen bg-background pb-12">
-      {/* Filtros y ordenamiento */}
-      <div className="mb-6 flex flex-wrap gap-4">
-        <select
-          className="bg-card/50 border border-border/20 rounded-lg px-4 py-2"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value as WithdrawalRequest['status'])}
-        >
-          <option value="all">{t('todos')}</option>
-          <option value="pending">{t('pendiente')}</option>
-          <option value="processing">{t('procesando')}</option>
-          <option value="completed">{t('completado')}</option>
-          <option value="rejected">{t('rechazado')}</option>
-        </select>
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+      <div className="max-w-[1800px] mx-auto">
+        {/* Búsqueda y Filtros */}
+        <Card className="bg-[#1a1a1a] border-blue-500/20 mb-6">
+          <CardContent className="p-6">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Buscar por email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-[#0a0a0a] border-white/10 text-white"
+                />
+              </div>
 
-        <select
-          className="bg-card/50 border border-border/20 rounded-lg px-4 py-2"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as 'date' | 'amount')}
-        >
-          <option value="date">{t('ordenarPorFecha')}</option>
-          <option value="amount">{t('ordenarPorMonto')}</option>
-        </select>
-      </div>
-      {/* Header visible only in this page */}
-      <header className="w-full py-4 border-b border-border/20 bg-card/70 backdrop-blur-md">
-        <div className="container-custom flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="text-primary font-bold text-xl">
-              <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="glow-effect">
-                <path fillRule="evenodd" clipRule="evenodd" d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="url(#paint0_linear)" />
-                <path d="M21.5253 15.535V10.3622H18.0229V15.535H13.9517V19.0425H18.0229V25.6486H21.5253V19.0425H25.5966V15.535H21.5253Z" fill="white" />
-                <defs>
-                  <linearGradient id="paint0_linear" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#9333ea" />
-                    <stop offset="0.33" stopColor="#ec4899" />
-                    <stop offset="0.66" stopColor="#f97316" />
-                    <stop offset="1" stopColor="#facc15" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </Link>
-            <h1 className="font-semibold text-xl hidden sm:block">Flow State</h1>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <LanguageSelector />
-            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#9333ea] to-[#ec4899] flex items-center justify-center text-white font-bold relative">
-              A
-              <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-[#10b981] border-2 border-background"></span>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant={filter === 'all' ? 'default' : 'outline'}
+                  onClick={() => setFilter('all')}
+                  className={filter === 'all' 
+                    ? 'bg-blue-500 text-white' 
+                    : 'border-white/10 text-white hover:bg-white/10'}
+                >
+                  Todos
+                </Button>
+                <Button
+                  size="sm"
+                  variant={filter === 'pending' ? 'default' : 'outline'}
+                  onClick={() => setFilter('pending')}
+                  className={filter === 'pending' 
+                    ? 'bg-amber-500 text-black' 
+                    : 'border-white/10 text-white hover:bg-white/10'}
+                >
+                  Pendientes
+                </Button>
+                <Button
+                  size="sm"
+                  variant={filter === 'completed' ? 'default' : 'outline'}
+                  onClick={() => setFilter('completed')}
+                  className={filter === 'completed' 
+                    ? 'bg-green-500 text-black' 
+                    : 'border-white/10 text-white hover:bg-white/10'}
+                >
+                  Completados
+                </Button>
+                <Button
+                  size="sm"
+                  variant={filter === 'rejected' ? 'default' : 'outline'}
+                  onClick={() => setFilter('rejected')}
+                  className={filter === 'rejected' 
+                    ? 'bg-red-500 text-white' 
+                    : 'border-white/10 text-white hover:bg-white/10'}
+                >
+                  Rechazados
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
-      </header>
 
-      <div className="container-custom mt-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Back Button */}
-          <Link href="/dashboard" className="inline-flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors text-sm mb-6">
-            <ArrowLeft size={16} />
-            <span>{t('volverDashboard') as string}</span>
-          </Link>
-
-          {/* Title */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">{t('adminRetiros') as string}</h1>
-            <p className="text-foreground/70">{t('gestionSolicitudes') as string}</p>
-          </div>
-
-          {/* Search Bar */}
-          <div className="relative mb-6">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-4 h-4 text-foreground/40" />
+            <div className="mt-4 text-sm text-gray-400">
+              Mostrando {filteredWithdrawals.length} de {withdrawals.length} solicitudes
             </div>
-            <Input
-              type="text"
-              placeholder={t('buscarSolicitudes') as string}
-              className="pl-10"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+          </CardContent>
+        </Card>
 
-          {/* Withdrawals List */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <Card className="glass-card p-6 mb-8 overflow-hidden">
-                <h2 className="text-xl font-medium mb-4">{t('solicitudesRetiro') as string}</h2>
-
+        {/* Lista de Retiros */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Lista */}
+          <div className="lg:col-span-2">
+            <Card className="bg-[#1a1a1a] border-blue-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <CreditCard className="w-5 h-5 text-blue-500" />
+                  Solicitudes de Retiro
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
                 {isLoading ? (
                   <div className="flex justify-center items-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <div className="animate-spin text-4xl">⟳</div>
                   </div>
                 ) : filteredWithdrawals.length === 0 ? (
                   <div className="text-center py-12">
-                    <p className="text-foreground/60">{t('sinSolicitudes') as string}</p>
+                    <CreditCard className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                    <p className="text-gray-400">No se encontraron solicitudes</p>
                   </div>
                 ) : (
-                  <div className="divide-y divide-border/10 max-h-[600px] overflow-y-auto pr-2">
+                  <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
                     {filteredWithdrawals.map((withdrawal) => (
                       <div 
                         key={withdrawal.id} 
-                        className={`py-4 first:pt-0 cursor-pointer transition-colors ${selectedRequest?.id === withdrawal.id ? 'bg-primary/5 -mx-4 px-4' : 'hover:bg-primary/5 -mx-4 px-4'}`}
+                        className={`p-4 rounded-lg border transition-all cursor-pointer ${
+                          selectedRequest?.id === withdrawal.id 
+                            ? 'bg-blue-500/10 border-blue-500/50' 
+                            : 'bg-[#0a0a0a] border-white/10 hover:border-blue-500/30'
+                        }`}
                         onClick={() => setSelectedRequest(withdrawal)}
                       >
-                        <div className="flex justify-between gap-4">
+                        <div className="flex justify-between items-start mb-2">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-medium">
-                                {withdrawal.username}
-                              </h3>
+                              <h3 className="font-bold text-white">{withdrawal.username}</h3>
                               {getStatusBadge(withdrawal.status)}
                             </div>
-                            <p className="text-sm text-foreground/60">{withdrawal.email}</p>
-                            <p className="text-xs text-foreground/50 mt-1">
-                              {formatDate(withdrawal.timestamp)}
-                            </p>
+                            <p className="text-sm text-gray-400">{withdrawal.email}</p>
                           </div>
-                          <div className="flex items-center">
-                            <span className="font-medium text-lg">${withdrawal.amount} USD</span>
+                          <div className="text-right">
+                            <p className="text-2xl font-black text-white">${withdrawal.amount}</p>
+                            <p className="text-xs text-gray-500">USD</p>
                           </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <Calendar className="w-3 h-3" />
+                          {formatDate(withdrawal.timestamp)}
                         </div>
                       </div>
                     ))}
                   </div>
                 )}
-              </Card>
-            </div>
+              </CardContent>
+            </Card>
+          </div>
 
-            {/* Request Details */}
-            <div>
-              <Card className="glass-card p-6 mb-8 sticky top-6">
+          {/* Detalles */}
+          <div>
+            <Card className="bg-[#1a1a1a] border-blue-500/20 sticky top-6">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-blue-500" />
+                  Detalles
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
                 {selectedRequest ? (
-                  <div>
-                    <h2 className="text-xl font-medium mb-4">{t('detallesSolicitud') as string}</h2>
-                    
-                    <div className="space-y-4 mb-6">
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('id') as string}</span>
-                        <span className="font-medium">{selectedRequest.id.substring(0, 8)}...</span>
+                  <div className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm">
+                        <User className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-400">Usuario:</span>
+                        <span className="text-white font-medium">{selectedRequest.username}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('usuario') as string}</span>
-                        <span className="font-medium">{selectedRequest.username}</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Mail className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-400">Email:</span>
+                        <span className="text-white font-medium text-xs">{selectedRequest.email}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('correoElectronico') as string}</span>
-                        <span className="font-medium">{selectedRequest.email}</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <DollarSign className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-400">Monto:</span>
+                        <span className="text-white font-bold">${selectedRequest.amount} USD</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('monto') as string}</span>
-                        <span className="font-medium">${selectedRequest.amount} USD</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CreditCard className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-400">Método:</span>
+                        <span className="text-white font-medium">PayPal</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('metodo') as string}</span>
-                        <span className="font-medium">PayPal</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Calendar className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-400">Fecha:</span>
+                        <span className="text-white font-medium text-xs">{formatDate(selectedRequest.timestamp)}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('fecha') as string}</span>
-                        <span className="font-medium">{formatDate(selectedRequest.timestamp)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">{t('estado') as string}</span>
-                        <span>{getStatusBadge(selectedRequest.status)}</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="text-gray-400">Estado:</span>
+                        {getStatusBadge(selectedRequest.status)}
                       </div>
                       {selectedRequest.notes && (
                         <div className="pt-2">
-                          <span className="text-foreground/60 block mb-1">{t('notas') as string}</span>
-                          <p className="text-sm bg-card/50 p-2 rounded border border-border/20">{selectedRequest.notes}</p>
+                          <p className="text-sm text-gray-400 mb-1">Notas:</p>
+                          <p className="text-sm bg-[#0a0a0a] p-3 rounded border border-white/10 text-white">{selectedRequest.notes}</p>
                         </div>
                       )}
                     </div>
 
                     {selectedRequest.status === 'pending' && (
-                      <div className="space-y-4">
-                        <div className="pt-4 border-t border-border/10">
-                          <h3 className="font-medium mb-2">{t('accionesSolicitud') as string}</h3>
-                          
-                          <div className="flex flex-col gap-3">
-                            <Button 
-                              onClick={() => handleApprove(selectedRequest)}
-                              className="bg-green-600 hover:bg-green-700 text-white"
-                            >
-                              <CheckCircle className="mr-2 h-4 w-4" />
-                              {t('aprobarSolicitud') as string}
-                            </Button>
-                            
-                            <div className="space-y-2">
-                              <Textarea 
-                                placeholder={t('razonRechazo') as string}
-                                value={rejectionReason}
-                                onChange={(e) => setRejectionReason(e.target.value)}
-                                className="min-h-[80px]"
-                              />
-                              <Button 
-                                onClick={() => handleReject(selectedRequest)}
-                                variant="destructive"
-                                className="w-full"
-                              >
-                                <XCircle className="mr-2 h-4 w-4" />
-                                {t('rechazarSolicitud') as string}
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
+                      <div className="space-y-3 pt-4 border-t border-white/10">
+                        <Button 
+                          onClick={() => handleApprove(selectedRequest)}
+                          className="w-full bg-green-500 hover:bg-green-600 text-white font-bold"
+                        >
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Aprobar Retiro
+                        </Button>
+                        
+                        <Textarea 
+                          placeholder="Razón del rechazo (opcional)"
+                          value={rejectionReason}
+                          onChange={(e) => setRejectionReason(e.target.value)}
+                          className="min-h-[80px] bg-[#0a0a0a] border-white/10 text-white"
+                        />
+                        <Button 
+                          onClick={() => handleReject(selectedRequest)}
+                          className="w-full bg-red-500 hover:bg-red-600 text-white font-bold"
+                        >
+                          <XCircle className="mr-2 h-4 w-4" />
+                          Rechazar Retiro
+                        </Button>
                       </div>
                     )}
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-foreground/60">{t('seleccionaSolicitud') as string}</p>
+                    <FileText className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                    <p className="text-gray-400">Selecciona una solicitud para ver los detalles</p>
                   </div>
                 )}
-              </Card>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

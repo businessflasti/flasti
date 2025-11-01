@@ -19,17 +19,17 @@ export const NewsBentoGrid: React.FC = () => {
     {
       title: "Julio 2025: Más microtareas disponibles",
       description: "Esta semana se sumaron nuevas empresas al ecosistema de Flasti. Eso significa más microtareas activas para todos los usuarios registrados",
-      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/banner1.png",
+      image: "/images/principal/banner1.png",
     },
     {
       title: "Nueva función activa",
       description: "Ya está disponible la nueva modalidad de tareas rápidas. Se pueden completar en menos de tres minutos, desde cualquier dispositivo",
-      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/banner2.png",
+      image: "/images/principal/banner2.png",
     },
     {
       title: "+4.800 usuarios nuevos esta semana",
       description: "Porque unidos somos más. Esta semana, miles de personas comenzaron a trabajar desde flasti en todo el mundo",
-      image: "https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/banner3.png",
+      image: "/images/principal/banner3.png",
     },
   ];
 

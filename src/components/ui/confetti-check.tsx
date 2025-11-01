@@ -15,7 +15,7 @@ export function ConfettiCheck({ show, onClose, message = '¡Acción completada c
         aria-live="polite"
         role="status"
       >
-        <div className="relative flex flex-col items-center gap-4 bg-[#232323]/90 border border-[#333] rounded-2xl px-8 py-8 shadow-2xl animate-fade-in pointer-events-auto">
+        <div className="relative flex flex-col items-center gap-4 bg-[#1a1a1a]/90 border border-[#333] rounded-2xl px-8 py-8 shadow-2xl animate-fade-in pointer-events-auto">
           <FiCheckCircle className="text-green-400 text-6xl animate-bounce" />
           <span className="text-white text-lg font-semibold text-center animate-fade-in-slow">{message}</span>
           <button

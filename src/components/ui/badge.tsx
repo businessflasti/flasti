@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = {
-  default: "bg-[#232323] text-white border border-[#101010]",
+  default: "bg-[#1a1a1a] text-white border border-[#101010]",
   success: "bg-green-600 text-white",
   warning: "bg-yellow-600 text-white",
   danger: "bg-red-600 text-white",

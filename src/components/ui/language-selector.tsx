@@ -20,9 +20,9 @@ const LanguageSelector = (props: { mobile?: boolean }) => {
 
   const flagSrc = (code: string) => {
     switch (code) {
-      case "es": return "https://raw.githubusercontent.com/businessflasti/images/03c12e76a6065203aae90f745dc054005efeeb2e/banderas/espana.svg";
-      case "en": return "https://raw.githubusercontent.com/businessflasti/images/03c12e76a6065203aae90f745dc054005efeeb2e/banderas/usa.svg";
-      case "pt-br": return "https://raw.githubusercontent.com/businessflasti/images/03c12e76a6065203aae90f745dc054005efeeb2e/banderas/brasil.svg";
+      case "es": return "/images/banderas/espana.svg";
+      case "en": return "/images/banderas/usa.svg";
+      case "pt-br": return "/images/banderas/brasil.svg";
       default: return "";
     }
   };
@@ -49,7 +49,7 @@ const LanguageSelector = (props: { mobile?: boolean }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-border/30 shadow-sm backdrop-blur-md font-semibold min-w-[90px] h-8 focus:ring-2 focus:ring-primary/40 focus:outline-none w-full justify-center"
         aria-label="Select language"
-        style={{ minWidth: 90, height: 32, background: '#232323' }}
+        style={{ minWidth: 90, height: 32, background: '#1a1a1a' }}
       >
         <Image src={safeFlagSrc(currentLanguage.code)} alt={currentLanguage.label} width={22} height={22} className="rounded-full object-cover" />
         <span className="hidden sm:inline font-medium">{currentLanguage.label}</span>
@@ -57,7 +57,7 @@ const LanguageSelector = (props: { mobile?: boolean }) => {
         <ChevronDown size={16} className={`ml-1 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 rounded-xl shadow-xl border border-border/30 z-50 animate-fade-in" style={{ background: '#232323' }}>
+        <div className="absolute right-0 mt-2 w-40 rounded-xl shadow-xl border border-border/30 z-50 animate-fade-in" style={{ background: '#1a1a1a' }}>
           <div className="py-2">
             {languages.map((lang) => (
               <button

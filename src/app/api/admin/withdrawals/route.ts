@@ -153,9 +153,12 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: 'El retiro ya fue procesado' }, { status: 400 });
     }
 
+    // Normalizar el estado: 'approved' se convierte en 'completed'
+    const finalStatus = status === 'approved' ? 'completed' : status;
+
     // Preparar datos de actualización
     const updateData: any = {
-      status,
+      status: finalStatus,
       processed_at: new Date().toISOString()
     };
 

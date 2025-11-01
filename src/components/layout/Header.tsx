@@ -14,8 +14,6 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
 
   return (
     <header className="w-full bg-[#101010] sticky top-0 z-50 relative">
-      {/* Gradiente azul en el borde inferior */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3C66CD] to-transparent"></div>
       <div className="container-custom">
         <div className="flex items-center justify-between py-3.5">
           {/* Logo */}

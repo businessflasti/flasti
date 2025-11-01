@@ -1,6 +1,9 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
+import { useSeasonalTheme } from "@/hooks/useSeasonalTheme";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -12,8 +15,10 @@ interface LogoProps {
 
 const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: LogoProps) => {
   const { theme } = useTheme();
+  const { activeTheme } = useSeasonalTheme();
   const pathname = usePathname();
   const isDark = theme === "dark";
+  const [themeLogo, setThemeLogo] = useState<string | null>(null);
 
   // Tamaños basados en el prop size - ajustados para logo completo
   const sizes = {
@@ -34,14 +39,46 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
     }
   };
 
+  // Cargar el logo del tema activo
+  useEffect(() => {
+    const loadThemeLogo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('seasonal_themes')
+          .select('logo_url')
+          .eq('theme_name', activeTheme)
+          .single();
+
+        if (!error && data?.logo_url) {
+          setThemeLogo(data.logo_url);
+        } else {
+          setThemeLogo(null);
+        }
+      } catch (error) {
+        console.error('Error loading theme logo:', error);
+        setThemeLogo(null);
+      }
+    };
+
+    loadThemeLogo();
+  }, [activeTheme]);
+
   // Obtener dimensiones según el tamaño
   const { logoHeight, logoWidth, textClass } = sizes[size];
 
-  // Usar isotipo en login, logo completo en otras páginas
-  const logoPath = pathname === "/login" ? "/logo/isotipo-web.png" : "/logo/logo-web.png";
+  // Determinar qué logo usar
+  const isLoginPage = pathname === "/login";
+  let logoPath: string;
+  
+  if (themeLogo) {
+    // Si hay logo de tema, usarlo
+    logoPath = themeLogo;
+  } else {
+    // Usar isotipo en login, logo completo en otras páginas
+    logoPath = isLoginPage ? "/logo/isotipo-web.png" : "/logo/logo-web.png";
+  }
   
   // Ajustar tamaños para isotipo en login (cuadrado)
-  const isLoginPage = pathname === "/login";
   const finalWidth = isLoginPage ? logoHeight : logoWidth;
   const finalHeight = logoHeight;
 

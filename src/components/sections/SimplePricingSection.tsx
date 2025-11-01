@@ -68,7 +68,7 @@ const SimplePricingSection = React.memo(() => {
 
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
-          <Card className="bg-[#232323] overflow-hidden relative h-full rounded-3xl">
+          <Card className="bg-[#1a1a1a] overflow-hidden relative h-full rounded-3xl">
             {/* Animación eliminada: este bloque ya no tiene efecto motion ni animación de entrada */}
             <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
             {/* Efecto hover eliminado */}

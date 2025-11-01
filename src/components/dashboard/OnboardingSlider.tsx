@@ -120,7 +120,7 @@ export default function OnboardingSlider({ className = '' }: OnboardingSliderPro
       >
         {/* Imagen de fondo para la pestaña: siempre visible */}
         <img
-          src="https://raw.githubusercontent.com/businessflasti/images/refs/heads/main/herouno.webp"
+          src="/images/principal/herouno.webp"
           alt="Fondo pestaña"
           className={styles.toggleBg}
           aria-hidden

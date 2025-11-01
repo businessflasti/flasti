@@ -5,15 +5,21 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
-import CasinoDashboardPage from './casino-page';
 import OffersListNew from '@/components/cpalead/OffersListNew';
 import UserBalanceDisplay from '@/components/cpalead/UserBalanceDisplay';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw } from 'lucide-react';
+import CountryFlag from '@/components/ui/CountryFlag';
 import { toast } from 'sonner';
 import OnboardingSlider from '@/components/dashboard/OnboardingSlider';
+import WelcomeBonus from '@/components/dashboard/WelcomeBonus';
+import AdBlock from '@/components/ui/AdBlock';
+import { useElementVisibility } from '@/hooks/useElementVisibility';
+import SeasonalThemeEffects from '@/components/themes/SeasonalThemeEffects';
+import DailyMessage from '@/components/dashboard/DailyMessage';
+import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 // Importar estilos de animaciones
 import "./animations.css";
@@ -24,17 +30,49 @@ interface UserStats {
   todayEarnings: number;
   weekEarnings: number;
   totalTransactions: number;
+  welcomeBonusClaimed?: boolean;
 }
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const router = useRouter();
+  const { activeTheme } = useSeasonalTheme();
+  
+  // Hook de visibilidad para elementos del dashboard
+  const { isVisible, elements, isLoading } = useElementVisibility('dashboard');
+  
+  // Debug: Ver estado del hook
+  useEffect(() => {
+    console.log('🔍 Dashboard - Estado de visibilidad:', {
+      isLoading,
+      elements,
+      welcome_bonus: isVisible('welcome_bonus'),
+      balance_display: isVisible('balance_display'),
+      video_tutorial: isVisible('video_tutorial'),
+      stat_today: isVisible('stat_today')
+    });
+  }, [elements, isLoading]);
+  
+  // Estado para controlar si se muestra el reproductor completo
+  const [showFullPlayer, setShowFullPlayer] = useState(false);
+  
+  // Estado para el video tutorial
+  const [tutorialVideo, setTutorialVideo] = useState({
+    sliderUrl: '/video/tutorial-bienvenida.mp4',
+    playerUrl: '/video/tutorial-bienvenida.mp4',
+    title: 'Video tutorial',
+    description: 'Aprende cómo ganar dinero en Flasti',
+    isClickable: true
+  });
+  
   const [offers, setOffers] = useState<CPALeadOffer[]>([]);
   const [userStats, setUserStats] = useState<UserStats>({
     balance: 0,
     totalEarnings: 0,
     todayEarnings: 0,
     weekEarnings: 0,
-    totalTransactions: 0
+    totalTransactions: 0,
+    welcomeBonusClaimed: false
   });
   const [isLoadingOffers, setIsLoadingOffers] = useState(true);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
@@ -43,6 +81,150 @@ export default function DashboardPage() {
     refreshing: boolean;
     handleRefresh: () => void;
   } | null>(null);
+
+  // Redirección automática para cuenta admin
+  useEffect(() => {
+    if (user?.email === 'flasti.finanzas@gmail.com') {
+      router.push('/dashboard/admin');
+    }
+  }, [user, router]);
+  const [detectedCountry, setDetectedCountry] = useState<string>('--');
+  const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
+
+  // Detectar y guardar país del usuario en la base de datos
+  useEffect(() => {
+    const detectAndSaveCountry = async () => {
+      if (!user) return;
+
+      try {
+        // 1. Primero intentar desde localStorage (más rápido)
+        const savedCountry = localStorage.getItem('userCountry');
+        if (savedCountry && savedCountry !== 'GLOBAL' && savedCountry !== '--') {
+          setDetectedCountry(savedCountry);
+        }
+
+        // 2. Verificar en paralelo si el usuario ya tiene país en BD
+        const profilePromise = supabase
+          .from('user_profiles')
+          .select('country')
+          .eq('user_id', user.id)
+          .single();
+
+        // 3. Si no hay en localStorage, detectar vía API inmediatamente
+        let countryCode = savedCountry && savedCountry !== 'GLOBAL' && savedCountry !== '--' ? savedCountry : null;
+        
+        if (!countryCode) {
+          // Detectar país con timeout para no bloquear
+          const detectCountry = async () => {
+            try {
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 segundos timeout
+              
+              const response = await fetch('https://ipapi.co/json/', {
+                signal: controller.signal
+              });
+              clearTimeout(timeoutId);
+              
+              if (response.ok) {
+                const data = await response.json();
+                return data.country_code;
+              }
+            } catch (error) {
+              console.warn('Error detectando país vía API:', error);
+            }
+            return null;
+          };
+
+          countryCode = await detectCountry();
+          
+          if (countryCode) {
+            setDetectedCountry(countryCode);
+            localStorage.setItem('userCountry', countryCode);
+          }
+        }
+
+        // 4. Verificar resultado de BD
+        const { data: profile } = await profilePromise;
+        
+        // Si BD tiene país y es diferente al detectado, usar el de BD
+        if (profile?.country && profile.country !== countryCode) {
+          setDetectedCountry(profile.country);
+          localStorage.setItem('userCountry', profile.country);
+          countryCode = profile.country;
+        }
+
+        // 5. Guardar en BD si es necesario (en background)
+        if (countryCode && (!profile?.country || profile.country !== countryCode)) {
+          const deviceType = /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) 
+            ? 'Mobile' 
+            : /Tablet|iPad/i.test(navigator.userAgent)
+            ? 'Tablet'
+            : 'Desktop';
+
+          // No esperar esta operación
+          supabase
+            .from('user_profiles')
+            .update({ 
+              country: countryCode,
+              device_type: deviceType
+            })
+            .eq('user_id', user.id)
+            .then(() => console.log(`✅ País guardado: ${countryCode} - ${deviceType}`))
+            .catch(err => console.error('Error guardando país:', err));
+        }
+      } catch (error) {
+        console.error('Error detectando/guardando país:', error);
+        // Fallback: mantener el valor actual o usar '--'
+        if (!detectedCountry || detectedCountry === '--') {
+          const fallback = localStorage.getItem('userCountry');
+          if (fallback && fallback !== 'GLOBAL') {
+            setDetectedCountry(fallback);
+          }
+        }
+      }
+    };
+
+    detectAndSaveCountry();
+  }, [user]);
+
+  // Actualizar fecha y hora cada minuto
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      
+      // Formatear fecha
+      const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+      const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+      
+      const dayName = days[now.getDay()];
+      const day = now.getDate();
+      const monthName = months[now.getMonth()];
+      
+      // Formatear hora
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      
+      setCurrentDateTime({
+        date: `${dayName} ${day} ${monthName}`,
+        time: `${hours}:${minutes}`
+      });
+    };
+
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Función para obtener el nombre completo del país
+  const getCountryName = (code: string) => {
+    if (!code || code === '--' || code === 'GLOBAL') return '';
+    try {
+      const regionNames = new Intl.DisplayNames(['es'], { type: 'region' });
+      return regionNames.of(code);
+    } catch (e) {
+      return '';
+    }
+  };
 
   // Obtener ofertas de CPALead con filtrado por país
   const fetchOffers = async (forceRefresh = false) => {
@@ -128,7 +310,8 @@ export default function DashboardPage() {
         totalEarnings: cpalead_stats.total_earnings || 0,
         todayEarnings: cpalead_stats.today_earnings || 0,
         weekEarnings: cpalead_stats.week_earnings || 0,
-        totalTransactions: cpalead_stats.total_transactions || 0
+        totalTransactions: cpalead_stats.total_transactions || 0,
+        welcomeBonusClaimed: profile.welcome_bonus_claimed || false
       };
 
       setUserStats(stats);
@@ -139,6 +322,57 @@ export default function DashboardPage() {
       setIsLoadingStats(false);
     }
   };
+
+  // Cargar video tutorial desde Supabase en tiempo real
+  useEffect(() => {
+    const loadTutorialVideo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('tutorial_video')
+          .select('*')
+          .eq('is_active', true)
+          .single();
+
+        if (error) {
+          console.error('Error al cargar video:', error);
+        } else if (data) {
+          console.log('📹 Video cargado:', data);
+          setTutorialVideo({
+            sliderUrl: data.slider_video_url,
+            playerUrl: data.player_video_url,
+            title: data.title,
+            description: data.description,
+            isClickable: data.is_clickable
+          });
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    loadTutorialVideo();
+
+    // Suscribirse a cambios en tiempo real
+    const channel = supabase
+      .channel('tutorial_video_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'tutorial_video'
+        },
+        (payload) => {
+          console.log('📹 Video actualizado en tiempo real:', payload);
+          loadTutorialVideo();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Cargar datos al montar el componente
   useEffect(() => {
@@ -204,152 +438,543 @@ export default function DashboardPage() {
     };
   }, [user?.id]);
 
-  // Actualizar elementos del DOM cuando cambien los datos de CPA Lead
+  // Actualizar el país detectado cuando cambien los datos de CPA Lead
   useEffect(() => {
     if (cpaLeadData) {
-      // Actualizar elementos de escritorio
-      const countryElement = document.getElementById('country-info');
-      const refreshButton = document.getElementById('refresh-button') as HTMLButtonElement;
-      
-      // Actualizar elementos móviles
-      const countryElementMobile = document.getElementById('country-info-mobile');
-      const refreshButtonMobile = document.getElementById('refresh-button-mobile') as HTMLButtonElement;
-      
-      // Escritorio - país
-      if (countryElement) {
-        const spanElement = countryElement.querySelector('span');
-        if (spanElement) {
-          spanElement.textContent = `País: ${cpaLeadData.userCountry}`;
-        }
-      }
-      
-      // Móvil - país
-      if (countryElementMobile) {
-        const spanElement = countryElementMobile.querySelector('span');
-        if (spanElement) {
-          spanElement.textContent = cpaLeadData.userCountry;
-        }
-      }
-      
-      // Escritorio - botón
-      if (refreshButton) {
-        refreshButton.disabled = cpaLeadData.refreshing;
-        const spanElement = refreshButton.querySelector('span');
-        if (spanElement) {
-          spanElement.textContent = cpaLeadData.refreshing ? 'Actualizando...' : 'Actualizar';
-        }
-        refreshButton.onclick = cpaLeadData.handleRefresh;
-      }
-      
-      // Móvil - botón
-      if (refreshButtonMobile) {
-        refreshButtonMobile.disabled = cpaLeadData.refreshing;
-        const spanElement = refreshButtonMobile.querySelector('span');
-        if (spanElement) {
-          spanElement.textContent = cpaLeadData.refreshing ? 'Actualizando...' : 'Actualizar';
-        }
-        refreshButtonMobile.onclick = cpaLeadData.handleRefresh;
-      }
+      setDetectedCountry(cpaLeadData.userCountry);
     }
   }, [cpaLeadData]);
 
   return (
-    <div className="min-h-screen bg-[#101010] overscroll-none">
-      {/* Container principal con mejor padding y max-width */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8">
-        
-        {/* Slider de onboarding colapsible */}
-        <OnboardingSlider />
+    <div className="min-h-screen overscroll-none relative bg-[#0B1017]">
+      
+      {/* Efectos temáticos estacionales */}
+      <SeasonalThemeEffects />
 
-        {/* Contador de saldo en ancho completo */}
-        {user?.id && (
-          <div className="mb-4 lg:mb-6">
-            <UserBalanceDisplay
-              initialBalance={userStats.balance}
-              userId={user.id}
-              currency="USD"
-              showControls={true}
+      {/* Container principal con mejor padding y max-width */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10">
+        
+        {/* Bono de bienvenida móvil - Fuera del contenedor - Controlable */}
+        {user?.id && isVisible('welcome_bonus') && (
+          <div className="md:hidden mb-4">
+            <WelcomeBonus 
+              userId={user.id} 
+              onBonusClaimed={() => {
+                toast.success('¡Bono acreditado exitosamente!');
+                fetchUserStats();
+              }}
             />
           </div>
         )}
 
-        {/* Estadísticas mejoradas */}
+        {/* Contenedor móvil con imagen de fondo - Balance y Video */}
+        {user?.id && (
+          <div 
+            className="md:hidden mb-4 rounded-2xl overflow-hidden p-4 pb-6"
+            style={{
+              backgroundImage: activeTheme === 'halloween' 
+                ? 'url(/images/fondo-halloween.webp)' 
+                : activeTheme === 'christmas'
+                ? 'url(/images/fondo-navidad.webp)'
+                : 'url(/images/fondo.webp)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
+            {/* Balance y Mensaje del Día - Grid 50/50 en todas las resoluciones */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4">
+              {/* Balance - Controlable */}
+              {isVisible('balance_display') && (
+                <div className="h-full">
+                  <UserBalanceDisplay
+                    initialBalance={userStats.balance}
+                    userId={user.id}
+                    currency="USD"
+                    showControls={true}
+                  />
+                </div>
+              )}
+              
+              {/* Mensaje del Día */}
+              <div className="h-full">
+                <DailyMessage />
+              </div>
+            </div>
+
+            {/* Video Tutorial móvil - Controlable */}
+            {isVisible('video_tutorial') && (
+              <div className="relative h-[200px] bg-black rounded-3xl overflow-hidden">
+              <Card 
+                className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 h-full overflow-hidden rounded-3xl transition-all duration-700 group"
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
+                {!showFullPlayer ? (
+                  /* Video en bucle - Limpio */
+                  <div 
+                    className="relative w-full h-full cursor-pointer bg-black"
+                    onClick={() => tutorialVideo.isClickable && setShowFullPlayer(true)}
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
+                    <video
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      controlsList="nodownload nofullscreen noremoteplayback"
+                      disablePictureInPicture
+                      key={tutorialVideo.sliderUrl}
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src={tutorialVideo.sliderUrl} type="video/mp4" />
+                    </video>
+                    
+                    {/* Botón de play con texto - Solo si es clickable */}
+                    {tutorialVideo.isClickable && (
+                      <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
+                        <span className="text-black text-xs sm:text-sm font-medium bg-white px-3 py-1.5 rounded-full">
+                          ¿Cómo funciona?
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowFullPlayer(true);
+                          }}
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center transition-all"
+                        >
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="currentColor" viewBox="0 0 24 24" style={{marginLeft: '2px'}}>
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Reproductor completo con controles */
+                  <div className="relative w-full h-full bg-black" onContextMenu={(e) => e.preventDefault()}>
+                    <video
+                      className="w-full h-full object-contain"
+                      controls
+                      autoPlay
+                      preload="metadata"
+                      controlsList="nodownload noplaybackrate nofullscreen"
+                      disablePictureInPicture
+                      key={tutorialVideo.playerUrl}
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src={tutorialVideo.playerUrl} type="video/mp4" />
+                      Tu navegador no soporta la reproducción de video.
+                    </video>
+                    
+                    {/* Botón para volver al modo bucle */}
+                    <button
+                      onClick={() => setShowFullPlayer(false)}
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-all z-10"
+                      
+                    >
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </Card>
+            </div>
+            )}
+          </div>
+        )}
+
+        {/* Layout Desktop: Columna izquierda (Balance + Bono) y Columna derecha (Video) */}
+        {user?.id && (
+          <div 
+            className="hidden md:block mb-4 lg:mb-6 rounded-2xl overflow-hidden py-6 px-4"
+            style={{
+              backgroundImage: activeTheme === 'halloween' 
+                ? 'url(/images/fondo-halloween.webp)' 
+                : activeTheme === 'christmas'
+                ? 'url(/images/fondo-navidad.webp)'
+                : 'url(/images/fondo.webp)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
+            <div className="grid md:grid-cols-2 gap-4">
+            {/* Columna izquierda: Balance + Mensaje del Día */}
+            <div className="grid grid-cols-2 gap-4 h-[400px]">
+              {/* Balance */}
+              <div className="h-full">
+                <UserBalanceDisplay
+                  initialBalance={userStats.balance}
+                  userId={user.id}
+                  currency="USD"
+                  showControls={true}
+                />
+              </div>
+
+              {/* Mensaje del Día */}
+              <div className="h-full">
+                <DailyMessage />
+              </div>
+            </div>
+
+            {/* Columna derecha: Bono + Video Tutorial */}
+            <div className="flex flex-col gap-4 h-[400px]">
+              {/* Bono de bienvenida o AdBlock */}
+              <div className="flex-shrink-0">
+                {!userStats.welcomeBonusClaimed ? (
+                  <WelcomeBonus 
+                    userId={user.id} 
+                    onBonusClaimed={() => {
+                      toast.success('¡Bono acreditado exitosamente!');
+                      fetchUserStats();
+                    }}
+                  />
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <AdBlock 
+                      adClient="ca-pub-8330194041691289" 
+                      adSlot="6796391562" 
+                      alwaysVisible 
+                      className="w-full max-w-full"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Video Tutorial */}
+              <div className="flex-1 min-h-0">
+              <Card 
+                className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 h-full overflow-hidden rounded-3xl transition-all duration-700 group"
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
+                {!showFullPlayer ? (
+                  /* Video en bucle - Limpio */
+                  <div 
+                    className="relative w-full h-full cursor-pointer bg-black"
+                    onClick={() => tutorialVideo.isClickable && setShowFullPlayer(true)}
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
+                    <video
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      controlsList="nodownload nofullscreen noremoteplayback"
+                      disablePictureInPicture
+                      key={tutorialVideo.sliderUrl}
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src={tutorialVideo.sliderUrl} type="video/mp4" />
+                    </video>
+                    
+                    {/* Botón de play con texto - Solo si es clickable */}
+                    {tutorialVideo.isClickable && (
+                      <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
+                        <span className="text-black text-xs sm:text-sm font-medium bg-white px-3 py-1.5 rounded-full">
+                          ¿Cómo funciona?
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowFullPlayer(true);
+                          }}
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center transition-all"
+                        >
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="currentColor" viewBox="0 0 24 24" style={{marginLeft: '2px'}}>
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Reproductor completo con controles */
+                  <div className="relative w-full h-full bg-black" onContextMenu={(e) => e.preventDefault()}>
+                    <video
+                      className="w-full h-full object-contain"
+                      controls
+                      autoPlay
+                      preload="metadata"
+                      controlsList="nodownload noplaybackrate nofullscreen"
+                      disablePictureInPicture
+                      key={tutorialVideo.playerUrl}
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src={tutorialVideo.playerUrl} type="video/mp4" />
+                      Tu navegador no soporta la reproducción de video.
+                    </video>
+                    
+                    {/* Botón para volver al modo bucle */}
+                    <button
+                      onClick={() => setShowFullPlayer(false)}
+                      className="absolute top-2 right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-all z-10"
+                      
+                    >
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </Card>
+              </div>
+            </div>
+            </div>
+          </div>
+        )}
+
+        {/* Estadísticas con estilo glassmorphism exclusivo */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6">
-          <Card className="bg-[#232323] border-green-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-4 lg:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-white">
-                    <span className="hidden md:inline">Ganancias de </span>Hoy
-                  </p>
-                  <p className="text-2xl lg:text-3xl font-bold text-white">
-                    ${userStats.todayEarnings.toFixed(2)}
-                  </p>
+          {isVisible('stat_today') && (
+            <div className="relative group">
+              {/* Gradiente radial de fondo al hover */}
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
+                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(255, 20, 147, 0.4), transparent 70%)' }}
+              ></div>
+              
+              {/* Tarjeta glassmorphism */}
+              <div 
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Efecto neón interno al hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 60px rgba(255, 20, 147, 0.4), 0 0 40px rgba(255, 20, 147, 0.4)' }}
+                ></div>
+                
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                
+                {/* Contenido */}
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                        <span className="hidden md:inline">Ganancias de </span>Hoy
+                      </p>
+                      <p className="text-2xl lg:text-3xl font-bold text-white">
+                        ${userStats.todayEarnings.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF1493]/20 to-[#FF1493]/5 group-hover:scale-110 transition-all duration-500">
+                      <Calendar className="w-6 h-6 text-[#FF1493]" />
+                    </div>
+                  </div>
                 </div>
-                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
-                  <Calendar className="w-6 h-6" style={{ color: '#000000' }} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="bg-[#232323] border-blue-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-4 lg:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-white">Esta Semana</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-white">
-                    ${userStats.weekEarnings.toFixed(2)}
-                  </p>
-                </div>
-                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
-                  <TrendingUp className="w-6 h-6" style={{ color: '#000000' }} />
+                {/* Partículas flotantes sutiles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  {[...Array(3)].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="absolute w-1 h-1 rounded-full animate-float-particle"
+                      style={{
+                        background: '#FF1493',
+                        left: `${20 + idx * 30}%`,
+                        bottom: '10%',
+                        animationDelay: `${idx * 0.5}s`,
+                        boxShadow: '0 0 10px rgba(255, 20, 147, 0.4)'
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )}
 
-          <Card className="bg-[#232323] border-purple-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-4 lg:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-white">Total Ganado</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-white">
-                    ${userStats.totalEarnings.toFixed(2)}
-                  </p>
+          {isVisible('stat_week') && (
+            <div className="relative group">
+              {/* Gradiente radial de fondo al hover */}
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
+                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(45, 226, 230, 0.4), transparent 70%)' }}
+              ></div>
+              
+              {/* Tarjeta glassmorphism */}
+              <div 
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Efecto neón interno al hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 60px rgba(45, 226, 230, 0.4), 0 0 40px rgba(45, 226, 230, 0.4)' }}
+                ></div>
+                
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                
+                {/* Contenido */}
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Esta Semana</p>
+                      <p className="text-2xl lg:text-3xl font-bold text-white">
+                        ${userStats.weekEarnings.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5 group-hover:scale-110 transition-all duration-500">
+                      <TrendingUp className="w-6 h-6 text-[#2DE2E6]" />
+                    </div>
+                  </div>
                 </div>
-                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
-                  <Target className="w-6 h-6" style={{ color: '#000000' }} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="bg-[#232323] border-orange-500/20 hover:bg-[#2a2a2a] transition-all duration-300">
-            <CardContent className="p-4 lg:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-white">
-                    <span className="md:hidden text-sm">Completas</span>
-                    <span className="hidden md:inline text-sm">Completadas</span>
-                  </p>
-                  <p className="text-2xl lg:text-3xl font-bold text-white">
-                    {userStats.totalTransactions}
-                  </p>
-                </div>
-                <div className="p-3 rounded-xl flex items-center justify-center md:p-3" style={{ backgroundColor: 'white' }}>
-                  <Gift className="w-6 h-6" style={{ color: '#000000' }} />
+                {/* Partículas flotantes sutiles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  {[...Array(3)].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="absolute w-1 h-1 rounded-full animate-float-particle"
+                      style={{
+                        background: '#2DE2E6',
+                        left: `${20 + idx * 30}%`,
+                        bottom: '10%',
+                        animationDelay: `${idx * 0.5}s`,
+                        boxShadow: '0 0 10px rgba(45, 226, 230, 0.4)'
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )}
+
+          {isVisible('stat_total') && (
+            <div className="relative group">
+              {/* Gradiente radial de fondo al hover */}
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
+                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(30, 144, 255, 0.4), transparent 70%)' }}
+              ></div>
+              
+              {/* Tarjeta glassmorphism */}
+              <div 
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Efecto neón interno al hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 60px rgba(30, 144, 255, 0.4), 0 0 40px rgba(30, 144, 255, 0.4)' }}
+                ></div>
+                
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                
+                {/* Contenido */}
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Total Ganado</p>
+                      <p className="text-2xl lg:text-3xl font-bold text-white">
+                        ${userStats.totalEarnings.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#8B5CF6]/20 to-[#8B5CF6]/5 group-hover:scale-110 transition-all duration-500">
+                      <Target className="w-6 h-6 text-[#8B5CF6]" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Partículas flotantes sutiles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  {[...Array(3)].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="absolute w-1 h-1 rounded-full animate-float-particle"
+                      style={{
+                        background: '#1E90FF',
+                        left: `${20 + idx * 30}%`,
+                        bottom: '10%',
+                        animationDelay: `${idx * 0.5}s`,
+                        boxShadow: '0 0 10px rgba(30, 144, 255, 0.4)'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isVisible('stat_completed') && (
+            <div className="relative group">
+              {/* Gradiente radial de fondo al hover */}
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
+                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.4), transparent 70%)' }}
+              ></div>
+              
+              {/* Tarjeta glassmorphism */}
+              <div 
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Efecto neón interno al hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 60px rgba(255, 107, 53, 0.4), 0 0 40px rgba(255, 107, 53, 0.4)' }}
+                ></div>
+                
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                
+                {/* Contenido */}
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                        Completadas
+                      </p>
+                      <p className="text-2xl lg:text-3xl font-bold text-white">
+                        {userStats.totalTransactions}
+                      </p>
+                    </div>
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#FF6B35]/5 group-hover:scale-110 transition-all duration-500">
+                      <Gift className="w-6 h-6 text-[#FF6B35]" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Partículas flotantes sutiles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  {[...Array(3)].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="absolute w-1 h-1 rounded-full animate-float-particle"
+                      style={{
+                        background: '#FF6B35',
+                        left: `${20 + idx * 30}%`,
+                        bottom: '10%',
+                        animationDelay: `${idx * 0.5}s`,
+                        boxShadow: '0 0 10px rgba(255, 107, 53, 0.4)'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Contenido principal con tabs mejorado */}
-        <Tabs defaultValue="offers" className="space-y-4">
+        {/* Contenido principal con tabs mejorado - Controlable */}
+        {isVisible('offers_section') && (
+          <Tabs defaultValue="offers" className="space-y-4">
 
-          <TabsContent value="offers" className="space-y-4">
-            <Card className="bg-[#232323] border-white/10">
+            <TabsContent value="offers" className="space-y-4">
+              <Card 
+                className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl"
+              >
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
               <CardHeader className="pb-4">
                 {/* Título */}
                 <div className="mb-3">
@@ -363,46 +988,46 @@ export default function DashboardPage() {
                 
                 {/* Controles debajo del título */}
                 <div className="flex items-center justify-between">
-                  {/* Versión móvil - compacta */}
-                  <div className="flex md:hidden items-center space-x-2 text-xs">
-                    <div className="flex items-center space-x-1 text-gray-400" id="country-info-mobile">
-                      <Globe className="w-3 h-3 text-white" />
-                      <span className="text-xs">--</span>
-                    </div>
-                    {/* Contador de ofertas eliminado */}
+                  {/* Badge de ubicación - Solo móvil (izquierda) */}
+                  <div className="flex md:hidden">
+                    {detectedCountry && detectedCountry !== '--' && detectedCountry !== 'GLOBAL' ? (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#101010] shadow-sm whitespace-nowrap">
+                        <CountryFlag countryCode={detectedCountry} size="sm" />
+                        <span className="text-white font-semibold text-[10px]">
+                          {detectedCountry}
+                        </span>
+                        <span className="text-white/40 text-[10px]">•</span>
+                        <span className="text-white/70 text-[10px]">
+                          {currentDateTime.date}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-[#101010] shadow-sm">
+                        <span className="text-white/50 text-[10px]">Detectando...</span>
+                      </div>
+                    )}
                   </div>
-                  
-                  {/* Versión escritorio */}
-                  <div className="hidden md:flex items-center space-x-4">
-                    {/* País */}
-                    <div className="flex items-center space-x-2 text-gray-400" id="country-info">
-                      <Globe className="w-4 h-4 text-white" />
-                      <span className="text-sm">País: --</span>
-                    </div>
-                    
-                    {/* Contador de ofertas eliminado */}
-                  </div>
-                  
-                  {/* Botones de actualizar */}
-                  <div className="flex">
+
+                  {/* Botón actualizar - Desktop izquierda, Móvil derecha */}
+                  <div className="flex md:ml-0 ml-auto">
                     {/* Botón escritorio */}
                     <button 
-                      id="refresh-button"
-                      className="hidden md:flex items-center space-x-2 px-3 py-1.5 text-xs bg-white text-black rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50"
-                      disabled
+                      className="hidden md:flex items-center space-x-2 px-4 py-2 text-sm bg-white text-black rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      disabled={!cpaLeadData || cpaLeadData.refreshing}
+                      onClick={cpaLeadData?.handleRefresh}
                     >
-                      <RefreshCw className="w-3 h-3" />
-                      <span>Actualizar</span>
+                      <RefreshCw className={`w-4 h-4 ${cpaLeadData?.refreshing ? 'animate-spin' : ''}`} />
+                      <span>{cpaLeadData?.refreshing ? 'Actualizando...' : 'Actualizar'}</span>
                     </button>
                     
                     {/* Botón móvil */}
                     <button 
-                      id="refresh-button-mobile"
-                      className="flex md:hidden items-center space-x-1 px-2 py-1 text-xs bg-white text-black rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50"
-                      disabled
+                      className="flex md:hidden items-center space-x-2 px-3 py-1.5 text-xs bg-white text-black rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      disabled={!cpaLeadData || cpaLeadData.refreshing}
+                      onClick={cpaLeadData?.handleRefresh}
                     >
-                      <RefreshCw className="w-3 h-3" />
-                      <span>Actualizar</span>
+                      <RefreshCw className={`w-3 h-3 ${cpaLeadData?.refreshing ? 'animate-spin' : ''}`} />
+                      <span>{cpaLeadData?.refreshing ? 'Actualizando...' : 'Actualizar'}</span>
                     </button>
                   </div>
                 </div>
@@ -428,13 +1053,8 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </TabsContent>
-
-          <TabsContent value="dashboard" className="space-y-4">
-            <div className="bg-slate-800/30 border border-white/10 backdrop-blur-sm rounded-2xl overflow-hidden">
-              <CasinoDashboardPage />
-            </div>
-          </TabsContent>
         </Tabs>
+        )}
       </div>
     </div>
   );

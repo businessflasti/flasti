@@ -37,10 +37,12 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import PayPalLogo from "@/components/icons/PayPalLogo";
 import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
+import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 const CheckoutContent = () => {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const { activeTheme } = useSeasonalTheme();
   
   // Constante para el máximo número de intentos
   const MAX_HOTMART_LOAD_ATTEMPTS = 3;
@@ -51,7 +53,7 @@ const CheckoutContent = () => {
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
 
   // Estado para el precio base
-  const [price] = useState(3.9); // Precio base en USD (actualizado a $3.90)
+  const [price] = useState(4.9); // Precio base en USD (actualizado a $4.90)
   
   // Estados para descuentos (mantenidos por compatibilidad pero siempre en falso)
   const [discountApplied] = useState(false);
@@ -125,7 +127,7 @@ const CheckoutContent = () => {
     const checkoutContainer = document.getElementById('inline_checkout');
     if (checkoutContainer) {
       checkoutContainer.innerHTML = '';
-      checkoutContainer.style.backgroundColor = '#232323';
+      checkoutContainer.style.backgroundColor = '#1a1a1a';
       checkoutContainer.style.minHeight = '0px';
       checkoutContainer.style.opacity = '0';
       checkoutContainer.style.borderRadius = '12px';
@@ -356,43 +358,39 @@ const CheckoutContent = () => {
   // Función para guardar datos de Mercado Pago en Supabase
   const saveMercadoPagoCheckoutLead = async (transactionData?: any) => {
     try {
+      console.log('🟠 Intentando guardar lead de MercadoPago...');
+      console.log('📝 Datos del formulario:', mercadoPagoFormData);
+      
       const leadData = {
-        full_name: mercadoPagoFormData.fullName.trim(),
+        name: mercadoPagoFormData.fullName.trim(),
         email: mercadoPagoFormData.email.trim().toLowerCase(),
         payment_method: 'mercadopago',
-        amount: parseFloat(price) * 1150, // Convertir USD a ARS aproximadamente
-        currency: 'ARS',
-        transaction_id: transactionData?.id || null,
-        status: transactionData ? 'completed' : 'form_submitted',
-        user_id: user?.id || null, // 🎯 AGREGAR USER_ID
-        created_at: new Date().toISOString(),
-        metadata: {
-          discount_applied: discountApplied,
-          final_discount_applied: finalDiscountApplied,
-          user_agent: navigator.userAgent,
-          referrer: document.referrer || null,
-          user_email: user?.email || null // 🎯 AGREGAR EMAIL DEL USUARIO AUTENTICADO
-        }
+        amount: parseFloat(price.toString()),
+        country: null,
+        user_id: user?.id || null,
+        status: transactionData ? 'completed' : 'pending'
       };
 
-      const { data, error } = await supabase
-        .from('checkout_leads')
-        .insert([leadData])
-        .select()
-        .single();
+      console.log('📤 Enviando lead:', leadData);
 
-      if (error) {
-        console.error('Error al guardar lead de Mercado Pago en Supabase:', error);
-        return { success: false, error };
+      const response = await fetch('/api/checkout/save-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadData)
+      });
+
+      const result = await response.json();
+      console.log('📥 Respuesta del servidor:', result);
+
+      if (result.success) {
+        console.log('✅ Lead de Mercado Pago guardado exitosamente:', result.lead_id);
+        return { success: true, data: result };
+      } else {
+        console.error('❌ Error al guardar lead de Mercado Pago:', result.error);
+        return { success: false, error: result.error };
       }
-
-      console.log('Lead de Mercado Pago guardado exitosamente:', data);
-
-      // Lead guardado (sin tracking de Yandex)
-
-      return { success: true, data };
     } catch (error) {
-      console.error('Error inesperado al guardar lead de Mercado Pago:', error);
+      console.error('💥 Error inesperado al guardar lead de Mercado Pago:', error);
       return { success: false, error };
     }
   };
@@ -492,8 +490,8 @@ const CheckoutContent = () => {
       // Deshabilitar el botón y mostrar loading
       setIsSubmittingMercadoPagoForm(true);
 
-  // Precio base en ARS (actualizado a ARS 2990)
-  const amountARS = 2990;
+  // Precio base en ARS (actualizado a ARS 4990)
+  const amountARS = 4990;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -533,43 +531,40 @@ const CheckoutContent = () => {
   // Función para guardar datos en Supabase
   const saveCheckoutLead = async (transactionData?: any) => {
     try {
+      console.log('🔵 Intentando guardar lead de PayPal...');
+      console.log('📝 Datos del formulario:', paypalFormData);
+      
+      // Usar los datos del formulario de PayPal
       const leadData = {
-        full_name: paypalFormData.fullName.trim(),
+        name: paypalFormData.fullName.trim(),
         email: paypalFormData.email.trim().toLowerCase(),
         payment_method: 'paypal',
-        amount: parseFloat(price),
-        currency: 'USD',
-        transaction_id: transactionData?.id || null,
-        status: transactionData ? 'completed' : 'form_submitted',
-        user_id: user?.id || null, // 🎯 AGREGAR USER_ID
-        created_at: new Date().toISOString(),
-        metadata: {
-          discount_applied: discountApplied,
-          final_discount_applied: finalDiscountApplied,
-          user_agent: navigator.userAgent,
-          referrer: document.referrer || null,
-          user_email: user?.email || null // 🎯 AGREGAR EMAIL DEL USUARIO AUTENTICADO
-        }
+        amount: parseFloat(price.toString()),
+        country: null,
+        user_id: user?.id || null,
+        status: transactionData ? 'completed' : 'pending'
       };
 
-      const { data, error } = await supabase
-        .from('checkout_leads')
-        .insert([leadData])
-        .select()
-        .single();
+      console.log('📤 Enviando lead:', leadData);
 
-      if (error) {
-        console.error('Error al guardar lead en Supabase:', error);
-        return { success: false, error };
+      const response = await fetch('/api/checkout/save-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadData)
+      });
+
+      const result = await response.json();
+      console.log('📥 Respuesta del servidor:', result);
+
+      if (result.success) {
+        console.log('✅ Lead de PayPal guardado exitosamente:', result.lead_id);
+        return { success: true, data: result };
+      } else {
+        console.error('❌ Error al guardar lead de PayPal:', result.error);
+        return { success: false, error: result.error };
       }
-
-      console.log('Lead guardado exitosamente:', data);
-
-      // Lead guardado (sin tracking de Yandex)
-
-      return { success: true, data };
     } catch (error) {
-      console.error('Error inesperado al guardar lead:', error);
+      console.error('💥 Error inesperado al guardar lead de PayPal:', error);
       return { success: false, error };
     }
   };
@@ -746,7 +741,7 @@ const CheckoutContent = () => {
 
     try {
       // Precio base en ARS
-  const amountARS = 2990; // ARS 2.990 precio base
+  const amountARS = 4990; // ARS 4.990 precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1377,8 +1372,81 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0" style={{ background: "#101010" }}>
-
+      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0 relative" style={{ background: "#0B0F17" }}>
+        {/* Guirnalda temática */}
+        {activeTheme === 'halloween' && (
+          <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+            <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
+              <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
+              {[...Array(25)].map((_, i) => {
+                const x = (i * 48) + 24;
+                const y = 10 + Math.sin(i * 0.5) * 8;
+                const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
+                const color = colors[i % colors.length];
+                return (
+                  <g key={`light-${i}`}>
+                    <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
+                    <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                    <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
+                  </g>
+                );
+              })}
+            </svg>
+            <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
+              <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
+              {[...Array(10)].map((_, i) => {
+                const x = (i * 40) + 20;
+                const y = 8 + Math.sin(i * 0.5) * 5;
+                const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
+                const color = colors[i % colors.length];
+                return (
+                  <g key={`light-mobile-${i}`}>
+                    <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
+                    <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                    <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        )}
+        
+        {activeTheme === 'christmas' && (
+          <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+            <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
+              <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
+              {[...Array(25)].map((_, i) => {
+                const x = (i * 48) + 24;
+                const y = 10 + Math.sin(i * 0.5) * 8;
+                const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
+                const color = colors[i % colors.length];
+                return (
+                  <g key={`light-${i}`}>
+                    <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
+                    <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                    <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
+                  </g>
+                );
+              })}
+            </svg>
+            <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
+              <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
+              {[...Array(10)].map((_, i) => {
+                const x = (i * 40) + 20;
+                const y = 8 + Math.sin(i * 0.5) * 5;
+                const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
+                const color = colors[i % colors.length];
+                return (
+                  <g key={`light-mobile-${i}`}>
+                    <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
+                    <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                    <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        )}
 
       {/* Eliminado Exit Intent Popup */}
 
@@ -1386,7 +1454,12 @@ const CheckoutContent = () => {
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-8">
           {/* Columna derecha - Resumen de compra (aparece primero en móvil) */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 mb-2 lg:mb-0">
-            <Card className="bg-[#232323] p-6 rounded-3xl">
+            <Card 
+              className="bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 rounded-3xl transition-all duration-700 relative"
+              style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            >
+              {/* Brillo superior glassmorphism */}
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
               <div className="flex justify-between items-center mb-2">
                 <div>
                   <h2 className="text-lg md:text-xl text-white"
@@ -1400,7 +1473,7 @@ const CheckoutContent = () => {
                 {/* Etiqueta Premium y subtítulo eliminados por solicitud */}
               </div>
 
-                <div className="bg-[#101010] rounded-xl p-4 mt-4 mb-4 relative">
+                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 mt-4 mb-4 relative">
                 {/* Eliminada banderita del país detectado */}
 
                 {/* Versión móvil: etiqueta superior eliminada; la etiqueta única se muestra debajo del título */}
@@ -1474,8 +1547,9 @@ const CheckoutContent = () => {
 
               <div className="flex flex-col gap-3 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-[#232323]">
-                    <Zap className="text-[#101010]" size={16} />
+                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                    <Zap className="text-white drop-shadow-lg" size={18} />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Acceso inmediato</h4>
@@ -1484,8 +1558,9 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                    <Infinity className="text-[#101010]" size={16} />
+                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                    <Infinity className="text-white drop-shadow-lg" size={18} />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
@@ -1494,8 +1569,9 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                    <Shield className="text-[#101010]" size={16} />
+                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                    <Shield className="text-white drop-shadow-lg" size={18} />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
@@ -1504,8 +1580,9 @@ const CheckoutContent = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                    <HeadphonesIcon className="text-[#101010]" size={16} />
+                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                    <HeadphonesIcon className="text-white drop-shadow-lg" size={18} />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                   </div>
                   <div>
                     <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
@@ -1532,7 +1609,12 @@ const CheckoutContent = () => {
             <div className="space-y-4">
 
               {/* Moneda local - Hotmart o Mercado Pago */}
-              <Card className={`border bg-[#232323] overflow-hidden rounded-3xl mobile-card ${selectedPaymentMethod === "hotmart" ? "border-white" : ""}`}>
+              <Card 
+                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-all duration-700 relative ${selectedPaymentMethod === "hotmart" ? "border-white" : "border-white/10"}`}
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -1563,7 +1645,7 @@ const CheckoutContent = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#101010] flex items-center justify-center border border-[#232323]">
+                    <div className="w-10 h-10 rounded-full bg-white/[0.03] backdrop-blur-xl flex items-center justify-center border border-white/10">
                       <WorldIcon className="text-white h-5 w-5" />
                     </div>
                     <div>
@@ -1628,9 +1710,9 @@ const CheckoutContent = () => {
                 </div>
 
                 {selectedPaymentMethod === "hotmart" && (
-                  <div className="p-6 border-t border-[#101010]" style={{ background: "#232323" }}>
+                  <div className="p-6 border-t border-white/10" style={{ background: '#13171E' }}>
                     {!isArgentina && (
-                      <div id="inline_checkout" className="w-full rounded-xl overflow-hidden" style={{backgroundColor: '#232323', minHeight: isHotmartLoaded ? 'auto' : '0px', opacity: isHotmartLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in-out'}}></div>
+                      <div id="inline_checkout" className="w-full rounded-xl overflow-hidden" style={{background: '#13171E', minHeight: isHotmartLoaded ? 'auto' : '0px', opacity: isHotmartLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in-out'}}></div>
                     )}
                       {isArgentina ? (
                         <div className="w-full">
@@ -1653,7 +1735,7 @@ const CheckoutContent = () => {
                             </div>
                           </div>
 
-                          <div className="flex justify-between items-center mb-3 p-3 bg-[#101010] rounded-lg">
+                          <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ background: '#21242C' }}>
                             <div className="flex flex-col">
                               <span className="text-sm text-white">Total</span>
                             </div>
@@ -1661,9 +1743,9 @@ const CheckoutContent = () => {
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white">
                                   {isArgentina ? (
-                                    <span className="text-lg">AR$ 2.990</span>
+                                    <span className="text-lg">AR$ 4.990</span>
                                   ) : (
-                                    <span>$ 3.90 USD</span>
+                                    <span>$ 4.90 USD</span>
                                   )}
                                 </div>
                                 <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
@@ -1674,7 +1756,7 @@ const CheckoutContent = () => {
                           </div>
 
                           {/* Formulario de datos para Mercado Pago */}
-                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 bg-[#101010] rounded-lg border border-[#232323] transition-all duration-300">
+                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#21242C' }}>
                             <div className="flex items-center gap-2 mb-4">
                               <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1699,9 +1781,10 @@ const CheckoutContent = () => {
                                 value={mercadoPagoFormData.fullName}
                                 onChange={(e) => handleMercadoPagoFormChange('fullName', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('fullName')}
-                                className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors ${
+                                className={`border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors ${
                                   mercadoPagoFormTouched.fullName && mercadoPagoFormErrors.fullName ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
+                                style={{ background: '#13171E' }}
                                 disabled={isSubmittingMercadoPagoForm}
                               />
                               {mercadoPagoFormTouched.fullName && mercadoPagoFormErrors.fullName && (
@@ -1726,9 +1809,10 @@ const CheckoutContent = () => {
                                 value={mercadoPagoFormData.email}
                                 onChange={(e) => handleMercadoPagoFormChange('email', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('email')}
-                                className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors ${
+                                className={`border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors ${
                                   mercadoPagoFormTouched.email && mercadoPagoFormErrors.email ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
+                                style={{ background: '#13171E' }}
                                 disabled={isSubmittingMercadoPagoForm}
                               />
                               {mercadoPagoFormTouched.email && mercadoPagoFormErrors.email && (
@@ -1819,7 +1903,12 @@ const CheckoutContent = () => {
               </Card>
 
               {/* PayPal */}
-              <Card className={`border bg-[#232323] overflow-hidden rounded-3xl mobile-card ${selectedPaymentMethod === "paypal" ? "border-white" : ""}`}>
+              <Card 
+                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-all duration-700 relative ${selectedPaymentMethod === "paypal" ? "border-white" : "border-white/10"}`}
+                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              >
+                {/* Brillo superior glassmorphism */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -1834,7 +1923,7 @@ const CheckoutContent = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#101010] flex items-center justify-center border border-[#232323]">
+                    <div className="w-10 h-10 rounded-full bg-white/[0.03] backdrop-blur-xl flex items-center justify-center border border-white/10">
                       <div className="flex items-center justify-center w-full h-full pl-0.5">
                         <PayPalIcon className="text-white h-5 w-5 flex-shrink-0" />
                       </div>
@@ -1850,7 +1939,7 @@ const CheckoutContent = () => {
                 </div>
 
                 {selectedPaymentMethod === "paypal" && (
-                  <div className="p-6 border-t border-[#101010]" style={{ background: "#232323" }}>
+                  <div className="p-6 border-t border-white/10" style={{ background: '#13171E' }}>
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="font-medium mb-1 text-white">Pago con PayPal</h3>
@@ -1864,13 +1953,13 @@ const CheckoutContent = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mb-3 p-3 bg-[#101010] rounded-lg">
+                    <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ background: '#21242C' }}>
                       <div className="flex flex-col">
                         <span className="text-sm text-white">Total</span>
                       </div>
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white">$ 3.90 USD</span>
+                          <span className="font-bold text-white">$ 4.90 USD</span>
                           <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
                             Microtareas ilimitadas
                           </span>
@@ -1880,7 +1969,7 @@ const CheckoutContent = () => {
 
                     <div>
                       {/* Formulario de datos para PayPal */}
-                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 bg-[#101010] rounded-lg border border-[#232323] transition-all duration-300">
+                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#21242C' }}>
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
                             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1905,7 +1994,8 @@ const CheckoutContent = () => {
                             value={paypalFormData.fullName}
                             onChange={(e) => handlePaypalFormChange('fullName', e.target.value)}
                             onBlur={() => handlePaypalFormBlur('fullName')}
-                            className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors`}
+                            className="border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors"
+                            style={{ background: '#13171E' }}
                             disabled={isSubmittingPaypalForm}
                           />
                           {paypalFormTouched.fullName && paypalFormErrors.fullName && (
@@ -1930,7 +2020,8 @@ const CheckoutContent = () => {
                             value={paypalFormData.email}
                             onChange={(e) => handlePaypalFormChange('email', e.target.value)}
                             onBlur={() => handlePaypalFormBlur('email')}
-                            className={`bg-[#232323] border-[#232323] text-white placeholder:text-white/50 focus:border-[#232323] focus:ring-[#232323] transition-colors`}
+                            className="border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors"
+                            style={{ background: '#13171E' }}
                             disabled={isSubmittingPaypalForm}
                           />
                           {paypalFormTouched.email && paypalFormErrors.email && (

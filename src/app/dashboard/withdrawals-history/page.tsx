@@ -11,6 +11,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { DollarSign, Clock, CheckCircle, XCircle, CreditCard } from 'lucide-react';
+import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 interface WithdrawalSummary {
   total_requested: number;
@@ -150,7 +151,9 @@ export default function WithdrawalsHistoryPage() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
+      <SeasonalGarland />
+      <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 relative z-10">
       <Breadcrumbs />
       
       {/* Header */}
@@ -161,15 +164,21 @@ export default function WithdrawalsHistoryPage() {
       {/* Estadísticas de resumen */}
       {!loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <DollarSign className="w-5 h-5 text-blue-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 group-hover:scale-110 transition-all duration-300 border border-blue-300/20">
+                  <DollarSign className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Solicitado</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Solicitado</p>
+                  <p className="text-xl font-bold text-white">
                     {formatCurrency(summary.total_requested)}
                   </p>
                 </div>
@@ -177,15 +186,21 @@ export default function WithdrawalsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 group-hover:scale-110 transition-all duration-300 border border-green-300/20">
+                  <CheckCircle className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Aprobado</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Aprobado</p>
+                  <p className="text-xl font-bold text-white">
                     {formatCurrency(summary.total_approved)}
                   </p>
                 </div>
@@ -193,15 +208,21 @@ export default function WithdrawalsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-yellow-500/20 rounded-lg">
-                  <Clock className="w-5 h-5 text-yellow-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 group-hover:scale-110 transition-all duration-300 border border-yellow-300/20">
+                  <Clock className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Pendientes</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Pendientes</p>
+                  <p className="text-xl font-bold text-white">
                     {summary.pending_count}
                   </p>
                 </div>
@@ -209,15 +230,21 @@ export default function WithdrawalsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50 border-border/50">
+          <Card 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <CreditCard className="w-5 h-5 text-purple-500" />
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 group-hover:scale-110 transition-all duration-300 border border-purple-300/20">
+                  <CreditCard className="w-5 h-5 text-white drop-shadow-lg" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Retiros</p>
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-sm text-white/80">Total Retiros</p>
+                  <p className="text-xl font-bold text-white">
                     {withdrawals.length}
                   </p>
                 </div>
@@ -248,7 +275,12 @@ export default function WithdrawalsHistoryPage() {
             <p className="text-gray-400 font-medium">Cargando historial de retiros...</p>
           </div>
         ) : (
-          <div className="bg-[#232323] border border-white/10 rounded-lg">
+          <div 
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative"
+            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          >
+            {/* Brillo superior glassmorphism */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <div className="p-6 border-b border-white/10">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <CreditCard className="w-5 h-5" />
@@ -330,6 +362,7 @@ export default function WithdrawalsHistoryPage() {
           </div>
         )}
       </motion.div>
+      </div>
     </div>
   );
 }

@@ -8,7 +8,7 @@ const Table = React.forwardRef<
   <div className="relative w-full overflow-auto">
     <table
       ref={ref}
-      className={cn("w-full bg-[#232323] border border-[#101010] rounded-lg text-white text-sm", className)}
+      className={cn("w-full bg-[#1a1a1a] border border-[#101010] rounded-lg text-white text-sm", className)}
       {...props}
     />
   </div>
@@ -41,7 +41,7 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn("bg-[#232323] text-white border-t border-[#101010]", className)}
+    className={cn("bg-[#1a1a1a] text-white border-t border-[#101010]", className)}
     {...props}
   />
 ))
@@ -54,7 +54,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b border-[#101010] transition-colors hover:bg-[#232323]/80",
+      "border-b border-[#101010] transition-colors hover:bg-[#1a1a1a]/80",
       className
     )}
     {...props}
