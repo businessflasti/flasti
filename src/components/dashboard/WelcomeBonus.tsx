@@ -100,6 +100,7 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
 
       const newBalance = (userProfile?.balance || 0) + 0.75;
 
+      // Actualizar balance y marcar bono como reclamado
       await supabase
         .from('user_profiles')
         .update({ 
@@ -107,6 +108,22 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
           welcome_bonus_claimed: true 
         })
         .eq('user_id', userId);
+
+      // Registrar en historial de recompensas (rewards_history)
+      await supabase
+        .from('cpalead_transactions')
+        .insert({
+          user_id: userId,
+          amount: 0.75,
+          type: 'reward',
+          status: 'approved',
+          description: 'Tarea de bienvenida',
+          offer_id: 'welcome_bonus',
+          offer_name: 'Bono de Bienvenida',
+          created_at: new Date().toISOString()
+        });
+
+      console.log('✅ Bono de bienvenida registrado en historial');
 
       setTimeout(() => {
         setShowPopup(false);

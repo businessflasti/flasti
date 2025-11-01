@@ -21,8 +21,9 @@ import SeasonalThemeEffects from '@/components/themes/SeasonalThemeEffects';
 import DailyMessage from '@/components/dashboard/DailyMessage';
 import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
-// Importar estilos de animaciones
+// Importar estilos de animaciones y optimizaciones de rendimiento
 import "./animations.css";
+import "./performance.css";
 
 interface UserStats {
   balance: number;
@@ -721,22 +722,13 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6">
           {isVisible('stat_today') && (
             <div className="relative group">
-              {/* Gradiente radial de fondo al hover */}
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
-                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(255, 20, 147, 0.4), transparent 70%)' }}
-              ></div>
+
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
                 style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
-                {/* Efecto neón interno al hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ boxShadow: 'inset 0 0 60px rgba(255, 20, 147, 0.4), 0 0 40px rgba(255, 20, 147, 0.4)' }}
-                ></div>
                 
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -758,44 +750,21 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Partículas flotantes sutiles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  {[...Array(3)].map((_, idx) => (
-                    <div
-                      key={idx}
-                      className="absolute w-1 h-1 rounded-full animate-float-particle"
-                      style={{
-                        background: '#FF1493',
-                        left: `${20 + idx * 30}%`,
-                        bottom: '10%',
-                        animationDelay: `${idx * 0.5}s`,
-                        boxShadow: '0 0 10px rgba(255, 20, 147, 0.4)'
-                      }}
-                    />
-                  ))}
-                </div>
+
               </div>
             </div>
           )}
 
           {isVisible('stat_week') && (
             <div className="relative group">
-              {/* Gradiente radial de fondo al hover */}
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
-                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(45, 226, 230, 0.4), transparent 70%)' }}
-              ></div>
+
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
                 style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
-                {/* Efecto neón interno al hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ boxShadow: 'inset 0 0 60px rgba(45, 226, 230, 0.4), 0 0 40px rgba(45, 226, 230, 0.4)' }}
-                ></div>
+
                 
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -815,44 +784,21 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Partículas flotantes sutiles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  {[...Array(3)].map((_, idx) => (
-                    <div
-                      key={idx}
-                      className="absolute w-1 h-1 rounded-full animate-float-particle"
-                      style={{
-                        background: '#2DE2E6',
-                        left: `${20 + idx * 30}%`,
-                        bottom: '10%',
-                        animationDelay: `${idx * 0.5}s`,
-                        boxShadow: '0 0 10px rgba(45, 226, 230, 0.4)'
-                      }}
-                    />
-                  ))}
-                </div>
+
               </div>
             </div>
           )}
 
           {isVisible('stat_total') && (
             <div className="relative group">
-              {/* Gradiente radial de fondo al hover */}
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
-                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(30, 144, 255, 0.4), transparent 70%)' }}
-              ></div>
+
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
                 style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
-                {/* Efecto neón interno al hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ boxShadow: 'inset 0 0 60px rgba(30, 144, 255, 0.4), 0 0 40px rgba(30, 144, 255, 0.4)' }}
-                ></div>
+
                 
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -872,44 +818,21 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Partículas flotantes sutiles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  {[...Array(3)].map((_, idx) => (
-                    <div
-                      key={idx}
-                      className="absolute w-1 h-1 rounded-full animate-float-particle"
-                      style={{
-                        background: '#1E90FF',
-                        left: `${20 + idx * 30}%`,
-                        bottom: '10%',
-                        animationDelay: `${idx * 0.5}s`,
-                        boxShadow: '0 0 10px rgba(30, 144, 255, 0.4)'
-                      }}
-                    />
-                  ))}
-                </div>
+
               </div>
             </div>
           )}
 
           {isVisible('stat_completed') && (
             <div className="relative group">
-              {/* Gradiente radial de fondo al hover */}
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
-                style={{ background: 'radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.4), transparent 70%)' }}
-              ></div>
+
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
                 style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
-                {/* Efecto neón interno al hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ boxShadow: 'inset 0 0 60px rgba(255, 107, 53, 0.4), 0 0 40px rgba(255, 107, 53, 0.4)' }}
-                ></div>
+
                 
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -931,22 +854,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Partículas flotantes sutiles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  {[...Array(3)].map((_, idx) => (
-                    <div
-                      key={idx}
-                      className="absolute w-1 h-1 rounded-full animate-float-particle"
-                      style={{
-                        background: '#FF6B35',
-                        left: `${20 + idx * 30}%`,
-                        bottom: '10%',
-                        animationDelay: `${idx * 0.5}s`,
-                        boxShadow: '0 0 10px rgba(255, 107, 53, 0.4)'
-                      }}
-                    />
-                  ))}
-                </div>
+
               </div>
             </div>
           )}
