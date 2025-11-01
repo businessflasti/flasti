@@ -71,10 +71,15 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
       if (index < WORD.length - 1) {
         const nextIndex = index + 1;
         setCurrentIndex(nextIndex);
-        // Enfocar el siguiente input automáticamente
+        // Enfocar el siguiente input automáticamente sin cerrar el teclado
         setTimeout(() => {
-          inputRefs.current[nextIndex]?.focus();
-        }, 0);
+          const nextInput = inputRefs.current[nextIndex];
+          if (nextInput) {
+            nextInput.focus();
+            // Prevenir que el teclado se cierre en móvil
+            nextInput.click();
+          }
+        }, 10);
       } else {
         setIsCompleted(true);
         setTimeout(() => claimBonus(), 800);
@@ -107,6 +112,8 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
         setShowPopup(false);
         setBonusClaimed(true);
         onBonusClaimed?.();
+        // Recargar la página para reflejar el nuevo balance
+        window.location.reload();
       }, 2000);
     } catch (error) {
       console.error('Error claiming bonus:', error);
@@ -179,6 +186,11 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
                       key={index}
                       ref={(el) => (inputRefs.current[index] = el)}
                       type="text"
+                      inputMode="text"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="characters"
+                      spellCheck="false"
                       maxLength={1}
                       value={userInput[index]}
                       onChange={(e) => handleLetterInput(index, e.target.value)}

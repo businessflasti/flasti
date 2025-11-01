@@ -5,7 +5,7 @@ export type ThemeName = 'default' | 'halloween' | 'christmas';
 
 const THEME_CACHE_KEY = 'flasti_active_theme';
 const THEME_CACHE_TIMESTAMP_KEY = 'flasti_theme_timestamp';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+const CACHE_DURATION = 30 * 1000; // 30 segundos para actualización más rápida
 
 export function useSeasonalTheme() {
   // Cargar tema desde localStorage inmediatamente para evitar flash
@@ -46,6 +46,13 @@ export function useSeasonalTheme() {
           table: 'seasonal_themes',
         },
         () => {
+          // Limpiar caché y recargar inmediatamente
+          try {
+            localStorage.removeItem(THEME_CACHE_KEY);
+            localStorage.removeItem(THEME_CACHE_TIMESTAMP_KEY);
+          } catch (error) {
+            console.error('Error clearing theme cache:', error);
+          }
           loadActiveTheme();
         }
       )

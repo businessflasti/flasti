@@ -519,12 +519,11 @@ const PremiumPage = () => {
                 </div>
                 
                 {/* Imagen del dashboard */}
-                <div className="relative mb-4">
+                <div className="relative mb-4 rounded-2xl overflow-hidden">
                   <img 
                     src="/images/premium.png" 
                     alt="Vista previa del dashboard premium" 
-                    className="w-full h-48 object-cover rounded-2xl"
-                    style={{ objectPosition: 'top' }}
+                    className="w-full h-auto object-contain rounded-2xl"
                   />
                   {/* Overlay gradient para mejor legibilidad */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
@@ -707,9 +706,7 @@ const PremiumPage = () => {
               onClick={handleCheckoutNavigation}
               className="w-full py-7 text-xl md:text-2xl font-black bg-[#FF4500] hover:bg-[#FF5722] text-white flex items-center justify-center gap-3 focus:outline-none focus:ring-0 rounded-3xl transform hover:scale-105 transition-all duration-300"
             >
-              <Zap className="w-6 h-6" />
               QUIERO DESBLOQUEAR YA
-              <Zap className="w-6 h-6" />
             </Button>
 
 
@@ -770,6 +767,8 @@ const PremiumPage = () => {
 const TestimonialsSlider = () => {
   const { t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
   
   const testimonials = [
     {
@@ -812,10 +811,42 @@ const TestimonialsSlider = () => {
 
   const currentTestimonial = testimonials[currentIndex];
 
+  // Manejar gestos táctiles para deslizar
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+    if (isRightSwipe) {
+      prevSlide();
+    }
+
+    setTouchStart(0);
+    setTouchEnd(0);
+  };
+
   return (
     <div className="relative">
       {/* Tarjeta de testimonio - Compacta */}
-      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 md:p-5">
+      <div 
+        className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 md:p-5"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center md:items-start">
           {/* Avatar y nombre - Compacto */}
           <div className="flex-shrink-0 flex md:flex-col items-center md:items-center gap-2 md:gap-1">

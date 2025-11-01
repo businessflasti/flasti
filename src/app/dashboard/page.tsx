@@ -83,11 +83,7 @@ export default function DashboardPage() {
   } | null>(null);
 
   // Redirección automática para cuenta admin
-  useEffect(() => {
-    if (user?.email === 'flasti.finanzas@gmail.com') {
-      router.push('/dashboard/admin');
-    }
-  }, [user, router]);
+  // Redirección automática a admin removida - todas las cuentas van a dashboard
   const [detectedCountry, setDetectedCountry] = useState<string>('--');
   const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
 
@@ -481,11 +477,11 @@ export default function DashboardPage() {
               backgroundPosition: 'center'
             }}
           >
-            {/* Balance y Mensaje del Día - Grid 50/50 en todas las resoluciones */}
-            <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4">
+            {/* Balance y Mensaje del Día - Columna única en móvil */}
+            <div className="flex flex-col gap-2 sm:gap-4 mb-4">
               {/* Balance - Controlable */}
               {isVisible('balance_display') && (
-                <div className="h-full">
+                <div className="w-full">
                   <UserBalanceDisplay
                     initialBalance={userStats.balance}
                     userId={user.id}
@@ -496,7 +492,7 @@ export default function DashboardPage() {
               )}
               
               {/* Mensaje del Día */}
-              <div className="h-full">
+              <div className="w-full">
                 <DailyMessage />
               </div>
             </div>
@@ -622,9 +618,9 @@ export default function DashboardPage() {
 
             {/* Columna derecha: Bono + Video Tutorial */}
             <div className="flex flex-col gap-4 h-[400px]">
-              {/* Bono de bienvenida o AdBlock */}
-              <div className="flex-shrink-0">
-                {!userStats.welcomeBonusClaimed ? (
+              {/* Bono de bienvenida - Sin AdBlock después */}
+              {!userStats.welcomeBonusClaimed && (
+                <div className="flex-shrink-0">
                   <WelcomeBonus 
                     userId={user.id} 
                     onBonusClaimed={() => {
@@ -632,17 +628,8 @@ export default function DashboardPage() {
                       fetchUserStats();
                     }}
                   />
-                ) : (
-                  <div className="h-full flex items-center justify-center">
-                    <AdBlock 
-                      adClient="ca-pub-8330194041691289" 
-                      adSlot="6796391562" 
-                      alwaysVisible 
-                      className="w-full max-w-full"
-                    />
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Video Tutorial */}
               <div className="flex-1 min-h-0">
@@ -817,7 +804,7 @@ export default function DashboardPage() {
                 <div className="relative z-10">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
-                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Esta Semana</p>
+                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Semana</p>
                       <p className="text-2xl lg:text-3xl font-bold text-white">
                         ${userStats.weekEarnings.toFixed(2)}
                       </p>
@@ -874,7 +861,7 @@ export default function DashboardPage() {
                 <div className="relative z-10">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
-                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Total Ganado</p>
+                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Total</p>
                       <p className="text-2xl lg:text-3xl font-bold text-white">
                         ${userStats.totalEarnings.toFixed(2)}
                       </p>
@@ -932,7 +919,7 @@ export default function DashboardPage() {
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
                       <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
-                        Completadas
+                        Completas
                       </p>
                       <p className="text-2xl lg:text-3xl font-bold text-white">
                         {userStats.totalTransactions}
