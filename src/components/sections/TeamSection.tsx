@@ -23,7 +23,7 @@ const TeamSection = React.memo(() => {
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             style={{ backgroundSize: "200% 200%" }}
           />
-          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300 border border-white/10">
+          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 transition-transform duration-300 border border-white/10">
             <DollarSign className="w-10 h-10 text-yellow-400" />
           </div>
         </div>
@@ -43,7 +43,7 @@ const TeamSection = React.memo(() => {
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             style={{ backgroundSize: "200% 200%" }}
           />
-          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300 border border-white/10">
+          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 transition-transform duration-300 border border-white/10">
             <GraduationCap className="w-10 h-10 text-blue-400" />
           </div>
         </div>
@@ -63,7 +63,7 @@ const TeamSection = React.memo(() => {
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             style={{ backgroundSize: "200% 200%" }}
           />
-          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300 border border-white/10">
+          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 transition-transform duration-300 border border-white/10">
             <Home className="w-10 h-10 text-green-400" />
           </div>
         </div>
@@ -83,7 +83,7 @@ const TeamSection = React.memo(() => {
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             style={{ backgroundSize: "200% 200%" }}
           />
-          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300 border border-white/10">
+          <div className="w-full h-full rounded-full bg-[#0D1117]/90 backdrop-blur-xl flex items-center justify-center relative z-10 transition-transform duration-300 border border-white/10">
             <Clock className="w-10 h-10 text-purple-400" />
           </div>
         </div>
@@ -105,8 +105,14 @@ const TeamSection = React.memo(() => {
           </p>
         </div>
 
-        {/* Grid de tarjetas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        {/* Grid de tarjetas optimizado */}
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
+          style={{
+            contain: 'layout style',
+            transform: 'translate3d(0, 0, 0)'
+          }}
+        >
           {teamMembers.map((member, index) => (
             <motion.div 
               key={index} 
@@ -118,6 +124,10 @@ const TeamSection = React.memo(() => {
                 duration: 0.5, 
                 delay: index * 0.1,
                 ease: "easeOut"
+              }}
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                backfaceVisibility: 'hidden'
               }}
             >
               <ProfileCard

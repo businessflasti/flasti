@@ -135,12 +135,16 @@ export default function SupportPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <div 
-            className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 relative group"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="p-6 rounded-3xl transition-opacity duration-300 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 border border-blue-300/20">
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center mb-4 transition-opacity duration-300 border border-blue-300/20">
               <Mail className="w-7 h-7 text-white drop-shadow-lg" />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
             </div>
@@ -155,12 +159,16 @@ export default function SupportPage() {
           </div>
 
           <div 
-            className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 relative group"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="p-6 rounded-3xl transition-opacity duration-300 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 border border-green-300/20">
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center mb-4 transition-opacity duration-300 border border-green-300/20">
               <MessageCircle className="w-7 h-7 text-white drop-shadow-lg" />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
             </div>
@@ -176,12 +184,16 @@ export default function SupportPage() {
           </div>
 
           <div 
-            className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 relative group"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="p-6 rounded-3xl transition-opacity duration-300 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 border border-purple-300/20">
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center mb-4 transition-opacity duration-300 border border-purple-300/20">
               <Phone className="w-7 h-7 text-white drop-shadow-lg" />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
             </div>

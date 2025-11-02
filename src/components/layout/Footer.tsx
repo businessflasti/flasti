@@ -42,13 +42,27 @@ const FooterComponent = () => {
     <>
       {/* Widget de chat para la página de inicio (oculto por defecto) */}
       <HomepageChatWidget />
-      <footer className="relative overflow-hidden pt-12 pb-8 z-30" style={{background: '#101010', borderTop: '1px solid rgba(63, 140, 255, 0.15)'}}>
+      <footer 
+        className="relative overflow-hidden pt-12 pb-8 z-30" 
+        style={{
+          background: '#101010', 
+          borderTop: '1px solid rgba(63, 140, 255, 0.15)',
+          transform: 'translate3d(0, 0, 0)',
+          contain: 'layout style paint',
+          backfaceVisibility: 'hidden'
+        }}
+      >
         {/* Fondo sólido */}
         <div className="absolute inset-0" style={{background: '#101010', zIndex: -1}}></div>
 
         {/* Elementos decorativos eliminados */}
 
-        <div className="container-custom relative z-10">
+        <div 
+          className="container-custom relative z-10"
+          style={{
+            transform: 'translate3d(0, 0, 0)'
+          }}
+        >
           {/* Sello de seguridad elegante - Versión escritorio */}
           <div className="hidden md:block mb-10 pb-6 border-b border-white/5">
             <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#1a1a1a'}}>
@@ -100,7 +114,13 @@ const FooterComponent = () => {
           </div>
 
           {/* Enlaces de escritorio */}
-          <div className="hidden md:grid grid-cols-5 gap-8">
+          <div 
+            className="hidden md:grid grid-cols-5 gap-8"
+            style={{
+              contain: 'layout style',
+              transform: 'translate3d(0, 0, 0)'
+            }}
+          >
             <div>
               <div className="flex items-center">
                 <Image
@@ -182,7 +202,13 @@ const FooterComponent = () => {
           </div>
 
           {/* Enlaces de móvil - Diseño moderno */}
-          <div className="md:hidden mobile-footer-blocks">
+          <div 
+            className="md:hidden mobile-footer-blocks"
+            style={{
+              contain: 'layout style',
+              transform: 'translate3d(0, 0, 0)'
+            }}
+          >
             <div className="flex justify-center mb-6">
               <Image
                 src="/logo/isotipo-web.png"

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import TawkToWidget from "@/components/chat/TawkToWidget";
 import ChatButton from "@/components/chat/ChatButton";
+import "../legal-pages-performance.css";
 
 export default function ContactoPage() {
   const router = useRouter();
@@ -97,7 +98,14 @@ export default function ContactoPage() {
     <MainLayout showHeader={true} disableChat={true}>
       {/* Widget de chat para la página de contacto (visible) */}
       <TawkToWidget showBubble={true} />
-      <div className="min-h-screen bg-[#0B1017]">
+      <div 
+        className="min-h-screen bg-[#0B1017]"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          contain: 'layout style paint',
+          backfaceVisibility: 'hidden'
+        }}
+      >
         <div className="container-custom py-16 md:py-24">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -122,7 +130,7 @@ export default function ContactoPage() {
               <p className="text-foreground/70 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
                 <a
                   href="mailto:access@flasti.com"
-                  className="text-white hover:text-gray-200 transition-colors"
+                  className="text-white transition-opacity duration-300"
                 >
                   access@flasti.com
                 </a>
@@ -142,7 +150,7 @@ export default function ContactoPage() {
                 <ChatButton
                   variant="default"
                   size="sm"
-                  className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-lg shadow-md transition-all"
+                  className="flex items-center justify-center gap-2 bg-white text-black px-4 py-2 rounded-lg shadow-md transition-opacity duration-300"
                   text="Iniciar chat"
                   showIcon={true}
                 />
@@ -166,7 +174,13 @@ export default function ContactoPage() {
             </div>
           </div>
 
-          <div className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl transition-all duration-700">
+          <div 
+            className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl transition-opacity duration-300"
+            style={{
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
+          >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             
@@ -243,7 +257,7 @@ export default function ContactoPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full md:w-auto min-w-[200px] bg-white text-black hover:bg-gray-200"
+                  className="w-full md:w-auto min-w-[200px] bg-white text-black transition-opacity duration-300"
                 >
                   {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                 </Button>

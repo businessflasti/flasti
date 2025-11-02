@@ -1455,8 +1455,12 @@ const CheckoutContent = () => {
           {/* Columna derecha - Resumen de compra (aparece primero en móvil) */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 mb-2 lg:mb-0">
             <Card 
-              className="bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 rounded-3xl transition-all duration-700 relative"
-              style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+              className="bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 rounded-3xl transition-opacity duration-300 relative"
+              style={{ 
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                transform: 'translate3d(0, 0, 0)',
+                contain: 'layout style paint'
+              }}
             >
               {/* Brillo superior glassmorphism */}
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
@@ -1610,8 +1614,12 @@ const CheckoutContent = () => {
 
               {/* Moneda local - Hotmart o Mercado Pago */}
               <Card 
-                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-all duration-700 relative ${selectedPaymentMethod === "hotmart" ? "border-white" : "border-white/10"}`}
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-opacity duration-300 relative ${selectedPaymentMethod === "hotmart" ? "border-white" : "border-white/10"}`}
+                style={{ 
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                  transform: 'translate3d(0, 0, 0)',
+                  contain: 'layout style paint'
+                }}
               >
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
@@ -1904,8 +1912,12 @@ const CheckoutContent = () => {
 
               {/* PayPal */}
               <Card 
-                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-all duration-700 relative ${selectedPaymentMethod === "paypal" ? "border-white" : "border-white/10"}`}
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-opacity duration-300 relative ${selectedPaymentMethod === "paypal" ? "border-white" : "border-white/10"}`}
+                style={{ 
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                  transform: 'translate3d(0, 0, 0)',
+                  contain: 'layout style paint'
+                }}
               >
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>

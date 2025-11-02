@@ -173,8 +173,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           backdrop-filter: blur(40px);
           -webkit-backdrop-filter: blur(40px);
           border: 1px solid rgba(255, 255, 255, 0.1);
-          transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          contain: layout style paint;
         }
 
         .card::before {
@@ -186,12 +189,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           height: 1px;
           background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
           border-radius: 1.5rem 1.5rem 0 0;
-        }
-
-        .card:hover {
-          border-color: rgba(255, 255, 255, 0.2);
-          transform: translateY(-8px);
-          box-shadow: 0 0 60px rgba(110, 64, 255, 0.15), 0 0 40px rgba(110, 64, 255, 0.1), inset 0 0 60px rgba(110, 64, 255, 0.15);
         }
 
         .card__img {
@@ -230,10 +227,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           transition: all 0.3s ease;
         }
 
-        .card:hover .card__avatar {
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 255, 255, 0.2);
-          transform: scale(1.05);
-        }
+
 
         .card__avatar svg {
           width: 100px;

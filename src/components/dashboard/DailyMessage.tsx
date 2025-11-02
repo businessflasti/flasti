@@ -114,8 +114,8 @@ export default function DailyMessage() {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         <CardContent className="p-3 sm:p-4 lg:p-6 flex items-center justify-center h-full">
           <div className="relative w-10 h-10">
-            <div className="absolute inset-0 border-4 border-blue-500/20 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-transparent border-t-blue-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-0 border-4 border-[#191C3F]/40 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-transparent border-t-[#191C3F] rounded-full animate-spin"></div>
           </div>
         </CardContent>
       </Card>
@@ -132,7 +132,7 @@ export default function DailyMessage() {
       
       <CardContent className="p-3 sm:p-4 lg:p-6 flex flex-col h-full relative z-10">
         {/* Header con avatar de María */}
-        <div className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3">
+        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
           {/* Avatar de María */}
           <div className="relative flex-shrink-0">
             <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 ${
@@ -146,19 +146,15 @@ export default function DailyMessage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            {/* Indicador online - Verde si no leído, Naranja si leído */}
-            <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border-2 border-[#1a1a1a] ${
-              isRead ? 'bg-orange-400 animate-pulse-orange' : 'bg-green-400 animate-pulse-green'
-            }`}></div>
           </div>
 
-          {/* Info de María */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+          {/* Info de María - Centrada verticalmente */}
+          <div className="flex-1 min-w-0 flex items-center">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white truncate">
                 María
               </h3>
-              <span className={`flex-shrink-0 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-bold flex items-center justify-center ${
+              <span className={`flex-shrink-0 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-bold inline-flex items-center justify-center ${
                 isRead 
                   ? 'bg-gray-500/20 text-gray-300' 
                   : 'bg-white text-black'
@@ -166,12 +162,12 @@ export default function DailyMessage() {
                 Asesora
               </span>
             </div>
-            {!isRead && (
-              <p className="text-[10px] sm:text-xs text-gray-400">
-                En línea
-              </p>
-            )}
           </div>
+
+          {/* Indicador de actividad alineado con el nombre y etiqueta */}
+          <div className={`flex-shrink-0 w-2 h-2 sm:w-2 sm:h-2 rounded-full mr-6 sm:mr-2 ${
+            isRead ? 'bg-orange-400 animate-pulse-orange' : 'bg-green-400 animate-pulse-green'
+          }`}></div>
         </div>
 
         {/* Mensaje en burbuja de chat */}
@@ -265,9 +261,35 @@ export default function DailyMessage() {
             }
           }
 
+          @keyframes pulse-green {
+            0%, 100% {
+              box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+            }
+            50% {
+              box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+            }
+          }
+
+          @keyframes pulse-orange {
+            0%, 100% {
+              box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.7);
+            }
+            50% {
+              box-shadow: 0 0 0 6px rgba(251, 146, 60, 0);
+            }
+          }
+
           .animate-swing {
             animation: swing 2s ease-in-out infinite;
             transform-origin: top center;
+          }
+
+          .animate-pulse-green {
+            animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          }
+
+          .animate-pulse-orange {
+            animation: pulse-orange 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
           }
         `}</style>
       </CardContent>

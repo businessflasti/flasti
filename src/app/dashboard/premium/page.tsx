@@ -547,8 +547,12 @@ const PremiumPage = () => {
             <div className="max-w-2xl mx-auto lg:mx-0">
         {/* Contenido del pricing - Extraído del modal */}
         <Card 
-          className="bg-white/[0.03] backdrop-blur-xl border border-white/10 overflow-hidden relative h-full rounded-3xl transition-all duration-700"
-          style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+          className="bg-white/[0.03] backdrop-blur-xl border border-white/10 overflow-hidden relative h-full rounded-3xl transition-opacity duration-300"
+          style={{ 
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+            transform: 'translate3d(0, 0, 0)',
+            contain: 'layout style paint'
+          }}
         >
           {/* Brillo superior glassmorphism */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
@@ -704,7 +708,7 @@ const PremiumPage = () => {
 
             <Button 
               onClick={handleCheckoutNavigation}
-              className="w-full py-7 text-xl md:text-2xl font-black bg-[#FF4500] hover:bg-[#FF5722] text-white flex items-center justify-center gap-3 focus:outline-none focus:ring-0 rounded-3xl transform hover:scale-105 transition-all duration-300"
+              className="w-full py-7 text-xl md:text-2xl font-black bg-[#FF4500] hover:bg-[#E1913C] text-white flex items-center justify-center gap-3 focus:outline-none focus:ring-0 rounded-3xl transition-colors duration-300"
             >
               QUIERO DESBLOQUEAR YA
             </Button>

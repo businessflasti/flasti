@@ -318,7 +318,7 @@ export default function PerfilPage() {
                     )}
                   </div>
                   <button
-                    className="absolute bottom-0 right-0 bg-[#238636] text-white p-2 rounded-full shadow-md hover:bg-[#2ea043] transition-colors"
+                    className="absolute bottom-0 right-0 bg-[#238636] text-white p-2 rounded-full shadow-md transition-opacity duration-300"
                     onClick={handleSelectFile}
                     aria-label="Cambiar foto de perfil"
                   >
@@ -340,7 +340,7 @@ export default function PerfilPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 hover:border-white/20 transition-all">
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 transition-opacity duration-300">
                 <div className="flex items-center mb-2 gap-2">
                   <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5">
                     <Mail className="h-3.5 w-3.5 text-[#2DE2E6]" />
@@ -352,7 +352,7 @@ export default function PerfilPage() {
                 </p>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 hover:border-white/20 transition-all">
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 transition-opacity duration-300">
                 <div className="flex items-center mb-2 gap-2">
                   <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-[#238636]/20 to-[#238636]/5">
                     <Shield className="h-3.5 w-3.5 text-[#3fb950]" />
@@ -388,7 +388,7 @@ export default function PerfilPage() {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 hover:border-[#8b949e]"
+                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 transition-opacity duration-300"
                   placeholder="Ingresa tu nueva contraseña"
                   required
                 />
@@ -406,7 +406,7 @@ export default function PerfilPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 hover:border-[#8b949e]"
+                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 transition-opacity duration-300"
                   placeholder="Confirma tu nueva contraseña"
                   required
                 />
@@ -414,7 +414,7 @@ export default function PerfilPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#238636] hover:bg-[#2ea043] text-white shadow-lg shadow-[#238636]/20"
+                className="w-full bg-[#238636] text-white shadow-lg shadow-[#238636]/20 transition-opacity duration-300"
                 disabled={isLoading}
               >
                 {isLoading ? 'Actualizando...' : 'Cambiar Contraseña'}
@@ -478,7 +478,7 @@ export default function PerfilPage() {
                 variant="outline"
                 onClick={handleCancel}
                 disabled={isUploading}
-                className="bg-transparent border-[#30363d] text-[#c9d1d9] hover:bg-[#21262d] hover:border-[#8b949e]"
+                className="bg-transparent border-[#30363d] text-[#c9d1d9] transition-opacity duration-300"
               >
                 <X size={16} className="mr-2" />
                 Cancelar
@@ -487,7 +487,7 @@ export default function PerfilPage() {
                 type="button"
                 onClick={uploadAvatar}
                 disabled={isUploading}
-                className="bg-[#238636] hover:bg-[#2ea043] text-white shadow-lg shadow-[#238636]/20"
+                className="bg-[#238636] text-white shadow-lg shadow-[#238636]/20 transition-opacity duration-300"
               >
                 {isUploading ? (
                   <>

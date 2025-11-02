@@ -5,11 +5,21 @@ import React from "react";
 import { CTABentoGrid, CTABentoGridItem } from "./cta-bento-grid";
 
 const BannerImage = ({ src }: { src: string }) => (
-  <div className="flex flex-1 w-full h-full min-h-[6rem] md:min-h-[6rem] rounded-t-3xl overflow-hidden">
+  <div 
+    className="flex flex-1 w-full h-full min-h-[6rem] md:min-h-[6rem] rounded-t-3xl overflow-hidden"
+    style={{
+      transform: 'translate3d(0, 0, 0)',
+      backfaceVisibility: 'hidden'
+    }}
+  >
     <img 
       src={src} 
       alt="News banner" 
       className="w-full h-full max-h-[90px] md:max-h-[70px] object-cover object-left rounded-t-3xl"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        willChange: 'transform'
+      }}
     />
   </div>
 );

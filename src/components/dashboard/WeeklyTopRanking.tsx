@@ -18,11 +18,7 @@ interface RankingSettings {
   subtitle: string;
 }
 
-const defaultTopUsers: TopUser[] = [
-  { rank: 1, earnings: 647, name: 'Carlos Rodríguez', country_code: 'MX', avatar_url: '/images/ranking-avatars/default.jpg' },
-  { rank: 2, earnings: 479, name: 'Ana Martínez', country_code: 'ES', avatar_url: '/images/ranking-avatars/default.jpg' },
-  { rank: 3, earnings: 312, name: 'Juan García', country_code: 'AR', avatar_url: '/images/ranking-avatars/default.jpg' }
-];
+// Sin datos por defecto - mostrar loader hasta que carguen los datos reales
 
 const defaultSettings: RankingSettings = {
   title: 'Top 3 semanal',
@@ -60,7 +56,7 @@ const getRankColor = (rank: number) => {
 
 const WeeklyTopRanking: React.FC = () => {
   const { activeTheme } = useSeasonalTheme();
-  const [topUsers, setTopUsers] = useState<TopUser[]>(defaultTopUsers);
+  const [topUsers, setTopUsers] = useState<TopUser[]>([]);
   const [settings, setSettings] = useState<RankingSettings>(defaultSettings);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -133,9 +129,23 @@ const WeeklyTopRanking: React.FC = () => {
         </p>
       </div>
 
-      {/* Lista de top usuarios */}
-      <div className="space-y-2">
-        {topUsers.map((user) => {
+      {/* Spinner mientras carga */}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-8">
+          <div className="relative w-10 h-10">
+            <div className="absolute inset-0 border-4 border-white/10 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-transparent border-t-white/60 rounded-full animate-spin"></div>
+          </div>
+        </div>
+      ) : topUsers.length === 0 ? (
+        /* Mensaje cuando no hay datos */
+        <div className="text-center py-6 text-white/40 text-xs">
+          No hay datos disponibles
+        </div>
+      ) : (
+        /* Lista de top usuarios */
+        <div className="space-y-2">
+          {topUsers.map((user) => {
           const colors = getRankColor(user.rank);
           return (
             <div
@@ -166,19 +176,39 @@ const WeeklyTopRanking: React.FC = () => {
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                 
                 <div className="relative flex items-center gap-2.5">
-                  {/* Avatar */}
-                  <div className="w-9 h-9 rounded-full overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
+                  {/* Avatar profesional con loading */}
+                  <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
                     {user.avatar_url ? (
-                      <img
-                        src={user.avatar_url}
-                        alt={user.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`;
-                        }}
-                      />
+                      <>
+                        <img
+                          src={user.avatar_url}
+                          alt={user.name}
+                          className="w-full h-full object-cover transition-opacity duration-300"
+                          onLoad={(e) => {
+                            e.currentTarget.style.opacity = '1';
+                            const skeleton = e.currentTarget.nextElementSibling as HTMLElement;
+                            if (skeleton) skeleton.style.display = 'none';
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            const skeleton = e.currentTarget.nextElementSibling as HTMLElement;
+                            if (skeleton) {
+                              skeleton.style.display = 'flex';
+                              skeleton.classList.remove('animate-pulse');
+                            }
+                          }}
+                          style={{ opacity: 0 }}
+                        />
+                        {/* Loading skeleton mientras carga */}
+                        <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-slate-600 animate-pulse">
+                          <span className="text-white/60 text-xs font-bold">
+                            {user.name.charAt(0)}
+                          </span>
+                        </div>
+                      </>
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-400 to-blue-500">
+                      /* Placeholder profesional y neutro cuando no hay imagen */
+                      <div className="w-full h-full flex items-center justify-center bg-slate-600">
                         <span className="text-white text-xs font-bold">
                           {user.name.charAt(0)}
                         </span>
@@ -216,9 +246,8 @@ const WeeklyTopRanking: React.FC = () => {
             </div>
           );
         })}
-      </div>
-
-
+        </div>
+      )}
     </div>
   );
 };

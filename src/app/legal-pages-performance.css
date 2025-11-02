@@ -1,0 +1,44 @@
+/* Optimizaciones de rendimiento para páginas legales y estáticas */
+
+/* Aceleración GPU para contenedores principales */
+.legal-page-container,
+.content-section {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: layout style paint;
+}
+
+/* Optimizar cards y tarjetas */
+.info-card,
+.value-card,
+.timeline-item {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  contain: layout style paint;
+  backface-visibility: hidden;
+}
+
+/* Smooth scrolling nativo */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimizar transiciones para 60fps */
+.transition-all {
+  transition-property: transform, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reducir repaints en elementos con backdrop-filter */
+[class*="backdrop-blur"] {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Optimizar grids */
+.grid {
+  contain: layout style;
+  transform: translate3d(0, 0, 0);
+}

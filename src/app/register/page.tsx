@@ -171,11 +171,13 @@ export default function RegisterPage() {
             <p className="text-white/80">Completa tu registro para comenzar</p>
           </div>
 
-        <div className="bg-[#161b22]/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden group transition-all duration-300">
-          {/* Efecto neón sutil en hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#6E40FF]/5 via-transparent to-[#2DE2E6]/5 rounded-2xl"></div>
-          </div>
+        <div 
+          className="bg-[#161b22]/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden transition-opacity duration-300"
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            contain: 'layout style paint'
+          }}
+        >
           
           <div className="relative z-10">
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -243,7 +245,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8b949e] hover:text-[#c9d1d9] transition-colors duration-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8b949e] transition-opacity duration-200"
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -261,7 +263,7 @@ export default function RegisterPage() {
 
             <Button
               type="submit"
-              className="w-full py-3 h-12 bg-[#238636] hover:bg-[#2ea043] text-white font-semibold rounded-lg transition-all duration-200 mt-6"
+              className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-opacity duration-200 mt-6"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -281,7 +283,7 @@ export default function RegisterPage() {
           <div className="text-center mt-6">
             <p className="text-sm text-[#8b949e]">
               ¿Ya estás registrado en Flasti?{' '}
-              <Link href="/login" className="text-[#58a6ff] hover:underline font-medium transition-colors duration-200">
+              <Link href="/login" className="text-[#58a6ff] font-medium transition-opacity duration-200">
                 Ingresa
               </Link>
             </p>

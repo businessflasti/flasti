@@ -35,12 +35,24 @@ const CTASection = () => {
               </p>
             </div>
             
-            <div className="bg-white/[0.03] backdrop-blur-2xl p-6 min-h-[28rem] md:min-h-[40rem] rounded-3xl border border-white/10 hover:border-white/20 shadow-2xl transition-all duration-700">
+            <div 
+              className="bg-white/[0.03] backdrop-blur-2xl p-6 min-h-[28rem] md:min-h-[40rem] rounded-3xl border border-white/10 shadow-2xl transition-opacity duration-300"
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                contain: 'layout style paint'
+              }}
+            >
               <p className="text-white/60 text-sm md:text-base mb-6 text-center lg:text-left leading-relaxed">
                 {t('ctaDescription')}
               </p>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg mx-auto">
+              <div 
+                className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg mx-auto"
+                style={{
+                  contain: 'layout style',
+                  transform: 'translate3d(0, 0, 0)'
+                }}
+              >
                 {values.map((value, index) => (
                   <motion.div
                     key={index}
@@ -48,14 +60,23 @@ const CTASection = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
                     className="group"
+                    style={{
+                      transform: 'translate3d(0, 0, 0)',
+                      backfaceVisibility: 'hidden'
+                    }}
                   >
-                    <div className="bg-gradient-to-br from-white to-gray-50 p-5 md:p-6 text-center lg:text-left flex flex-col items-center lg:items-start justify-center rounded-3xl border-2 border-[#30363d]/20 hover:border-[#8b5cf6]/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-[#8b5cf6]/20">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${value.color} flex items-center justify-center lg:mx-0 mb-3 rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <div 
+                      className="bg-gradient-to-br from-white to-gray-50 p-5 md:p-6 text-center lg:text-left flex flex-col items-center lg:items-start justify-center rounded-3xl border-2 border-[#30363d]/20 transition-opacity duration-300 shadow-lg"
+                      style={{
+                        transform: 'translate3d(0, 0, 0)',
+                        contain: 'layout style paint'
+                      }}
+                    >
+                      <div className={`w-10 h-10 bg-gradient-to-br ${value.color} flex items-center justify-center lg:mx-0 mb-3 rounded-2xl shadow-lg transition-transform duration-300`}>
                         <value.icon className="text-white h-5 w-5" />
                       </div>
-                      <h3 className="text-sm font-bold mb-2 !text-[#101010] group-hover:!text-[#8b5cf6] transition-colors duration-300">
+                      <h3 className="text-sm font-bold mb-2 !text-[#101010] transition-colors duration-300">
                         {value.title}
                       </h3>
                       <p className="text-xs text-[#101010]/70 leading-relaxed">

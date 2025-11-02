@@ -569,7 +569,7 @@ export default function DashboardPage() {
                     {/* Botón para volver al modo bucle */}
                     <button
                       onClick={() => setShowFullPlayer(false)}
-                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-all z-10"
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center transition-opacity duration-300 z-10"
                       
                     >
                       <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -702,7 +702,7 @@ export default function DashboardPage() {
                     {/* Botón para volver al modo bucle */}
                     <button
                       onClick={() => setShowFullPlayer(false)}
-                      className="absolute top-2 right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-all z-10"
+                      className="absolute top-2 right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 flex items-center justify-center transition-opacity duration-300 z-10"
                       
                     >
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -744,7 +744,7 @@ export default function DashboardPage() {
                         ${userStats.todayEarnings.toFixed(2)}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF1493]/20 to-[#FF1493]/5 group-hover:scale-110 transition-all duration-500">
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF1493]/20 to-[#FF1493]/5 transition-opacity duration-300">
                       <Calendar className="w-6 h-6 text-[#FF1493]" />
                     </div>
                   </div>
@@ -778,7 +778,7 @@ export default function DashboardPage() {
                         ${userStats.weekEarnings.toFixed(2)}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5 group-hover:scale-110 transition-all duration-500">
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5 transition-opacity duration-300">
                       <TrendingUp className="w-6 h-6 text-[#2DE2E6]" />
                     </div>
                   </div>
@@ -812,7 +812,7 @@ export default function DashboardPage() {
                         ${userStats.totalEarnings.toFixed(2)}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#8B5CF6]/20 to-[#8B5CF6]/5 group-hover:scale-110 transition-all duration-500">
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#8B5CF6]/20 to-[#8B5CF6]/5 transition-opacity duration-300">
                       <Target className="w-6 h-6 text-[#8B5CF6]" />
                     </div>
                   </div>
@@ -848,7 +848,7 @@ export default function DashboardPage() {
                         {userStats.totalTransactions}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#FF6B35]/5 group-hover:scale-110 transition-all duration-500">
+                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#FF6B35]/5 transition-opacity duration-300">
                       <Gift className="w-6 h-6 text-[#FF6B35]" />
                     </div>
                   </div>
@@ -907,7 +907,7 @@ export default function DashboardPage() {
                   <div className="flex md:ml-0 ml-auto">
                     {/* Botón escritorio */}
                     <button 
-                      className="hidden md:flex items-center space-x-2 px-4 py-2 text-sm bg-white text-black rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      className="hidden md:flex items-center space-x-2 px-4 py-2 text-sm bg-white text-black rounded-full transition-opacity duration-300 disabled:opacity-50"
                       disabled={!cpaLeadData || cpaLeadData.refreshing}
                       onClick={cpaLeadData?.handleRefresh}
                     >
@@ -917,7 +917,7 @@ export default function DashboardPage() {
                     
                     {/* Botón móvil */}
                     <button 
-                      className="flex md:hidden items-center space-x-2 px-3 py-1.5 text-xs bg-white text-black rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      className="flex md:hidden items-center space-x-2 px-3 py-1.5 text-xs bg-white text-black rounded-full transition-opacity duration-300 disabled:opacity-50"
                       disabled={!cpaLeadData || cpaLeadData.refreshing}
                       onClick={cpaLeadData?.handleRefresh}
                     >

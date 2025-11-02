@@ -136,7 +136,14 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#101010]">
+    <section 
+      className="py-24 relative overflow-hidden bg-[#101010]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       <style jsx global>{pulseAnimation}</style>
       {/* Forzar borde azul en hover de acordeones FAQ */}
       <style jsx global>{`
@@ -163,21 +170,31 @@ const FAQSection = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
+          style={{
+            contain: 'layout style',
+            transform: 'translate3d(0, 0, 0)'
+          }}
+        >
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="glass-card overflow-hidden relative rounded-3xl transition-all bg-[#0A0A0A] border-none !border-0"
+              className="glass-card overflow-hidden relative rounded-3xl transition-opacity duration-300 bg-[#0A0A0A] border-none !border-0"
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                contain: 'layout style paint'
+              }}
             >
               <button
-                className="w-full p-6 flex items-center justify-between text-left group"
+                className="w-full p-6 flex items-center justify-between text-left"
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 transition-all duration-300 group-hover:scale-110" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
-                    <div className="text-[#101010] transition-all duration-300 group-hover:scale-110">{faq.icon && React.cloneElement(faq.icon, { color: '#101010' })}</div>
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 transition-opacity duration-300" style={{ animation: openIndex === index ? 'gentle-pulse 2s infinite' : 'none' }}>
+                    <div className="text-[#101010] transition-opacity duration-300">{faq.icon && React.cloneElement(faq.icon, { color: '#101010' })}</div>
                   </div>
-                  <span className="font-medium group-hover:text-primary transition-colors duration-200">{faq.question}</span>
+                  <span className="font-medium transition-opacity duration-200">{faq.question}</span>
                 </div>
                 <div className="text-primary">
                   {openIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}

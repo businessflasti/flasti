@@ -53,7 +53,13 @@ const RegistrationFAQSection = React.memo(() => {
 					</p>
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+				<div 
+					className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto"
+					style={{
+						contain: 'layout style',
+						transform: 'translate3d(0, 0, 0)'
+					}}
+				>
 					{getFaqs(t).map((faq, index) => (
 						<motion.div
 							key={index}
@@ -62,15 +68,18 @@ const RegistrationFAQSection = React.memo(() => {
 							viewport={{ once: true }}
 							transition={{ duration: 0.5, delay: index * 0.1 }}
 							className="group"
+							style={{
+								transform: 'translate3d(0, 0, 0)',
+								backfaceVisibility: 'hidden'
+							}}
 						>
-							<div className="bg-white/[0.03] backdrop-blur-2xl overflow-hidden relative rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-700 shadow-2xl">
-								{/* Efecto neón sutil al hover */}
-								<div 
-									className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-									style={{ 
-										boxShadow: `inset 0 0 60px rgba(110, 64, 255, 0.15), 0 0 40px rgba(110, 64, 255, 0.1)` 
-									}}
-								></div>
+							<div 
+								className="bg-white/[0.03] backdrop-blur-2xl overflow-hidden relative rounded-3xl border border-white/10 transition-opacity duration-300 shadow-2xl"
+								style={{
+									transform: 'translate3d(0, 0, 0)',
+									contain: 'layout style paint'
+								}}
+							>
 								
 								{/* Brillo superior glassmorphism */}
 								<div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -80,12 +89,12 @@ const RegistrationFAQSection = React.memo(() => {
 									onClick={() => toggleFAQ(index)}
 								> 
 									<div className="flex items-center gap-3">
-										<div className={`w-10 h-10 rounded-full bg-gradient-to-br ${faq.color} flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 flex-shrink-0`}>
+										<div className={`w-10 h-10 rounded-full bg-gradient-to-br ${faq.color} flex items-center justify-center shadow-lg transition-transform duration-300 flex-shrink-0`}>
 											<div className="text-white">
 												{faq.icon && React.cloneElement(faq.icon, { className: 'h-5 w-5' })}
 											</div>
 										</div>
-										<span className="font-semibold text-white group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300 leading-tight">
+										<span className="font-semibold text-white transition-all duration-300 leading-tight">
 											{faq.question}
 										</span>
 									</div>

@@ -63,11 +63,17 @@ const HowItWorksSection = React.memo(() => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto"
+          style={{
+            contain: 'layout style',
+            transform: 'translate3d(0, 0, 0)'
+          }}
+        >
           {steps.map((step, index) => (
             <motion.div
               key={index}
-              className={`group relative ${step.number === 1 ? 'cursor-pointer' : ''}`}
+              className={`relative ${step.number === 1 ? 'cursor-pointer' : ''}`}
               onClick={() => handleCardClick(step.number)}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -77,18 +83,20 @@ const HowItWorksSection = React.memo(() => {
                 delay: index * 0.15,
                 ease: "easeOut"
               }}
-              whileHover={{ y: -10 }}
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                backfaceVisibility: 'hidden',
+                willChange: 'transform'
+              }}
             >
-              {/* Tarjeta principal con glassmorphism */}
-              <div className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-700 shadow-2xl">
-                
-                {/* Efecto neón sutil al hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ 
-                    boxShadow: `inset 0 0 60px rgba(110, 64, 255, 0.15), 0 0 40px rgba(110, 64, 255, 0.1)` 
-                  }}
-                ></div>
+              {/* Tarjeta principal con glassmorphism optimizada */}
+              <div 
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/10 transition-opacity duration-300 shadow-2xl"
+                style={{
+                  transform: 'translate3d(0, 0, 0)',
+                  contain: 'layout style paint'
+                }}
+              >
                 
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -103,7 +111,7 @@ const HowItWorksSection = React.memo(() => {
                 {/* Imagen */}
                 <div className="relative h-48 overflow-hidden">
                   <img 
-                    className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110" 
+                    className="w-full h-full object-contain p-4 transition-transform duration-500" 
                     alt={step.title} 
                     src={step.image}
                   />
@@ -113,7 +121,7 @@ const HowItWorksSection = React.memo(() => {
 
                 {/* Contenido */}
                 <div className="p-6 relative z-10">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  <h3 className="text-xl font-bold text-white mb-3 transition-all duration-300">
                     {step.title}
                   </h3>
                   <p className="text-white/60 text-sm leading-relaxed mb-4">
@@ -122,7 +130,7 @@ const HowItWorksSection = React.memo(() => {
 
                   {/* Badge con glassmorphism */}
                   <div className="flex justify-center">
-                    <div className={`inline-flex items-center gap-2 bg-gradient-to-r ${step.color} text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg group-hover:scale-105 group-hover:shadow-2xl transition-all duration-300`}>
+                    <div className={`inline-flex items-center gap-2 bg-gradient-to-r ${step.color} text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg transition-all duration-300`}>
                       <span>{step.badge}</span>
                       <span className="bg-black/20 text-white px-2 py-0.5 rounded-full text-xs">
                         {step.icon}

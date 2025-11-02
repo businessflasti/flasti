@@ -17,6 +17,9 @@ import SeasonalThemeEffects from "@/components/themes/SeasonalThemeEffects";
 import CTASection from "@/components/sections/CTASection";
 import CountriesSection from "@/components/sections/CountriesSection";
 
+// Importar optimizaciones de rendimiento
+import "./performance.css";
+
 // Memoización de componentes principales
 // const MemoBenefitsSection = React.memo(BenefitsSection);
 

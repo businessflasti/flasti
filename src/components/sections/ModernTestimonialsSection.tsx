@@ -43,8 +43,20 @@ const MobileTestimonialCard = ({
   };
 }) => {
   return (
-    <div className="testimonial-card flex-shrink-0 w-full mx-auto h-full">
-      <div className="bg-white/[0.03] backdrop-blur-2xl p-6 rounded-3xl flex flex-col h-full border border-white/10 hover:border-white/20 shadow-2xl transition-all duration-700">
+    <div 
+      className="testimonial-card flex-shrink-0 w-full mx-auto h-full"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden'
+      }}
+    >
+      <div 
+        className="bg-white/[0.03] backdrop-blur-2xl p-6 rounded-3xl flex flex-col h-full border border-white/10 shadow-2xl transition-opacity duration-300"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          contain: 'layout style paint'
+        }}
+      >
         <div className="flex flex-col items-center text-center mb-4">
           <div className="testimonial-avatar w-16 h-16 rounded-full border-[3px] border-yellow-400/30 overflow-hidden mb-3 relative">
             <img
@@ -109,8 +121,20 @@ const DesktopTestimonialCard = ({
   };
 }) => {
   return (
-    <div className="testimonial-card flex-shrink-0 w-full mx-auto h-full">
-      <div className="bg-white/[0.03] backdrop-blur-2xl p-8 rounded-3xl flex md:flex-row border border-white/10 hover:border-white/20 shadow-2xl transition-all duration-700">
+    <div 
+      className="testimonial-card flex-shrink-0 w-full mx-auto h-full"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden'
+      }}
+    >
+      <div 
+        className="bg-white/[0.03] backdrop-blur-2xl p-8 rounded-3xl flex md:flex-row border border-white/10 shadow-2xl transition-opacity duration-300"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          contain: 'layout style paint'
+        }}
+      >
         {/* Lado izquierdo - Información del usuario */}
         <div className="md:w-1/3 flex flex-col items-center justify-center text-center md:border-r md:border-yellow-500/20 md:pr-8">
           <div className="testimonial-avatar w-24 h-24 rounded-full border-[3px] border-yellow-400/30 overflow-hidden mb-4 relative">
@@ -244,7 +268,7 @@ const ModernTestimonialsSection = () => {
           
           {/* Navigation buttons */}
           <button
-            className="absolute top-1/2 -left-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 hover:border-[#6E40FF]/50 flex items-center justify-center text-white z-10 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-[#6E40FF]/20"
+            className="absolute top-1/2 -left-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 flex items-center justify-center text-white z-10 transition-all duration-300 shadow-lg"
             onClick={() => desktopEmblaApi?.scrollPrev()}
             aria-label="Previous testimonial"
           >
@@ -252,7 +276,7 @@ const ModernTestimonialsSection = () => {
           </button>
           
           <button
-            className="absolute top-1/2 -right-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 hover:border-[#6E40FF]/50 flex items-center justify-center text-white z-10 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-[#6E40FF]/20"
+            className="absolute top-1/2 -right-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 flex items-center justify-center text-white z-10 transition-all duration-300 shadow-lg"
             onClick={() => desktopEmblaApi?.scrollNext()}
             aria-label="Next testimonial"
           >

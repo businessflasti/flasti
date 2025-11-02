@@ -16,7 +16,13 @@ export default function TerminosPage() {
                 Términos y Condiciones
               </h1>
 
-              <div className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl transition-all duration-700">
+              <div 
+                className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl transition-opacity duration-300"
+                style={{
+                  transform: 'translate3d(0, 0, 0)',
+                  contain: 'layout style paint'
+                }}
+              >
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                 

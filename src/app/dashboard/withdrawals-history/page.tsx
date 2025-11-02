@@ -165,14 +165,18 @@ export default function WithdrawalsHistoryPage() {
       {!loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 group-hover:scale-110 transition-all duration-300 border border-blue-300/20">
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 transition-opacity duration-300 border border-blue-300/20">
                   <DollarSign className="w-5 h-5 text-white drop-shadow-lg" />
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
@@ -187,14 +191,18 @@ export default function WithdrawalsHistoryPage() {
           </Card>
 
           <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 group-hover:scale-110 transition-all duration-300 border border-green-300/20">
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 transition-opacity duration-300 border border-green-300/20">
                   <CheckCircle className="w-5 h-5 text-white drop-shadow-lg" />
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
@@ -209,14 +217,18 @@ export default function WithdrawalsHistoryPage() {
           </Card>
 
           <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 group-hover:scale-110 transition-all duration-300 border border-yellow-300/20">
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 transition-opacity duration-300 border border-yellow-300/20">
                   <Clock className="w-5 h-5 text-white drop-shadow-lg" />
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
@@ -231,14 +243,18 @@ export default function WithdrawalsHistoryPage() {
           </Card>
 
           <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 group relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
+            style={{ 
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              transform: 'translate3d(0, 0, 0)',
+              contain: 'layout style paint'
+            }}
           >
             {/* Brillo superior glassmorphism */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 group-hover:scale-110 transition-all duration-300 border border-purple-300/20">
+                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 transition-opacity duration-300 border border-purple-300/20">
                   <CreditCard className="w-5 h-5 text-white drop-shadow-lg" />
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>

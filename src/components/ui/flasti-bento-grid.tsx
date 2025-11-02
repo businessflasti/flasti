@@ -83,12 +83,22 @@ const SkeletonDashboard = () => {
   const { t } = useLanguage();
   
   return (
-    <div className="flex flex-1 w-full h-full min-h-[6rem] relative">
-                    <div className="relative w-full rounded-xl overflow-hidden">
+    <div 
+      className="flex flex-1 w-full h-full min-h-[6rem] relative"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden'
+      }}
+    >
+      <div className="relative w-full rounded-xl overflow-hidden">
         <img
           src="/images/dashboard/dash33.jpg"
           alt="Vista previa del Dashboard de Flasti"
           className="w-full h-auto max-w-full mx-auto rounded-xl"
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            willChange: 'transform'
+          }}
         />
         {/* Notificaciones flotantes */}
         <div className="absolute inset-0 pointer-events-none">
@@ -163,11 +173,21 @@ const SkeletonWallet = () => {
 
 const SkeletonAI = () => {
   return (
-    <div className="flex flex-1 w-full h-full min-h-[6rem] relative overflow-hidden rounded-3xl">
+    <div 
+      className="flex flex-1 w-full h-full min-h-[6rem] relative overflow-hidden rounded-3xl"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       <img
         src="/images/principal/flastiai-web.webp"
         alt="Flasti AI"
         className="w-full h-full object-cover rounded-3xl"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          willChange: 'transform'
+        }}
       />
     </div>
   );

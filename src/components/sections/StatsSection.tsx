@@ -106,39 +106,26 @@ const StatsSection = () => {
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 text-center relative z-10">
         {stats.map((stat, i) => {
-          const colors = [
-            { border: '#6E40FF', glow: 'rgba(110, 64, 255, 0.4)', gradient: 'from-[#6E40FF] via-[#8B5CF6] to-[#A78BFA]' },
-            { border: '#2DE2E6', glow: 'rgba(45, 226, 230, 0.4)', gradient: 'from-[#2DE2E6] via-[#06B6D4] to-[#0EA5E9]' },
-            { border: '#1E90FF', glow: 'rgba(30, 144, 255, 0.4)', gradient: 'from-[#1E90FF] via-[#3B82F6] to-[#60A5FA]' }
-          ];
-          const color = colors[i];
           
           return (
             <div 
               key={i}
-              className="relative group"
+              className="relative"
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                backfaceVisibility: 'hidden',
+                willChange: 'transform'
+              }}
             >
-              {/* Gradiente radial de fondo al hover */}
+              {/* Tarjeta glassmorphism optimizada */}
               <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl"
-                style={{ background: `radial-gradient(circle at 50% 50%, ${color.glow}, transparent 70%)` }}
-              ></div>
-              
-              {/* Tarjeta glassmorphism */}
-              <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-8 border border-white/10 hover:border-white/20 transition-all duration-700 overflow-hidden group-hover:scale-[1.02]"
+                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-8 border border-white/10 transition-opacity duration-300 overflow-hidden"
                 style={{
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                  transform: 'translate3d(0, 0, 0)',
+                  contain: 'layout style paint'
                 }}
               >
-                {/* Efecto neón interno al hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ 
-                    boxShadow: `inset 0 0 60px ${color.glow}, 0 0 40px ${color.glow}` 
-                  }}
-                ></div>
-                
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                 
@@ -152,23 +139,6 @@ const StatsSection = () => {
                     {stat.display}
                   </div>
                   <p className="mt-4 text-base md:text-lg text-white/80 font-medium tracking-wide">{stat.label}</p>
-                </div>
-
-                {/* Partículas flotantes sutiles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  {[...Array(3)].map((_, idx) => (
-                    <div
-                      key={idx}
-                      className="absolute w-1 h-1 rounded-full animate-float-particle"
-                      style={{
-                        background: color.border,
-                        left: `${20 + idx * 30}%`,
-                        bottom: '10%',
-                        animationDelay: `${idx * 0.5}s`,
-                        boxShadow: `0 0 10px ${color.glow}`
-                      }}
-                    />
-                  ))}
                 </div>
               </div>
             </div>

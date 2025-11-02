@@ -101,7 +101,14 @@ const CountriesSection = () => {
   };
 
   return (
-    <section className="py-4 bg-[#101010] overflow-hidden">
+    <section 
+      className="py-4 bg-[#101010] overflow-hidden"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       <style jsx>{`
         @keyframes scroll-left-smooth {
           0% {
@@ -139,7 +146,6 @@ const CountriesSection = () => {
           white-space: nowrap;
           margin-right: 2.5rem;
           flex-shrink: 0;
-          transform: translateZ(0);
         }
         
         .flag-circle {
@@ -152,7 +158,6 @@ const CountriesSection = () => {
           margin-right: 0.5rem;
           background: ${isLowPerformance ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.03)'};
           ${isLowPerformance ? '' : 'backdrop-filter: blur(10px);'}
-          transform: translateZ(0);
           overflow: hidden;
         }
         
