@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { StickyBanner } from './sticky-banner';
 import { supabase } from '@/lib/supabase';
 import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
-import Image from 'next/image';
 
 export function StickyBannerDemo() {
   const { activeTheme } = useSeasonalTheme();
@@ -54,11 +53,18 @@ export function StickyBannerDemo() {
         .single();
 
       if (!error && data) {
+        // Asegurar que las rutas de imágenes empiecen con /
+        const fixImagePath = (path: string | null) => {
+          if (!path) return null;
+          if (path.startsWith('http://') || path.startsWith('https://')) return path;
+          return path.startsWith('/') ? path : `/${path}`;
+        };
+
         setBannerConfig({
           text: data.banner_text,
-          logoUrl: data.logo_url,
+          logoUrl: fixImagePath(data.logo_url) || '/logo.svg',
           backgroundGradient: data.background_gradient || 'from-[#FF1493] via-[#2DE2E6] to-[#8B5CF6]',
-          backgroundImage: data.background_image || null,
+          backgroundImage: fixImagePath(data.background_image),
           showSeparator: data.show_separator !== false,
           isActive: data.is_active
         });
@@ -94,13 +100,13 @@ export function StickyBannerDemo() {
         {/* Logo - Solo en tema predeterminado */}
         {isDefaultTheme && (
           <>
-            <div className="flex-shrink-0">
-              <Image
+            <div className="flex-shrink-0 flex items-center">
+              {/* Usar img normal para evitar blur de Next.js Image */}
+              <img
                 src={bannerConfig.logoUrl}
                 alt="Flasti Logo"
-                width={20}
-                height={20}
-                className="w-4 h-4 sm:w-5 sm:h-5"
+                className="w-auto h-6 sm:h-7 max-w-[100px] object-contain"
+                loading="eager"
               />
             </div>
             
@@ -111,9 +117,9 @@ export function StickyBannerDemo() {
           </>
         )}
         
-        {/* Texto - Soporta HTML para negrita */}
+        {/* Texto - Soporta HTML para negrita y colores */}
         <span 
-          className="text-white text-[11px] sm:text-xs drop-shadow-lg"
+          className="text-white text-[11px] sm:text-xs drop-shadow-lg [&>strong]:font-bold [&>strong]:font-extrabold"
           dangerouslySetInnerHTML={{ __html: bannerConfig.text }}
         />
       </div>

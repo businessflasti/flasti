@@ -49,7 +49,7 @@ export const StickyBanner: React.FC<StickyBannerProps> = ({
       <StickyBannerErrorBoundary>
         <div
           className={cn(
-            "relative w-full px-2 py-2 sm:px-4 sm:py-3 text-center",
+            "relative w-full px-2 py-1.5 sm:px-4 sm:py-2 text-center",
             className
           )}
           style={style}

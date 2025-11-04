@@ -42,6 +42,12 @@ CREATE POLICY "Authenticated users can update banner config"
   FOR UPDATE
   USING (auth.uid() IS NOT NULL);
 
+-- Política: Solo usuarios autenticados pueden insertar
+CREATE POLICY "Authenticated users can insert banner config"
+  ON banner_config
+  FOR INSERT
+  WITH CHECK (auth.uid() IS NOT NULL);
+
 -- Comentarios
 COMMENT ON TABLE banner_config IS 'Configuración del banner superior editable desde admin';
 COMMENT ON COLUMN banner_config.banner_text IS 'Texto del banner';

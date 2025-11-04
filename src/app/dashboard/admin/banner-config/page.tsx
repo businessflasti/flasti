@@ -61,9 +61,11 @@ export default function BannerConfigPage() {
     setLoading(true);
 
     try {
-      const { error} = await supabase
+      // Usar upsert para crear o actualizar
+      const { error } = await supabase
         .from('banner_config')
-        .update({
+        .upsert({
+          id: 1,
           banner_text: bannerText,
           logo_url: logoUrl,
           background_gradient: backgroundGradient,
@@ -71,15 +73,19 @@ export default function BannerConfigPage() {
           show_separator: showSeparator,
           is_active: isActive,
           updated_at: new Date().toISOString()
-        })
-        .eq('id', 1);
+        }, {
+          onConflict: 'id'
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating banner config:', error);
+        throw error;
+      }
 
       toast.success('Configuración del banner actualizada correctamente');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating banner config:', error);
-      toast.error('Error al actualizar la configuración');
+      toast.error(`Error al actualizar la configuración: ${error.message || 'Error desconocido'}`);
     } finally {
       setLoading(false);
     }

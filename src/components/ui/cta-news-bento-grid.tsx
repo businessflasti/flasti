@@ -75,7 +75,16 @@ export const CTANewsBentoGrid: React.FC = () => {
           console.error('Error fetching CTA news blocks:', error);
           setNewsItems(defaultNewsItems);
         } else if (data && data.length > 0) {
-          setNewsItems(data);
+          // Asegurar que las rutas de imágenes empiecen con /
+          const fixedData = data.map(item => ({
+            ...item,
+            image_url: item.image_url?.startsWith('http') 
+              ? item.image_url 
+              : item.image_url?.startsWith('/') 
+                ? item.image_url 
+                : `/${item.image_url}`
+          }));
+          setNewsItems(fixedData);
         } else {
           setNewsItems(defaultNewsItems);
         }
