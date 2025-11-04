@@ -7,8 +7,8 @@ import { X } from 'lucide-react';
 interface StickyBannerProps {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   showOnPages?: string[];
-  onClose?: () => void;
 }
 
 class StickyBannerErrorBoundary extends React.Component<
@@ -40,21 +40,9 @@ class StickyBannerErrorBoundary extends React.Component<
 export const StickyBanner: React.FC<StickyBannerProps> = ({
   children,
   className,
-  showOnPages = ['/'],
-  onClose
+  style,
+  showOnPages = ['/']
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    if (onClose) {
-      onClose();
-    }
-  };
-
-  if (!isVisible) {
-    return null;
-  }
 
   try {
     return (
@@ -64,16 +52,10 @@ export const StickyBanner: React.FC<StickyBannerProps> = ({
             "relative w-full px-2 py-2 sm:px-4 sm:py-3 text-center",
             className
           )}
+          style={style}
         >
-          <div className="mx-auto max-w-[95%] sm:max-w-[90%] relative">
+          <div className="mx-auto max-w-[95%] sm:max-w-[90%]">
             {children}
-            <button
-              onClick={handleClose}
-              className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-white/70 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
-              aria-label="Cerrar banner"
-            >
-              <X size={18} />
-            </button>
           </div>
         </div>
       </StickyBannerErrorBoundary>

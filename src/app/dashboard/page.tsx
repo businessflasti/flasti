@@ -525,6 +525,10 @@ export default function DashboardPage() {
                       disablePictureInPicture
                       key={tutorialVideo.sliderUrl}
                       onContextMenu={(e) => e.preventDefault()}
+                      onLoadedData={(e) => {
+                        const video = e.currentTarget;
+                        video.play().catch(() => {});
+                      }}
                     >
                       <source src={tutorialVideo.sliderUrl} type="video/mp4" />
                     </video>
@@ -658,6 +662,10 @@ export default function DashboardPage() {
                       disablePictureInPicture
                       key={tutorialVideo.sliderUrl}
                       onContextMenu={(e) => e.preventDefault()}
+                      onLoadedData={(e) => {
+                        const video = e.currentTarget;
+                        video.play().catch(() => {});
+                      }}
                     >
                       <source src={tutorialVideo.sliderUrl} type="video/mp4" />
                     </video>

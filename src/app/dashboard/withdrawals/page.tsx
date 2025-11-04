@@ -117,7 +117,7 @@ export default function WithdrawalsPage() {
     
     // Validación de mínimo $1 USD
     if (Number(amount) < 1) {
-      toast.error('El monto mínimo de retiro es $1.00 USD');
+      toast.error('No puedes retirar menos del mínimo permitido. Debes alcanzar al menos $1.00 USD para solicitar un retiro.');
       return;
     }
     

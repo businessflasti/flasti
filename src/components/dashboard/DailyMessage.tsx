@@ -114,8 +114,8 @@ export default function DailyMessage() {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         <CardContent className="p-3 sm:p-4 lg:p-6 flex items-center justify-center h-full">
           <div className="relative w-10 h-10">
-            <div className="absolute inset-0 border-4 border-[#191C3F]/40 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-transparent border-t-[#191C3F] rounded-full animate-spin"></div>
+            <div className="absolute inset-0 border-4 border-white/20 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-transparent border-t-white rounded-full animate-spin"></div>
           </div>
         </CardContent>
       </Card>
@@ -135,33 +135,33 @@ export default function DailyMessage() {
         <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
           {/* Avatar de María */}
           <div className="relative flex-shrink-0">
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 ${
-              isRead ? 'border-gray-500/50' : 'border-blue-500/50'
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 transition-all duration-300 ${
+              isRead 
+                ? 'border-gray-400/60 opacity-70' 
+                : 'border-blue-500/70 shadow-lg shadow-blue-500/20'
             }`}>
               <Image
                 src="/images/tutors/soporte-maria.png"
                 alt="María - Asesora Flasti"
                 width={48}
                 height={48}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transition-all duration-300 ${
+                  isRead ? 'grayscale opacity-80' : ''
+                }`}
               />
             </div>
           </div>
 
           {/* Info de María - Centrada verticalmente */}
-          <div className="flex-1 min-w-0 flex items-center">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white truncate">
-                María
-              </h3>
-              <span className={`flex-shrink-0 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-bold inline-flex items-center justify-center ${
-                isRead 
-                  ? 'bg-gray-500/20 text-gray-300' 
-                  : 'bg-white text-black'
-              }`}>
-                Asesora
-              </span>
-            </div>
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
+            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white truncate">
+              María
+            </h3>
+            <p className={`text-[10px] sm:text-xs transition-all duration-300 truncate ${
+              isRead ? 'text-gray-400' : 'text-blue-300'
+            }`}>
+              Asesora de {profile?.name || 'Flasti'}
+            </p>
           </div>
 
           {/* Indicador de actividad alineado con el nombre y etiqueta */}
@@ -172,13 +172,13 @@ export default function DailyMessage() {
 
         {/* Mensaje en burbuja de chat */}
         <div className="flex-1 flex flex-col gap-2">
-          <div className={`rounded-2xl rounded-tl-sm p-2.5 sm:p-3 lg:p-4 w-full ${
+          <div className={`rounded-2xl rounded-tl-sm p-2.5 sm:p-3 lg:p-4 w-full border transition-all duration-300 ${
             isRead 
-              ? 'bg-gradient-to-br from-gray-500/10 to-gray-600/10' 
-              : 'bg-gradient-to-br from-blue-500/10 to-cyan-500/10'
+              ? 'bg-gradient-to-br from-gray-600/30 to-gray-700/30 border-gray-500/40 shadow-inner' 
+              : 'bg-gradient-to-br from-blue-500/15 to-cyan-500/15 border-blue-500/30 shadow-lg shadow-blue-500/10'
           }`}>
-            <p className={`text-xs sm:text-sm lg:text-base leading-relaxed ${
-              isRead ? 'text-white/60' : 'text-white/90'
+            <p className={`text-xs sm:text-sm lg:text-base leading-relaxed transition-all duration-300 ${
+              isRead ? 'text-white/65' : 'text-white/95'
             }`}>
               {message}
             </p>
@@ -210,21 +210,21 @@ export default function DailyMessage() {
 
         {/* Footer con estado */}
         <div className="mt-2 sm:mt-3 flex items-center justify-center">
-          <div className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full ${
+          <div className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 ${
             isRead 
-              ? 'bg-gray-500/10' 
-              : 'bg-white'
+              ? 'bg-gray-600/20 border border-gray-500/30' 
+              : 'bg-white shadow-lg'
           }`}>
             {isRead ? (
               <>
                 <svg 
-                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400" 
+                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" 
                   fill="currentColor" 
                   viewBox="0 0 20 20"
                 >
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                 </svg>
-                <span className="text-[10px] sm:text-xs font-medium text-gray-400">
+                <span className="text-[10px] sm:text-xs font-medium text-gray-300">
                   Mensaje leído
                 </span>
               </>

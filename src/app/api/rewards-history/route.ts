@@ -79,12 +79,12 @@ export async function GET(req: NextRequest) {
           id: transaction.id,
           created_at: transaction.created_at,
           transaction_id: transaction.transaction_id,
-          offer_name: `Oferta CPALead #${transaction.offer_id}`,
+          offer_name: transaction.metadata?.offer_name || `Oferta CPALead #${transaction.offer_id}`,
           program_name: 'CPALead',
-          goal_name: transaction.metadata?.campaign_name || `Oferta ${transaction.offer_id}`,
+          goal_name: transaction.metadata?.campaign_name || transaction.metadata?.description || `Oferta ${transaction.offer_id}`,
           payout: transaction.amount,
           currency: transaction.currency || 'USD',
-          status: transaction.status === 'completed' ? 'aprobado' : transaction.status,
+          status: (transaction.status === 'completed' || transaction.status === 'approved') ? 'aprobado' : transaction.status,
           source: 'CPALead',
           type: 'ganancia'
         });

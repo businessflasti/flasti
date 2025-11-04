@@ -87,12 +87,12 @@ export async function GET(request: NextRequest) {
     };
 
     try {
-      // Obtener todas las transacciones del usuario
+      // Obtener todas las transacciones del usuario (completed y approved)
       const { data: transactions, error: transError } = await supabase
         .from('cpalead_transactions')
         .select('amount, created_at')
         .eq('user_id', user.id)
-        .eq('status', 'completed');
+        .in('status', ['completed', 'approved']);
 
       if (!transError && transactions) {
         const today = new Date();

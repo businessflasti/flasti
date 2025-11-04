@@ -1,112 +1,122 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
+import { StickyBanner } from './sticky-banner';
 import { supabase } from '@/lib/supabase';
+import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
+import Image from 'next/image';
 
-interface StickyBannerDemoProps {
-  message?: string;
-  linkText?: string;
-  linkHref?: string;
-  imageUrl?: string;
-}
-
-export function StickyBannerDemo({
-  message = "¡Cierra octubre ganando más! Descubrí las novedades y aprovechá al máximo",
-  linkText = "Register now",
-  linkHref = "#",
-  imageUrl = "/images/banner-background.webp"
-}: StickyBannerDemoProps) {
-  const [isVisible, setIsVisible] = useState(true);
+export function StickyBannerDemo() {
   const { activeTheme } = useSeasonalTheme();
-  const [eventLogo, setEventLogo] = useState<string>('/images/eventos/event-hallo.png');
+  const [bannerConfig, setBannerConfig] = useState({
+    text: '¡Bienvenido a Flasti! Gana dinero completando microtareas',
+    logoUrl: '/logo.svg',
+    backgroundGradient: 'from-[#FF1493] via-[#2DE2E6] to-[#8B5CF6]',
+    backgroundImage: null as string | null,
+    showSeparator: true,
+    isActive: true
+  });
+  const [loading, setLoading] = useState(true);
 
-  // Cargar logo del evento según el tema
+  // Solo mostrar logo si el tema es el predeterminado (no halloween, no navidad, etc.)
+  const isDefaultTheme = !activeTheme || activeTheme === 'default';
+
   useEffect(() => {
-    const loadEventLogo = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('seasonal_themes')
-          .select('event_logo_url')
-          .eq('theme_name', activeTheme)
-          .single();
+    loadBannerConfig();
 
-        if (!error && data?.event_logo_url) {
-          setEventLogo(data.event_logo_url);
-        } else {
-          // Fallback según tema
-          const fallbackLogos: Record<string, string> = {
-            halloween: '/images/eventos/event-halloween.png',
-            christmas: '/images/eventos/event-navidad.png',
-            default: '/images/eventos/event-default.png'
-          };
-          setEventLogo(fallbackLogos[activeTheme] || fallbackLogos.default);
+    // Suscripción en tiempo real para cambios
+    const channel = supabase
+      .channel('banner_config_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'banner_config',
+        },
+        () => {
+          loadBannerConfig();
         }
-      } catch (error) {
-        console.error('Error loading event logo:', error);
-      }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
+  }, []);
 
-    loadEventLogo();
-  }, [activeTheme]);
+  const loadBannerConfig = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('banner_config')
+        .select('*')
+        .eq('is_active', true)
+        .single();
 
-  if (!isVisible) return null;
+      if (!error && data) {
+        setBannerConfig({
+          text: data.banner_text,
+          logoUrl: data.logo_url,
+          backgroundGradient: data.background_gradient || 'from-[#FF1493] via-[#2DE2E6] to-[#8B5CF6]',
+          backgroundImage: data.background_image || null,
+          showSeparator: data.show_separator !== false,
+          isActive: data.is_active
+        });
+      }
+    } catch (error) {
+      console.error('Error loading banner config:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  try {
-    return (
-      <div className="relative w-full overflow-hidden h-[44px]">
-        {/* Imagen de fondo */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ 
-            backgroundImage: `url(${imageUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          {/* Overlay sutil para mejorar legibilidad */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-blue-400/10 to-purple-500/10"></div>
-        </div>
-        
-        {/* Contenido del banner */}
-        <div className="relative h-full px-4 flex items-center max-w-[1920px] mx-auto">
-          {/* Logo/Marca con separador - Solo en desktop */}
-          <div className="hidden md:flex items-center gap-4 flex-shrink-0">
-            <div className="flex items-center">
-              <img 
-                src={eventLogo} 
-                alt="Event Logo" 
-                className="h-7 w-auto object-contain"
-              />
-            </div>
-            {/* Separador vertical */}
-            <div className="h-6 w-[1px] bg-black/30"></div>
-          </div>
-
-          {/* Mensaje - Alineado a la izquierda en desktop, centrado en móvil */}
-          <div className="flex-1 flex items-center md:justify-start justify-center md:pl-4 px-4">
-            <p className="text-[14px] text-black leading-tight md:leading-tight leading-relaxed">
-              <span className="font-bold">¡Cierra octubre ganando más!</span>
-              <span className="font-normal"> Descubrí las novedades y aprovechá al máximo</span>
-            </p>
-          </div>
-
-          {/* Botón cerrar */}
-          <button
-            onClick={() => setIsVisible(false)}
-            className="flex-shrink-0 p-1.5 text-black/60 hover:text-black transition-colors duration-200 focus:outline-none rounded min-w-[32px] flex items-center justify-center"
-            aria-label="Cerrar banner"
-          >
-            <X size={16} strokeWidth={2.5} />
-          </button>
-        </div>
-      </div>
-    );
-  } catch (error) {
-    console.error('StickyBannerDemo render error:', error);
+  if (loading || !bannerConfig.isActive) {
     return null;
   }
-}
 
-export default StickyBannerDemo;
+  // Determinar el estilo de fondo: imagen o degradado
+  const backgroundStyle = bannerConfig.backgroundImage
+    ? {
+        backgroundImage: `url(${bannerConfig.backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }
+    : {};
+
+  const backgroundClass = bannerConfig.backgroundImage
+    ? '' // Sin clase de gradiente si hay imagen
+    : `bg-gradient-to-r ${bannerConfig.backgroundGradient}`;
+
+  return (
+    <StickyBanner className={backgroundClass} style={backgroundStyle}>
+      <div className="flex items-center justify-start gap-2 sm:gap-3 max-w-7xl mx-auto">
+        {/* Logo - Solo en tema predeterminado */}
+        {isDefaultTheme && (
+          <>
+            <div className="flex-shrink-0">
+              <Image
+                src={bannerConfig.logoUrl}
+                alt="Flasti Logo"
+                width={20}
+                height={20}
+                className="w-4 h-4 sm:w-5 sm:h-5"
+              />
+            </div>
+            
+            {/* Separador */}
+            {bannerConfig.showSeparator && (
+              <div className="h-4 sm:h-5 w-px bg-white/30"></div>
+            )}
+          </>
+        )}
+        
+        {/* Texto - Soporta HTML para negrita */}
+        <span 
+          className="text-white text-[11px] sm:text-xs drop-shadow-lg"
+          dangerouslySetInnerHTML={{ __html: bannerConfig.text }}
+        />
+      </div>
+    </StickyBanner>
+  );
+}

@@ -18,7 +18,7 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
-  const [bonusClaimed, setBonusClaimed] = useState(false);
+  const [bonusClaimed, setBonusClaimed] = useState<boolean | null>(null); // null = loading
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -39,14 +39,17 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
   }, [showPopup]);
 
   const checkBonusStatus = async () => {
-    const { data } = await supabase
-      .from('user_profiles')
-      .select('welcome_bonus_claimed')
-      .eq('user_id', userId)
-      .single();
-    
-    if (data?.welcome_bonus_claimed) {
-      setBonusClaimed(true);
+    try {
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('welcome_bonus_claimed')
+        .eq('user_id', userId)
+        .single();
+      
+      setBonusClaimed(data?.welcome_bonus_claimed || false);
+    } catch (error) {
+      console.error('Error checking bonus status:', error);
+      setBonusClaimed(false);
     }
   };
 
@@ -94,36 +97,43 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
     try {
       const { data: userProfile } = await supabase
         .from('user_profiles')
-        .select('balance')
+        .select('balance, total_earnings')
         .eq('user_id', userId)
         .single();
 
       const newBalance = (userProfile?.balance || 0) + 0.75;
+      const newTotalEarnings = (userProfile?.total_earnings || 0) + 0.75;
 
-      // Actualizar balance y marcar bono como reclamado
+      // Actualizar balance, total_earnings y marcar bono como reclamado
       await supabase
         .from('user_profiles')
         .update({ 
           balance: newBalance,
+          total_earnings: newTotalEarnings,
           welcome_bonus_claimed: true 
         })
         .eq('user_id', userId);
 
-      // Registrar en historial de recompensas (rewards_history)
+      // Registrar en historial de recompensas (cpalead_transactions)
       await supabase
         .from('cpalead_transactions')
         .insert({
           user_id: userId,
+          transaction_id: `welcome_${userId}_${Date.now()}`,
+          offer_id: 'welcome_bonus',
           amount: 0.75,
+          currency: 'USD',
           type: 'reward',
           status: 'approved',
-          description: 'Tarea de bienvenida',
-          offer_id: 'welcome_bonus',
-          offer_name: 'Bono de Bienvenida',
+          metadata: {
+            offer_name: 'Tarea de bienvenida',
+            description: 'Tarea de bienvenida',
+            campaign_name: 'Tarea de bienvenida'
+          },
           created_at: new Date().toISOString()
         });
 
-      console.log('✅ Bono de bienvenida registrado en historial');
+      console.log('✅ Bono de bienvenida registrado en historial y estadísticas actualizadas');
 
       setTimeout(() => {
         setShowPopup(false);
@@ -138,8 +148,8 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
     }
   };
 
-  // Si el bono ya fue reclamado, no renderizar nada (el AdBlock se maneja en el padre)
-  if (bonusClaimed) return null;
+  // Si está cargando o el bono ya fue reclamado, no renderizar nada
+  if (bonusClaimed === null || bonusClaimed === true) return null;
 
   return (
     <>

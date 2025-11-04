@@ -25,9 +25,12 @@ interface User {
   first_name?: string | null;
   last_name?: string | null;
   created_at: string;
+  last_sign_in_at?: string | null;
   is_premium: boolean;
   premium_activated_at?: string;
   country?: string | null;
+  device_type?: string | null;
+  os?: string;
 }
 
 export default function UsersManagement() {
@@ -239,10 +242,13 @@ export default function UsersManagement() {
 
   // Añadir saldo
   const handleAddBalance = async (email: string) => {
-    if (!balanceAmount || parseFloat(balanceAmount) <= 0) {
-      toast.error('Ingresa un monto válido');
+    if (!balanceAmount || parseFloat(balanceAmount) === 0) {
+      toast.error('Ingresa un monto válido (diferente de 0)');
       return;
     }
+
+    const amount = parseFloat(balanceAmount);
+    const isNegative = amount < 0;
 
     try {
       const response = await fetch('/api/admin/add-balance', {
@@ -250,23 +256,27 @@ export default function UsersManagement() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: email,
-          amount: parseFloat(balanceAmount)
+          amount: amount
         }),
       });
 
       const result = await response.json();
 
       if (result.success) {
-        toast.success(`$${balanceAmount} agregados exitosamente`);
+        if (isNegative) {
+          toast.success(`$${Math.abs(amount)} restados exitosamente`);
+        } else {
+          toast.success(`$${amount} agregados exitosamente`);
+        }
         setBalanceAmount('');
         setAddBalanceUserId(null);
         loadUsers();
       } else {
-        toast.error(result.message || 'Error añadiendo saldo');
+        toast.error(result.message || 'Error modificando saldo');
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Error añadiendo saldo');
+      toast.error('Error modificando saldo');
     }
   };
 
@@ -407,10 +417,11 @@ export default function UsersManagement() {
                 <thead>
                   <tr className="border-b border-white/10">
                     <th className="text-left py-3 px-4 text-sm font-bold text-gray-400 min-w-[180px]">Fecha de Registro</th>
-                    <th className="text-left py-3 px-4 text-sm font-bold text-gray-400 min-w-[150px]">Nombre y Apellido</th>
-                    <th className="text-left py-3 px-4 text-sm font-bold text-gray-400 min-w-[200px]">Email</th>
+                    <th className="text-left py-3 px-4 text-sm font-bold text-gray-400 min-w-[200px]">Email / Nombre</th>
                     <th className="text-center py-3 px-4 text-sm font-bold text-gray-400 min-w-[100px]">País</th>
                     <th className="text-center py-3 px-4 text-sm font-bold text-gray-400 min-w-[120px]">Estado</th>
+                    <th className="text-center py-3 px-4 text-sm font-bold text-gray-400 min-w-[120px]">Dispositivo</th>
+                    <th className="text-left py-3 px-4 text-sm font-bold text-gray-400 min-w-[180px]">Último Acceso</th>
                     <th className="text-right py-3 px-4 text-sm font-bold text-gray-400 min-w-[150px]">Acciones</th>
                   </tr>
                 </thead>
@@ -426,13 +437,16 @@ export default function UsersManagement() {
                           minute: '2-digit'
                         })}
                       </td>
-                      <td className="py-4 px-4 text-sm text-white font-medium min-w-[150px]">
-                        {u.first_name || u.last_name 
-                          ? `${u.first_name || ''} ${u.last_name || ''}`.trim()
-                          : <span className="text-gray-500 italic">Sin nombre</span>
-                        }
+                      <td className="py-4 px-4 min-w-[200px]">
+                        <div className="flex flex-col gap-1">
+                          <span className="text-sm text-white font-medium">{u.email}</span>
+                          {(u.first_name || u.last_name) && (
+                            <span className="text-xs text-gray-400">
+                              {`${u.first_name || ''} ${u.last_name || ''}`.trim()}
+                            </span>
+                          )}
+                        </div>
                       </td>
-                      <td className="py-4 px-4 text-sm text-white font-medium min-w-[200px]">{u.email}</td>
                       <td className="py-4 px-4 text-center">
                         {u.country ? (
                           <div className="flex items-center justify-center gap-2">
@@ -455,6 +469,31 @@ export default function UsersManagement() {
                           </span>
                         )}
                       </td>
+                      <td className="py-4 px-4 text-center">
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="text-xs text-white font-medium">
+                            {u.device_type === 'mobile' ? '📱 Móvil' : u.device_type === 'desktop' ? '💻 Desktop' : '❓ Desconocido'}
+                          </span>
+                          {u.os && u.os !== 'Desconocido' && (
+                            <span className="text-xs text-gray-400">
+                              {u.os}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-4 px-4 text-sm text-white min-w-[180px]">
+                        {u.last_sign_in_at ? (
+                          new Date(u.last_sign_in_at).toLocaleString('es-ES', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                        ) : (
+                          <span className="text-gray-500 italic">Nunca</span>
+                        )}
+                      </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center justify-end gap-2">
                           {/* Botón Añadir Saldo */}
@@ -462,11 +501,12 @@ export default function UsersManagement() {
                             <div className="flex items-center gap-2">
                               <Input
                                 type="number"
-                                placeholder="Monto"
+                                placeholder="+10 o -5"
                                 value={balanceAmount}
                                 onChange={(e) => setBalanceAmount(e.target.value)}
-                                className="w-24 h-8 bg-[#0a0a0a] border-white/10 text-white text-sm"
+                                className="w-28 h-8 bg-[#0a0a0a] border-white/10 text-white text-sm"
                                 autoFocus
+                                step="0.01"
                               />
                               <Button
                                 size="sm"
@@ -490,10 +530,11 @@ export default function UsersManagement() {
                             <Button
                               size="sm"
                               onClick={() => setAddBalanceUserId(u.user_id)}
-                              className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border border-green-500/20"
+                              className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-blue-500/20"
+                              title="Agregar o restar saldo"
                             >
                               <DollarSign className="w-3 h-3 mr-1" />
-                              Añadir Saldo
+                              ± Saldo
                             </Button>
                           )}
 

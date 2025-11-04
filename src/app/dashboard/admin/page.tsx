@@ -100,16 +100,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div 
-        className="flex items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: activeTheme === 'halloween' 
-            ? 'url(/images/fondo-halloween.webp)' 
-            : activeTheme === 'christmas'
-            ? 'url(/images/fondo-navidad.webp)'
-            : 'url(/images/fondo.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
+        className="flex items-center justify-center min-h-screen bg-[#0B1017]"
       >
         <div className="text-center">
           <div className="animate-spin text-4xl mb-4">⟳</div>
@@ -122,16 +113,7 @@ export default function AdminDashboard() {
   if (!isAdmin) {
     return (
       <div 
-        className="flex flex-col items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: activeTheme === 'halloween' 
-            ? 'url(/images/fondo-halloween.webp)' 
-            : activeTheme === 'christmas'
-            ? 'url(/images/fondo-navidad.webp)'
-            : 'url(/images/fondo.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
+        className="flex flex-col items-center justify-center min-h-screen bg-[#0B1017]"
       >
         <h1 className="text-3xl font-bold mb-4 text-white">Acceso Restringido</h1>
         <p className="text-gray-400 mb-6">No tienes permisos para acceder a esta página</p>
@@ -144,16 +126,7 @@ export default function AdminDashboard() {
 
   return (
     <div 
-      className="min-h-screen p-6"
-      style={{
-        backgroundImage: activeTheme === 'halloween' 
-          ? 'url(/images/fondo-halloween.webp)' 
-          : activeTheme === 'christmas'
-          ? 'url(/images/fondo-navidad.webp)'
-          : 'url(/images/fondo.webp)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}
+      className="min-h-screen p-6 bg-[#0B1017]"
     >
       <div className="max-w-[1800px] mx-auto">
         <div className="space-y-6">
@@ -228,6 +201,15 @@ export default function AdminDashboard() {
                     <path d="M16 11V3H8v6H2v12h20V11h-6zm-6-6h4v14h-4V5zm-6 6h4v8H4v-8zm16 8h-4v-6h4v6z"/>
                   </svg>
                   Ranking
+                </Button>
+                <Button 
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold"
+                  onClick={() => window.location.href = '/dashboard/admin/banner-config'}
+                >
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/>
+                  </svg>
+                  Banner
                 </Button>
               </div>
             </CardContent>
