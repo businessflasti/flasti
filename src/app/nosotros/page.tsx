@@ -15,7 +15,7 @@ export default function NosotrosPage() {
     <MainLayout showHeader={true} disableChat={true}>
       <Suspense fallback={<div className="container-custom py-16 md:py-24">Cargando...</div>}>
         <div 
-          className="min-h-screen bg-[#0B1017]"
+          className="min-h-screen bg-[#0A0A0A]"
           style={{
             transform: 'translate3d(0, 0, 0)',
             contain: 'layout style paint',

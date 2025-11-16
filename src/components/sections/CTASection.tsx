@@ -18,7 +18,7 @@ const CTASection = () => {
   ];
 
   return (
-    <section className="pt-6 pb-24 lg:py-16 relative overflow-hidden bg-[#0B1017]">
+    <section className="pt-6 pb-24 lg:py-16 relative overflow-hidden bg-[#0A0A0A]">
 
       <div className="container-custom relative z-10">
         {/* Layout Desktop: Izquierda + Derecha | Móvil: Arriba + Abajo */}

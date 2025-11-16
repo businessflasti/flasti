@@ -1,0 +1,413 @@
+/* ============================================
+   TEMA PREMIUM - ESTILOS EXCLUSIVOS
+   Solo disponible para usuarios Premium
+   Color: #6765F2 (Sólido, sin gradientes)
+   ============================================ */
+
+/* Aplicar estilos solo cuando el tema premium está activo */
+html.premium {
+  /* Variable de color Premium - Color sólido único */
+  --premium-color: #6765F2;
+  --premium-color-hover: #5654D1;
+  --premium-color-light: rgba(103, 101, 242, 0.1);
+  --premium-color-border: rgba(103, 101, 242, 0.3);
+}
+
+/* Fondo principal - Sin cambios, mantener original */
+html.premium body {
+  background: #0B1017;
+}
+
+/* Sin efectos de brillo en el fondo */
+html.premium body::before {
+  display: none;
+}
+
+/* Tarjetas con borde premium - Sin gradientes ni sombras */
+html.premium .card:not(.cpa-offer-card),
+html.premium [class*="card"]:not(.cpa-offer-card) {
+  background: var(--card);
+  border: 1px solid var(--premium-color-border);
+}
+
+/* Botones premium - Color sólido sin gradientes - EXCLUIR botones del balance */
+html.premium button:not(.btn-secondary):not(.advisor-button):not(.cpa-button):not([class*="balance"] *):not(.user-balance *),
+html.premium .btn-primary:not(.advisor-button):not(.cpa-button) {
+  background: var(--premium-color);
+  color: white;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+html.premium button:not(.btn-secondary):not(.advisor-button):not(.cpa-button):not([class*="balance"] *):not(.user-balance *):hover,
+html.premium .btn-primary:not(.advisor-button):not(.cpa-button):hover {
+  background: var(--premium-color-hover);
+}
+
+/* Asegurar que el botón de visibilidad del balance mantenga su estilo glassmorphism - MÁXIMA PRIORIDAD */
+html.premium button.balance-eye-button,
+html.premium button.balance-eye-button.rounded-xl {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+
+html.premium button.balance-eye-button:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Forzar que el icono sea blanco manteniendo sus detalles */
+html.premium button.balance-eye-button svg {
+  color: white !important;
+  stroke: currentColor !important;
+}
+
+/* Títulos - Color sólido sin efectos */
+html.premium h1,
+html.premium h2,
+html.premium h3 {
+  color: var(--premium-color);
+}
+
+/* Excluir títulos dentro de sidebar, balance y asesora */
+html.premium aside h1,
+html.premium aside h2,
+html.premium aside h3,
+html.premium [class*="sidebar"] h1,
+html.premium [class*="sidebar"] h2,
+html.premium [class*="sidebar"] h3,
+html.premium [class*="Sidebar"] h1,
+html.premium [class*="Sidebar"] h2,
+html.premium [class*="Sidebar"] h3,
+html.premium [class*="balance"] h1,
+html.premium [class*="balance"] h2,
+html.premium [class*="balance"] h3,
+html.premium [class*="Balance"] h1,
+html.premium [class*="Balance"] h2,
+html.premium [class*="Balance"] h3,
+html.premium [class*="advisor"] h1,
+html.premium [class*="advisor"] h2,
+html.premium [class*="advisor"] h3,
+html.premium [class*="Advisor"] h1,
+html.premium [class*="Advisor"] h2,
+html.premium [class*="Advisor"] h3,
+html.premium [class*="asesora"] h1,
+html.premium [class*="asesora"] h2,
+html.premium [class*="asesora"] h3,
+html.premium [class*="Asesora"] h1,
+html.premium [class*="Asesora"] h2,
+html.premium [class*="Asesora"] h3,
+html.premium [class*="chat"] h1,
+html.premium [class*="chat"] h2,
+html.premium [class*="chat"] h3,
+html.premium [class*="Chat"] h1,
+html.premium [class*="Chat"] h2,
+html.premium [class*="Chat"] h3 {
+  color: inherit !important;
+}
+
+/* Header del dashboard - EXCLUIR del tema premium */
+html.premium header {
+  background: #0B1017 !important;
+  border-bottom: none !important;
+}
+
+/* Sidebar - NO aplicar estilos del tema premium */
+/* No agregar ninguna regla que modifique el sidebar cuando el tema está activo */
+
+/* Excluir específicamente el botón "Salir" del sidebar */
+html.premium aside button,
+html.premium #sidebar-menu button,
+html.premium [class*="sidebar"] button {
+  background: inherit !important;
+  color: inherit !important;
+  border: inherit !important;
+}
+
+/* Excluir el botón de menú hamburguesa en header móvil */
+html.premium header button {
+  background: transparent !important;
+}
+
+html.premium header button svg,
+html.premium header button svg *,
+html.premium header button rect {
+  fill: white !important;
+  stroke: white !important;
+  color: white !important;
+}
+
+/* Links - Color sólido sin efectos - Excluir sidebar, balance y asesora */
+html.premium a:not([class*="sidebar"]):not([class*="Sidebar"]):not([class*="balance"]):not([class*="Balance"]):not([class*="advisor"]):not([class*="Advisor"]):not([class*="asesora"]):not([class*="Asesora"]):not([class*="chat"]):not([class*="Chat"]) {
+  color: var(--premium-color);
+  transition: color 0.2s ease;
+}
+
+html.premium a:not([class*="sidebar"]):not([class*="Sidebar"]):not([class*="balance"]):not([class*="Balance"]):not([class*="advisor"]):not([class*="Advisor"]):not([class*="asesora"]):not([class*="Asesora"]):not([class*="chat"]):not([class*="Chat"]):hover {
+  color: var(--premium-color-hover);
+}
+
+/* Excluir links dentro de sidebar, balance y asesora */
+html.premium aside a,
+html.premium [class*="sidebar"] a,
+html.premium [class*="Sidebar"] a,
+html.premium [class*="balance"] a,
+html.premium [class*="Balance"] a,
+html.premium [class*="advisor"] a,
+html.premium [class*="Advisor"] a,
+html.premium [class*="asesora"] a,
+html.premium [class*="Asesora"] a,
+html.premium [class*="chat"] a,
+html.premium [class*="Chat"] a {
+  color: inherit !important;
+}
+
+/* Inputs premium - Sin efectos de brillo */
+html.premium input,
+html.premium textarea,
+html.premium select {
+  background: var(--premium-color-light);
+  border: 1px solid var(--premium-color-border);
+  color: white;
+}
+
+html.premium input:focus,
+html.premium textarea:focus,
+html.premium select:focus {
+  border-color: var(--premium-color);
+  outline: none;
+}
+
+/* Scrollbar - EXCLUIR del tema (mantener original) */
+html.premium ::-webkit-scrollbar {
+  width: 12px;
+}
+
+html.premium ::-webkit-scrollbar-track {
+  background: #0B1017;
+}
+
+html.premium ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+html.premium ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Badge Premium - Sin animaciones */
+html.premium .premium-badge {
+  background: var(--premium-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* Bordes premium - Sin gradientes */
+html.premium .border-premium {
+  border: 2px solid var(--premium-color);
+}
+
+/* Aplicar borde premium a bloques de estadísticas del dashboard */
+/* Seleccionar los divs que contienen las estadísticas (Hoy, Semana, Total, Completas) */
+html.premium .grid > div > div.bg-white\/\[0\.03\] {
+  border: 1px solid var(--premium-color-border) !important;
+}
+
+/* Alternativa: Aplicar a todos los divs con backdrop-blur dentro del grid */
+html.premium .grid .backdrop-blur-2xl {
+  border: 1px solid var(--premium-color-border) !important;
+}
+
+/* Aplicar a tarjetas glassmorphism en general */
+html.premium div[class*="backdrop-blur"]:not([class*="balance"]):not([class*="Balance"]):not([class*="ranking"]):not([class*="Ranking"]):not([class*="weekly"]):not([class*="Weekly"]) {
+  border: 1px solid var(--premium-color-border) !important;
+}
+
+/* ============================================
+   EXCLUSIONES ESPECÍFICAS
+   Elementos que NO deben tener tema Premium
+   ============================================ */
+
+/* Excluir bloque de ofertas CPA Lead (excepto botones) */
+html.premium .offers-container,
+html.premium .offers-list,
+html.premium [class*="OffersList"] {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+/* NO excluir botones de las ofertas */
+html.premium .offers-container *:not(button):not(.refresh-button),
+html.premium .offers-list *:not(button):not(.refresh-button),
+html.premium [class*="OffersList"] *:not(button):not(.refresh-button) {
+  background: inherit !important;
+  border-color: inherit !important;
+}
+
+/* Mantener estilo del botón Actualizar en ofertas */
+html.premium .refresh-button,
+html.premium button[class*="refresh"],
+html.premium button[aria-label*="Actualizar"] {
+  background: var(--premium-color) !important;
+  color: white !important;
+}
+
+html.premium .refresh-button:hover,
+html.premium button[class*="refresh"]:hover,
+html.premium button[aria-label*="Actualizar"]:hover {
+  background: var(--premium-color-hover) !important;
+}
+
+/* Aplicar color premium a TODOS los botones de tarjetas de ofertas CPA Lead */
+html.premium [class*="OffersList"] button:not([class*="close"]):not([class*="modal"]),
+html.premium .offers-list button:not([class*="close"]):not([class*="modal"]),
+html.premium .offers-container button:not([class*="close"]):not([class*="modal"]),
+html.premium [class*="offer"] button:not([class*="close"]):not([class*="modal"]) {
+  background: var(--premium-color) !important;
+  color: white !important;
+  border-color: var(--premium-color) !important;
+}
+
+html.premium [class*="OffersList"] button:not([class*="close"]):not([class*="modal"]):hover,
+html.premium .offers-list button:not([class*="close"]):not([class*="modal"]):hover,
+html.premium .offers-container button:not([class*="close"]):not([class*="modal"]):hover,
+html.premium [class*="offer"] button:not([class*="close"]):not([class*="modal"]):hover {
+  background: var(--premium-color-hover) !important;
+  border-color: var(--premium-color-hover) !important;
+}
+
+/* Excluir COMPLETAMENTE bloque de Balance y Asesora */
+html.premium [class*="balance"]:not(button),
+html.premium [class*="balance"] *:not(button svg),
+html.premium [class*="Balance"]:not(button),
+html.premium [class*="Balance"] *:not(button svg),
+html.premium .user-balance,
+html.premium .user-balance *,
+html.premium [class*="advisor"],
+html.premium [class*="advisor"] *,
+html.premium [class*="Advisor"],
+html.premium [class*="Advisor"] *,
+html.premium [class*="asesora"],
+html.premium [class*="asesora"] *,
+html.premium [class*="Asesora"],
+html.premium [class*="Asesora"] *,
+html.premium [class*="chat"],
+html.premium [class*="chat"] *,
+html.premium [class*="Chat"],
+html.premium [class*="Chat"] *,
+html.premium [class*="weekly"],
+html.premium [class*="weekly"] *,
+html.premium [class*="Weekly"],
+html.premium [class*="Weekly"] *,
+html.premium [class*="ranking"],
+html.premium [class*="ranking"] *,
+html.premium [class*="Ranking"],
+html.premium [class*="Ranking"] * {
+  background: inherit !important;
+  color: inherit !important;
+  border-color: inherit !important;
+  box-shadow: none !important;
+}
+
+/* Excepción: Título del WeeklyTopRanking debe ser blanco */
+html.premium .weekly-ranking-title h3 {
+  color: white !important;
+}
+
+/* Excluir iconos SVG dentro de balance, asesora y ranking */
+html.premium [class*="balance"] svg,
+html.premium [class*="Balance"] svg,
+html.premium [class*="advisor"] svg,
+html.premium [class*="Advisor"] svg,
+html.premium [class*="asesora"] svg,
+html.premium [class*="Asesora"] svg,
+html.premium [class*="chat"] svg,
+html.premium [class*="Chat"] svg,
+html.premium [class*="weekly"] svg,
+html.premium [class*="Weekly"] svg,
+html.premium [class*="ranking"] svg,
+html.premium [class*="Ranking"] svg {
+  color: inherit !important;
+  fill: inherit !important;
+  stroke: inherit !important;
+}
+
+/* Excluir específicamente el icono de visibilidad (ojito) - MUY IMPORTANTE */
+html.premium [class*="balance"] button svg,
+html.premium [class*="Balance"] button svg,
+html.premium .user-balance button svg,
+html.premium [class*="visibility"] svg,
+html.premium [class*="Visibility"] svg,
+html.premium [class*="eye"] svg,
+html.premium [class*="Eye"] svg,
+html.premium button[aria-label*="visibilidad"] svg,
+html.premium button[aria-label*="Visibilidad"] svg,
+html.premium button[aria-label*="ocultar"] svg,
+html.premium button[aria-label*="Ocultar"] svg,
+html.premium button[aria-label*="mostrar"] svg,
+html.premium button[aria-label*="Mostrar"] svg {
+  color: inherit !important;
+  fill: inherit !important;
+  stroke: inherit !important;
+}
+
+/* Forzar color original en el botón del ojito */
+html.premium [class*="balance"] button,
+html.premium [class*="Balance"] button,
+html.premium .user-balance button {
+  background: inherit !important;
+  color: inherit !important;
+}
+
+/* Excluir botones dentro de estos bloques */
+html.premium [class*="balance"] button,
+html.premium [class*="Balance"] button,
+html.premium [class*="advisor"] button,
+html.premium [class*="Advisor"] button,
+html.premium [class*="asesora"] button,
+html.premium [class*="Asesora"] button,
+html.premium [class*="chat"] button,
+html.premium [class*="Chat"] button,
+html.premium [class*="weekly"] button,
+html.premium [class*="Weekly"] button,
+html.premium [class*="ranking"] button,
+html.premium [class*="Ranking"] button {
+  background: inherit !important;
+  color: inherit !important;
+  border: inherit !important;
+  box-shadow: none !important;
+}
+
+html.premium [class*="balance"] button:hover,
+html.premium [class*="Balance"] button:hover,
+html.premium [class*="advisor"] button:hover,
+html.premium [class*="Advisor"] button:hover,
+html.premium [class*="asesora"] button:hover,
+html.premium [class*="Asesora"] button:hover,
+html.premium [class*="chat"] button:hover,
+html.premium [class*="Chat"] button:hover,
+html.premium [class*="weekly"] button:hover,
+html.premium [class*="Weekly"] button:hover,
+html.premium [class*="ranking"] button:hover,
+html.premium [class*="Ranking"] button:hover {
+  background: inherit !important;
+  transform: none !important;
+}
+
+/* Excluir botones específicos por texto */
+html.premium button:has-text("Gracias"),
+html.premium button:has-text("Me gusta"),
+html.premium button:has-text("gracias"),
+html.premium button:has-text("me gusta") {
+  background: inherit !important;
+  color: inherit !important;
+  border: inherit !important;
+  box-shadow: none !important;
+}

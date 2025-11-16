@@ -40,14 +40,14 @@ const AdBlock: React.FC<AdBlockProps> = ({ adClient, adSlot, className = "", alw
 
   return (
     <div className={`w-full max-w-[320px] mx-auto animate-in fade-in-0 zoom-in-95 duration-500 flex flex-col justify-center relative z-50 ${className}`} style={{color: '#fff'}}>
-      <div className="w-full overflow-hidden shadow-none p-0 relative bg-[#161b22]/80 backdrop-blur-xl rounded-3xl border border-[#30363d] hover:border-[#8b5cf6]/30 transition-all duration-300 flex flex-col group">
+      <div className="w-full overflow-hidden shadow-none p-0 relative bg-[#0A0A0A] backdrop-blur-xl rounded-3xl border border-[#30363d] hover:border-[#8b5cf6]/30 transition-all duration-300 flex flex-col group">
         {/* Efecto neón sutil en hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl">
           <div className="absolute inset-0 bg-gradient-to-br from-[#6E40FF]/5 via-transparent to-[#2DE2E6]/5 rounded-3xl"></div>
         </div>
         
         {/* Banda superior para 'Publicidad' */}
-        <div className="w-full px-4 py-2 bg-[#0d1117]/50 rounded-t-3xl border-b border-[#30363d] flex items-center justify-center relative z-10" style={{minHeight: 32}}>
+        <div className="w-full px-4 py-2 rounded-t-3xl border-b border-[#30363d] flex items-center justify-center relative z-10" style={{minHeight: 32, backgroundColor: '#0A0A0A'}}>
           <span className="text-[10px] text-[#8b949e] uppercase tracking-wider font-semibold select-none">{t('publicidad')}</span>
         </div>
         {/* Área del anuncio o animación minimalista */}

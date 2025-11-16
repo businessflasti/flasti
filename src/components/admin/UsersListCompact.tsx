@@ -52,6 +52,7 @@ export default function UsersListCompact() {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'yesterday' | 'dayBeforeYesterday' | 'lastWeek' | 'month' | 'year'>('today');
+  const [premiumFilter, setPremiumFilter] = useState<'all' | 'premium' | 'free'>('all');
   const [processingUserId, setProcessingUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [addBalanceUserId, setAddBalanceUserId] = useState<string | null>(null);
@@ -66,12 +67,20 @@ export default function UsersListCompact() {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      console.log('🔍 Session:', session ? 'Existe' : 'No existe');
+      console.log('🔍 Session error:', sessionError);
       
       if (!session) {
-        toast.error('No hay sesión activa');
+        console.error('❌ No hay sesión activa');
+        toast.error('No hay sesión activa. Por favor, cierra sesión y vuelve a iniciar.');
         return;
       }
+
+      console.log('✅ Token obtenido, longitud:', session.access_token.length);
+      console.log('🔍 User ID:', session.user?.id);
+      console.log('🔍 User email:', session.user?.email);
 
       const response = await fetch('/api/admin/users', {
         method: 'GET',
@@ -81,7 +90,9 @@ export default function UsersListCompact() {
         }
       });
 
+      console.log('📡 Response status:', response.status);
       const result = await response.json();
+      console.log('📡 Response data:', result);
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Error al cargar usuarios');
@@ -90,8 +101,8 @@ export default function UsersListCompact() {
       setUsers(result.users);
       setFilteredUsers(result.users);
     } catch (error) {
-      console.error('Error cargando usuarios:', error);
-      toast.error('Error al cargar usuarios');
+      console.error('❌ Error cargando usuarios:', error);
+      toast.error(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     } finally {
       setLoading(false);
     }
@@ -101,12 +112,14 @@ export default function UsersListCompact() {
   useEffect(() => {
     let filtered = users;
 
+    // Filtro por búsqueda
     if (searchTerm.trim() !== '') {
       filtered = filtered.filter(u => 
         u.email.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
+    // Filtro por fecha
     if (dateFilter !== 'all') {
       const now = new Date();
       filtered = filtered.filter(u => {
@@ -136,8 +149,15 @@ export default function UsersListCompact() {
       });
     }
 
+    // Filtro por estado premium
+    if (premiumFilter === 'premium') {
+      filtered = filtered.filter(u => u.is_premium === true);
+    } else if (premiumFilter === 'free') {
+      filtered = filtered.filter(u => u.is_premium === false);
+    }
+
     setFilteredUsers(filtered);
-  }, [searchTerm, dateFilter, users]);
+  }, [searchTerm, dateFilter, premiumFilter, users]);
 
   // Activar premium
   const handleActivatePremium = async (userId: string, email: string) => {
@@ -289,7 +309,8 @@ export default function UsersListCompact() {
       {/* Búsqueda y Filtros */}
       <Card className="bg-[#1a1a1a] border-blue-500/20">
         <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col gap-4">
+            {/* Búsqueda */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <Input
@@ -301,7 +322,9 @@ export default function UsersListCompact() {
               />
             </div>
 
-            <div className="flex gap-2">
+            {/* Filtros por Fecha */}
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs text-gray-400 self-center mr-2">Fecha:</span>
               <Button
                 size="sm"
                 variant={dateFilter === 'all' ? 'default' : 'outline'}
@@ -371,6 +394,42 @@ export default function UsersListCompact() {
                   : 'border-white/10 text-white hover:bg-white/10'}
               >
                 Este Año
+              </Button>
+            </div>
+
+            {/* Filtros por Estado Premium */}
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs text-gray-400 self-center mr-2">Estado:</span>
+              <Button
+                size="sm"
+                variant={premiumFilter === 'all' ? 'default' : 'outline'}
+                onClick={() => setPremiumFilter('all')}
+                className={premiumFilter === 'all' 
+                  ? 'bg-blue-500 text-white' 
+                  : 'border-white/10 text-white hover:bg-white/10'}
+              >
+                Todos
+              </Button>
+              <Button
+                size="sm"
+                variant={premiumFilter === 'premium' ? 'default' : 'outline'}
+                onClick={() => setPremiumFilter('premium')}
+                className={premiumFilter === 'premium' 
+                  ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-bold' 
+                  : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}
+              >
+                <Crown className="w-3 h-3 mr-1" />
+                Premium
+              </Button>
+              <Button
+                size="sm"
+                variant={premiumFilter === 'free' ? 'default' : 'outline'}
+                onClick={() => setPremiumFilter('free')}
+                className={premiumFilter === 'free' 
+                  ? 'bg-gray-500 text-white' 
+                  : 'border-gray-500/30 text-gray-400 hover:bg-gray-500/10'}
+              >
+                Gratuito
               </Button>
             </div>
           </div>

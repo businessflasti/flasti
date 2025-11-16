@@ -9,7 +9,7 @@ const DashboardPreviewSection = React.memo(() => {
   
   return (
     <section 
-      className="py-20 relative overflow-hidden bg-[#0B1017]"
+      className="py-20 relative overflow-hidden bg-[#0A0A0A]"
       style={{
         transform: 'translate3d(0, 0, 0)',
         contain: 'layout style'

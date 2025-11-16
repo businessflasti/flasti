@@ -45,7 +45,7 @@ const FooterComponent = () => {
       <footer 
         className="relative overflow-hidden pt-12 pb-8 z-30" 
         style={{
-          background: '#101010', 
+          background: '#0A0A0A', 
           borderTop: '1px solid rgba(63, 140, 255, 0.15)',
           transform: 'translate3d(0, 0, 0)',
           contain: 'layout style paint',
@@ -53,7 +53,7 @@ const FooterComponent = () => {
         }}
       >
         {/* Fondo sólido */}
-        <div className="absolute inset-0" style={{background: '#101010', zIndex: -1}}></div>
+        <div className="absolute inset-0" style={{background: '#0A0A0A', zIndex: -1}}></div>
 
         {/* Elementos decorativos eliminados */}
 

@@ -29,6 +29,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import PayPalButtonCheckout from "@/components/checkout/PayPalButton";
+import { CountryPriceService } from '@/lib/country-price-service';
 import { CheckIcon, Zap, Infinity, AlertTriangle, Sparkles, Shield, HeadphonesIcon, Gift, Wallet, Globe } from "lucide-react";
 import Script from "next/script";
 import Link from "next/link";
@@ -37,12 +39,10 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import PayPalLogo from "@/components/icons/PayPalLogo";
 import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 const CheckoutContent = () => {
   const { t } = useLanguage();
   const { user } = useAuth();
-  const { activeTheme } = useSeasonalTheme();
   
   // Constante para el máximo número de intentos
   const MAX_HOTMART_LOAD_ATTEMPTS = 3;
@@ -216,6 +216,77 @@ const CheckoutContent = () => {
       }
     }
   }, []);
+
+  // Detectar país y obtener precio
+  useEffect(() => {
+    const detectCountryAndPrice = async () => {
+      try {
+        let countryCode = 
+          localStorage.getItem('flastiUserCountry') ||
+          localStorage.getItem('userCountry') ||
+          null;
+
+        if (!countryCode) {
+          const response = await fetch('https://ipapi.co/json/');
+          const data = await response.json();
+          countryCode = data.country_code;
+          
+          if (countryCode) {
+            localStorage.setItem('flastiUserCountry', countryCode);
+            localStorage.setItem('userCountry', countryCode);
+          }
+        }
+
+        setIsArgentina(countryCode === 'AR');
+
+        if (countryCode) {
+          const countryPriceData = await CountryPriceService.getCountryPrice(countryCode);
+          
+          if (countryPriceData) {
+            setCountryPrice({
+              countryCode: countryPriceData.country_code,
+              price: countryPriceData.price,
+              currencySymbol: countryPriceData.currency_symbol,
+              currencyCode: countryPriceData.currency_code
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error al detectar país o obtener precio:', error);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      detectCountryAndPrice();
+    }
+  }, []);
+  // Estado para precios por país
+  const [countryPrice, setCountryPrice] = useState<{
+    countryCode: string;
+    price: number;
+    currencySymbol: string;
+    currencyCode: string;
+  }>({
+    countryCode: '',
+    price: 4.90,
+    currencySymbol: '$',
+    currencyCode: 'USD'
+  });
+
+  // Función para formatear el precio según el país
+  const formatPrice = (price: number, countryCode: string) => {
+    if (countryCode === 'CO' || countryCode === 'PY') {
+      return price.toFixed(3);
+    }
+    if (price % 1 === 0) {
+      return price.toFixed(0);
+    }
+    return price.toFixed(2);
+  };
+
+  // Países que usan USD nativamente (no mostrar conversión)
+  const usdNativeCountries = ['US', 'PR', 'EC', 'SV', 'PA'];
+
   // Inicializar con 'hotmart' para que la sección "Moneda local" esté abierta por defecto
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("hotmart");
   const [isHotmartPreloaded, setIsHotmartPreloaded] = useState(false);
@@ -1372,82 +1443,8 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0 relative" style={{ background: "#0B0F17" }}>
-        {/* Guirnalda temática */}
-        {activeTheme === 'halloween' && (
-          <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-            <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
-              <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
-              {[...Array(25)].map((_, i) => {
-                const x = (i * 48) + 24;
-                const y = 10 + Math.sin(i * 0.5) * 8;
-                const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
-                const color = colors[i % colors.length];
-                return (
-                  <g key={`light-${i}`}>
-                    <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
-                    <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                    <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
-                  </g>
-                );
-              })}
-            </svg>
-            <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
-              <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
-              {[...Array(10)].map((_, i) => {
-                const x = (i * 40) + 20;
-                const y = 8 + Math.sin(i * 0.5) * 5;
-                const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
-                const color = colors[i % colors.length];
-                return (
-                  <g key={`light-mobile-${i}`}>
-                    <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
-                    <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                    <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
-        )}
+      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0 relative" style={{ background: "#0A0A0A" }}>
         
-        {activeTheme === 'christmas' && (
-          <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-            <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
-              <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
-              {[...Array(25)].map((_, i) => {
-                const x = (i * 48) + 24;
-                const y = 10 + Math.sin(i * 0.5) * 8;
-                const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
-                const color = colors[i % colors.length];
-                return (
-                  <g key={`light-${i}`}>
-                    <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
-                    <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                    <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
-                  </g>
-                );
-              })}
-            </svg>
-            <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
-              <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
-              {[...Array(10)].map((_, i) => {
-                const x = (i * 40) + 20;
-                const y = 8 + Math.sin(i * 0.5) * 5;
-                const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
-                const color = colors[i % colors.length];
-                return (
-                  <g key={`light-mobile-${i}`}>
-                    <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
-                    <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                    <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
-        )}
-
       {/* Eliminado Exit Intent Popup */}
 
       <div className="container-custom py-2 md:py-6 lg:py-12">
@@ -1626,11 +1623,8 @@ const CheckoutContent = () => {
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
-                    // Si ya está seleccionado, deseleccionarlo
-                    if (selectedPaymentMethod === "hotmart") {
-                      setSelectedPaymentMethod(null);
-                      // Cambiar el método de pago
-                    } else {
+                    // Mantener siempre abierto, no permitir cerrar
+                    if (selectedPaymentMethod !== "hotmart") {
                       setSelectedPaymentMethod("hotmart");
                       // 3. AddPaymentInfo - Disparar cuando se abre sección Moneda Local
                       unifiedTrackingService.trackAddPaymentInfo(isArgentina ? 'mercadopago' : 'hotmart');
@@ -1653,13 +1647,12 @@ const CheckoutContent = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-white/[0.03] backdrop-blur-xl flex items-center justify-center border border-white/10">
-                      <WorldIcon className="text-white h-5 w-5" />
-                    </div>
                     <div>
-                      <h3 className="font-medium text-white">Moneda local</h3>
+                      <h3 className="font-medium text-white md:pl-3">
+                        {isArgentina ? 'Moneda local' : 'Desbloquea al instante de forma rápida y segura'}
+                      </h3>
 
-                      <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full pr-2">
+                      <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full pr-2 md:pl-3">
                             {[
                               // Primera línea (10 banderas)
                               "🇦🇷", // Argentina
@@ -1709,7 +1702,9 @@ const CheckoutContent = () => {
                               );
                             })}
                           </div>
-                          <p className="text-sm text-white/70 mt-3">Realiza tu pago rápido y seguro en tu moneda</p>
+                          <p className="text-sm text-white/70 mt-3 md:pl-3">
+                            {isArgentina ? 'Realiza tu pago rápido y seguro en tu moneda' : 'Realice su pago con PayPal o tarjeta en su moneda local'}
+                          </p>
                     </div>
                   </div>
                   <div className="w-6 h-6 rounded-full border border-[#3a3a5a] flex items-center justify-center">
@@ -1718,9 +1713,67 @@ const CheckoutContent = () => {
                 </div>
 
                 {selectedPaymentMethod === "hotmart" && (
-                  <div className="p-6 border-t border-white/10" style={{ background: '#13171E' }}>
+                  <div className="p-6 border-t border-white/10" style={{ background: '#121212' }}>
                     {!isArgentina && (
-                      <div id="inline_checkout" className="w-full rounded-xl overflow-hidden" style={{background: '#13171E', minHeight: isHotmartLoaded ? 'auto' : '0px', opacity: isHotmartLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in-out'}}></div>
+                      <div className="w-full">
+                        <div className="mb-3 p-3 rounded-xl" style={{ background: '#202020' }}>
+                          <div className="flex justify-between items-center mb-2">
+                            <div className="flex flex-col">
+                              <span className="text-sm text-white font-semibold">Total</span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <div className="flex items-center gap-2">
+                                <div className="font-bold text-white flex items-center gap-2">
+                                  <span>$ 4.90 USD</span>
+                                  {countryPrice.countryCode && 
+                                   !usdNativeCountries.includes(countryPrice.countryCode) && 
+                                   countryPrice.countryCode !== 'VE' && 
+                                   countryPrice.currencyCode !== 'USD' && (
+                                    <>
+                                      <span className="text-white/40">≈</span>
+                                      <span className="text-sm">
+                                        {countryPrice.currencySymbol}{formatPrice(countryPrice.price, countryPrice.countryCode)} {countryPrice.currencyCode}
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
+                                <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
+                                  Microtareas ilimitadas
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="pt-2 border-t border-white/10">
+                            <p className="text-[10px] text-white/60 text-center md:text-left md:pl-3">
+                              El precio se muestra en USD y se cobra automáticamente en su moneda local
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-[#202020] backdrop-blur-sm">
+                          <div className="flex items-center justify-center gap-2 mb-2">
+                            <h3 className="font-medium text-white">Selecciona tu método de pago</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                          </div>
+
+                          <div className="flex items-center justify-center mb-4">
+                            <div className="inline-flex items-center gap-1 px-2 py-1 rounded-xl bg-[#121212]">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                              </svg>
+                              <span className="text-[10px] text-white/60">No es necesario tener cuenta PayPal para abonar con tarjeta</span>
+                            </div>
+                          </div>
+
+                          <div className="w-full">
+                            <PayPalButtonCheckout />
+                          </div>
+                        </div>
+                      </div>
                     )}
                       {isArgentina ? (
                         <div className="w-full">
@@ -1743,7 +1796,7 @@ const CheckoutContent = () => {
                             </div>
                           </div>
 
-                          <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ background: '#21242C' }}>
+                          <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ background: '#202020' }}>
                             <div className="flex flex-col">
                               <span className="text-sm text-white">Total</span>
                             </div>
@@ -1764,7 +1817,7 @@ const CheckoutContent = () => {
                           </div>
 
                           {/* Formulario de datos para Mercado Pago */}
-                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#21242C' }}>
+                          <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#202020' }}>
                             <div className="flex items-center gap-2 mb-4">
                               <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1785,14 +1838,14 @@ const CheckoutContent = () => {
                               <Input
                                 id="mercadopago-fullname"
                                 type="text"
-                                placeholder="Ej: Juan Pérez"
+                                placeholder=""
                                 value={mercadoPagoFormData.fullName}
                                 onChange={(e) => handleMercadoPagoFormChange('fullName', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('fullName')}
                                 className={`border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors ${
                                   mercadoPagoFormTouched.fullName && mercadoPagoFormErrors.fullName ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
-                                style={{ background: '#13171E' }}
+                                style={{ background: '#121212' }}
                                 disabled={isSubmittingMercadoPagoForm}
                               />
                               {mercadoPagoFormTouched.fullName && mercadoPagoFormErrors.fullName && (
@@ -1813,14 +1866,14 @@ const CheckoutContent = () => {
                               <Input
                                 id="mercadopago-email"
                                 type="email"
-                                placeholder="ejemplo@correo.com"
+                                placeholder=""
                                 value={mercadoPagoFormData.email}
                                 onChange={(e) => handleMercadoPagoFormChange('email', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('email')}
                                 className={`border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors ${
                                   mercadoPagoFormTouched.email && mercadoPagoFormErrors.email ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
-                                style={{ background: '#13171E' }}
+                                style={{ background: '#121212' }}
                                 disabled={isSubmittingMercadoPagoForm}
                               />
                               {mercadoPagoFormTouched.email && mercadoPagoFormErrors.email && (
@@ -1910,9 +1963,9 @@ const CheckoutContent = () => {
                 )}
               </Card>
 
-              {/* PayPal */}
+              {/* PayPal - OCULTO */}
               <Card 
-                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-opacity duration-300 relative ${selectedPaymentMethod === "paypal" ? "border-white" : "border-white/10"}`}
+                className={`hidden bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-opacity duration-300 relative ${selectedPaymentMethod === "paypal" ? "border-white" : "border-white/10"}`}
                 style={{ 
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
                   transform: 'translate3d(0, 0, 0)',
@@ -1951,7 +2004,7 @@ const CheckoutContent = () => {
                 </div>
 
                 {selectedPaymentMethod === "paypal" && (
-                  <div className="p-6 border-t border-white/10" style={{ background: '#13171E' }}>
+                  <div className="p-6 border-t border-white/10" style={{ background: '#121212' }}>
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="font-medium mb-1 text-white">Pago con PayPal</h3>
@@ -1965,7 +2018,7 @@ const CheckoutContent = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ background: '#21242C' }}>
+                    <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ background: '#202020' }}>
                       <div className="flex flex-col">
                         <span className="text-sm text-white">Total</span>
                       </div>
@@ -1981,7 +2034,7 @@ const CheckoutContent = () => {
 
                     <div>
                       {/* Formulario de datos para PayPal */}
-                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#21242C' }}>
+                      <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#202020' }}>
                         <div className="flex items-center gap-2 mb-4">
                           <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
                             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2002,12 +2055,12 @@ const CheckoutContent = () => {
                           <Input
                             id="paypal-fullname"
                             type="text"
-                            placeholder="Ej: Juan Pérez"
+                            placeholder=""
                             value={paypalFormData.fullName}
                             onChange={(e) => handlePaypalFormChange('fullName', e.target.value)}
                             onBlur={() => handlePaypalFormBlur('fullName')}
                             className="border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors"
-                            style={{ background: '#13171E' }}
+                            style={{ background: '#121212' }}
                             disabled={isSubmittingPaypalForm}
                           />
                           {paypalFormTouched.fullName && paypalFormErrors.fullName && (
@@ -2028,12 +2081,12 @@ const CheckoutContent = () => {
                           <Input
                             id="paypal-email"
                             type="email"
-                            placeholder="ejemplo@correo.com"
+                            placeholder=""
                             value={paypalFormData.email}
                             onChange={(e) => handlePaypalFormChange('email', e.target.value)}
                             onBlur={() => handlePaypalFormBlur('email')}
                             className="border-0 text-white placeholder:text-white/50 focus:ring-0 transition-colors"
-                            style={{ background: '#13171E' }}
+                            style={{ background: '#121212' }}
                             disabled={isSubmittingPaypalForm}
                           />
                           {paypalFormTouched.email && paypalFormErrors.email && (

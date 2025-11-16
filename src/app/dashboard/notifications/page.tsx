@@ -7,7 +7,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 export default function NotificationsPage() {
   const { user } = useAuth();
@@ -25,8 +24,7 @@ export default function NotificationsPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
-      <SeasonalGarland />
+    <div className="min-h-screen bg-[#0A0A0A] relative overflow-hidden">
       <div className="w-full max-w-2xl mx-auto px-2 md:px-0 py-8 relative z-10">
       <Breadcrumbs />
       <div className="flex items-center gap-3 mb-6">

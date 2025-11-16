@@ -13,6 +13,7 @@ import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorde
 import HydrationFix from "@/components/utils/HydrationFix";
 import PageLoader from "@/components/ui/PageLoader";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
+import ThemeApplier from "@/components/themes/ThemeApplier";
 
 export default function ClientLayout({
   children,
@@ -28,6 +29,7 @@ export default function ClientLayout({
             <BalanceVisibilityProvider>
               <OnboardingProvider>
                 <EnhancedNotificationProvider>
+                  <ThemeApplier />
                   <Toaster position="top-right" richColors />
                   <HotToaster />
                   <CopyProtection />

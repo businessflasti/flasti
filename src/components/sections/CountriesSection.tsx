@@ -102,7 +102,7 @@ const CountriesSection = () => {
 
   return (
     <section 
-      className="py-4 bg-[#101010] overflow-hidden"
+      className="py-4 bg-[#101011] overflow-hidden"
       style={{
         transform: 'translate3d(0, 0, 0)',
         contain: 'layout style paint',

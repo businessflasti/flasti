@@ -12,7 +12,6 @@ import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import DashboardPreviewSection from "@/components/sections/DashboardPreviewSection";
 import ModernTestimonialsSection from "@/components/sections/ModernTestimonialsSection";
 import RegistrationFAQSection from "@/components/sections/RegistrationFAQSection";
-import SeasonalThemeEffects from "@/components/themes/SeasonalThemeEffects";
 
 import CTASection from "@/components/sections/CTASection";
 import CountriesSection from "@/components/sections/CountriesSection";
@@ -88,8 +87,6 @@ export default function Home() {
 
   return (
     <MainLayout disableChat={true} showStickyBanner={true}>
-      {/* Efectos temáticos estacionales */}
-      <SeasonalThemeEffects />
       
       <div style={{ minHeight: "100vh", background: "#FEF9F3" }}>
         {/* Sección Studiova Hero (nueva) */}

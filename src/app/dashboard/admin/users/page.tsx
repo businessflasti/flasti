@@ -224,13 +224,14 @@ export default function UsersManagement() {
         .from('user_profiles')
         .update({ 
           is_premium: false,
-          premium_activated_at: null
+          premium_activated_at: null,
+          preferred_theme: 'default' // 🎨 Quitar tema Premium
         })
         .eq('user_id', userId);
 
       if (error) throw error;
 
-      toast.success('Premium desactivado exitosamente');
+      toast.success('Premium desactivado exitosamente - Tema Premium removido');
       loadUsers(); // Recargar lista
     } catch (error) {
       console.error('Error:', error);

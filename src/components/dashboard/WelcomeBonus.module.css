@@ -148,7 +148,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(11, 15, 23, 0.95);
+  background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: flex-start;
@@ -168,7 +168,7 @@
 }
 
 .popupContent {
-  background: rgba(255, 255, 255, 0.03);
+  background: #0A0A0A;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-radius: 20px;
@@ -222,7 +222,7 @@
 }
 
 .popupHeader {
-  text-align: center;
+  text-align: left;
   margin-bottom: 2rem;
 }
 
@@ -231,11 +231,13 @@
   font-size: 1.75rem;
   font-weight: 800;
   margin: 1rem 0 0.5rem;
+  text-align: left;
 }
 
 .popupSubtitle {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.95rem;
+  text-align: left;
 }
 
 .wordHint {

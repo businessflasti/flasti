@@ -162,7 +162,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
 
     return (
       <header
-        className="w-full flex items-center px-3 sm:px-6 bg-[#0B1017] sticky top-0 z-40"
+        className="w-full flex items-center px-3 sm:px-6 bg-[#0A0A0A] sticky top-0 z-40"
         style={{ minHeight: 64 }}
       >
 
@@ -220,7 +220,8 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
             ) : isPremiumPage || isAdminUsersPage ? (
               <button 
                 onClick={() => window.location.href = 'https://flasti.com/dashboard'}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#161b22]/80 backdrop-blur-xl hover:bg-[#21262d] active:bg-[#151515] transition-all duration-200 group touch-manipulation select-none ml-2 md:ml-0 border-0 shadow-lg"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#1a1a1a] active:bg-[#0a0a0a] transition-all duration-200 group touch-manipulation select-none ml-2 md:ml-0 border-0 shadow-lg"
+                style={{ backgroundColor: '#121212' }}
                 aria-label="Volver al dashboard"
                 type="button"
               >
@@ -257,7 +258,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 {isVisible('country_badge') && !isCheckoutPage && (
                   <div>
                     {detectedCountry && detectedCountry !== '--' && detectedCountry !== 'GLOBAL' ? (
-                      <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-md bg-[#161b22]/80 backdrop-blur-xl border-0 shadow-lg whitespace-nowrap">
+                      <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-md bg-[#121212] backdrop-blur-xl border-0 shadow-lg whitespace-nowrap">
                         <CountryFlag countryCode={detectedCountry} size="md" />
                         <span className="text-white font-bold text-xs">
                           {detectedCountry}
@@ -273,7 +274,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                         </span>
                       </div>
                     ) : (
-                      <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-[#161b22]/80 backdrop-blur-xl border-0 shadow-lg whitespace-nowrap">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-[#121212] backdrop-blur-xl border-0 shadow-lg whitespace-nowrap">
                         <span className="text-white/50 text-xs">Detectando ubicación...</span>
                       </div>
                     )}

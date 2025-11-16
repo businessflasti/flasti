@@ -1,6 +1,7 @@
 'use client';
 
 import MainLayout from '@/components/layout/MainLayout';
+import PullToRefresh from '@/components/ui/PullToRefresh';
 
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
@@ -21,6 +22,9 @@ export default function DashboardLayout({
   return (
     <ProtectedRoute>
       <MainLayout>
+        {/* Pull to Refresh - Solo móvil */}
+        <PullToRefresh />
+        
         {/* Sidebar ya integrado en MainLayout para rutas internas */}
         <BalanceVisibilityProvider>
           <GamificationProviders>{children}</GamificationProviders>

@@ -9,7 +9,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { Shield, Mail, User, Camera, Lock, X, Check } from 'lucide-react';
-import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 export default function PerfilPage() {
   const { user, profile, updateAvatar } = useAuth();
@@ -274,8 +273,7 @@ export default function PerfilPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1017] p-4 relative overflow-hidden">
-      <SeasonalGarland />
+    <div className="min-h-screen bg-[#0A0A0A] p-4 relative overflow-hidden">
       
       <div className="relative z-10">
       <div className="max-w-4xl mx-auto">

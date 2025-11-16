@@ -1,0 +1,103 @@
+// Agregar estos modelos al schema.prisma principal
+
+model InvestmentConfig {
+  id                String   @id @default(cuid())
+  currentValue      Float    @default(132.25)
+  dailyChange       Float    @default(2.5)
+  minInvestment     Float    @default(5)
+  maxInvestment     Float    @default(10000)
+  isSystemLocked    Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("investment_config")
+}
+
+model InvestmentPeriod {
+  id          String   @id @default(cuid())
+  days        Int
+  rateAnnual  Float
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  investments Investment[]
+
+  @@map("investment_periods")
+}
+
+model Investment {
+  id              String            @id @default(cuid())
+  userId          String
+  amount          Float
+  periodId        String
+  period          InvestmentPeriod  @relation(fields: [periodId], references: [id])
+  startDate       DateTime          @default(now())
+  endDate         DateTime
+  interestRate    Float
+  estimatedReturn Float
+  status          InvestmentStatus  @default(ACTIVE)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("investments")
+}
+
+model ChartDataPoint {
+  id        String   @id @default(cuid())
+  month     String
+  value     Float
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("chart_data_points")
+}
+
+model InvestmentFAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  order     Int
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("investment_faqs")
+}
+
+model WithdrawalRequest {
+  id            String           @id @default(cuid())
+  userId        String
+  investmentId  String
+  amount        Float
+  status        WithdrawalStatus @default(PENDING)
+  requestedAt   DateTime         @default(now())
+  processedAt   DateTime?
+  notes         String?          @db.Text
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("withdrawal_requests")
+}
+
+enum InvestmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSED
+}

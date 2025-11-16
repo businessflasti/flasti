@@ -17,9 +17,8 @@ import OnboardingSlider from '@/components/dashboard/OnboardingSlider';
 import WelcomeBonus from '@/components/dashboard/WelcomeBonus';
 import AdBlock from '@/components/ui/AdBlock';
 import { useElementVisibility } from '@/hooks/useElementVisibility';
-import SeasonalThemeEffects from '@/components/themes/SeasonalThemeEffects';
 import DailyMessage from '@/components/dashboard/DailyMessage';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
+import PremiumServicesSlider from '@/components/premium/PremiumServicesSlider';
 
 // Importar estilos de animaciones y optimizaciones de rendimiento
 import "./animations.css";
@@ -37,7 +36,6 @@ interface UserStats {
 export default function DashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
-  const { activeTheme } = useSeasonalTheme();
   
   // Hook de visibilidad para elementos del dashboard
   const { isVisible, elements, isLoading } = useElementVisibility('dashboard');
@@ -61,8 +59,8 @@ export default function DashboardPage() {
   const [tutorialVideo, setTutorialVideo] = useState({
     sliderUrl: '/video/tutorial-bienvenida.mp4',
     playerUrl: '/video/tutorial-bienvenida.mp4',
-    title: 'Video tutorial',
-    description: 'Aprende cómo ganar dinero en Flasti',
+    title: 'Bienvenido a flasti',
+    description: 'La plataforma lider en generacion de ingresos',
     isClickable: true
   });
   
@@ -337,8 +335,8 @@ export default function DashboardPage() {
           setTutorialVideo({
             sliderUrl: data.slider_video_url,
             playerUrl: data.player_video_url,
-            title: data.title,
-            description: data.description,
+            title: 'Bienvenido a flasti',
+            description: 'La plataforma lider en generacion de ingresos',
             isClickable: data.is_clickable
           });
         }
@@ -443,11 +441,8 @@ export default function DashboardPage() {
   }, [cpaLeadData]);
 
   return (
-    <div className="min-h-screen overscroll-none relative bg-[#0B1017]">
+    <div className="min-h-screen overscroll-none relative bg-[#0A0A0A]">
       
-      {/* Efectos temáticos estacionales */}
-      <SeasonalThemeEffects />
-
       {/* Container principal con mejor padding y max-width */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10">
         
@@ -464,41 +459,34 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Contenedor móvil con imagen de fondo - Balance y Video */}
+        {/* Balance móvil - FUERA del contenedor con imagen de fondo */}
+        {user?.id && isVisible('balance_display') && (
+          <div className="md:hidden mb-4">
+            <UserBalanceDisplay
+              initialBalance={userStats.balance}
+              userId={user.id}
+              currency="USD"
+              showControls={true}
+            />
+          </div>
+        )}
+
+        {/* Contenedor móvil con imagen de fondo - Mensaje del Día y Video */}
         {user?.id && (
           <div 
             className="md:hidden mb-4 rounded-2xl overflow-hidden p-4 pb-6"
             style={{
-              backgroundImage: activeTheme === 'halloween' 
-                ? 'url(/images/fondo-halloween.webp)' 
-                : activeTheme === 'christmas'
-                ? 'url(/images/fondo-navidad.webp)'
-                : 'url(/images/fondo.webp)',
+              backgroundImage: 'url(/images/fondo.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
           >
-            {/* Balance y Mensaje del Día - Columna única en móvil */}
-            <div className="flex flex-col gap-2 sm:gap-4 mb-4">
-              {/* Balance - Controlable */}
-              {isVisible('balance_display') && (
-                <div className="w-full">
-                  <UserBalanceDisplay
-                    initialBalance={userStats.balance}
-                    userId={user.id}
-                    currency="USD"
-                    showControls={true}
-                  />
-                </div>
-              )}
-              
-              {/* Mensaje del Día */}
-              <div className="w-full">
-                <DailyMessage />
-              </div>
+            {/* Mensaje del Día */}
+            <div className="w-full mb-4">
+              <DailyMessage />
             </div>
 
-            {/* Video Tutorial móvil - Controlable */}
+            {/* Tutorial móvil */}
             {isVisible('video_tutorial') && (
               <div className="relative h-[200px] bg-black rounded-3xl overflow-hidden">
               <Card 
@@ -507,55 +495,54 @@ export default function DashboardPage() {
               >
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-                {!showFullPlayer ? (
-                  /* Video en bucle - Limpio */
-                  <div 
-                    className="relative w-full h-full cursor-pointer bg-black"
-                    onClick={() => tutorialVideo.isClickable && setShowFullPlayer(true)}
-                    onContextMenu={(e) => e.preventDefault()}
-                  >
-                    <video
-                      className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      controlsList="nodownload nofullscreen noremoteplayback"
-                      disablePictureInPicture
-                      key={tutorialVideo.sliderUrl}
-                      onContextMenu={(e) => e.preventDefault()}
-                      onLoadedData={(e) => {
-                        const video = e.currentTarget;
-                        video.play().catch(() => {});
-                      }}
-                    >
-                      <source src={tutorialVideo.sliderUrl} type="video/mp4" />
-                    </video>
-                    
-                    {/* Botón de play con texto - Solo si es clickable */}
-                    {tutorialVideo.isClickable && (
-                      <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
-                        <span className="text-black text-xs sm:text-sm font-medium bg-white px-3 py-1.5 rounded-full">
-                          ¿Cómo funciona?
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowFullPlayer(true);
-                          }}
-                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center transition-all"
-                        >
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="currentColor" viewBox="0 0 24 24" style={{marginLeft: '2px'}}>
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </button>
-                      </div>
-                    )}
+                
+                {/* Imagen de fondo con zoom */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+                  <img
+                    src="/images/tutorial.webp"
+                    alt="Tutorial"
+                    className="w-full h-full object-cover"
+                    style={{
+                      animation: 'slowZoom 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate',
+                      willChange: 'transform',
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)'
+                    }}
+                  />
+                </div>
+                
+                {/* Overlay oscuro */}
+                <div className="absolute inset-0 bg-black/75 z-[1]"></div>
+
+                {/* Contenido */}
+                <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-white">
+                      {tutorialVideo.title}
+                    </h3>
+                    <p className="text-sm text-white/70">
+                      {tutorialVideo.description}
+                    </p>
                   </div>
-                ) : (
-                  /* Reproductor completo con controles */
-                  <div className="relative w-full h-full bg-black" onContextMenu={(e) => e.preventDefault()}>
+
+                  {tutorialVideo.isClickable && (
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => setShowFullPlayer(true)}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
+                      >
+                        Cómo funciona
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Modal de video */}
+                {showFullPlayer && (
+                  <div className="absolute inset-0 z-20 bg-black">
                     <video
                       className="w-full h-full object-contain"
                       controls
@@ -563,26 +550,33 @@ export default function DashboardPage() {
                       preload="metadata"
                       controlsList="nodownload noplaybackrate nofullscreen"
                       disablePictureInPicture
-                      key={tutorialVideo.playerUrl}
                       onContextMenu={(e) => e.preventDefault()}
                     >
                       <source src={tutorialVideo.playerUrl} type="video/mp4" />
-                      Tu navegador no soporta la reproducción de video.
                     </video>
                     
-                    {/* Botón para volver al modo bucle */}
                     <button
                       onClick={() => setShowFullPlayer(false)}
-                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center transition-opacity duration-300 z-10"
-                      
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center z-10"
                     >
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
                   </div>
                 )}
               </Card>
+              
+              <style jsx>{`
+                @keyframes slowZoom {
+                  0% {
+                    transform: scale3d(1, 1, 1);
+                  }
+                  100% {
+                    transform: scale3d(1.08, 1.08, 1);
+                  }
+                }
+              `}</style>
             </div>
             )}
           </div>
@@ -593,17 +587,13 @@ export default function DashboardPage() {
           <div 
             className="hidden md:block mb-4 lg:mb-6 rounded-2xl overflow-hidden py-6 px-4"
             style={{
-              backgroundImage: activeTheme === 'halloween' 
-                ? 'url(/images/fondo-halloween.webp)' 
-                : activeTheme === 'christmas'
-                ? 'url(/images/fondo-navidad.webp)'
-                : 'url(/images/fondo.webp)',
+              backgroundImage: 'url(/images/fondo.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
           >
             <div className="grid md:grid-cols-2 gap-4">
-            {/* Columna izquierda: Balance + Mensaje del Día */}
+            {/* Columna izquierda: Balance + Mensaje del Día (o Slider Premium) */}
             <div className="grid grid-cols-2 gap-4 h-[400px]">
               {/* Balance */}
               <div className="h-full">
@@ -621,7 +611,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Columna derecha: Bono + Video Tutorial */}
+            {/* Columna derecha: Bono + Video Tutorial (o Slider Premium) */}
             <div className="flex flex-col gap-4 h-[400px]">
               {/* Bono de bienvenida - Sin AdBlock después */}
               {!userStats.welcomeBonusClaimed && (
@@ -636,7 +626,7 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              {/* Video Tutorial */}
+              {/* Tutorial */}
               <div className="flex-1 min-h-0">
               <Card 
                 className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 h-full overflow-hidden rounded-3xl transition-all duration-700 group"
@@ -644,55 +634,54 @@ export default function DashboardPage() {
               >
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-                {!showFullPlayer ? (
-                  /* Video en bucle - Limpio */
-                  <div 
-                    className="relative w-full h-full cursor-pointer bg-black"
-                    onClick={() => tutorialVideo.isClickable && setShowFullPlayer(true)}
-                    onContextMenu={(e) => e.preventDefault()}
-                  >
-                    <video
-                      className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      controlsList="nodownload nofullscreen noremoteplayback"
-                      disablePictureInPicture
-                      key={tutorialVideo.sliderUrl}
-                      onContextMenu={(e) => e.preventDefault()}
-                      onLoadedData={(e) => {
-                        const video = e.currentTarget;
-                        video.play().catch(() => {});
-                      }}
-                    >
-                      <source src={tutorialVideo.sliderUrl} type="video/mp4" />
-                    </video>
-                    
-                    {/* Botón de play con texto - Solo si es clickable */}
-                    {tutorialVideo.isClickable && (
-                      <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
-                        <span className="text-black text-xs sm:text-sm font-medium bg-white px-3 py-1.5 rounded-full">
-                          ¿Cómo funciona?
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowFullPlayer(true);
-                          }}
-                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center transition-all"
-                        >
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="currentColor" viewBox="0 0 24 24" style={{marginLeft: '2px'}}>
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </button>
-                      </div>
-                    )}
+                
+                {/* Imagen de fondo con zoom */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+                  <img
+                    src="/images/tutorial.webp"
+                    alt="Tutorial"
+                    className="w-full h-full object-cover"
+                    style={{
+                      animation: 'slowZoom 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate',
+                      willChange: 'transform',
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)'
+                    }}
+                  />
+                </div>
+                
+                {/* Overlay oscuro */}
+                <div className="absolute inset-0 bg-black/75 z-[1]"></div>
+
+                {/* Contenido */}
+                <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-white">
+                      {tutorialVideo.title}
+                    </h3>
+                    <p className="text-sm text-white/70">
+                      {tutorialVideo.description}
+                    </p>
                   </div>
-                ) : (
-                  /* Reproductor completo con controles */
-                  <div className="relative w-full h-full bg-black" onContextMenu={(e) => e.preventDefault()}>
+
+                  {tutorialVideo.isClickable && (
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => setShowFullPlayer(true)}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
+                      >
+                        Cómo funciona
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Modal de video */}
+                {showFullPlayer && (
+                  <div className="absolute inset-0 z-20 bg-black">
                     <video
                       className="w-full h-full object-contain"
                       controls
@@ -700,18 +689,14 @@ export default function DashboardPage() {
                       preload="metadata"
                       controlsList="nodownload noplaybackrate nofullscreen"
                       disablePictureInPicture
-                      key={tutorialVideo.playerUrl}
                       onContextMenu={(e) => e.preventDefault()}
                     >
                       <source src={tutorialVideo.playerUrl} type="video/mp4" />
-                      Tu navegador no soporta la reproducción de video.
                     </video>
                     
-                    {/* Botón para volver al modo bucle */}
                     <button
                       onClick={() => setShowFullPlayer(false)}
-                      className="absolute top-2 right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 flex items-center justify-center transition-opacity duration-300 z-10"
-                      
+                      className="absolute top-2 right-2 w-9 h-9 rounded-full bg-black/60 flex items-center justify-center z-10"
                     >
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -720,6 +705,17 @@ export default function DashboardPage() {
                   </div>
                 )}
               </Card>
+              
+              <style jsx>{`
+                @keyframes slowZoom {
+                  0% {
+                    transform: scale3d(1, 1, 1);
+                  }
+                  100% {
+                    transform: scale3d(1.08, 1.08, 1);
+                  }
+                }
+              `}</style>
               </div>
             </div>
             </div>
@@ -734,8 +730,8 @@ export default function DashboardPage() {
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
+                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
                 
                 {/* Brillo superior glassmorphism */}
@@ -769,8 +765,8 @@ export default function DashboardPage() {
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
+                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
 
                 
@@ -803,8 +799,8 @@ export default function DashboardPage() {
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
+                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
 
                 
@@ -837,8 +833,8 @@ export default function DashboardPage() {
               
               {/* Tarjeta glassmorphism */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
+                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
               >
 
                 
@@ -874,7 +870,8 @@ export default function DashboardPage() {
 
             <TabsContent value="offers" className="space-y-4">
               <Card 
-                className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl"
+                className="relative backdrop-blur-2xl border border-white/10 rounded-3xl"
+                style={{ backgroundColor: '#121212' }}
               >
                 {/* Brillo superior glassmorphism */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>

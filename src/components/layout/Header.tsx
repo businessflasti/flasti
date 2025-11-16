@@ -13,7 +13,7 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
   const { t } = useLanguage();
 
   return (
-    <header className="w-full bg-[#101010] sticky top-0 z-50 relative">
+    <header className="w-full bg-[#0A0A0A] sticky top-0 z-50 relative">
       <div className="container-custom">
         <div className="flex items-center justify-between py-3.5">
           {/* Logo */}
@@ -25,7 +25,7 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
           <div className="hidden md:flex items-center gap-4">
             <a
               href="/login"
-              className="bg-[#101010] hover:bg-[#1a1a1a] text-white border border-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
+              className="bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white border border-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
             >
               {t('iniciarSesion')}
             </a>
@@ -41,7 +41,7 @@ export default function Header({ showStickyBanner = false }: HeaderProps) {
           <div className="flex md:hidden items-center gap-3">
             <a
               href="/login"
-              className="bg-[#101010] hover:bg-[#1a1a1a] text-white border border-white px-3 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
+              className="bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white border border-white px-3 py-2 rounded-lg transition-colors duration-200 font-medium text-sm"
             >
               {t('iniciarSesion')}
             </a>

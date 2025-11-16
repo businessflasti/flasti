@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelos de Usuario
+model User {
+  id                String              @id @default(cuid())
+  email             String              @unique
+  name              String?
+  password          String
+  balance           Float               @default(0)
+  role              UserRole            @default(USER)
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+
+  investments       Investment[]
+  withdrawalRequests WithdrawalRequest[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// ============================================
+// MODELOS DE INVERSIONES
+// ============================================
+
+model InvestmentConfig {
+  id                String   @id @default(cuid())
+  currentValue      Float    @default(132.25) @map("current_value")
+  dailyChange       Float    @default(2.5) @map("daily_change")
+  minInvestment     Float    @default(5) @map("min_investment")
+  maxInvestment     Float    @default(10000) @map("max_investment")
+  isSystemLocked    Boolean  @default(false) @map("is_system_locked")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("investment_config")
+}
+
+model InvestmentPeriod {
+  id          String   @id @default(cuid())
+  days        Int
+  rateAnnual  Float    @map("rate_annual")
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  investments Investment[]
+
+  @@map("investment_periods")
+}
+
+model Investment {
+  id              String            @id @default(cuid())
+  userId          String            @map("user_id")
+  amount          Float
+  periodId        String            @map("period_id")
+  period          InvestmentPeriod  @relation(fields: [periodId], references: [id])
+  startDate       DateTime          @default(now()) @map("start_date")
+  endDate         DateTime          @map("end_date")
+  interestRate    Float             @map("interest_rate")
+  estimatedReturn Float             @map("estimated_return")
+  status          InvestmentStatus  @default(ACTIVE)
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("investments")
+}
+
+model ChartDataPoint {
+  id        String   @id @default(cuid())
+  month     String
+  value     Float
+  order     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("chart_data_points")
+}
+
+model InvestmentFAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  order     Int
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("investment_faqs")
+}
+
+model WithdrawalRequest {
+  id            String           @id @default(cuid())
+  userId        String           @map("user_id")
+  investmentId  String           @map("investment_id")
+  amount        Float
+  status        WithdrawalStatus @default(PENDING)
+  requestedAt   DateTime         @default(now()) @map("requested_at")
+  processedAt   DateTime?        @map("processed_at")
+  notes         String?          @db.Text
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("withdrawal_requests")
+}
+
+enum InvestmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSED
+}

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 interface TopUser {
   rank: number;
@@ -21,8 +20,8 @@ interface RankingSettings {
 // Sin datos por defecto - mostrar loader hasta que carguen los datos reales
 
 const defaultSettings: RankingSettings = {
-  title: 'Top 3 semanal',
-  subtitle: 'Los que más ganaron'
+  title: 'Reporte semanal de actividad',
+  subtitle: 'Ingresos verificados'
 };
 
 const getRankColor = (rank: number) => {
@@ -55,7 +54,6 @@ const getRankColor = (rank: number) => {
 };
 
 const WeeklyTopRanking: React.FC = () => {
-  const { activeTheme } = useSeasonalTheme();
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
   const [settings, setSettings] = useState<RankingSettings>(defaultSettings);
   const [isLoading, setIsLoading] = useState(true);
@@ -83,13 +81,7 @@ const WeeklyTopRanking: React.FC = () => {
           }));
           setTopUsers(formattedData);
           
-          // Actualizar títulos si existen
-          if (data[0].title) {
-            setSettings({
-              title: data[0].title,
-              subtitle: data[0].subtitle
-            });
-          }
+          // NO actualizar títulos - mantener los valores por defecto fijos
         }
       } catch (error) {
         console.error('Error fetching top ranking:', error);
@@ -120,7 +112,7 @@ const WeeklyTopRanking: React.FC = () => {
   return (
     <div className="mt-4 pt-4 border-t border-white/10">
       {/* Título */}
-      <div className="mb-3">
+      <div className="mb-3 weekly-ranking-title">
         <h3 className="text-[10px] sm:text-xs font-bold text-white leading-tight">
           {settings.title}
         </h3>
@@ -159,7 +151,6 @@ const WeeklyTopRanking: React.FC = () => {
                 w-6 h-6 rounded-full
                 bg-gradient-to-br ${colors.gradient}
                 shadow-lg ${colors.glow}
-                border-2 border-[#161b22]
               `}>
                 <span className="text-[10px] font-bold text-white">#{user.rank}</span>
               </div>
@@ -167,11 +158,12 @@ const WeeklyTopRanking: React.FC = () => {
               {/* Contenedor con efecto glassmorphism */}
               <div className={`
                 relative overflow-hidden rounded-xl
-                bg-white/[0.03] backdrop-blur-xl border border-white/10
-                p-2.5 transition-all duration-300
-                hover:bg-white/[0.05] hover:border-white/20
+                bg-white/[0.08] border border-white/10
+                p-2.5 transition-colors duration-300
+                hover:bg-white/[0.12] hover:border-white/20
                 ${colors.glow}
-              `}>
+              `}
+              style={{ willChange: 'auto' }}>
                 {/* Brillo superior */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                 

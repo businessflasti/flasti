@@ -9,7 +9,7 @@ export default function TerminosPage() {
   return (
     <MainLayout showHeader={true} disableChat={true}>
       <Suspense fallback={<div className="container-custom py-16 md:py-24">Cargando...</div>}>
-        <div className="min-h-screen bg-[#0B1017]">
+        <div className="min-h-screen bg-[#0A0A0A]">
           <div className="container-custom py-16 md:py-24">
             <div className="max-w-3xl mx-auto">
               <h1 className="text-3xl md:text-4xl font-bold mb-8 text-white">

@@ -11,12 +11,10 @@ import { CountryPriceService } from '@/lib/country-price-service';
 import CountryFlag from '@/components/ui/CountryFlag';
 import ModernTestimonialsSection from '@/components/sections/ModernTestimonialsSection';
 import WeeklyTopRanking from '@/components/dashboard/WeeklyTopRanking';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 const PremiumPage = () => {
   const { t } = useLanguage();
   const router = useRouter();
-  const { activeTheme } = useSeasonalTheme();
   const [activeQuestion, setActiveQuestion] = useState<number | null>(0);
   const [countryPrice, setCountryPrice] = useState<{
     countryCode: string;
@@ -230,84 +228,8 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F17] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
-      {/* Guirnalda temática */}
-      {activeTheme === 'halloween' && (
-        <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-          <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
-            <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
-            {[...Array(25)].map((_, i) => {
-              const x = (i * 48) + 24;
-              const y = 10 + Math.sin(i * 0.5) * 8;
-              const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
-              const color = colors[i % colors.length];
-              return (
-                <g key={`light-${i}`}>
-                  <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
-                  <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
-                </g>
-              );
-            })}
-          </svg>
-          <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
-            <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
-            {[...Array(10)].map((_, i) => {
-              const x = (i * 40) + 20;
-              const y = 8 + Math.sin(i * 0.5) * 5;
-              const colors = ['#ff6b00', '#8b00ff', '#ff6b00', '#8b00ff', '#ff8c00'];
-              const color = colors[i % colors.length];
-              return (
-                <g key={`light-mobile-${i}`}>
-                  <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
-                  <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
-                </g>
-              );
-            })}
-          </svg>
-        </div>
-      )}
+    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
       
-      {activeTheme === 'christmas' && (
-        <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-          <svg className="hidden md:block w-full h-16" viewBox="0 0 1200 60" preserveAspectRatio="none">
-            <path d="M 0,10 Q 60,25 120,10 T 240,10 T 360,10 T 480,10 T 600,10 T 720,10 T 840,10 T 960,10 T 1080,10 T 1200,10" stroke="#2a2a2a" strokeWidth="2" fill="none" opacity="0.6" />
-            {[...Array(25)].map((_, i) => {
-              const x = (i * 48) + 24;
-              const y = 10 + Math.sin(i * 0.5) * 8;
-              const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
-              const color = colors[i % colors.length];
-              return (
-                <g key={`light-${i}`}>
-                  <line x1={x} y1={y} x2={x} y2={y + 15} stroke="#2a2a2a" strokeWidth="1" opacity="0.5" />
-                  <ellipse cx={x} cy={y + 20} rx="4" ry="6" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  <ellipse cx={x - 1} cy={y + 18} rx="1.5" ry="2" fill="white" opacity="0.6" />
-                </g>
-              );
-            })}
-          </svg>
-          <svg className="md:hidden w-full h-12" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
-            <path d="M 0,8 Q 40,18 80,8 T 160,8 T 240,8 T 320,8 T 400,8" stroke="#2a2a2a" strokeWidth="1.5" fill="none" opacity="0.6" />
-            {[...Array(10)].map((_, i) => {
-              const x = (i * 40) + 20;
-              const y = 8 + Math.sin(i * 0.5) * 5;
-              const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff'];
-              const color = colors[i % colors.length];
-              return (
-                <g key={`light-mobile-${i}`}>
-                  <line x1={x} y1={y} x2={x} y2={y + 10} stroke="#2a2a2a" strokeWidth="0.8" opacity="0.5" />
-                  <ellipse cx={x} cy={y + 14} rx="3" ry="5" fill={color} opacity="0.9" className="animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  <ellipse cx={x - 0.8} cy={y + 12} rx="1" ry="1.5" fill="white" opacity="0.6" />
-                </g>
-              );
-            })}
-          </svg>
-        </div>
-      )}
-      
-
-
       {/* Layout responsive: Desktop 2 columnas, Móvil 1 columna */}
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
@@ -316,7 +238,7 @@ const PremiumPage = () => {
           <div className="lg:w-1/2 order-2 lg:order-1">
             {/* Bloque de imagen del dashboard - Solo visible en desktop */}
             <div className="hidden lg:block mb-4">
-              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#0F1319' }}>
+              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
                 {/* Badge de ubicación y punto verde - Solo móvil - Arriba de la imagen */}
                 <div className="md:hidden flex justify-between items-center mb-3">
                   {countryPrice.countryCode && (
@@ -499,7 +421,7 @@ const PremiumPage = () => {
           <div className="lg:w-1/2 order-1 lg:order-2">
             {/* Bloque de imagen solo visible en móvil - ARRIBA del pricing */}
             <div className="lg:hidden mb-6">
-              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#0F1319 !important', background: '#0F1319 !important' }}>
+              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212', background: '#121212' }}>
                 {/* Badge de ubicación y punto verde - Móvil - Arriba de la imagen */}
                 <div className="flex justify-between items-center mb-3">
                   {countryPrice.countryCode && (

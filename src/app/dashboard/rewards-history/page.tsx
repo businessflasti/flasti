@@ -11,7 +11,6 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { DollarSign, TrendingUp, RotateCcw, Gift } from 'lucide-react';
-import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 interface RewardSummary {
   total_earnings: number;
@@ -145,8 +144,7 @@ export default function RewardsHistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
-      <SeasonalGarland />
+    <div className="min-h-screen bg-[#0A0A0A] relative overflow-hidden">
       <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 relative z-10">
       <Breadcrumbs />
       

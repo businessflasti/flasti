@@ -69,8 +69,8 @@ const StatsSection = () => {
       ref={sectionRef}
       className="relative py-28 px-6 overflow-hidden"
     >
-      {/* Fondo estilo GitHub - Negro azulado profundo */}
-      <div className="absolute inset-0 bg-[#0B1017]"></div>
+      {/* Fondo oscuro */}
+      <div className="absolute inset-0 bg-[#0A0A0A]"></div>
 
       <div className="container-custom max-w-[1200px] mb-16 text-center relative z-10">
         <div className="flex flex-col items-center gap-3 mb-4">

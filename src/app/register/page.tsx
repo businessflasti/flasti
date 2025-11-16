@@ -9,7 +9,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
 import AdBlock from "@/components/ui/AdBlock";
-import SeasonalThemeEffects from "@/components/themes/SeasonalThemeEffects";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -148,9 +147,7 @@ export default function RegisterPage() {
 
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0B1017] px-4 py-12 relative overflow-hidden">
-      {/* Efectos temáticos estacionales */}
-      <SeasonalThemeEffects />
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
 
       <div className="container mx-auto flex justify-center gap-x-24 gap-y-12 flex-col lg:flex-row lg:items-stretch relative z-10">
         {/* Bloque de anuncio */}
@@ -172,7 +169,7 @@ export default function RegisterPage() {
           </div>
 
         <div 
-          className="bg-[#161b22]/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden transition-opacity duration-300"
+          className="bg-[#101011] backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden transition-opacity duration-300"
           style={{
             transform: 'translate3d(0, 0, 0)',
             contain: 'layout style paint'
@@ -191,7 +188,7 @@ export default function RegisterPage() {
                   id="firstName"
                   type="text"
                   placeholder="Tu nombre"
-                  className="w-full py-3 px-4 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required
@@ -205,7 +202,7 @@ export default function RegisterPage() {
                   id="lastName"
                   type="text"
                   placeholder="Tu apellido"
-                  className="w-full py-3 px-4 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required
@@ -220,8 +217,8 @@ export default function RegisterPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="tu@email.com"
-                className="w-full py-3 px-4 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                placeholder="Tu dirección de correo electrónico"
+                className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -237,7 +234,7 @@ export default function RegisterPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full py-3 px-4 pr-12 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -263,7 +260,7 @@ export default function RegisterPage() {
 
             <Button
               type="submit"
-              className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-opacity duration-200 mt-6"
+              className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-all duration-200 mt-6 hover:bg-white hover:text-black"
               disabled={isLoading}
             >
               {isLoading ? (

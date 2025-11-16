@@ -53,9 +53,9 @@ export default function Error({
 
         // Intentar cargar el perfil del usuario para verificar que todo está bien
         const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
+          .from('user_profiles')
           .select('*')
-          .eq('id', data.session.user.id)
+          .eq('user_id', data.session.user.id)
           .single();
 
         if (profileError && profileError.code !== 'PGRST116') {

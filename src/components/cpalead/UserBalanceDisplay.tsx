@@ -9,7 +9,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import WeeklyTopRanking from '@/components/dashboard/WeeklyTopRanking';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 interface UserBalanceDisplayProps {
   initialBalance: number;
@@ -31,7 +30,6 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   currency = 'USD',
   showControls = true 
 }) => {
-  const { activeTheme } = useSeasonalTheme();
   const [balance, setBalance] = useState(initialBalance);
   const [balanceStats, setBalanceStats] = useState<BalanceStats>({
     balance: initialBalance,
@@ -174,8 +172,8 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   return (
     <TooltipProvider>
       <Card 
-        className="relative backdrop-blur-2xl border border-white/10 h-full flex flex-col rounded-3xl overflow-hidden"
-        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
+        className="relative border border-white/10 h-full flex flex-col rounded-3xl overflow-hidden"
+        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)', willChange: 'auto' }}
       >
         {/* Brillo superior glassmorphism */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
@@ -218,25 +216,19 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
             </div>
 
             {showControls && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsVisible(!isVisible)}
-                    className="h-8 w-8 p-0 hover:bg-white hover:text-black transition-colors flex-shrink-0"
-                  >
-                    {isVisible ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {isVisible ? 'Ocultar saldo' : 'Mostrar saldo'}
-                </TooltipContent>
-              </Tooltip>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsVisible(!isVisible)}
+                className="balance-eye-button h-10 w-10 p-0 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] transition-colors flex-shrink-0"
+                style={{ willChange: 'auto' }}
+              >
+                {isVisible ? (
+                  <EyeOff className="w-4 h-4 text-white" />
+                ) : (
+                  <Eye className="w-4 h-4 text-white" />
+                )}
+              </Button>
             )}
           </div>
 

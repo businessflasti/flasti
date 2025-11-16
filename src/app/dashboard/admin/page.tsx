@@ -23,12 +23,10 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import UsersListCompact from '@/components/admin/UsersListCompact';
 import { supabase } from '@/lib/supabase';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
   const router = useRouter();
-  const { activeTheme } = useSeasonalTheme();
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dailyMessage, setDailyMessage] = useState('');
@@ -183,15 +181,6 @@ export default function AdminDashboard() {
                     <path d="M8 5v14l11-7z" />
                   </svg>
                   Video
-                </Button>
-                <Button 
-                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold"
-                  onClick={() => window.location.href = '/dashboard/admin/themes'}
-                >
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                  </svg>
-                  Temas
                 </Button>
                 <Button 
                   className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white font-bold"

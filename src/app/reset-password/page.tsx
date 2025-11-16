@@ -42,7 +42,7 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0B1017] px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo centrado */}
@@ -63,7 +63,7 @@ export default function ResetPasswordPage() {
           <p className="text-[#8b949e]">Introduce tu correo electrónico y te enviaremos un enlace</p>
         </div>
 
-        <div className="bg-[#161b22]/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden group transition-all duration-300">
+        <div className="bg-[#101011] backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden group transition-all duration-300">
           {/* Efecto neón sutil en hover */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
             <div className="absolute inset-0 bg-gradient-to-br from-[#6E40FF]/5 via-transparent to-[#2DE2E6]/5 rounded-2xl"></div>
@@ -112,7 +112,7 @@ export default function ResetPasswordPage() {
                   id="email"
                   type="email"
                   placeholder="tu@email.com"
-                  className="w-full py-3 px-4 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

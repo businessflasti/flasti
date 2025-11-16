@@ -99,7 +99,7 @@ export default function ContactoPage() {
       {/* Widget de chat para la página de contacto (visible) */}
       <TawkToWidget showBubble={true} />
       <div 
-        className="min-h-screen bg-[#0B1017]"
+        className="min-h-screen bg-[#0A0A0A]"
         style={{
           transform: 'translate3d(0, 0, 0)',
           contain: 'layout style paint',

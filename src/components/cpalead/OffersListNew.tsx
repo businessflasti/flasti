@@ -336,7 +336,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         {/* Selector inline dentro del bloque de ofertas si corresponde */}
         {showCountryModal && (
           <div className="w-full max-w-2xl mt-6">
-            <Card className="bg-[#101010] border-gray-700">
+            <Card className="bg-[#121212] border-gray-700">
               <CardContent className="pt-6">
                 <div className="text-center">
                   <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
@@ -381,7 +381,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           </Button>
         </div>
         
-        <Card className="bg-[#101010] border-red-500/50">
+        <Card className="bg-[#121212] border-red-500/50">
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-red-400 mb-4">Error al cargar tareas: {error}</p>
@@ -399,7 +399,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   if (showCountryModal) {
     return (
       <div className="space-y-6 w-full max-w-4xl mx-auto">
-        <Card className="bg-[#101010] border-gray-700">
+        <Card className="bg-[#121212] border-gray-700">
           <CardContent className="pt-6">
             <div className="text-center">
               <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
@@ -431,7 +431,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
       {/* Lista de ofertas */}
       {offers.length === 0 ? (
-        <Card className="bg-[#101010] border-gray-700">
+        <Card className="bg-[#121212] border-gray-700">
           <CardContent className="pt-6">
             <div className="text-center">
               <Globe className="w-12 h-12 text-gray-500 mx-auto mb-4" />
@@ -463,7 +463,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   taskNumber={index + 1}
                 >
                   <Card 
-                    className={`relative bg-[#101010] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    className={`relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
                     style={isLocked ? { height: '360px' } : undefined}
                   >
                     <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>

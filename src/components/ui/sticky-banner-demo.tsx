@@ -3,10 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { StickyBanner } from './sticky-banner';
 import { supabase } from '@/lib/supabase';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 export function StickyBannerDemo() {
-  const { activeTheme } = useSeasonalTheme();
   const [bannerConfig, setBannerConfig] = useState({
     text: '¡Bienvenido a Flasti! Gana dinero completando microtareas',
     logoUrl: '/logo.svg',
@@ -16,9 +14,7 @@ export function StickyBannerDemo() {
     isActive: true
   });
   const [loading, setLoading] = useState(true);
-
-  // Solo mostrar logo si el tema es el predeterminado (no halloween, no navidad, etc.)
-  const isDefaultTheme = !activeTheme || activeTheme === 'default';
+  const isDefaultTheme = true;
 
   useEffect(() => {
     loadBannerConfig();

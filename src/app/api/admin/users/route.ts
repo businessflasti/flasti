@@ -30,12 +30,35 @@ export async function GET(request: NextRequest) {
     console.log('✅ [API /admin/users] Cliente Supabase creado');
 
     // Verificar el token y que sea admin
+    console.log('🔍 [API /admin/users] Verificando token con getUser...');
+    console.log('🔍 [API /admin/users] Token (primeros 50 chars):', token.substring(0, 50));
+    
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
+    console.log('🔍 [API /admin/users] getUser result:', { 
+      hasUser: !!user, 
+      userId: user?.id,
+      userEmail: user?.email,
+      errorCode: authError?.code,
+      errorMessage: authError?.message,
+      errorStatus: authError?.status
+    });
+    
     if (authError || !user) {
       console.error('❌ [API /admin/users] Error verificando token:', authError);
-      return NextResponse.json({ success: false, message: 'Token inválido' }, { status: 401 });
+      console.error('❌ [API /admin/users] Detalles completos del error:', JSON.stringify(authError, null, 2));
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Token inválido',
+        debug: {
+          errorCode: authError?.code,
+          errorMessage: authError?.message,
+          hasToken: !!token,
+          tokenLength: token.length
+        }
+      }, { status: 401 });
     }
-    console.log('✅ [API /admin/users] Usuario autenticado:', user.id);
+    console.log('✅ [API /admin/users] Usuario autenticado:', user.id, user.email);
 
     // Verificar que sea admin
     const { data: profile, error: profileError } = await supabase

@@ -1,9 +1,6 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
-import { useSeasonalTheme } from "@/hooks/useSeasonalTheme";
-import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -15,10 +12,8 @@ interface LogoProps {
 
 const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: LogoProps) => {
   const { theme } = useTheme();
-  const { activeTheme } = useSeasonalTheme();
   const pathname = usePathname();
   const isDark = theme === "dark";
-  const [themeLogo, setThemeLogo] = useState<string | null>(null);
 
   // Tamaños basados en el prop size - ajustados para logo completo
   const sizes = {
@@ -39,59 +34,6 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
     }
   };
 
-  // Cargar el logo del tema activo
-  useEffect(() => {
-    const loadThemeLogo = async () => {
-      try {
-        if (activeTheme === 'default') {
-          setThemeLogo(null);
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from('seasonal_themes')
-          .select('logo_url')
-          .eq('theme_name', activeTheme)
-          .eq('is_active', true)
-          .single();
-
-        if (!error && data?.logo_url) {
-          console.log('🎨 Logo temático cargado:', data.logo_url);
-          setThemeLogo(data.logo_url);
-        } else {
-          console.log('🎨 Sin logo temático, usando logo por defecto');
-          setThemeLogo(null);
-        }
-      } catch (error) {
-        console.error('Error loading theme logo:', error);
-        setThemeLogo(null);
-      }
-    };
-
-    loadThemeLogo();
-
-    // Suscripción en tiempo real para cambios en el logo del tema
-    const channel = supabase
-      .channel('theme_logo_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'seasonal_themes',
-        },
-        () => {
-          console.log('🎨 Cambio detectado en logo de tema, recargando...');
-          loadThemeLogo();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [activeTheme]);
-
   // Obtener dimensiones según el tamaño
   const { logoHeight, logoWidth, textClass } = sizes[size];
 
@@ -99,10 +41,7 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   const isLoginPage = pathname === "/login";
   let logoPath: string;
   
-  if (themeLogo) {
-    // Si hay logo de tema, usarlo
-    logoPath = themeLogo;
-  } else {
+  {
     // Usar isotipo en login, logo completo en otras páginas
     logoPath = isLoginPage ? "/logo/isotipo-web.png" : "/logo/logo-web.png";
   }

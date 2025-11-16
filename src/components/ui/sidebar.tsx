@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 const sidebarItems = [
   { name: "Inicio", icon: <FiHome />, href: "/dashboard", tooltip: "Inicio" },
@@ -24,7 +23,6 @@ const sidebarItems = [
 
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
   const { profile, user, signOut, updateAvatar } = useAuth();
-  const { activeTheme } = useSeasonalTheme();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [currentMonthYear, setCurrentMonthYear] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
@@ -56,27 +54,6 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
     return () => clearInterval(interval);
   }, []);
   
-  // Función para obtener el color del borde según el tema
-  const getThemeBorderColors = () => {
-    switch (activeTheme) {
-      case 'halloween':
-        return {
-          gradient: 'from-orange-500 via-purple-500 to-orange-600',
-          glow: 'from-orange-400 via-purple-500 to-orange-600'
-        };
-      case 'christmas':
-        return {
-          gradient: 'from-red-500 via-green-500 to-red-600',
-          glow: 'from-red-400 via-green-500 to-red-600'
-        };
-      default:
-        return {
-          gradient: 'from-blue-400 via-blue-500 to-blue-600',
-          glow: 'from-blue-400 via-blue-500 to-blue-600'
-        };
-    }
-  };
-
   // Función para obtener las iniciales del usuario
   const getInitials = (email: string | undefined, name: string | undefined) => {
     if (name) {
@@ -126,7 +103,7 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -260, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 left-0 z-40 h-full w-56 bg-[#0B1017] flex flex-col items-center py-8 gap-2 lg:translate-x-0 lg:opacity-100"
+            className="fixed top-0 left-0 z-40 h-full w-56 bg-[#0A0A0A] flex flex-col items-center py-8 gap-2 lg:translate-x-0 lg:opacity-100"
             aria-label="Menú lateral"
             role="navigation"
             tabIndex={-1}
@@ -216,11 +193,7 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                 onClick={() => document.getElementById('avatar-upload')?.click()}
                 className="relative w-20 h-20 rounded-full p-[3px] cursor-pointer hover:scale-105 transition-transform group"
                 style={{ 
-                  background: activeTheme === 'halloween' 
-                    ? '#ff6b00' 
-                    : activeTheme === 'christmas'
-                    ? '#c41e3a'
-                    : '#141820',
+                  background: '#121212',
                   filter: 'none', 
                   boxShadow: 'none' 
                 }}
@@ -273,7 +246,7 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
 
             {/* Badge premium con mes y año - Movido arriba */}
             <div className="w-full flex justify-center mb-6">
-              <span className="inline-block text-white text-xs font-bold px-4 py-2 rounded-full bg-[#161b22]/80 backdrop-blur-xl border-0 shadow-lg capitalize tracking-wide">
+              <span className="inline-block text-white text-xs font-bold px-4 py-2 rounded-full bg-[#121212] backdrop-blur-xl border-0 shadow-lg capitalize tracking-wide">
                 {currentMonthYear}
               </span>
             </div>
@@ -287,8 +260,8 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                       disabled={isLoggingOut}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group w-full text-left ${
                         isLoggingOut 
-                          ? 'bg-[#161b22]/80 backdrop-blur-xl text-gray-600 cursor-not-allowed' 
-                          : 'text-gray-400 hover:bg-[#161b22]/80 hover:backdrop-blur-xl hover:text-white'
+                          ? 'bg-[#121212] backdrop-blur-xl text-gray-600 cursor-not-allowed' 
+                          : 'text-gray-400 hover:bg-[#121212] hover:backdrop-blur-xl hover:text-white'
                       }`}
                       tabIndex={0}
                       role="menuitem"
@@ -336,8 +309,8 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (v: boolean
                       href={item.href}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group relative overflow-hidden ${
                         pathname === item.href 
-                          ? 'bg-[#161b22]/80 backdrop-blur-xl text-white font-bold shadow-lg' 
-                          : 'text-gray-400 hover:bg-[#161b22]/80 hover:backdrop-blur-xl hover:text-white'
+                          ? 'bg-[#121212] backdrop-blur-xl text-white font-bold shadow-lg' 
+                          : 'text-gray-400 hover:bg-[#121212] hover:backdrop-blur-xl hover:text-white'
                       }`}
                       tabIndex={0}
                       role="menuitem"

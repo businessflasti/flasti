@@ -55,24 +55,14 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
       >
         {/* Contenedor central con efectos */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-6">
-          {/* Ícono de candado sin resplandor */}
-          <div className="relative mb-3">
+          {/* Ícono de candado */}
+          <div className="relative mb-6">
             <div className="relative p-4">
-              <Lock className="w-8 h-8 text-white drop-shadow-2xl" />
+              <Lock className="w-12 h-12 text-white drop-shadow-2xl" />
             </div>
           </div>
-
-          {/* Texto persuasivo */}
-          <div className="text-center space-y-2 mb-3">
-            <h3 className="text-lg font-bold text-white drop-shadow-lg">
-              ¡Desbloquea y Gana Ya!
-            </h3>
-            <p className="text-sm text-white/90 font-medium">
-              Acceso instantáneo
-            </p>
-          </div>
           
-          {/* Botón de desbloqueo BLANCO (tamaño original) */}
+          {/* Botón de desbloqueo */}
           <button 
             className={styles.unlockButton}
             onClick={(e) => {
@@ -83,18 +73,6 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
           >
             Desbloquear
           </button>
-
-          {/* Número de tarea con icono de dólar */}
-          {taskNumber && (
-            <div className="flex items-center gap-2 mt-12">
-              <div className="w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center">
-                <DollarSign className="w-3 h-3 text-black" />
-              </div>
-              <p className="text-xs text-yellow-300 font-semibold">
-                Tarea {taskNumber}
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </div>

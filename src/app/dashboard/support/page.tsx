@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import TawkToWidget from "@/components/chat/TawkToWidget";
 import ChatButton from "@/components/chat/ChatButton";
-import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 export default function SupportPage() {
   const router = useRouter();
@@ -118,8 +117,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1017] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
-      <SeasonalGarland />
+    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
       {/* Widget de chat para soporte */}
       <TawkToWidget showBubble={true} />
       

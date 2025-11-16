@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Gift, Sparkles, Check, Play } from 'lucide-react';
+import { Headphones, Sparkles, Check, Play } from 'lucide-react';
 import styles from './WelcomeBonus.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -10,16 +10,13 @@ interface WelcomeBonusProps {
   onBonusClaimed?: () => void;
 }
 
-const WORD = 'AVANZA33';
-
 export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusProps) {
   const [showPopup, setShowPopup] = useState(false);
-  const [userInput, setUserInput] = useState<string[]>(Array(WORD.length).fill(''));
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [userInput, setUserInput] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const [bonusClaimed, setBonusClaimed] = useState<boolean | null>(null); // null = loading
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     checkBonusStatus();
@@ -53,41 +50,10 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
     }
   };
 
-  const handleLetterInput = (index: number, value: string) => {
-    // Si el valor está vacío, permitir borrar
-    if (value === '') {
-      const newInput = [...userInput];
-      newInput[index] = '';
-      setUserInput(newInput);
-      return;
-    }
-
-    const char = value.toUpperCase().slice(-1);
-    // Aceptar letras A-Z y números 0-9
-    if (!char.match(/[A-Z0-9]/)) return;
-
-    const newInput = [...userInput];
-    newInput[index] = char;
-    setUserInput(newInput);
-
-    if (char === WORD[index]) {
-      if (index < WORD.length - 1) {
-        const nextIndex = index + 1;
-        setCurrentIndex(nextIndex);
-        // Enfocar el siguiente input automáticamente sin cerrar el teclado
-        setTimeout(() => {
-          const nextInput = inputRefs.current[nextIndex];
-          if (nextInput) {
-            nextInput.focus();
-            // Prevenir que el teclado se cierre en móvil
-            nextInput.click();
-          }
-        }, 10);
-      } else {
-        setIsCompleted(true);
-        setTimeout(() => claimBonus(), 800);
-      }
-    }
+  const handleSubmit = () => {
+    // Siempre confirmar sin importar lo que escriba el usuario
+    setIsCompleted(true);
+    setTimeout(() => claimBonus(), 600);
   };
 
   const claimBonus = async () => {
@@ -135,13 +101,14 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
 
       console.log('✅ Bono de bienvenida registrado en historial y estadísticas actualizadas');
 
+      // Recargar rápidamente para mejor experiencia de usuario
       setTimeout(() => {
         setShowPopup(false);
         setBonusClaimed(true);
         onBonusClaimed?.();
         // Recargar la página para reflejar el nuevo balance
         window.location.reload();
-      }, 2000);
+      }, 1200);
     } catch (error) {
       console.error('Error claiming bonus:', error);
       setIsClaiming(false);
@@ -157,14 +124,13 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
         <div className={styles.bonusGlow}></div>
         <div className={styles.bonusContent}>
           <div className={styles.bonusIcon}>
-            <Gift className="w-8 h-8" />
+            <Headphones className="w-8 h-8" />
             <Sparkles className={`w-4 h-4 ${styles.sparkle1}`} />
             <Sparkles className={`w-4 h-4 ${styles.sparkle2}`} />
           </div>
           <div className={styles.bonusText}>
             <h3 className={styles.bonusTitle}>
-              <span className="md:hidden">¡Bienvenido!</span>
-              <span className="hidden md:inline">¡Bienvenido a Flasti!</span>
+              Escucha y escribe las palabras
             </h3>
             <p className={styles.bonusAmount}>$0.75 USD</p>
             <p className={`${styles.bonusDescription} text-xs md:text-xs`}>
@@ -200,41 +166,61 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
             {!isCompleted ? (
               <>
                 <div className={styles.popupHeader}>
-                  <Gift className="w-10 h-10 text-yellow-400" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <Headphones className="w-16 h-16 text-yellow-400" />
+                    <span className="text-yellow-400 text-xl font-bold">+$0.75 USD</span>
+                  </div>
                   <h2 className={styles.popupTitle}>¡Tu primera tarea!</h2>
-                  <p className={styles.popupSubtitle}>Completa la palabra letra por letra</p>
+                  <p className={styles.popupSubtitle}>Escucha el audio y escribe las 5 palabras que se mencionan</p>
                 </div>
 
-                <div className={styles.wordHint}>
-                  <span className={styles.hintLabel}>Palabra:</span>
-                  <span className={styles.hintWord}>{WORD}</span>
+                {/* Reproductor de audio */}
+                <div className="w-full mb-6">
+                  <audio 
+                    ref={audioRef}
+                    controls 
+                    controlsList="nodownload noplaybackrate"
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="w-full"
+                    style={{
+                      borderRadius: '12px',
+                      backgroundColor: '#1a1a1a',
+                      outline: 'none'
+                    }}
+                  >
+                    <source src="/audios/bienvenida.mp3" type="audio/mpeg" />
+                    Tu navegador no soporta el elemento de audio.
+                  </audio>
                 </div>
 
-                <div className={styles.letterBoxes}>
-                  {WORD.split('').map((letter, index) => (
-                    <input
-                      key={index}
-                      ref={(el) => (inputRefs.current[index] = el)}
-                      type="text"
-                      inputMode="text"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      autoCapitalize="characters"
-                      spellCheck="false"
-                      maxLength={1}
-                      value={userInput[index]}
-                      onChange={(e) => handleLetterInput(index, e.target.value)}
-                      className={`${styles.letterBox} ${
-                        userInput[index] === letter ? styles.correct : ''
-                      } ${currentIndex === index ? styles.active : ''}`}
-                      disabled={index !== currentIndex}
-                      autoFocus={index === 0}
-                    />
-                  ))}
+                {/* Campo de texto para las 5 palabras */}
+                <div className="w-full mb-4">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Escribe las 5 palabras (separadas por espacios):
+                  </label>
+                  <input
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    placeholder="Ejemplo: PALABRA1 PALABRA2 PALABRA3 PALABRA4 PALABRA5"
+                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400 transition-colors"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
                 </div>
 
-                <p className={styles.instruction}>
-                  Escribe {/[0-9]/.test(WORD[currentIndex]) ? 'el número' : 'la letra'} <strong>{WORD[currentIndex]}</strong>
+                {/* Botón de confirmar */}
+                <button
+                  onClick={handleSubmit}
+                  disabled={!userInput.trim()}
+                  className="w-full py-3 px-6 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-xl hover:from-yellow-500 hover:to-yellow-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Confirmar
+                </button>
+
+                <p className="text-xs text-gray-400 mt-4 text-center">
+                  Las palabras deben estar en el orden mencionado en el audio
                 </p>
               </>
             ) : (

@@ -12,7 +12,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
 import AdBlock from "@/components/ui/AdBlock";
-import SeasonalThemeEffects from "@/components/themes/SeasonalThemeEffects";
 
 const getLoginErrorMessage = (error: any): string => {
   const defaultMessage = 'Error al iniciar sesión';
@@ -130,9 +129,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0B1017] px-4 py-12 relative overflow-hidden">
-      {/* Efectos temáticos estacionales */}
-      <SeasonalThemeEffects />
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
 
       <div className="container mx-auto flex justify-center gap-x-24 gap-y-12 flex-col lg:flex-row lg:items-stretch relative z-10">
         {/* Bloque de anuncio */}
@@ -161,7 +158,7 @@ export default function LoginPage() {
           </div>
 
           <div 
-            className="bg-[#161b22]/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden transition-opacity duration-300"
+            className="bg-[#101011] backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden transition-opacity duration-300"
             style={{
               transform: 'translate3d(0, 0, 0)',
               contain: 'layout style paint'
@@ -177,8 +174,8 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="tu@email.com"
-                  className="w-full py-3 px-4 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  placeholder="Tu dirección de correo electrónico"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -199,7 +196,7 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Tu contraseña"
-                    className="w-full py-3 px-4 pr-12 h-12 bg-[#0d1117] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                    className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -225,7 +222,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-opacity duration-200 mt-6"
+                className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-all duration-200 mt-6 hover:bg-white hover:text-black"
                 disabled={isLoading}
               >
                 {isLoading ? (

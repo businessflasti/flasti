@@ -13,7 +13,6 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { DollarSign, CreditCard, AlertCircle, CheckCircle, Landmark, ArrowRightLeft, Wallet } from 'lucide-react';
 import PayPalIcon from '@/components/icons/PayPalIcon';
-import SeasonalGarland from '@/components/themes/SeasonalGarland';
 
 interface UserBalance {
   balance: number;
@@ -183,8 +182,7 @@ export default function WithdrawalsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
-      <SeasonalGarland />
+    <div className="min-h-screen bg-[#0A0A0A] relative overflow-hidden">
       <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6 relative z-10">
       <Breadcrumbs />
       

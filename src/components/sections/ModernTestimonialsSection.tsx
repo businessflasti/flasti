@@ -240,7 +240,7 @@ const ModernTestimonialsSection = () => {
   }, [mobileEmblaApi, onMobileSelect]);
 
   return (
-    <section className="py-12 md:py-16 relative overflow-hidden bg-[#0B1017]">
+    <section className="py-12 md:py-16 relative overflow-hidden bg-[#101011]">
 
       <div className="container-custom relative z-10 max-w-5xl mx-auto px-4">
         {/* Main heading */}

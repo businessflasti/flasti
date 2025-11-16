@@ -7,11 +7,9 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { useSeasonalTheme } from '@/hooks/useSeasonalTheme';
 
 export default function DailyMessage() {
   const { profile, user } = useAuth();
-  const { activeTheme } = useSeasonalTheme();
   const [message, setMessage] = useState('');
   const [messageVersion, setMessageVersion] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -155,12 +153,12 @@ export default function DailyMessage() {
           {/* Info de María - Centrada verticalmente */}
           <div className="flex-1 min-w-0 flex flex-col justify-center">
             <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white truncate">
-              María
+              Laura Martínez
             </h3>
             <p className={`text-[10px] sm:text-xs transition-all duration-300 truncate ${
               isRead ? 'text-gray-400' : 'text-blue-300'
             }`}>
-              Asesora de {profile?.name || 'Flasti'}
+              Guía de Flasti
             </p>
           </div>
 

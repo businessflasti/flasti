@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "./globals-premium-theme.css";
 import { Metadata } from "next";
 import ClientLayout from "@/components/layout/ClientLayout";
 import YandexMetrica from "@/components/analytics/YandexMetrica";

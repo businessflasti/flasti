@@ -51,7 +51,7 @@ const HowItWorksSection = React.memo(() => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#0B1017]">
+    <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
