@@ -58,14 +58,14 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
   mpContainer.innerHTML = '';
 
   // Obtener precio actual
-  let amountARS = 4990;
+  let amountARS = 9900;
   const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
   const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
 
   if (finalDiscountApplied) {
-    amountARS = 5750;
+    amountARS = 9900;
   } else if (discountApplied) {
-    amountARS = 9200;
+    amountARS = 9900;
   }
 
   console.log(`💰 Precio: AR$ ${amountARS.toLocaleString('es-AR')}`);

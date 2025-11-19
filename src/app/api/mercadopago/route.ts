@@ -10,8 +10,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { price, title, quantity = 1, currency = 'ARS', unitPrice } = body;
 
-  // Si es moneda ARS y no se envía unitPrice, usar el precio fijo AR$4990
-  const resolvedUnitPrice = (currency === 'ARS' && (unitPrice === undefined || unitPrice === null)) ? 4990 : (unitPrice || (price ? parseFloat(price) : 0));
+  // Si es moneda ARS y no se envía unitPrice, usar el precio fijo AR$9900
+  const resolvedUnitPrice = (currency === 'ARS' && (unitPrice === undefined || unitPrice === null)) ? 9900 : (unitPrice || (price ? parseFloat(price) : 0));
 
     // Validar los datos
     if (!price && !unitPrice) {

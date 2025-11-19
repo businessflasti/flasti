@@ -67,8 +67,8 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
         .eq('user_id', userId)
         .single();
 
-      const newBalance = (userProfile?.balance || 0) + 0.75;
-      const newTotalEarnings = (userProfile?.total_earnings || 0) + 0.75;
+      const newBalance = (userProfile?.balance || 0) + 1.50;
+      const newTotalEarnings = (userProfile?.total_earnings || 0) + 1.50;
 
       // Actualizar balance, total_earnings y marcar bono como reclamado
       await supabase
@@ -81,34 +81,43 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
         .eq('user_id', userId);
 
       // Registrar en historial de recompensas (cpalead_transactions)
-      await supabase
+      const timestamp = Date.now();
+      const { data: transactionData, error: transactionError } = await supabase
         .from('cpalead_transactions')
         .insert({
           user_id: userId,
-          transaction_id: `welcome_${userId}_${Date.now()}`,
+          transaction_id: `welcome_${userId}_${timestamp}`,
           offer_id: 'welcome_bonus',
-          amount: 0.75,
+          amount: 1.50,
           currency: 'USD',
-          type: 'reward',
           status: 'approved',
+          source: 'welcome_bonus',
           metadata: {
-            offer_name: 'Tarea de bienvenida',
-            description: 'Tarea de bienvenida',
-            campaign_name: 'Tarea de bienvenida'
+            offer_name: 'Audio a texto',
+            description: 'Escucha y escribe las palabras',
+            campaign_name: 'Audio a texto',
+            type: 'reward'
           },
           created_at: new Date().toISOString()
-        });
+        })
+        .select();
 
-      console.log('✅ Bono de bienvenida registrado en historial y estadísticas actualizadas');
+      if (transactionError) {
+        console.error('❌ Error al registrar transacción:', transactionError);
+        console.error('Detalles del error:', JSON.stringify(transactionError, null, 2));
+      } else {
+        console.log('✅ Bono de bienvenida registrado en historial');
+        console.log('Transacción creada:', transactionData);
+      }
 
-      // Recargar rápidamente para mejor experiencia de usuario
+      // Esperar un poco más para asegurar que la transacción se procese
       setTimeout(() => {
         setShowPopup(false);
         setBonusClaimed(true);
         onBonusClaimed?.();
-        // Recargar la página para reflejar el nuevo balance
+        // Recargar la página para reflejar el nuevo balance y estadísticas
         window.location.reload();
-      }, 1200);
+      }, 1500);
     } catch (error) {
       console.error('Error claiming bonus:', error);
       setIsClaiming(false);
@@ -132,7 +141,7 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
             <h3 className={styles.bonusTitle}>
               Escucha y escribe las palabras
             </h3>
-            <p className={styles.bonusAmount}>$0.75 USD</p>
+            <p className={styles.bonusAmount}>$1.50 USD</p>
             <p className={`${styles.bonusDescription} text-xs md:text-xs`}>
               Completa la tarea y gana tu primera recompensa
             </p>
@@ -168,7 +177,7 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
                 <div className={styles.popupHeader}>
                   <div className="flex items-center gap-3 mb-4">
                     <Headphones className="w-16 h-16 text-yellow-400" />
-                    <span className="text-yellow-400 text-xl font-bold">+$0.75 USD</span>
+                    <span className="text-yellow-400 text-xl font-bold">+$1.50 USD</span>
                   </div>
                   <h2 className={styles.popupTitle}>¡Tu primera tarea!</h2>
                   <p className={styles.popupSubtitle}>Escucha el audio y escribe las 5 palabras que se mencionan</p>
@@ -229,7 +238,7 @@ export default function WelcomeBonus({ userId, onBonusClaimed }: WelcomeBonusPro
                   <Check className="w-16 h-16" />
                 </div>
                 <h2 className={styles.successTitle}>¡COMPLETADO!</h2>
-                <p className={styles.successAmount}>+$0.75 USD</p>
+                <p className={styles.successAmount}>+$1.50 USD</p>
                 <p className={styles.successMessage}>Acreditado a tu balance</p>
                 <div className={styles.confetti}>
                   {[...Array(20)].map((_, i) => (

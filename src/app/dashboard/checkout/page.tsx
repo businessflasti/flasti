@@ -53,7 +53,7 @@ const CheckoutContent = () => {
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
 
   // Estado para el precio base
-  const [price] = useState(4.9); // Precio base en USD (actualizado a $4.90)
+  const [price] = useState(9.9); // Precio base en USD (actualizado a $9.90)
   
   // Estados para descuentos (mantenidos por compatibilidad pero siempre en falso)
   const [discountApplied] = useState(false);
@@ -268,7 +268,7 @@ const CheckoutContent = () => {
     currencyCode: string;
   }>({
     countryCode: '',
-    price: 4.90,
+    price: 9.90,
     currencySymbol: '$',
     currencyCode: 'USD'
   });
@@ -561,8 +561,8 @@ const CheckoutContent = () => {
       // Deshabilitar el botón y mostrar loading
       setIsSubmittingMercadoPagoForm(true);
 
-  // Precio base en ARS (actualizado a ARS 4990)
-  const amountARS = 4990;
+  // Precio base en ARS (actualizado a ARS 9900)
+  const amountARS = 9900;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -812,7 +812,7 @@ const CheckoutContent = () => {
 
     try {
       // Precio base en ARS
-  const amountARS = 4990; // ARS 4.990 precio base
+  const amountARS = 9900; // ARS 9.900 precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1724,7 +1724,7 @@ const CheckoutContent = () => {
                             <div className="flex flex-col items-end">
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white flex items-center gap-2">
-                                  <span>$ 4.90 USD</span>
+                                  <span>$ 9.90 USD</span>
                                   {countryPrice.countryCode && 
                                    !usdNativeCountries.includes(countryPrice.countryCode) && 
                                    countryPrice.countryCode !== 'VE' && 
@@ -1804,9 +1804,9 @@ const CheckoutContent = () => {
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white">
                                   {isArgentina ? (
-                                    <span className="text-lg">AR$ 4.990</span>
+                                    <span className="text-lg">AR$ 9.900</span>
                                   ) : (
-                                    <span>$ 4.90 USD</span>
+                                    <span>$ 9.90 USD</span>
                                   )}
                                 </div>
                                 <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
@@ -2024,7 +2024,7 @@ const CheckoutContent = () => {
                       </div>
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white">$ 4.90 USD</span>
+                          <span className="font-bold text-white">$ 9.90 USD</span>
                           <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
                             Microtareas ilimitadas
                           </span>

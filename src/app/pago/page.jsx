@@ -40,7 +40,7 @@ export default function Pago() {
             marginBottom: "0.5rem"
           }}>
             <span>Total</span>
-            <span style={{ fontWeight: "bold" }}>$4.90 USD</span>
+            <span style={{ fontWeight: "bold" }}>$9.90 USD</span>
           </div>
         </div>
         <PayPalButton />

@@ -114,9 +114,9 @@ export default function WithdrawalsPage() {
       return;
     }
     
-    // Validación de mínimo $1 USD
-    if (Number(amount) < 1) {
-      toast.error('No puedes retirar menos del mínimo permitido. Debes alcanzar al menos $1.00 USD para solicitar un retiro.');
+    // Validación de mínimo $3 USD
+    if (Number(amount) < 3) {
+      toast.error('Retiro disponible desde $3.00 USD');
       return;
     }
     
@@ -330,16 +330,14 @@ export default function WithdrawalsPage() {
                     </label>
                     <Input
                       type="number"
-                      min="1"
                       step="0.01"
-                      max={userBalance.balance}
                       value={amount}
                       onChange={e => setAmount(e.target.value)}
                       placeholder="Introduce tu monto"
                       className="bg-background border-border focus:border-primary"
                     />
                     <p className="text-xs text-blue-400/80 mt-1">
-                      Mínimo: $1.00 USD
+                      Mínimo: $3.00 USD
                     </p>
                   </div>
 

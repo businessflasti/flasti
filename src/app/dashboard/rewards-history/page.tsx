@@ -318,7 +318,6 @@ export default function RewardsHistoryPage() {
                       <TableRow>
                         <TableHead>Fecha</TableHead>
                         <TableHead>Tarea</TableHead>
-                        <TableHead>Descripción</TableHead>
                         <TableHead>Monto</TableHead>
                         <TableHead>Estado</TableHead>
                         <TableHead>ID Transacción</TableHead>
@@ -328,19 +327,17 @@ export default function RewardsHistoryPage() {
                       {rewards.map((reward) => (
                         <TableRow key={reward.id}>
                           <TableCell className="text-sm">
-                            {new Date(reward.created_at).toLocaleDateString('es-ES', {
+                            {new Date(reward.created_at).toLocaleString('es-ES', {
                               year: 'numeric',
                               month: 'short',
                               day: 'numeric',
                               hour: '2-digit',
-                              minute: '2-digit'
+                              minute: '2-digit',
+                              hour12: false
                             })}
                           </TableCell>
                           <TableCell className="font-medium">
                             {reward.offer_name}
-                          </TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
-                            {reward.goal_name}
                           </TableCell>
                           <TableCell className={`font-bold ${reward.payout >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {reward.payout >= 0 ? '+' : ''}{formatCurrency(reward.payout)}
@@ -349,7 +346,7 @@ export default function RewardsHistoryPage() {
                             {getStatusBadge(reward.status, reward.type)}
                           </TableCell>
                           <TableCell className="text-xs text-muted-foreground font-mono">
-                            {reward.transaction_id}
+                            {reward.transaction_id.split('_').pop() || reward.transaction_id}
                           </TableCell>
                         </TableRow>
                       ))}

@@ -185,16 +185,10 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
               </div>
               
               <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2">
                   <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                     Balance
                   </span>
-                  {balanceStats.todayEarnings > 0 && (
-                    <Badge variant="secondary" className="text-[10px] sm:text-xs flex items-center gap-1">
-                      <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                      Hoy: {formatCurrency(balanceStats.todayEarnings)}
-                    </Badge>
-                  )}
                 </div>
                 
                 <div className="flex items-center gap-2 mt-1">
