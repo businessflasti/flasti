@@ -60,6 +60,7 @@ export default function PremiumTaskModal({
   const [mounted, setMounted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isVideoTask = taskType?.toLowerCase() === 'video' || !!videoUrl;
 
   // Calcular fecha de expiración (solo fecha de hoy)
@@ -89,11 +90,16 @@ export default function PremiumTaskModal({
     setMounted(true);
   }, []);
 
-  // Bloquear scroll del body
+  // Bloquear scroll del body y cleanup
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'unset';
+      // Limpiar timeout si existe al desmontar
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -123,41 +129,62 @@ export default function PremiumTaskModal({
     if (isClaiming) return;
     setIsClaiming(true);
 
+    // Timeout de seguridad: si después de 30 segundos no se completó, resetear
+    timeoutRef.current = setTimeout(() => {
+      console.error('Timeout: La operación tardó demasiado');
+      setIsClaiming(false);
+      alert('La operación está tardando demasiado. Por favor, verifica tu conexión e intenta nuevamente.');
+    }, 30000);
+
     try {
-      const { data: userProfile } = await supabase
+      // 1. Obtener perfil del usuario con validación de error
+      const { data: userProfile, error: profileError } = await supabase
         .from('user_profiles')
         .select('balance, total_earnings')
         .eq('user_id', userId)
         .single();
 
+      if (profileError) {
+        console.error('Error obteniendo perfil:', profileError);
+        throw new Error('No se pudo obtener el perfil del usuario');
+      }
+
       const newBalance = (userProfile?.balance || 0) + amount;
       const newTotalEarnings = (userProfile?.total_earnings || 0) + amount;
 
-      // Si es una oferta personalizada, registrar la completación
+      // 2. Si es una oferta personalizada, verificar y registrar la completación
       if (customOfferId) {
-        const { data: existingCompletion } = await supabase
+        const { data: existingCompletion, error: checkError } = await supabase
           .from('custom_offers_completions')
           .select('id')
           .eq('user_id', userId)
           .eq('offer_id', customOfferId)
           .single();
 
+        // Si ya existe (no es error), cerrar modal
         if (existingCompletion) {
+          console.log('Tarea ya completada previamente');
           setIsClaiming(false);
           onClose();
           return;
         }
 
-        await supabase
+        // Insertar nueva completación
+        const { error: insertError } = await supabase
           .from('custom_offers_completions')
           .insert({
             user_id: userId,
             offer_id: customOfferId,
             amount_earned: amount
           });
+
+        if (insertError) {
+          console.error('Error registrando completación:', insertError);
+          throw new Error('No se pudo registrar la completación de la tarea');
+        }
       }
 
-      // Actualizar balance
+      // 3. Actualizar balance con validación
       const updateData: any = { 
         balance: newBalance,
         total_earnings: newTotalEarnings
@@ -167,12 +194,17 @@ export default function PremiumTaskModal({
         updateData.welcome_bonus_claimed = true;
       }
 
-      await supabase
+      const { error: updateError } = await supabase
         .from('user_profiles')
         .update(updateData)
         .eq('user_id', userId);
 
-      // Registrar transacción
+      if (updateError) {
+        console.error('Error actualizando balance:', updateError);
+        throw new Error('No se pudo actualizar el balance');
+      }
+
+      // 4. Registrar transacción con validación
       const timestamp = Date.now();
       const transactionId = customOfferId 
         ? `custom_offer_${customOfferId}_${timestamp}`
@@ -198,7 +230,7 @@ export default function PremiumTaskModal({
         };
       }
 
-      await supabase
+      const { error: transactionError } = await supabase
         .from('cpalead_transactions')
         .insert({
           user_id: userId,
@@ -212,12 +244,35 @@ export default function PremiumTaskModal({
           created_at: new Date().toISOString()
         });
 
+      if (transactionError) {
+        console.error('Error registrando transacción:', transactionError);
+        // No lanzar error aquí porque el balance ya se actualizó
+        console.warn('Balance actualizado pero transacción no registrada');
+      }
+
+      // 5. Limpiar timeout de seguridad
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+
+      // 6. Mostrar éxito
       setIsCompleted(true);
       setTimeout(() => {
         onComplete();
       }, 2000);
     } catch (error) {
       console.error('Error claiming reward:', error);
+      
+      // Limpiar timeout de seguridad
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      
+      // Mostrar mensaje de error al usuario
+      alert(error instanceof Error ? error.message : 'Error al procesar la tarea. Por favor, intenta nuevamente.');
+      // IMPORTANTE: Resetear el estado para permitir reintentar
       setIsClaiming(false);
     }
   };
