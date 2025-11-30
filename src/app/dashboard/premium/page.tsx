@@ -272,10 +272,10 @@ const PremiumPage = () => {
                 {/* Texto descriptivo */}
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-white">
-                    ¡Desbloquea ya todas tus microtareas y comienza a ganar dinero ahora mismo!
+                    ¡Felicitaciones! Ya ha completado 2 microtareas.
                   </h3>
                   <p className="text-sm text-gray-400">
-                    No pierdas ni un segundo más: tus primeras microtareas de hoy ya están asignadas exclusivamente para ti. Desbloquéalas todas ahora y comienza a generar ingresos sin esperas ni complicaciones
+                    Su panel tiene más microtareas disponibles para usted el dia de hoy. Complete la activación para continuar generando ingresos de forma ilimitada.
                   </p>
                 </div>
                 
@@ -284,7 +284,7 @@ const PremiumPage = () => {
 
             {/* FAQ Section fuera de la tarjeta principal */}
             <div className="space-y-4 mb-6 lg:mb-4">
-              {/* Cuarta pregunta expandible - NUEVA (ahora primera) */}
+              {/* FAQ 1 - Pago único (ahora primera) */}
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
@@ -293,10 +293,10 @@ const PremiumPage = () => {
                   <div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
                       <div className="text-[#101010]">
-                        <DollarSign className="h-4 w-4 text-[#101010]" />
+                        <Info className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white leading-relaxed flex items-center mt-1">¿Cuánto dinero puedo ganar?</span>
+                    <span className="font-medium text-white leading-relaxed flex items-center">¿A qué se destina el pago único?</span>
                   </div>
                   <div className="text-white">
                     {activeQuestion === 0 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -307,31 +307,12 @@ const PremiumPage = () => {
                   className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 0 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>
-                      Puedes generar un ingreso estable para tu día a día o simplemente obtener un ingreso adicional en tu tiempo libre.
-
-                      <br />
-                      <br />
-                      <strong>• Elige cómo y cuánto ganar</strong>
-
-                      <br />
-                      <br />
-                      Nuestra plataforma te recompensa por cada microtarea completada, con pagos de $1 hasta $20 USD, según la tarea que elijas. Algunas de las microtareas que encontrarás son: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido (texto, imagen o audio) y muchas más que puedes empezar a realizar ahora mismo.
-
-                      <br />
-                      <br />
-                      Con solo completar una microtarea, recuperas tu inversión y seguirás generando ganancias. Tú decides hasta dónde llegar, elige tu camino y empieza a ganar
-                    </span>
-                    
-                    {/* Weekly Top Ranking */}
-                    <div className="mt-6 -ml-11">
-                      <WeeklyTopRanking />
-                    </div>
+                    <span style={{ color: '#AEAEB0' }}>El registro a la plataforma es gratuito. No obstante, se solicita un pago único para desbloquear <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>todas las microtareas de forma ilimitada</strong>. Esta activación nos permite cubrir los costos operativos y de verificación necesarios para mantener un entorno seguro, estable y exclusivo para nuestros usuarios. Este pago es definitivo y otorga acceso de por vida a todas las microtareas.</span>
                   </div>
                 </div>
               </div>
 
-              {/* Pregunta original 1 */}
+              {/* FAQ 2 - Cuánto dinero (ahora segunda) */}
               <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
@@ -340,10 +321,10 @@ const PremiumPage = () => {
                   <div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
                       <div className="text-[#101010]">
-                        <Info className="h-4 w-4 text-[#101010]" />
+                        <DollarSign className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white leading-relaxed flex items-center">¿Por qué debo hacer un pago único para desbloquear las microtareas?</span>
+                    <span className="font-medium text-white leading-relaxed flex items-center mt-1">¿Cuánto dinero puedo ganar?</span>
                   </div>
                   <div className="text-white">
                     {activeQuestion === 1 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -354,7 +335,14 @@ const PremiumPage = () => {
                   className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 1 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>El acceso a la plataforma es gratuito, sin embargo, debido a abusos reiterados y accesos no autorizados por parte de algunos usuarios, se implementó este pago único para desbloquear y trabajar con microtareas. Esta medida funciona como un filtro necesario que garantiza un entorno profesional, seguro y exclusivo, destinado únicamente a quienes están verdaderamente comprometidos a trabajar con seriedad, responsabilidad y compromiso en nuestra plataforma. Este pago es definitivo y otorga acceso de por vida a todas las microtareas, las cuales se renuevan diariamente para brindarte nuevas oportunidades de forma constante. Estamos totalmente seguros de la efectividad de nuestro sistema comprobado y de tu capacidad para aprovecharlo, por lo que sabemos que recuperarás y superarás tu inversión rápidamente, incluso en estas mismas primeras horas, tal como lo están logrando numerosos usuarios satisfechos en este preciso momento.</span>
+                    <span style={{ color: '#AEAEB0' }}>
+                      Nuestra plataforma compensa las microtareas completadas con pagos que oscilan <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>entre $0.50 USD y $10 USD</strong>. Usted tiene la flexibilidad de elegir la microtarea de su interés, visualizando su compensación antes de comenzar. Las actividades incluyen opciones populares como: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido (texto, imagen o audio) entre muchas otras.
+                    </span>
+                    
+                    {/* Weekly Top Ranking */}
+                    <div className="mt-6 -ml-11">
+                      <WeeklyTopRanking />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -371,7 +359,7 @@ const PremiumPage = () => {
                         <MapPin className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white leading-relaxed">¿Puedo empezar a trabajar desde mi ubicación actual ahora?</span>
+                    <span className="font-medium text-white leading-relaxed">¿Hay microtareas disponibles para mi ubicación?</span>
                   </div>
                   <div className="text-white">
                     {activeQuestion === 2 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -382,7 +370,7 @@ const PremiumPage = () => {
                   className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 2 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>Sí, ahora mismo puedes completar microtareas desde tu ubicación actual. Nuestro sistema detectó automáticamente tu país y te asignó tareas específicas diseñadas para ser realizadas exclusivamente desde tu región. Esto garantiza que siempre tengas oportunidades diarias adaptadas a tu contexto particular. Estamos comprometidos a brindarle apoyo desde este primer momento y a ayudarle a maximizar las posibilidades que ofrece nuestra plataforma.</span>
+                    <span style={{ color: '#AEAEB0' }}>Sí, nuestro <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>sistema de geolocalización avanzada</strong> ya ha detectado y confirmado su país para asignarle microtareas específicas para su región. La plataforma está completamente operativa para usted ahora mismo, lo que le garantiza un flujo constante de oportunidades diarias adaptadas a su contexto particular.</span>
                   </div>
                 </div>
               </div>
@@ -399,7 +387,7 @@ const PremiumPage = () => {
                         <Shield className="h-4 w-4 text-[#101010]" />
                       </div>
                     </div>
-                    <span className="font-medium text-white leading-relaxed">¿Cómo me respalda la garantía?</span>
+                    <span className="font-medium text-white leading-relaxed">¿Qué cubre la garantía de 7 días?</span>
                   </div>
                   <div className="text-white">
                     {activeQuestion === 3 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -410,7 +398,7 @@ const PremiumPage = () => {
                   className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 3 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
                   <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>En Flasti, tu satisfacción es nuestra prioridad. Por eso, cuentas con una garantía incondicional de 7 días. Estamos tan seguros de que te encantará trabajar en nuestra plataforma que tu pago está completamente respaldado. Si, por algún motivo, no cumplimos tus expectativas o no estás completamente satisfecho, podrás solicitar un reembolso del 100% de tu dinero, sin tener que dar justificaciones ni llenar formularios interminables con preguntas incómodas. Comienza sin preocupaciones. ¡Tu inversión está completamente protegida!</span>
+                    <span style={{ color: '#AEAEB0' }}>Usted cuenta con una <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>Garantía Incondicional de 7 Días</strong>. Estamos seguros de la calidad de nuestro servicio, por lo que su pago está completamente protegido. Si la plataforma no cumple con sus expectativas, usted puede solicitar el reembolso del <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>100% de su dinero</strong> dentro de los primeros 7 días. El proceso es directo y no requiere justificaciones ni formularios adicionales.</span>
                   </div>
                 </div>
               </div>
@@ -454,10 +442,10 @@ const PremiumPage = () => {
                 {/* Texto descriptivo */}
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-white">
-                    ¡Desbloquea ya todas tus microtareas y comienza a ganar dinero ahora mismo!
+                    ¡Felicitaciones! Ya ha completado 2 microtareas.
                   </h3>
                   <p className="text-sm text-gray-400">
-                    No pierdas ni un segundo más: tus primeras microtareas de hoy ya están asignadas exclusivamente para ti. Desbloquéalas todas ahora y comienza a generar ingresos sin esperas ni complicaciones
+                    Su panel tiene más microtareas disponibles para usted el dia de hoy. Complete la activación para continuar generando ingresos de forma ilimitada.
                   </p>
                 </div>
                 
@@ -486,12 +474,17 @@ const PremiumPage = () => {
 
 
             <div className="flex items-center mb-6">
-              <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 flex items-center justify-center mr-4">
-                <Lock className="w-7 h-7 text-white drop-shadow-lg" />
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+              <div className="relative w-14 h-14 rounded-xl flex items-center justify-center mr-4">
+                <Image 
+                  src="/images/flasti.png" 
+                  alt="Flasti" 
+                  width={56} 
+                  height={56}
+                  className="rounded-xl drop-shadow-lg"
+                />
               </div>
               <div>
-                <h3 className="text-lg text-white group-hover:text-white transition-all duration-300">Desbloquea todas tus microtareas ahora</h3>
+                <h3 className="text-lg text-white group-hover:text-white transition-all duration-300">Acceso Total | Desbloquee todas sus Microtareas</h3>
 
               </div>
             </div>
@@ -582,13 +575,13 @@ const PremiumPage = () => {
             </div>       
      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 lg:mb-4">
               <div className="flex items-start gap-3">
-                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 flex items-center justify-center flex-shrink-0">
                   <Zap className="text-white drop-shadow-lg" size={18} />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm text-white">Acceso inmediato</h4>
-                  <p className="text-xs text-white/70">Comienza a generar ingresos ahora mismo</p>
+                  <h4 className="font-medium text-sm text-white">Acceso Inmediato</h4>
+                  <p className="text-xs text-white/70">Continúa generando ingresos sin demoras.</p>
                 </div>
               </div>
 
@@ -599,7 +592,7 @@ const PremiumPage = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
-                  <p className="text-xs text-white/70">Sin límites de tiempo ni renovaciones</p>
+                  <p className="text-xs text-white/70">Sin límites de tiempo ni renovaciones.</p>
                 </div>
               </div>
 
@@ -610,18 +603,18 @@ const PremiumPage = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
-                  <p className="text-xs text-white/70">Devolución del 100% si no estás satisfecho</p>
+                  <p className="text-xs text-white/70">Devolución total, sin preguntas ni condiciones.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#ED3C65] via-[#D63456] to-[#C02C47] flex items-center justify-center flex-shrink-0">
                   <HeadphonesIcon className="text-white drop-shadow-lg" size={18} />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
                   <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
-                  <p className="text-xs text-white/70">Asistencia personalizada paso a paso</p>
+                  <p className="text-xs text-white/70">Asistencia personalizada paso a paso.</p>
                 </div>
               </div>
             </div>
@@ -630,9 +623,9 @@ const PremiumPage = () => {
 
             <Button 
               onClick={handleCheckoutNavigation}
-              className="w-full py-7 text-xl md:text-2xl font-black bg-[#FF4500] hover:bg-[#E1913C] text-white flex items-center justify-center gap-3 focus:outline-none focus:ring-0 rounded-3xl transition-colors duration-300"
+              className="w-full py-7 text-xl md:text-2xl font-black bg-gradient-to-br from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 text-white flex items-center justify-center gap-3 focus:outline-none focus:ring-0 rounded-3xl transition-all duration-300"
             >
-              QUIERO DESBLOQUEAR YA
+              DESBLOQUEAR AHORA
             </Button>
 
 
@@ -649,10 +642,10 @@ const PremiumPage = () => {
                   {/* Título compacto */}
                   <div className="text-center mb-4">
                     <h2 className="text-lg md:text-xl font-bold text-white mb-1">
-                      Miles de usuarios ya están ganando dinero
+                      Testimonios de la Comunidad
                     </h2>
                     <p className="text-white/60 text-xs md:text-sm">
-                      Conoce las experiencias de aquellos que ya empezaron
+                      Conoce las experiencias de quienes ya activaron su acceso
                     </p>
                   </div>
 
@@ -669,10 +662,10 @@ const PremiumPage = () => {
                   {/* Título compacto */}
                   <div className="text-center mb-4">
                     <h2 className="text-lg md:text-xl font-bold text-white mb-1">
-                      Miles de usuarios ya están ganando dinero
+                      Testimonios de la Comunidad
                     </h2>
                     <p className="text-white/60 text-xs md:text-sm">
-                      Conoce las experiencias de aquellos que ya empezaron
+                      Conoce las experiencias de quienes ya activaron su acceso
                     </p>
                   </div>
 

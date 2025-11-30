@@ -10,7 +10,7 @@ import UserBalanceDisplay from '@/components/cpalead/UserBalanceDisplay';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw } from 'lucide-react';
+import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw, CheckCircle2, Wallet } from 'lucide-react';
 import CountryFlag from '@/components/ui/CountryFlag';
 import { toast } from 'sonner';
 import OnboardingSlider from '@/components/dashboard/OnboardingSlider';
@@ -59,8 +59,8 @@ export default function DashboardPage() {
   const [tutorialVideo, setTutorialVideo] = useState({
     sliderUrl: '/video/tutorial-bienvenida.mp4',
     playerUrl: '/video/tutorial-bienvenida.mp4',
-    title: 'Bienvenido a flasti',
-    description: 'La plataforma lider en generacion de ingresos',
+    title: '¡Te damos la bienvenida a flasti!',
+    description: 'Más que tecnología: construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.',
     isClickable: true
   });
   
@@ -335,8 +335,8 @@ export default function DashboardPage() {
           setTutorialVideo({
             sliderUrl: data.slider_video_url,
             playerUrl: data.player_video_url,
-            title: 'Bienvenido a flasti',
-            description: 'La plataforma lider en generacion de ingresos',
+            title: '¡Te damos la bienvenida a flasti!',
+            description: 'Más que tecnología: construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.',
             isClickable: data.is_clickable
           });
         }
@@ -488,6 +488,7 @@ export default function DashboardPage() {
 
             {/* Tutorial móvil */}
             {isVisible('video_tutorial') && (
+              <>
               <div className="relative h-[200px] bg-black rounded-3xl overflow-hidden">
               <Card 
                 className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 h-full overflow-hidden rounded-3xl transition-all duration-700 group"
@@ -516,28 +517,29 @@ export default function DashboardPage() {
 
                 {/* Contenido */}
                 <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                  {/* Título en la parte superior */}
                   <div>
-                    <h3 className="text-xl font-bold mb-2 text-white">
+                    <h3 className="text-xl font-bold text-white">
                       {tutorialVideo.title}
                     </h3>
-                    <p className="text-sm text-white/70">
-                      {tutorialVideo.description}
-                    </p>
                   </div>
 
-                  {tutorialVideo.isClickable && (
-                    <div className="flex justify-end">
-                      <button
-                        onClick={() => setShowFullPlayer(true)}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
-                      >
-                        Cómo funciona
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </button>
-                    </div>
-                  )}
+                  {/* Botón en la parte inferior - Sin badge en mobile */}
+                  <div className="flex flex-col gap-3">
+                    {tutorialVideo.isClickable && (
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => setShowFullPlayer(true)}
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
+                        >
+                          Ver tutorial de Inicio
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Modal de video */}
@@ -577,7 +579,15 @@ export default function DashboardPage() {
                   }
                 }
               `}</style>
-            </div>
+              </div>
+              
+              {/* Badge con descripción - Solo visible en mobile, debajo del bloque */}
+              <div className="mt-3 px-3 py-2 rounded-lg bg-black/75 backdrop-blur-sm">
+                <p className="text-[11px] leading-relaxed text-white/90 text-left">
+                  <span className="font-bold">Más que tecnología:</span> construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.
+                </p>
+              </div>
+              </>
             )}
           </div>
         )}
@@ -614,7 +624,7 @@ export default function DashboardPage() {
             {/* Columna derecha: Bono + Video Tutorial (o Slider Premium) */}
             <div className="flex flex-col gap-4 h-[400px]">
               {/* Bono de bienvenida - Sin AdBlock después */}
-              {!userStats.welcomeBonusClaimed && (
+              {!userStats.welcomeBonusClaimed && isVisible('welcome_bonus') && (
                 <div className="flex-shrink-0">
                   <WelcomeBonus 
                     userId={user.id} 
@@ -655,28 +665,35 @@ export default function DashboardPage() {
 
                 {/* Contenido */}
                 <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                  {/* Título en la parte superior */}
                   <div>
-                    <h3 className="text-xl font-bold mb-2 text-white">
+                    <h3 className="text-xl font-bold text-white">
                       {tutorialVideo.title}
                     </h3>
-                    <p className="text-sm text-white/70">
-                      {tutorialVideo.description}
-                    </p>
                   </div>
 
-                  {tutorialVideo.isClickable && (
-                    <div className="flex justify-end">
-                      <button
-                        onClick={() => setShowFullPlayer(true)}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
-                      >
-                        Cómo funciona
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </button>
+                  {/* Botón y badge - Desktop (botón arriba) */}
+                  <div className="flex flex-col gap-3">
+                    {tutorialVideo.isClickable && (
+                      <div className="flex justify-start">
+                        <button
+                          onClick={() => setShowFullPlayer(true)}
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
+                        >
+                          Ver tutorial de Inicio
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+
+                    <div className="px-3 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
+                      <p className="text-[11px] leading-relaxed text-white/80">
+                        <span className="font-bold">Más que tecnología:</span> construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.
+                      </p>
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* Modal de video */}
@@ -742,14 +759,14 @@ export default function DashboardPage() {
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
                       <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
-                        <span className="hidden md:inline">Ganancias de </span>Hoy
+                        Hoy
                       </p>
                       <p className="text-2xl lg:text-3xl font-bold text-white">
                         ${userStats.todayEarnings.toFixed(2)}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF1493]/20 to-[#FF1493]/5 transition-opacity duration-300">
-                      <Calendar className="w-6 h-6 text-[#FF1493]" />
+                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
+                      <TrendingUp className="w-6 h-6 text-[#121212]" />
                     </div>
                   </div>
                 </div>
@@ -782,8 +799,8 @@ export default function DashboardPage() {
                         ${userStats.weekEarnings.toFixed(2)}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5 transition-opacity duration-300">
-                      <TrendingUp className="w-6 h-6 text-[#2DE2E6]" />
+                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
+                      <Calendar className="w-6 h-6 text-[#121212]" />
                     </div>
                   </div>
                 </div>
@@ -816,8 +833,8 @@ export default function DashboardPage() {
                         ${userStats.totalEarnings.toFixed(2)}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#8B5CF6]/20 to-[#8B5CF6]/5 transition-opacity duration-300">
-                      <Target className="w-6 h-6 text-[#8B5CF6]" />
+                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
+                      <Wallet className="w-6 h-6 text-[#121212]" />
                     </div>
                   </div>
                 </div>
@@ -852,8 +869,8 @@ export default function DashboardPage() {
                         {userStats.totalTransactions}
                       </p>
                     </div>
-                    <div className="relative p-3 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#FF6B35]/5 transition-opacity duration-300">
-                      <Gift className="w-6 h-6 text-[#FF6B35]" />
+                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
+                      <CheckCircle2 className="w-6 h-6 text-[#121212]" />
                     </div>
                   </div>
                 </div>
@@ -879,10 +896,10 @@ export default function DashboardPage() {
                 {/* Título */}
                 <div className="mb-3">
                   <CardTitle className="font-bold text-white">
-                    <span className="text-lg md:text-2xl">Microtareas asignadas para ti hoy</span>
+                    <span className="text-lg md:text-2xl">Microtareas disponibles hoy</span>
                   </CardTitle>
                   <CardDescription className="text-xs md:text-sm text-gray-400 mt-1">
-                    Las tareas se actualizan automáticamente, revise periódicamente para acceder a nuevas oportunidades de ingresos
+                    Las microtareas se actualizan automáticamente, revise periódicamente para acceder a nuevas microtareas disponibles
                   </CardDescription>
                 </div>
                 

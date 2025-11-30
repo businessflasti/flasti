@@ -185,7 +185,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
             {isVisible('page_title') && isMainDashboard ? (
               <div className="text-left -ml-2 md:ml-0">
                 <div className="text-base sm:text-base md:text-xl font-bold text-white leading-tight ml-2 md:ml-0">
-                  Panel personal
+                  Panel de Control
                 </div>
 
               </div>

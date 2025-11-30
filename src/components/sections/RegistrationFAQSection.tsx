@@ -114,7 +114,13 @@ const RegistrationFAQSection = React.memo(() => {
 										>
 											<div className="px-4 pb-6 pt-0 text-white/60 text-sm relative z-10">
 												<div className="pt-3 border-t border-white/10 pl-[52px] whitespace-pre-line leading-relaxed">
-													{faq.answer}
+													{faq.answer.split(/(entre \$0\.50 USD y \$10 USD)/g).map((part, i) => 
+														part.match(/entre \$0\.50 USD y \$10 USD/) ? (
+															<strong key={i} className="font-bold text-white">{part}</strong>
+														) : (
+															<React.Fragment key={i}>{part}</React.Fragment>
+														)
+													)}
 												</div>
 											</div>
 										</motion.div>

@@ -17,7 +17,7 @@ export async function POST() {
             description: "Acceso completo a Flasti - Microtareas ilimitadas",
             amount: {
               currency_code: "USD",
-              value: "9.90",
+              value: "5.90",
             },
           },
         ],

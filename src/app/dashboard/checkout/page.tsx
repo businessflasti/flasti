@@ -53,7 +53,7 @@ const CheckoutContent = () => {
   const [hotmartLoadAttempts, setHotmartLoadAttempts] = useState(0);
 
   // Estado para el precio base
-  const [price] = useState(9.9); // Precio base en USD (actualizado a $9.90)
+  const [price] = useState(5.9); // Precio base en USD (actualizado a $5.90)
   
   // Estados para descuentos (mantenidos por compatibilidad pero siempre en falso)
   const [discountApplied] = useState(false);
@@ -268,7 +268,7 @@ const CheckoutContent = () => {
     currencyCode: string;
   }>({
     countryCode: '',
-    price: 9.90,
+    price: 5.90,
     currencySymbol: '$',
     currencyCode: 'USD'
   });
@@ -561,8 +561,8 @@ const CheckoutContent = () => {
       // Deshabilitar el botón y mostrar loading
       setIsSubmittingMercadoPagoForm(true);
 
-  // Precio base en ARS (actualizado a ARS 9900)
-  const amountARS = 9900;
+  // Precio base en ARS (actualizado a ARS 5900)
+  const amountARS = 5900;
 
       // Crear preferencia de pago
       const response = await fetch('/api/mercadopago', {
@@ -812,7 +812,7 @@ const CheckoutContent = () => {
 
     try {
       // Precio base en ARS
-  const amountARS = 9900; // ARS 9.900 precio base
+  const amountARS = 5900; // ARS 5.900 precio base
 
       // Obtener el preferenceId desde nuestro endpoint
       const response = await fetch('/api/mercadopago', {
@@ -1448,159 +1448,8 @@ const CheckoutContent = () => {
       {/* Eliminado Exit Intent Popup */}
 
       <div className="container-custom py-2 md:py-6 lg:py-12">
-        <div className="flex flex-col lg:flex-row gap-2 lg:gap-8">
-          {/* Columna derecha - Resumen de compra (aparece primero en móvil) */}
-          <div className="w-full lg:w-1/3 order-1 lg:order-2 mb-2 lg:mb-0">
-            <Card 
-              className="bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 rounded-3xl transition-opacity duration-300 relative"
-              style={{ 
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                transform: 'translate3d(0, 0, 0)',
-                contain: 'layout style paint'
-              }}
-            >
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <h2 className="text-lg md:text-xl text-white"
-                    style={{
-                      fontFamily: "'Söhne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                      fontWeight: 600,
-                      letterSpacing: '-0.01em'
-                    }}
-                  >¡Desbloquea todas tus microtareas ahora!</h2>
-                </div>
-                {/* Etiqueta Premium y subtítulo eliminados por solicitud */}
-              </div>
-
-                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 mt-4 mb-4 relative">
-                {/* Eliminada banderita del país detectado */}
-
-                {/* Versión móvil: etiqueta superior eliminada; la etiqueta única se muestra debajo del título */}
-
-                {/* Versión desktop: etiqueta superior eliminada; la etiqueta única se muestra debajo del título */}
-
-                <div className="mt-2">
-                  <div className="flex items-start">
-                    <span className="text-[13px] sm:text-xs font-bold bg-green-500 text-white px-3 py-0.5 rounded-3xl whitespace-nowrap">
-                      Microtareas ilimitadas
-                    </span>
-                  </div>
-                  <p className="text-xs text-white/70 md:whitespace-nowrap mt-2">Pago único - Sin suscripciones ni cargos recurrentes</p>
-                </div>
-              </div>
-
-              {/* Etiqueta de ahorro llamativa (como caja separada pero compacta) */}
-              {/* Versión móvil - Diseño más compacto */}
-              <div className="md:hidden mb-3 mt-3" style={{ display: 'none' }}>
-                <div className="flex items-center gap-1">
-                  <div className="w-5 h-5 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
-                    <Wallet className="h-3 w-3 text-[#22c55e]" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-medium text-[#22c55e] whitespace-nowrap">
-                    {selectedPaymentMethod === "paypal" ? (
-                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
-                    ) : isArgentina ? (
-                      `Ahorras AR$ ${finalDiscountApplied ? "51.750" : (discountApplied ? "48.300" : "46.000")}`
-                    ) : (
-                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
-                    )}
-                  </span>
-                </div>
-
-                {/* Etiqueta de cupón aplicado - Solo visible cuando hay descuento */}
-                {(discountApplied || finalDiscountApplied) && (
-                  <div className="flex items-center gap-1 bg-gradient-to-r from-[#f59e0b]/20 to-[#eab308]/20 px-1.5 py-0.5 rounded border border-[#f59e0b]/30 animate-pulse">
-                    <Zap className="h-2.5 w-2.5 text-[#fbbf24]" />
-                    <span className="text-xs font-medium text-[#fbbf24]">Cupón</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Versión desktop - Diseño original */}
-              <div className="hidden" style={{ display: 'none' }}>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[#22c55e]/20 flex items-center justify-center">
-                    <Wallet className="h-3.5 w-3.5 text-[#22c55e]" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-medium text-[#22c55e] whitespace-nowrap">
-                    {selectedPaymentMethod === "paypal" ? (
-                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
-                    ) : isArgentina ? (
-                      `Ahorras AR$ ${finalDiscountApplied ? "51.750" : (discountApplied ? "48.300" : "46.000")}`
-                    ) : (
-                      `Ahorras $${finalDiscountApplied ? "45" : (discountApplied ? "42" : "40")} USD`
-                    )}
-                  </span>
-                </div>
-
-                {/* Etiqueta de cupón aplicado - Solo visible cuando hay descuento */}
-                {(discountApplied || finalDiscountApplied) && (
-                  <div className="flex items-center gap-1 bg-gradient-to-r from-[#f59e0b]/20 to-[#eab308]/20 px-2 py-1 rounded border border-[#f59e0b]/30 animate-pulse">
-                    <Zap className="h-3 w-3 text-[#fbbf24]" />
-                    <span className="text-xs font-medium text-[#fbbf24]">Cupón</span>
-                  </div>
-                )}
-              </div>
-
-
-
-              <div className="flex flex-col gap-3 mb-4">
-                <div className="flex items-start gap-3">
-                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
-                    <Zap className="text-white drop-shadow-lg" size={18} />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-white">Acceso inmediato</h4>
-                    <p className="text-xs text-white/70">Comienza a generar ingresos ahora mismo</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
-                    <Infinity className="text-white drop-shadow-lg" size={18} />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
-                    <p className="text-xs text-white/70">Sin límites de tiempo ni renovaciones</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
-                    <Shield className="text-white drop-shadow-lg" size={18} />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
-                    <p className="text-xs text-white/70">Devolución del 100% si no estás satisfecho</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                    <HeadphonesIcon className="text-white drop-shadow-lg" size={18} />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
-                    <p className="text-xs text-white/70">Asistencia personalizada paso a paso</p>
-                  </div>
-                </div>
-
-
-              </div>
-
-
-
-            </Card>
-          </div>
-
-          {/* Columna izquierda - Métodos de pago */}
-          <div className="w-full lg:w-2/3 order-2 lg:order-1">
+        <div className="max-w-4xl mx-auto">
+          <div className="w-full">
             <div className="mb-4 lg:mb-8">
               <h1 className="text-2xl font-bold mb-2 text-white">Información de pago</h1>
               <p className="text-white/70 text-sm">Todas las transacciones son seguras y encriptadas</p>
@@ -1703,7 +1552,7 @@ const CheckoutContent = () => {
                             })}
                           </div>
                           <p className="text-sm text-white/70 mt-3 md:pl-3">
-                            {isArgentina ? 'Realiza tu pago rápido y seguro en tu moneda' : 'Realice su pago con PayPal o tarjeta en su moneda local'}
+                            Tu transacción es procesada de forma segura en tu divisa local.
                           </p>
                     </div>
                   </div>
@@ -1724,7 +1573,7 @@ const CheckoutContent = () => {
                             <div className="flex flex-col items-end">
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white flex items-center gap-2">
-                                  <span>$ 9.90 USD</span>
+                                  <span>$ 5.90 USD</span>
                                   {countryPrice.countryCode && 
                                    !usdNativeCountries.includes(countryPrice.countryCode) && 
                                    countryPrice.countryCode !== 'VE' && 
@@ -1804,9 +1653,9 @@ const CheckoutContent = () => {
                               <div className="flex items-center gap-2">
                                 <div className="font-bold text-white">
                                   {isArgentina ? (
-                                    <span className="text-lg">AR$ 9.900</span>
+                                    <span className="text-lg">AR$ 5.900</span>
                                   ) : (
-                                    <span>$ 9.90 USD</span>
+                                    <span>$ 5.90 USD</span>
                                   )}
                                 </div>
                                 <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
@@ -2024,7 +1873,7 @@ const CheckoutContent = () => {
                       </div>
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white">$ 9.90 USD</span>
+                          <span className="font-bold text-white">$ 5.90 USD</span>
                           <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
                             Microtareas ilimitadas
                           </span>

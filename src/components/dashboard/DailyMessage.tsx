@@ -133,10 +133,8 @@ export default function DailyMessage() {
         <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
           {/* Avatar de María */}
           <div className="relative flex-shrink-0">
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 transition-all duration-300 ${
-              isRead 
-                ? 'border-gray-400/60 opacity-70' 
-                : 'border-blue-500/70 shadow-lg shadow-blue-500/20'
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden transition-all duration-300 ${
+              isRead ? 'opacity-70' : ''
             }`}>
               <Image
                 src="/images/tutors/soporte-maria.png"
@@ -155,9 +153,7 @@ export default function DailyMessage() {
             <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white truncate">
               Laura Martínez
             </h3>
-            <p className={`text-[10px] sm:text-xs transition-all duration-300 truncate ${
-              isRead ? 'text-gray-400' : 'text-blue-300'
-            }`}>
+            <p className="text-[10px] sm:text-xs transition-all duration-300 truncate text-white">
               Guía de Flasti
             </p>
           </div>
@@ -170,11 +166,7 @@ export default function DailyMessage() {
 
         {/* Mensaje en burbuja de chat */}
         <div className="flex-1 flex flex-col gap-2">
-          <div className={`rounded-2xl rounded-tl-sm p-2.5 sm:p-3 lg:p-4 w-full border transition-all duration-300 ${
-            isRead 
-              ? 'bg-gradient-to-br from-gray-600/30 to-gray-700/30 border-gray-500/40 shadow-inner' 
-              : 'bg-gradient-to-br from-blue-500/15 to-cyan-500/15 border-blue-500/30 shadow-lg shadow-blue-500/10'
-          }`}>
+          <div className="rounded-2xl rounded-tl-sm p-2.5 sm:p-3 lg:p-4 w-full border transition-all duration-300 bg-transparent border-[#686C7C]">
             <p className={`text-xs sm:text-sm lg:text-base leading-relaxed transition-all duration-300 ${
               isRead ? 'text-white/65' : 'text-white/95'
             }`}>
@@ -190,14 +182,16 @@ export default function DailyMessage() {
                 <Button
                   onClick={() => handleResponse('thanks')}
                   size="sm"
-                  className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-white border-0 h-8 text-xs"
+                  className="flex-1 text-white border-0 h-8 text-xs hover:opacity-90"
+                  style={{ backgroundColor: '#636777' }}
                 >
                   😊 Gracias
                 </Button>
                 <Button
                   onClick={() => handleResponse('like')}
                   size="sm"
-                  className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-white border-0 h-8 text-xs"
+                  className="flex-1 text-white border-0 h-8 text-xs hover:opacity-90"
+                  style={{ backgroundColor: '#636777' }}
                 >
                   👍 Me gusta
                 </Button>

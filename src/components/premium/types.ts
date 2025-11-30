@@ -24,6 +24,7 @@ export interface PremiumCardOverlayProps {
   className?: string;
   children: React.ReactNode;
   taskNumber?: number;
+  isReadyToUnlock?: boolean; // Nueva prop: indica si es la primera oferta lista para desbloquear
 }
 
 export interface CardLockRule {

@@ -13,6 +13,10 @@ import PremiumCardOverlay from '@/components/premium/PremiumCardOverlay';
 import { useRouter } from 'next/navigation';
 import { usePremiumStatus } from '@/components/premium/hooks/usePremiumStatus';
 import { useCardLockConfig } from '@/components/premium/hooks/useCardLockConfig';
+import WelcomeBonus from '@/components/dashboard/WelcomeBonus';
+import PremiumTaskModal from '@/components/dashboard/PremiumTaskModal';
+import { supabase } from '@/lib/supabase';
+import CompletedTaskOverlay from './CompletedTaskOverlay';
 
 interface OffersStats {
   total: number;
@@ -51,6 +55,29 @@ interface OffersResponse {
     fallbackCountry: string;
     reason: string;
   } | null;
+}
+
+interface CustomOffer {
+  id: string;
+  title: string;
+  description: string;
+  amount: number;
+  image_url: string;
+  modal_title: string;
+  modal_subtitle: string;
+  audio_url: string;
+  video_url: string;
+  input_placeholder: string;
+  input_label: string;
+  help_text: string;
+  task_type: string;
+  partner_name: string;
+  partner_logo: string;
+  objective: string;
+  block_bg_color: string;
+  image_bg_color: string;
+  is_active: boolean;
+  position: number;
 }
 
 interface OffersListNewProps {
@@ -98,6 +125,13 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
   // Premium system hooks
   const { isPremium, isLoading: premiumLoading } = usePremiumStatus();
+
+  // Estados para ofertas personalizadas
+  const [customOffers, setCustomOffers] = useState<CustomOffer[]>([]);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<CustomOffer | null>(null);
+  const [welcomeBonusClaimed, setWelcomeBonusClaimed] = useState(false);
+  const [completedOfferIds, setCompletedOfferIds] = useState<string[]>([]); // IDs de ofertas completadas
   const { shouldLockCard } = useCardLockConfig();
 
   // Debug premium status
@@ -262,6 +296,51 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       await fetchOffers(false, 'US');
     }
   };
+
+  // Cargar ofertas personalizadas y estado del bono
+  useEffect(() => {
+    const loadCustomOffersAndBonusStatus = async () => {
+      if (!user) return;
+
+      try {
+        // Cargar ofertas personalizadas activas
+        const { data: offers, error: offersError } = await supabase
+          .from('custom_offers')
+          .select('*')
+          .eq('is_active', true)
+          .order('position', { ascending: true });
+
+        if (!offersError && offers) {
+          setCustomOffers(offers);
+        }
+
+        // Cargar estado del bono de bienvenida
+        const { data: profile, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('welcome_bonus_claimed')
+          .eq('user_id', user.id)
+          .single();
+
+        if (!profileError && profile) {
+          setWelcomeBonusClaimed(profile.welcome_bonus_claimed || false);
+        }
+
+        // Cargar ofertas personalizadas completadas por el usuario
+        const { data: completions, error: completionsError } = await supabase
+          .from('custom_offers_completions')
+          .select('offer_id')
+          .eq('user_id', user.id);
+
+        if (!completionsError && completions) {
+          setCompletedOfferIds(completions.map(c => c.offer_id));
+        }
+      } catch (error) {
+        console.error('Error loading custom offers:', error);
+      }
+    };
+
+    loadCustomOffersAndBonusStatus();
+  }, [user]);
 
   // Cargar ofertas al montar el componente: antes detectar país
   useEffect(() => {
@@ -442,8 +521,235 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         </Card>
       ) : (
         <div className="offers-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" style={{ willChange: 'scroll-position', contain: 'layout style' }}>
+          {/* Ofertas personalizadas */}
+          {customOffers.map((customOffer, index) => {
+            // Verificar si esta oferta ya fue completada
+            const isCompleted = completedOfferIds.includes(customOffer.id);
+            
+            // Oferta 1: siempre desbloqueada (a menos que ya esté completada)
+            // Oferta 2: bloqueada hasta que se complete la oferta 1
+            const offer1 = customOffers.find(o => o.position === 1);
+            const isOffer1Completed = offer1 ? completedOfferIds.includes(offer1.id) : false;
+            const isLocked = customOffer.position === 2 && !isOffer1Completed;
+            
+            // Si está completada, mostrar overlay de completado
+            if (isCompleted) {
+              return (
+                <div key={`custom-${customOffer.id}`} className="relative">
+                  <CompletedTaskOverlay 
+                    amount={customOffer.amount}
+                    imageUrl={customOffer.image_url}
+                  >
+                    <Card 
+                      className="relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden h-full"
+                    >
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-lg text-white line-clamp-2 mb-2">
+                              {customOffer.title}
+                            </CardTitle>
+                            <div className="flex items-center space-x-2 mb-2">
+                              <Badge 
+                                variant="secondary" 
+                                className="bg-green-900/50 text-green-300 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
+                              >
+                                <DollarSign className="w-3 h-3 mr-1 flex-shrink-0" />
+                                {customOffer.amount.toFixed(2)} USD
+                              </Badge>
+                            </div>
+                          </div>
+                          {customOffer.image_url && (
+                            <div className="ml-3 flex-shrink-0">
+                              <Image
+                                src={customOffer.image_url}
+                                alt={customOffer.title}
+                                width={60}
+                                height={60}
+                                className="rounded-lg object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent className="pt-0">
+                        <div className="space-y-3">
+                          {customOffer.description && (
+                            <CardDescription className="text-gray-400 line-clamp-2">
+                              {customOffer.description}
+                            </CardDescription>
+                          )}
+                          
+                          <div className="flex items-center text-sm text-gray-500">
+                            <div className="flex items-center space-x-2">
+                              <Tag className="w-4 h-4" />
+                              <span>Dispositivo: todos</span>
+                            </div>
+                          </div>
+                          
+                          <Button
+                            disabled
+                            className="w-full text-white opacity-50 cursor-not-allowed"
+                            style={{ backgroundColor: '#6765F2' }}
+                          >
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Completada
+                          </Button>
+                          
+                          <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
+                            <span className="text-white text-sm font-medium flex items-center justify-center">
+                              <DollarSign className="w-4 h-4 mr-1" />
+                              Gana {customOffer.amount.toFixed(2)} USD
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </CompletedTaskOverlay>
+                </div>
+              );
+            }
+            
+            return (
+              <div key={`custom-${customOffer.id}`} className="relative">
+                <PremiumCardOverlay
+                  isLocked={isLocked}
+                  onUnlockClick={() => setShowWelcomeModal(true)}
+                  taskNumber={customOffer.position}
+                >
+                  <Card 
+                    className={`relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    style={isLocked ? { height: '360px' } : undefined}
+                  >
+                    <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className={`text-lg text-white line-clamp-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
+                            {customOffer.title}
+                          </CardTitle>
+                          <div className={`flex items-center space-x-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
+                            <Badge 
+                              variant="secondary" 
+                              className="bg-green-900/50 text-green-300 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
+                            >
+                              <DollarSign className="w-3 h-3 mr-1 flex-shrink-0" />
+                              {customOffer.amount.toFixed(2)} USD
+                            </Badge>
+                          </div>
+                        </div>
+                        {customOffer.image_url && (
+                          <div className="ml-3 flex-shrink-0">
+                            <Image
+                              src={customOffer.image_url}
+                              alt={customOffer.title}
+                              width={60}
+                              height={60}
+                              className="rounded-lg object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </CardHeader>
+                    
+                    <CardContent className={`pt-0 ${isLocked ? 'flex-1 flex flex-col' : ''}`}>
+                      <div className={isLocked ? 'space-y-4 flex-1 flex flex-col' : 'space-y-3'}>
+                        {customOffer.description && (
+                          <CardDescription className={`text-gray-400 line-clamp-2 ${isLocked ? 'mb-1' : ''}`}>
+                            {customOffer.description}
+                          </CardDescription>
+                        )}
+                        
+                        <div className={`flex items-center text-sm text-gray-500 ${isLocked ? 'mb-1' : ''}`}>
+                          <div className="flex items-center space-x-2">
+                            <Tag className="w-4 h-4" />
+                            <span>Dispositivo: todos</span>
+                          </div>
+                        </div>
+                        
+                        {isLocked ? (
+                          <div className="mt-auto space-y-3">
+                            <Button
+                              onClick={() => {
+                                setSelectedOffer(customOffer);
+                                setShowWelcomeModal(true);
+                              }}
+                              className="w-full text-white hover:opacity-90 transition-opacity"
+                              style={{ backgroundColor: '#6765F2' }}
+                              disabled={isLocked}
+                            >
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              Acceder a la tarea
+                            </Button>
+                            
+                            {/* Botón decorativo motivador */}
+                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
+                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                                <DollarSign className="w-4 h-4 mr-1" />
+                                Gana {customOffer.amount.toFixed(2)} USD
+                              </span>
+                            </div>
+                            
+                            {!user && (
+                              <p className="text-xs text-gray-500 text-center">
+                                Inicia sesión para acceder a las tareas
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            <Button
+                              onClick={() => {
+                                setSelectedOffer(customOffer);
+                                setShowWelcomeModal(true);
+                              }}
+                              className="w-full text-white hover:opacity-90 transition-opacity"
+                              style={{ backgroundColor: '#6765F2' }}
+                            >
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              Acceder a la tarea
+                            </Button>
+                            
+                            {/* Botón decorativo motivador */}
+                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
+                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                                <DollarSign className="w-4 h-4 mr-1" />
+                                Gana {customOffer.amount.toFixed(2)} USD
+                              </span>
+                            </div>
+                            
+                            {!user && (
+                              <p className="text-xs text-gray-500 text-center">
+                                Inicia sesión para acceder a las tareas
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </PremiumCardOverlay>
+              </div>
+            );
+          })}
+
+          {/* Ofertas de CPALead */}
           {offers.map((offer, index) => {
             const isLocked = shouldLockCard(offer, isPremium);
+            
+            // Verificar si las 2 ofertas personalizadas están completadas
+            const allCustomOffersCompleted = customOffers.length === 2 && 
+              customOffers.every(co => completedOfferIds.includes(co.id));
+            
+            // Solo la PRIMERA oferta general (index 0) debe mostrar "lista para desbloquear"
+            // cuando las 2 ofertas personalizadas estén completadas
+            const isReadyToUnlock = isLocked && index === 0 && allCustomOffersCompleted;
             
             // Debug lock status
             if (index < 3) {
@@ -451,7 +757,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                 isLocked,
                 isPremium,
                 amount: offer.amount,
-                offerId: offer.id
+                offerId: offer.id,
+                isReadyToUnlock
               });
             }
             
@@ -461,6 +768,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   isLocked={isLocked}
                   onUnlockClick={() => router.push('/dashboard/premium')}
                   taskNumber={index + 1}
+                  isReadyToUnlock={isReadyToUnlock}
                 >
                   <Card 
                     className={`relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
@@ -601,6 +909,39 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
             );
           })}
         </div>
+      )}
+
+      {/* Modal Premium para ofertas personalizadas */}
+      {showWelcomeModal && user && selectedOffer && (
+        <PremiumTaskModal
+          userId={user.id}
+          customOfferId={selectedOffer.id}
+          modalTitle={selectedOffer.modal_title}
+          modalSubtitle={selectedOffer.modal_subtitle}
+          audioUrl={selectedOffer.audio_url}
+          videoUrl={selectedOffer.video_url}
+          inputPlaceholder={selectedOffer.input_placeholder}
+          inputLabel={selectedOffer.input_label}
+          helpText={selectedOffer.help_text}
+          amount={selectedOffer.amount}
+          imageUrl={selectedOffer.image_url}
+          taskType={selectedOffer.task_type}
+          partnerName={selectedOffer.partner_name}
+          partnerLogo={selectedOffer.partner_logo}
+          objective={selectedOffer.objective}
+          blockBgColor={selectedOffer.block_bg_color}
+          imageBgColor={selectedOffer.image_bg_color}
+          userCountry={userCountry}
+          onClose={() => {
+            setShowWelcomeModal(false);
+            setSelectedOffer(null);
+          }}
+          onComplete={() => {
+            setShowWelcomeModal(false);
+            setSelectedOffer(null);
+            window.location.reload();
+          }}
+        />
       )}
     </div>
   );

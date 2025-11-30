@@ -16,7 +16,6 @@ const sidebarItems = [
   { name: "Perfil", icon: <FiUser />, href: "/dashboard/perfil", tooltip: "Tu perfil" },
   { name: "Recompensas", icon: <FiAward />, href: "/dashboard/rewards-history", tooltip: "Historial de recompensas" },
   { name: "Retiros", icon: <FiDollarSign />, href: "/dashboard/withdrawals", tooltip: "Solicitar retiro" },
-  { name: "Notificaciones", icon: <FiBell />, href: "/dashboard/notifications", tooltip: "Tus notificaciones" },
   { name: "Soporte", icon: <FiMessageCircle />, href: "/dashboard/support", tooltip: "Soporte y ayuda" },
   { name: "Salir", icon: <FiLogOut />, href: "/logout", tooltip: "Cerrar sesión", isLogout: true },
 ];
