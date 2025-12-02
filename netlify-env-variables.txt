@@ -1,8 +1,8 @@
+# Variables de entorno para Netlify
+# Copia y pega estas variables en: Site configuration > Environment variables
+
 # Hotmart Configuration
 HOTMART_PRODUCT_ID=4962378
-HOTMART_PRIVATE_KEY=
-HOTMART_ACCESS_TOKEN=
-HOTMART_WEBHOOK_SECRET=
 HOTMART_WEBHOOK_URL=https://flasti.com/api/hotmart/webhook
 
 # Supabase Configuration
@@ -11,8 +11,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3ZnZmdmtocWZ0YnZsZHZqbnJrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzQxNzMwOCwiZXhwIjoyMDU4OTkzMzA4fQ.Lln4dMTbj8ds9nGhdt9FOCl6bbwrv1-LmXo_hbpSAEw
 
 # Environment
-NODE_ENV=development
+NODE_ENV=production
 
+# Facebook Pixel
 FACEBOOK_PIXEL_ID=738700458549300
 FACEBOOK_CONVERSIONS_API_TOKEN=EAAXCRjmAg1cBO6RmGJTmOvRzBQUYpxC8evQQbwuhJhS18rlfW6xQ9pwlSCZCMLJIPJFAlhGhaZCYiwxPpgFgrQtF9wm0yTcJTLFUFWuo8L2lp6iaa36IghquryXfXqSwyBQsF39mDp4AlUs9Qe9wAqANZB0eEclXz226wj0ATKwBTYYN96M1LLJrf4C0OeZAjAZDZD
 
@@ -21,11 +22,11 @@ PAYPAL_CLIENT_ID=Aa2g70kJsc_YkhVb6tRb-rI-Ot46EY1Jlt6fmVQeKmkUcZESdOpCHmjUEq7kg9v
 PAYPAL_SECRET=EL666XHP-b-u-h9WSCI68PEFSmCkt-bpoq6JPSl1Gbhs7Di_9mrgVMkROvUdwe3QOUckKHAZcgykKf9l
 PAYPAL_WEBHOOK_ID=237556313S938743N
 
-# Configuración de Sincronización Automática de Precios Hotmart
+# Cron Secret
 CRON_SECRET_KEY=flasti_hotmart_sync_2024_secure_key_9d8f7a6b5c4e3d2a1
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL=https://flasti.com
 
-# SMTP Configuration (Gmail)
+# SMTP Configuration (Gmail) - IMPORTANTE PARA CORREOS
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=flasti.business@gmail.com

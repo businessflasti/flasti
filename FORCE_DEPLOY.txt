@@ -1,2 +1,0 @@
-Force deploy timestamp: Mon Oct 6 17:58:54 -03 2025
-This file forces Netlify to rebuild with new Mercado Pago credentials.
