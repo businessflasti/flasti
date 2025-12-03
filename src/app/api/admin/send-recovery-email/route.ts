@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
+import juice from 'juice';
 
 export async function POST(req: NextRequest) {
   try {
@@ -85,6 +86,16 @@ export async function POST(req: NextRequest) {
     let htmlContent = template.html_content;
     htmlContent = htmlContent.replace(/\{\{user_name\}\}/g, user_name || 'Usuario');
     htmlContent = htmlContent.replace(/\{\{user_email\}\}/g, user_email);
+
+    // Convertir estilos CSS a inline para compatibilidad con clientes de correo
+    console.log('🎨 Convirtiendo estilos CSS a inline...');
+    try {
+      htmlContent = juice(htmlContent);
+      console.log('✅ Estilos convertidos a inline');
+    } catch (juiceError) {
+      console.warn('⚠️  Error convirtiendo estilos, usando HTML original:', juiceError);
+      // Continuar con el HTML original si falla la conversión
+    }
 
     // Configurar transporter de nodemailer
     console.log('📮 Configurando transporter SMTP...');
