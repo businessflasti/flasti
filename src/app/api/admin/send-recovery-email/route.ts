@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
       // Continuar con el HTML original si falla la conversión
     }
 
-    // Configurar transporter de nodemailer
+    // Configurar transporter de nodemailer con opciones anti-spam
     console.log('📮 Configurando transporter SMTP...');
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -107,6 +107,14 @@ export async function POST(req: NextRequest) {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      // Opciones adicionales para evitar spam
+      tls: {
+        rejectUnauthorized: false,
+        minVersion: 'TLSv1.2'
+      },
+      pool: true,
+      maxConnections: 5,
+      maxMessages: 100,
     });
 
     // Verificar conexión SMTP
@@ -121,7 +129,7 @@ export async function POST(req: NextRequest) {
       }, { status: 500 });
     }
 
-    // Enviar correo
+    // Enviar correo con headers anti-spam
     console.log('📧 Enviando correo a:', user_email);
     try {
       const info = await transporter.sendMail({
@@ -129,6 +137,17 @@ export async function POST(req: NextRequest) {
         to: user_email,
         subject: template.subject,
         html: htmlContent,
+        // Headers adicionales para evitar spam
+        headers: {
+          'X-Priority': '3',
+          'X-Mailer': 'Flasti Mailer',
+          'Importance': 'Normal',
+          'List-Unsubscribe': `<https://flasti.com/unsubscribe>`,
+          'X-Entity-Ref-ID': `flasti-${Date.now()}`,
+        },
+        // Configuración de encoding
+        encoding: 'utf-8',
+        textEncoding: 'base64',
       });
       console.log('✅ Correo enviado:', info.messageId);
     } catch (sendError) {
