@@ -42,7 +42,7 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
 
       <div className="w-full max-w-md relative z-10" style={{ contain: 'layout style' }}>
         {/* Logo centrado */}

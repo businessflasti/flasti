@@ -418,7 +418,7 @@ export default function DashboardPage() {
     <div className="min-h-screen overscroll-none relative overflow-x-hidden bg-[#0A0A0A]">
       
       {/* Container principal con mejor padding y max-width */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10" style={{ contain: 'layout style' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10">
         
 
 

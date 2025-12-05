@@ -139,11 +139,7 @@ export default function RegisterPage() {
           </div>
 
         <div 
-          className="bg-[#101011] backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden transition-opacity duration-300"
-          style={{
-            transform: 'translate3d(0, 0, 0)',
-            contain: 'layout style paint'
-          }}
+          className="bg-[#101011] rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden"
         >
           
           <div className="relative z-10">

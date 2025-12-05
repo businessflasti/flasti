@@ -1,44 +1,23 @@
 /* Animaciones optimizadas para mejor rendimiento */
+/* NOTA: Simplificado - removido will-change excesivo que causa problemas en Safari */
 
-/* Usar propiedades que aprovechan la aceleración por hardware */
-.hardware-accelerated {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-  will-change: transform, opacity;
-}
-
-/* Animaciones de entrada optimizadas */
+/* Animaciones de entrada */
 .animate-entry {
   opacity: 0;
   transform: translateY(20px);
   animation: optimizedFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity;
 }
 
-.animate-entry-delay-1 {
-  animation-delay: 0.1s;
-}
+.animate-entry-delay-1 { animation-delay: 0.1s; }
+.animate-entry-delay-2 { animation-delay: 0.2s; }
+.animate-entry-delay-3 { animation-delay: 0.3s; }
+.animate-entry-delay-4 { animation-delay: 0.4s; }
 
-.animate-entry-delay-2 {
-  animation-delay: 0.2s;
-}
-
-.animate-entry-delay-3 {
-  animation-delay: 0.3s;
-}
-
-.animate-entry-delay-4 {
-  animation-delay: 0.4s;
-}
-
-/* Animación optimizada para elementos que aparecen al hacer scroll */
+/* Animación para elementos que aparecen al hacer scroll */
 .animate-on-visible {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .animate-visible {
@@ -46,121 +25,19 @@
   transform: translateY(0);
 }
 
-/* Animaciones de pulso optimizadas */
-.animate-pulse-optimized {
-  animation: optimizedPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  will-change: opacity;
-}
-
-.animate-ping-optimized {
-  animation: optimizedPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  will-change: transform, opacity;
-}
-
-/* Animación de gradiente optimizada */
-.animate-gradient-optimized {
-  background-size: 200% 200%;
-  animation: optimizedGradientShift 8s ease infinite;
-  will-change: background-position;
-}
-
-/* Animación de flotación optimizada */
-.animate-float-optimized {
-  animation: optimizedFloat 4s ease-in-out infinite;
-  will-change: transform;
-}
-
-/* Definiciones de animaciones optimizadas */
+/* Definiciones de animaciones */
 @keyframes optimizedFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes optimizedPulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes optimizedPing {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-@keyframes optimizedGradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes optimizedFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Optimizaciones para dispositivos de bajo rendimiento */
+/* Desactivar animaciones para usuarios que lo prefieran */
 @media (prefers-reduced-motion: reduce) {
   .animate-entry,
-  .animate-on-visible,
-  .animate-pulse-optimized,
-  .animate-ping-optimized,
-  .animate-gradient-optimized,
-  .animate-float-optimized {
+  .animate-on-visible {
     animation: none !important;
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
-  }
-}
-
-/* Optimizaciones para dispositivos móviles */
-@media (max-width: 768px) {
-  .animate-entry {
-    animation-duration: 0.4s;
-  }
-  
-  .animate-on-visible {
-    transition-duration: 0.4s;
-  }
-  
-  .animate-pulse-optimized {
-    animation-duration: 3s;
-  }
-  
-  .animate-ping-optimized {
-    animation-duration: 3s;
-  }
-  
-  .animate-gradient-optimized {
-    animation-duration: 12s;
-  }
-  
-  .animate-float-optimized {
-    animation-duration: 6s;
   }
 }

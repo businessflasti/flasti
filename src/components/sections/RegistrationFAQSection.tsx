@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Award, Briefcase, DollarSign, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+
 
 const getFaqs = (t: any) => [
 	{
@@ -53,33 +54,10 @@ const RegistrationFAQSection = React.memo(() => {
 					</p>
 				</div>
 
-				<div 
-					className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto"
-					style={{
-						contain: 'layout style',
-						transform: 'translate3d(0, 0, 0)'
-					}}
-				>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
 					{getFaqs(t).map((faq, index) => (
-						<motion.div
-							key={index}
-							initial={{ opacity: 0, y: 20 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.5, delay: index * 0.1 }}
-							className="group"
-							style={{
-								transform: 'translate3d(0, 0, 0)',
-								backfaceVisibility: 'hidden'
-							}}
-						>
-							<div 
-								className="bg-[#121212] overflow-hidden relative rounded-3xl transition-opacity duration-300 shadow-2xl"
-								style={{
-									transform: 'translate3d(0, 0, 0)',
-									contain: 'layout style paint'
-								}}
-							>
+						<div key={index} className="group">
+							<div className="bg-[#121212] overflow-hidden relative rounded-3xl shadow-2xl">
 								
 								<button
 									className="w-full py-5 px-4 flex items-center justify-between text-left relative z-10"
@@ -124,7 +102,7 @@ const RegistrationFAQSection = React.memo(() => {
 									)}
 								</AnimatePresence>
 							</div>
-						</motion.div>
+						</div>
 					))}
 				</div>
 			</div>

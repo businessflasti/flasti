@@ -4,7 +4,7 @@ import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import ProfileCard from "@/components/ui/profile-card";
 import { DollarSign, GraduationCap, Home, Clock } from "lucide-react";
-import { motion } from "motion/react";
+
 
 const TeamSection = React.memo(() => {
   useLanguage();
@@ -16,14 +16,8 @@ const TeamSection = React.memo(() => {
       buttonText1: "Rentable",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500"
-            initial={{ backgroundPosition: "0% 50%" }}
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            style={{ backgroundSize: "200% 200%" }}
-          />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10 transition-transform duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500" />
+          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
             <DollarSign className="w-10 h-10 text-yellow-400" />
           </div>
         </div>
@@ -36,14 +30,8 @@ const TeamSection = React.memo(() => {
       buttonText1: "Accesible",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-500"
-            initial={{ backgroundPosition: "0% 50%" }}
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            style={{ backgroundSize: "200% 200%" }}
-          />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10 transition-transform duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-500" />
+          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
             <GraduationCap className="w-10 h-10 text-blue-400" />
           </div>
         </div>
@@ -56,14 +44,8 @@ const TeamSection = React.memo(() => {
       buttonText1: "Cómodo",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500"
-            initial={{ backgroundPosition: "0% 50%" }}
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            style={{ backgroundSize: "200% 200%" }}
-          />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10 transition-transform duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500" />
+          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
             <Home className="w-10 h-10 text-green-400" />
           </div>
         </div>
@@ -76,14 +58,8 @@ const TeamSection = React.memo(() => {
       buttonText1: "Flexible",
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-purple-400 via-violet-500 to-fuchsia-500"
-            initial={{ backgroundPosition: "0% 50%" }}
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            style={{ backgroundSize: "200% 200%" }}
-          />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10 transition-transform duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-violet-500 to-fuchsia-500" />
+          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
             <Clock className="w-10 h-10 text-purple-400" />
           </div>
         </div>
@@ -106,30 +82,9 @@ const TeamSection = React.memo(() => {
         </div>
 
         {/* Grid de tarjetas optimizado */}
-        <div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
-          style={{
-            contain: 'layout style',
-            transform: 'translate3d(0, 0, 0)'
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {teamMembers.map((member, index) => (
-            <motion.div 
-              key={index} 
-              className="flex justify-center"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.1,
-                ease: "easeOut"
-              }}
-              style={{
-                transform: 'translate3d(0, 0, 0)',
-                backfaceVisibility: 'hidden'
-              }}
-            >
+            <div key={index} className="flex justify-center">
               <ProfileCard
                 name={member.name}
                 role={member.role}
@@ -137,7 +92,7 @@ const TeamSection = React.memo(() => {
                 icon={member.icon}
                 imageUrl={member.imageUrl}
               />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

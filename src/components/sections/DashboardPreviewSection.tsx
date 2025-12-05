@@ -8,21 +8,9 @@ const DashboardPreviewSection = React.memo(() => {
   const { t } = useLanguage();
   
   return (
-    <section 
-      className="py-20 relative overflow-hidden bg-[#0A0A0A]"
-      style={{
-        transform: 'translate3d(0, 0, 0)',
-        contain: 'layout style'
-      }}
-    >
+    <section className="py-20 relative overflow-hidden bg-[#0A0A0A]">
 
-      <div 
-        className="container-custom relative z-10"
-        style={{
-          transform: 'translate3d(0, 0, 0)',
-          backfaceVisibility: 'hidden'
-        }}
-      >
+      <div className="container-custom relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
             {t('ingresaMundo')}
@@ -31,13 +19,7 @@ const DashboardPreviewSection = React.memo(() => {
             {t('accedeArea')}
           </p>
         </div>
-        <div 
-          className="w-full"
-          style={{
-            transform: 'translate3d(0, 0, 0)',
-            contain: 'layout style paint'
-          }}
-        >
+        <div className="w-full">
           <FlastiBentoGrid />
         </div>
       </div>

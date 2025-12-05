@@ -178,12 +178,9 @@
     @apply w-full max-w-[1200px] mx-auto px-4;
   }
 
-  /* Clase para aplicar aceleración por hardware */
+  /* Clase para scroll suave en móviles */
   .hardware-accelerated {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    will-change: transform;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Optimizaciones para móviles */

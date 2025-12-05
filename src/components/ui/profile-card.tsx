@@ -170,11 +170,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           align-items: center;
           border-radius: 1.5rem;
           background: #121212;
-          transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-          transform: translate3d(0, 0, 0);
-          backface-visibility: hidden;
-          contain: layout style paint;
         }
 
         .card__img {

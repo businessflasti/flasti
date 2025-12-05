@@ -59,11 +59,9 @@
     justify-content: center;
   }
 
-  /* Animaciones más suaves */
+  /* Scroll suave en móviles */
   .hardware-accelerated {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Ajustes para el menú lateral */

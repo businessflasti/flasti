@@ -273,7 +273,7 @@ export default function PerfilPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] p-4 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
+    <div className="min-h-screen bg-[#0A0A0A] p-4 relative overflow-hidden">
       
       <div className="relative z-10">
       <div className="max-w-4xl mx-auto" style={{ contain: 'layout style' }}>

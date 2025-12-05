@@ -22,10 +22,7 @@ function StudiovaHeroSection() {
             <section 
                 className="relative flex items-start text-white h-full min-h-[70vh] pt-8 overflow-hidden"
                 style={{
-                    backgroundColor: '#0A0A0A',
-                    transform: 'translate3d(0, 0, 0)',
-                    contain: 'layout style paint',
-                    backfaceVisibility: 'hidden'
+                    backgroundColor: '#0A0A0A'
                 }}
             >
                 
@@ -65,20 +62,8 @@ function StudiovaHeroSection() {
                     <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-yellow-500/5 rounded-full blur-3xl"></div>
                 </div>
 
-                <div 
-                    className="relative z-10 container"
-                    style={{
-                        transform: 'translate3d(0, 0, 0)',
-                        backfaceVisibility: 'hidden'
-                    }}
-                >
-                    <div 
-                        className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start min-h-[60vh] py-6 lg:py-12"
-                        style={{
-                            contain: 'layout style',
-                            transform: 'translate3d(0, 0, 0)'
-                        }}
-                    >
+                <div className="relative z-10 container">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start min-h-[60vh] py-6 lg:py-12">
                         
                         {/* Columna izquierda */}
                         <div className="flex flex-col gap-10 text-center lg:text-left">
@@ -111,21 +96,9 @@ function StudiovaHeroSection() {
                             </div>
 
                             {/* Tarjetas móvil */}
-                            <div 
-                              className="lg:hidden relative pt-8 h-80"
-                              style={{
-                                transform: 'translate3d(0, 0, 0)',
-                                contain: 'layout style'
-                              }}
-                            >
+                            <div className="lg:hidden relative pt-8 h-80">
                                 {/* Testimonial 1 - Móvil con efecto */}
-                                <div 
-                                  className="absolute top-0 left-4 bg-white rounded-3xl p-4 max-w-xs shadow-2xl animate-float-card"
-                                  style={{
-                                    transform: 'translate3d(0, 0, 0)',
-                                    backfaceVisibility: 'hidden'
-                                  }}
-                                >
+                                <div className="absolute top-0 left-4 bg-white rounded-3xl p-4 max-w-xs shadow-2xl animate-float-card">
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="relative">
                                             <img 
@@ -160,11 +133,7 @@ function StudiovaHeroSection() {
                                 {/* Testimonial 2 - Móvil con efecto */}
                                 <div 
                                   className="absolute top-20 right-4 bg-gradient-to-br from-[#0A0A0A] to-[#0A0A0A] rounded-3xl p-4 max-w-xs shadow-2xl animate-float-card" 
-                                  style={{ 
-                                    animationDelay: '0.5s',
-                                    transform: 'translate3d(0, 0, 0)',
-                                    backfaceVisibility: 'hidden'
-                                  }}
+                                  style={{ animationDelay: '0.5s' }}
                                 >
                                     <div className="flex items-start gap-3 mb-3">
                                         <div className="relative w-10 h-10 rounded-lg shadow-lg flex items-center justify-center" style={{ backgroundColor: '#3C66CE' }}>
@@ -199,12 +168,8 @@ function StudiovaHeroSection() {
 
                                 {/* Estadística mejorada - Móvil */}
                                 <div 
-                                  className="absolute top-36 right-6 bg-gradient-to-br from-[#FAD74A] to-[#f5c71a] backdrop-blur-2xl rounded-3xl p-3 shadow-xl animate-float-card" 
-                                  style={{ 
-                                    animationDelay: '1s',
-                                    transform: 'translate3d(0, 0, 0)',
-                                    backfaceVisibility: 'hidden'
-                                  }}
+                                  className="absolute top-36 right-6 bg-gradient-to-br from-[#FAD74A] to-[#f5c71a] rounded-3xl p-3 shadow-xl animate-float-card" 
+                                  style={{ animationDelay: '1s' }}
                                 >
                                     <div className="text-center relative">
                                         <p className="text-lg font-bold text-black">+100,000</p>
@@ -230,21 +195,9 @@ function StudiovaHeroSection() {
                         </div>
 
                         {/* Columna derecha - Desktop */}
-                        <div 
-                          className="hidden lg:block relative h-full"
-                          style={{
-                            transform: 'translate3d(0, 0, 0)',
-                            contain: 'layout style'
-                          }}
-                        >
+                        <div className="hidden lg:block relative h-full">
                             {/* Testimonial 1 - Desktop mejorado */}
-                            <div 
-                              className="absolute top-16 right-12 bg-white rounded-3xl p-6 max-w-sm shadow-2xl animate-float-card transition-opacity duration-300"
-                              style={{
-                                transform: 'translate3d(0, 0, 0)',
-                                backfaceVisibility: 'hidden'
-                              }}
-                            >
+                            <div className="absolute top-16 right-12 bg-white rounded-3xl p-6 max-w-sm shadow-2xl animate-float-card">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="relative">
                                         <img 
@@ -278,12 +231,8 @@ function StudiovaHeroSection() {
 
                             {/* Testimonial 2 - Desktop mejorado */}
                             <div 
-                              className="absolute top-48 right-40 bg-gradient-to-br from-[#0A0A0A] to-[#0A0A0A] rounded-3xl p-6 max-w-sm shadow-2xl animate-float-card transition-opacity duration-300" 
-                              style={{ 
-                                animationDelay: '0.5s',
-                                transform: 'translate3d(0, 0, 0)',
-                                backfaceVisibility: 'hidden'
-                              }}
+                              className="absolute top-48 right-40 bg-gradient-to-br from-[#0A0A0A] to-[#0A0A0A] rounded-3xl p-6 max-w-sm shadow-2xl animate-float-card" 
+                              style={{ animationDelay: '0.5s' }}
                             >
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="relative w-12 h-12 rounded-xl shadow-lg flex items-center justify-center p-0.5" style={{ backgroundColor: '#3C66CE' }}>
@@ -318,12 +267,8 @@ function StudiovaHeroSection() {
 
                             {/* Estadística mejorada - Desktop */}
                             <div 
-                              className="absolute bottom-20 right-8 bg-gradient-to-br from-[#FAD74A] to-[#f5c71a] backdrop-blur-2xl border-2 border-yellow-500/40 rounded-3xl p-4 shadow-xl animate-float-card transition-opacity duration-300" 
-                              style={{ 
-                                animationDelay: '1s',
-                                transform: 'translate3d(0, 0, 0)',
-                                backfaceVisibility: 'hidden'
-                              }}
+                              className="absolute bottom-20 right-8 bg-gradient-to-br from-[#FAD74A] to-[#f5c71a] border-2 border-yellow-500/40 rounded-3xl p-4 shadow-xl animate-float-card" 
+                              style={{ animationDelay: '1s' }}
                             >
                                 <div className="text-center relative">
                                     <p className="text-2xl font-bold text-black">+100,000</p>

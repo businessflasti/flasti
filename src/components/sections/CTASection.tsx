@@ -2,7 +2,7 @@
 
 import { Shield, Lightbulb, Lock, TrendingUp, Target, Rocket } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion } from "framer-motion";
+
 
 const CTASection = () => {
   const { language, t } = useLanguage();
@@ -34,44 +34,15 @@ const CTASection = () => {
               </p>
             </div>
             
-            <div 
-              className="bg-[#121212] p-6 min-h-[28rem] md:min-h-[40rem] rounded-3xl shadow-2xl transition-opacity duration-300"
-              style={{
-                transform: 'translate3d(0, 0, 0)',
-                contain: 'layout style paint'
-              }}
-            >
+            <div className="bg-[#121212] p-6 min-h-[28rem] md:min-h-[40rem] rounded-3xl shadow-2xl">
               <p className="text-white/60 text-sm md:text-base mb-6 text-center leading-relaxed">
                 {t('ctaDescription')}
               </p>
 
-              <div 
-                className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg mx-auto"
-                style={{
-                  contain: 'layout style',
-                  transform: 'translate3d(0, 0, 0)'
-                }}
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg mx-auto">
                 {values.map((value, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="group"
-                    style={{
-                      transform: 'translate3d(0, 0, 0)',
-                      backfaceVisibility: 'hidden'
-                    }}
-                  >
-                    <div 
-                      className="bg-gradient-to-br from-white to-gray-50 p-5 md:p-6 text-center flex flex-col items-center justify-center rounded-3xl transition-opacity duration-300 shadow-lg"
-                      style={{
-                        transform: 'translate3d(0, 0, 0)',
-                        contain: 'layout style paint'
-                      }}
-                    >
+                  <div key={index} className="group">
+                    <div className="bg-gradient-to-br from-white to-gray-50 p-5 md:p-6 text-center flex flex-col items-center justify-center rounded-3xl shadow-lg">
                       <div className={`w-10 h-10 bg-gradient-to-br ${value.color} flex items-center justify-center mb-3 rounded-2xl shadow-lg transition-transform duration-300`}>
                         <value.icon className="text-white h-5 w-5" />
                       </div>
@@ -82,7 +53,7 @@ const CTASection = () => {
                         {value.desc}
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>

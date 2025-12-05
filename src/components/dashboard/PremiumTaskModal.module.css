@@ -10,8 +10,6 @@
   padding: 2rem 1rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
 }
 
 @media (min-width: 1024px) {
@@ -31,9 +29,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  contain: layout style paint;
 }
 
 .modalWide {
@@ -237,7 +232,6 @@
   justify-content: flex-start;
   gap: 0.625rem;
   height: 90px;
-  contain: layout style paint;
 }
 
 @media (min-width: 1024px) {

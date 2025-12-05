@@ -2,7 +2,7 @@
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+
 
 const howItWorksImages = [
   "/images/principal/paso1-web.webp",
@@ -51,14 +51,7 @@ const HowItWorksSection = React.memo(() => {
   ];
 
   return (
-    <section 
-      className="py-24 relative overflow-hidden bg-[#0A0A0A]"
-      style={{
-        transform: 'translate3d(0, 0, 0)',
-        contain: 'layout style paint',
-        backfaceVisibility: 'hidden'
-      }}
-    >
+    <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
@@ -70,40 +63,15 @@ const HowItWorksSection = React.memo(() => {
           </p>
         </div>
 
-        <div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto"
-          style={{
-            contain: 'layout style',
-            transform: 'translate3d(0, 0, 0)'
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
           {steps.map((step, index) => (
-            <motion.div
+            <div
               key={index}
               className={`relative ${step.number === 1 ? 'cursor-pointer' : ''}`}
               onClick={() => handleCardClick(step.number)}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.15,
-                ease: "easeOut"
-              }}
-              style={{
-                transform: 'translate3d(0, 0, 0)',
-                backfaceVisibility: 'hidden',
-                willChange: 'transform'
-              }}
             >
               {/* Tarjeta principal optimizada */}
-              <div 
-                className="relative bg-[#121212] rounded-3xl overflow-hidden transition-opacity duration-300 shadow-2xl"
-                style={{
-                  transform: 'translate3d(0, 0, 0)',
-                  contain: 'layout style paint'
-                }}
-              >
+              <div className="relative bg-[#121212] rounded-3xl overflow-hidden shadow-2xl">
                 
                 {/* Número del paso - Esquina superior izquierda */}
                 <div className="absolute top-4 left-4 z-20">
@@ -148,7 +116,7 @@ const HowItWorksSection = React.memo(() => {
               {index < steps.length - 1 && (
                 <div className="hidden md:block absolute top-1/2 -right-5 w-10 h-0.5 bg-gradient-to-r from-[#6E40FF]/40 to-transparent z-0"></div>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -101,14 +101,7 @@ const CountriesSection = () => {
   };
 
   return (
-    <section 
-      className="py-4 bg-[#101011] overflow-hidden"
-      style={{
-        transform: 'translate3d(0, 0, 0)',
-        contain: 'layout style paint',
-        backfaceVisibility: 'hidden'
-      }}
-    >
+    <section className="py-4 bg-[#101011] overflow-hidden">
       <style jsx>{`
         @keyframes scroll-left-smooth {
           0% {
@@ -131,12 +124,8 @@ const CountriesSection = () => {
         .scroll-container {
           display: flex;
           width: 400%;
-          will-change: transform;
-          backface-visibility: hidden;
-          perspective: 1000px;
           animation: ${isLowPerformance ? 'scroll-left-performance' : 'scroll-left-smooth'} 
                      ${isLowPerformance ? '120s' : '90s'} linear infinite;
-          transform: translateZ(0);
           animation-fill-mode: none;
         }
         
@@ -168,7 +157,6 @@ const CountriesSection = () => {
         }
         
         .section-container {
-          contain: layout style paint;
           isolation: isolate;
         }
         

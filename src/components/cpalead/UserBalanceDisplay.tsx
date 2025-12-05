@@ -173,7 +173,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
     <TooltipProvider>
       <Card 
         className="relative border-0 h-full flex flex-col rounded-3xl overflow-hidden bg-[#585C6C]"
-        style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)' }}
+
       >
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">

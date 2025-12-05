@@ -1,119 +1,30 @@
 /* Optimizaciones de rendimiento para scroll suave en Landing Page */
-
-/* Aceleración GPU para elementos principales */
-.landing-container,
-main,
-section {
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Optimizar cards y componentes para scroll */
-.card,
-.section-card,
-[class*="Card"] {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  contain: layout style paint;
-}
-
-/* Optimizar imágenes y videos */
-img, 
-video,
-[data-next-image] {
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
-}
+/* NOTA: Reducido para evitar problemas en Safari y móviles */
 
 /* Smooth scrolling nativo */
 html {
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimizar secciones principales */
+section {
+  contain: layout style;
+}
+
+/* Optimizar cards - solo contain, sin will-change excesivo */
+.card,
+.section-card {
+  contain: layout style paint;
 }
 
 /* Optimizar animaciones durante scroll */
-@media (prefers-reduced-motion: no-preference) {
-  * {
-    scroll-behavior: smooth;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-}
-
-/* Reducir repaints en elementos con backdrop-filter */
-[class*="backdrop-blur"],
-[style*="backdrop-filter"] {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-}
-
-/* Optimizar secciones */
-section {
-  contain: layout style;
-  will-change: scroll-position;
-}
-
-/* Optimizar transiciones para 60fps */
-.transition-all,
-[class*="transition"] {
-  transition-property: transform, opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Forzar aceleración GPU en elementos animados */
-.group:hover,
-[class*="hover"] {
-  transform: translate3d(0, 0, 0);
-}
-
-/* Optimizar hero section */
-[class*="hero"],
-[class*="Hero"] {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-}
-
-/* Optimizar testimonials y grids */
-[class*="grid"],
-[class*="testimonial"] {
-  contain: layout style;
-  transform: translate3d(0, 0, 0);
-}
-
-/* Optimizar efectos de parallax si existen */
-[data-parallax],
-[class*="parallax"] {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-}
-
-/* Optimizar animaciones de entrada */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Optimizar efectos glassmorphism */
-[class*="glass"],
-[style*="backdrop-filter: blur"] {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-}
-
-/* Prevenir layout shift en imágenes */
-img {
-  content-visibility: auto;
-}
-
-/* Optimizar sticky elements */
-[class*="sticky"],
-.sticky {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
 }

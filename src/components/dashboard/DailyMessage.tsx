@@ -121,7 +121,7 @@ export default function DailyMessage() {
   return (
     <Card 
       className="relative border-0 h-full overflow-hidden rounded-3xl bg-[#585C6C]"
-      style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)' }}
+
     >
       
       <CardContent className="p-3 sm:p-4 lg:p-6 flex flex-col h-full relative z-10">

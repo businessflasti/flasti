@@ -117,7 +117,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
+    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
       {/* Widget de chat para soporte */}
       <TawkToWidget showBubble={true} />
       
