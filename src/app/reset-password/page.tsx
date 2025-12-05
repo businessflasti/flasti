@@ -42,9 +42,9 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-md relative z-10" style={{ contain: 'layout style' }}>
         {/* Logo centrado */}
         <div className="flex justify-center mb-8">
           <Image 
@@ -63,11 +63,7 @@ export default function ResetPasswordPage() {
           <p className="text-[#8b949e]">Introduce tu correo electrónico y te enviaremos un enlace</p>
         </div>
 
-        <div className="bg-[#101011] backdrop-blur-xl rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden group transition-all duration-300">
-          {/* Efecto neón sutil en hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#6E40FF]/5 via-transparent to-[#2DE2E6]/5 rounded-2xl"></div>
-          </div>
+        <div className="bg-[#101011] rounded-2xl p-8 border-0 relative overflow-hidden" style={{ contain: 'layout style paint' }}>
           
           <div className="relative z-10">
           {isSent ? (

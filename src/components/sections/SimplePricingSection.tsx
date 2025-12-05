@@ -69,9 +69,6 @@ const SimplePricingSection = React.memo(() => {
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
           <Card className="bg-[#1a1a1a] overflow-hidden relative h-full rounded-3xl">
-            {/* Animación eliminada: este bloque ya no tiene efecto motion ni animación de entrada */}
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-            {/* Efecto hover eliminado */}
 
             <div className="absolute right-5 top-5">
               <div className="bg-[#16a34a] text-white text-xs font-bold py-1 px-3 rounded-3xl flex items-center gap-1">
@@ -190,7 +187,7 @@ const SimplePricingSection = React.memo(() => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                       <Zap className="text-[#101010]" size={16} />
                     </div>
                     <div>
@@ -200,7 +197,7 @@ const SimplePricingSection = React.memo(() => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                       <Infinity className="text-[#101010]" size={16} />
                     </div>
                     <div>
@@ -210,7 +207,7 @@ const SimplePricingSection = React.memo(() => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                       <Shield className="text-[#101010]" size={16} />
                     </div>
                     <div>
@@ -222,7 +219,7 @@ const SimplePricingSection = React.memo(() => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                       <HeadphonesIcon className="text-[#101010]" size={16} />
                     </div>
                     <div>
@@ -232,7 +229,7 @@ const SimplePricingSection = React.memo(() => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                       <Sparkles className="text-[#101010]" size={16} />
                     </div>
                     <div>
@@ -242,7 +239,7 @@ const SimplePricingSection = React.memo(() => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                       <Gift className="text-[#101010]" size={16} />
                     </div>
                     <div>
@@ -288,7 +285,7 @@ const SimplePricingSection = React.memo(() => {
                     onClick={() => setIsLoginOpen(!isLoginOpen)}
                   >
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10">
+                      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3">
                         <div className="text-[#101010]">
                           <UserRound className="h-4 w-4 text-[#101010]" />
                         </div>

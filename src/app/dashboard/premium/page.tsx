@@ -228,21 +228,21 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
       
       {/* Layout responsive: Desktop 2 columnas, Móvil 1 columna */}
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10" style={{ contain: 'layout style' }}>
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
           
           {/* Columna izquierda: Imagen/FAQ (Desktop) - Abajo (Móvil) */}
           <div className="lg:w-1/2 order-2 lg:order-1">
             {/* Bloque de imagen del dashboard - Solo visible en desktop */}
             <div className="hidden lg:block mb-4">
-              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+              <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
                 {/* Badge de ubicación y punto verde - Solo móvil - Arriba de la imagen */}
                 <div className="md:hidden flex justify-between items-center mb-3">
                   {countryPrice.countryCode && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-sm whitespace-nowrap">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#1a1a1a] whitespace-nowrap">
                       <CountryFlag countryCode={countryPrice.countryCode} size="sm" />
                       <span className="text-white font-semibold text-[10px]">
                         {countryPrice.countryCode}
@@ -254,7 +254,7 @@ const PremiumPage = () => {
                     </div>
                   )}
                   {/* Punto verde decorativo */}
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 </div>
                 
                 {/* Imagen del dashboard */}
@@ -285,13 +285,13 @@ const PremiumPage = () => {
             {/* FAQ Section fuera de la tarjeta principal */}
             <div className="space-y-4 mb-6 lg:mb-4">
               {/* FAQ 1 - Pago único (ahora primera) */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
+              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 0 ? null : 0)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0">
                       <div className="text-[#101010]">
                         <Info className="h-4 w-4 text-[#101010]" />
                       </div>
@@ -313,13 +313,13 @@ const PremiumPage = () => {
               </div>
 
               {/* FAQ 2 - Cuánto dinero (ahora segunda) */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
+              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 1 ? null : 1)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0">
                       <div className="text-[#101010]">
                         <DollarSign className="h-4 w-4 text-[#101010]" />
                       </div>
@@ -348,13 +348,13 @@ const PremiumPage = () => {
               </div>
 
               {/* Pregunta original 2 */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
+              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 2 ? null : 2)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
                       <div className="text-[#101010]">
                         <MapPin className="h-4 w-4 text-[#101010]" />
                       </div>
@@ -376,13 +376,13 @@ const PremiumPage = () => {
               </div>
 
               {/* Pregunta original 3 */}
-              <div className="overflow-hidden relative rounded-3xl border-0 transition-all bg-white/[0.03] backdrop-blur-xl border border-white/10">
+              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 3 ? null : 3)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 border border-white/10 flex-shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
                       <div className="text-[#101010]">
                         <Shield className="h-4 w-4 text-[#101010]" />
                       </div>
@@ -409,11 +409,11 @@ const PremiumPage = () => {
           <div className="lg:w-1/2 order-1 lg:order-2">
             {/* Bloque de imagen solo visible en móvil - ARRIBA del pricing */}
             <div className="lg:hidden mb-6">
-              <div className="border border-white/10 rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212', background: '#121212' }}>
+              <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212', background: '#121212' }}>
                 {/* Badge de ubicación y punto verde - Móvil - Arriba de la imagen */}
                 <div className="flex justify-between items-center mb-3">
                   {countryPrice.countryCode && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/[0.03] backdrop-blur-xl border-0 shadow-sm whitespace-nowrap">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#1a1a1a] whitespace-nowrap">
                       <CountryFlag countryCode={countryPrice.countryCode} size="sm" />
                       <span className="text-white font-semibold text-[10px]">
                         {countryPrice.countryCode}
@@ -425,7 +425,7 @@ const PremiumPage = () => {
                     </div>
                   )}
                   {/* Punto verde decorativo */}
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 </div>
                 
                 {/* Imagen del dashboard */}
@@ -456,16 +456,7 @@ const PremiumPage = () => {
 
             <div className="max-w-2xl mx-auto lg:mx-0">
         {/* Contenido del pricing - Extraído del modal */}
-        <Card 
-          className="bg-white/[0.03] backdrop-blur-xl border border-white/10 overflow-hidden relative h-full rounded-3xl transition-opacity duration-300"
-          style={{ 
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-            transform: 'translate3d(0, 0, 0)',
-            contain: 'layout style paint'
-          }}
-        >
-          {/* Brillo superior glassmorphism */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
+        <Card className="bg-[#121212] overflow-hidden relative h-full rounded-3xl">
 
 
 
@@ -489,7 +480,7 @@ const PremiumPage = () => {
               </div>
             </div>
 
-            <div className="mb-8 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 rounded-3xl relative">
+            <div className="mb-8 bg-[#1a1a1a] p-6 rounded-3xl">
               {/* Versión móvil - Diseño más compacto */}
               <div className="md:hidden">
                 {isArgentina ? (
@@ -637,7 +628,7 @@ const PremiumPage = () => {
             
             {/* Bloque de Testimonios - Debajo del pricing en MÓVIL */}
             <div className="mt-6 lg:hidden">
-              <Card className="bg-white/[0.03] backdrop-blur-xl border-0 overflow-hidden relative rounded-2xl">
+              <Card className="bg-[#121212] overflow-hidden rounded-2xl">
                 <div className="p-4 md:p-6">
                   {/* Título compacto */}
                   <div className="text-center mb-4">
@@ -657,7 +648,7 @@ const PremiumPage = () => {
             
             {/* Bloque de Testimonios - Debajo del pricing en desktop */}
             <div className="mt-4 hidden lg:block">
-              <Card className="bg-white/[0.03] backdrop-blur-xl border-0 overflow-hidden relative rounded-2xl">
+              <Card className="bg-[#121212] overflow-hidden rounded-2xl">
                 <div className="p-4 md:p-6">
                   {/* Título compacto */}
                   <div className="text-center mb-4">
@@ -761,7 +752,7 @@ const TestimonialsSlider = () => {
     <div className="relative">
       {/* Tarjeta de testimonio - Compacta */}
       <div 
-        className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 md:p-5"
+        className="bg-[#1a1a1a] rounded-xl p-4 md:p-5"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -796,7 +787,7 @@ const TestimonialsSlider = () => {
       <div className="flex items-center justify-center gap-3 mt-3">
         <button
           onClick={prevSlide}
-          className="w-7 h-7 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:bg-white/[0.05] flex items-center justify-center text-white transition-all"
+          className="w-7 h-7 rounded-full bg-[#1a1a1a] hover:bg-[#252525] flex items-center justify-center text-white transition-all"
           aria-label="Anterior"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -822,7 +813,7 @@ const TestimonialsSlider = () => {
 
         <button
           onClick={nextSlide}
-          className="w-7 h-7 rounded-full bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:bg-white/[0.05] flex items-center justify-center text-white transition-all"
+          className="w-7 h-7 rounded-full bg-[#1a1a1a] hover:bg-[#252525] flex items-center justify-center text-white transition-all"
           aria-label="Siguiente"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

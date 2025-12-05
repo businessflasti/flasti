@@ -9,23 +9,32 @@ export default function TerminosPage() {
   return (
     <MainLayout showHeader={true} disableChat={true}>
       <Suspense fallback={<div className="container-custom py-16 md:py-24">Cargando...</div>}>
-        <div className="min-h-screen bg-[#0A0A0A]">
-          <div className="container-custom py-16 md:py-24">
+        <div 
+          className="min-h-screen bg-[#0A0A0A]"
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            contain: 'layout style paint',
+            backfaceVisibility: 'hidden'
+          }}
+        >
+          <div 
+            className="container-custom py-16 md:py-24"
+            style={{
+              transform: 'translate3d(0, 0, 0)'
+            }}
+          >
             <div className="max-w-3xl mx-auto">
               <h1 className="text-3xl md:text-4xl font-bold mb-8 text-white">
                 Términos y Condiciones
               </h1>
 
               <div 
-                className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl transition-opacity duration-300"
+                className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-[#121212] shadow-2xl transition-opacity duration-300"
                 style={{
                   transform: 'translate3d(0, 0, 0)',
                   contain: 'layout style paint'
                 }}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
                 <div className="relative z-10 prose prose-invert prose-lg max-w-none">
             <p>
               Bienvenido a Flasti. Al acceder o utilizar nuestra plataforma web y servicios, aceptás estos Términos y Condiciones.

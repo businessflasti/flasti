@@ -1,57 +1,75 @@
 /* Optimizaciones de rendimiento para scroll suave en Dashboard */
 
-/* Aceleración GPU para elementos principales */
-.dashboard-container {
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+/* Contenedor principal - GPU acceleration */
+/* NOTA: No aplicar transform a .min-h-screen porque rompe el position:fixed del sidebar */
+/* El transform se aplica directamente en el JSX del contenido, no globalmente */
+
+/* Contenedor de contenido */
+.max-w-7xl {
+  contain: layout style;
 }
 
-/* Optimizar cards para scroll */
-.dashboard-card {
-  will-change: transform;
+/* Optimizar cards y bloques */
+.rounded-3xl,
+.rounded-2xl {
   transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   contain: layout style paint;
 }
 
-/* Optimizar imágenes */
+/* Grid de estadísticas */
+.grid {
+  contain: layout style;
+}
+
+/* Optimizar imágenes y videos */
 img, video {
   transform: translate3d(0, 0, 0);
-  will-change: transform;
-}
-
-/* Smooth scrolling nativo */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Optimizar animaciones durante scroll */
-@media (prefers-reduced-motion: no-preference) {
-  * {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Reducir repaints en elementos con backdrop-filter */
-[class*="backdrop-blur"] {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* Optimizar grid de ofertas */
 .offers-grid {
   contain: layout style;
-  will-change: scroll-position;
-}
-
-/* Optimizar transiciones para 60fps */
-.transition-all {
-  transition-property: transform, opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Forzar aceleración GPU en elementos animados */
-.group:hover {
   transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Cards de ofertas */
+.offers-grid > div {
+  contain: layout style paint;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Tabs content */
+[role="tabpanel"] {
+  contain: layout style;
+}
+
+/* Optimizar scroll */
+html {
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Desactivar animaciones durante scroll para mejor rendimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* NOTA: No aplicar transform a .relative porque rompe position:fixed del sidebar */
+/* Los elementos que necesiten GPU acceleration deben tener la clase específica */
+
+/* Contenido visible - lazy rendering */
+.space-y-4 > *,
+.space-y-6 > * {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
 }

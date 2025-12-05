@@ -448,8 +448,8 @@ export default function FomoNotifications() {
           <div className={`
             backdrop-blur-sm text-white rounded-lg shadow-xl p-2.5 flex items-center gap-3
             ${currentNotification.type === 'registration'
-              ? 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95 border border-[#3b82f6]/30'
-              : 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95 border border-[#10b981]/30'}
+              ? 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95'
+              : 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95'}
           `}>
             <div className="flex-shrink-0 relative">
               {/* Logo de Flasti */}

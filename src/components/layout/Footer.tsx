@@ -45,8 +45,7 @@ const FooterComponent = () => {
       <footer 
         className="relative overflow-hidden pt-12 pb-8 z-30" 
         style={{
-          background: '#0A0A0A', 
-          borderTop: '1px solid rgba(63, 140, 255, 0.15)',
+          background: '#0A0A0A',
           transform: 'translate3d(0, 0, 0)',
           contain: 'layout style paint',
           backfaceVisibility: 'hidden'
@@ -65,7 +64,7 @@ const FooterComponent = () => {
         >
           {/* Sello de seguridad elegante - Versión escritorio */}
           <div className="hidden md:block mb-10 pb-6 border-b border-white/5">
-            <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#1a1a1a'}}>
+            <div className="max-w-3xl mx-auto px-6 py-4 rounded-xl" style={{background: '#101011'}}>
               <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
                 <div className="flex items-center">
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/10 to-green-600/10 flex items-center justify-center mr-2">
@@ -93,7 +92,7 @@ const FooterComponent = () => {
 
           {/* Sello de seguridad elegante - Versión móvil */}
           <div className="md:hidden mb-8 pb-4 border-b border-white/5">
-            <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#1a1a1a' }}>
+            <div className="mx-auto px-4 py-3 rounded-lg" style={{ background: '#101011' }}>
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/20 to-green-600/20 flex items-center justify-center">
@@ -122,7 +121,7 @@ const FooterComponent = () => {
             }}
           >
             <div>
-              <div className="flex items-center">
+              <div className="flex items-center mt-8">
                 <Image
                   src="/logo/logo-web.png"
                   alt="flasti logo"
@@ -133,12 +132,6 @@ const FooterComponent = () => {
                   unoptimized={true}
                 />
               </div>
-              <div className="mt-4">
-                <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 py-0.5">
-                  {t('gananciaColectiva')}
-                </p>
-              </div>
-              {/* SocialIcons solo en móvil, no en escritorio debajo del lema */}
             </div>
 
             <div>
@@ -192,11 +185,13 @@ const FooterComponent = () => {
             <div>
               <h4 className="font-bold mb-4 inline-block font-outfit text-white">{t('soporte').toUpperCase()}</h4>
               <div className="space-y-4">
-                <p className="font-bold text-foreground/60 dark:text-white text-sm">{t('ayudaInmediata')}</p>
-                <ChatButton
-                  className="bg-white hover:bg-[#ededed] text-black font-bold transition-all flex items-center gap-2 border border-white px-2 py-1 text-xs"
-                  text={t('iniciarChat')}
-                />
+                <p className="font-bold text-foreground/60 dark:text-white text-sm text-left">{t('ayudaInmediata')}</p>
+                <div className="flex justify-start">
+                  <ChatButton
+                    className="bg-white hover:bg-[#ededed] text-black font-bold transition-all flex items-center gap-2 border border-white px-2 py-1 text-xs"
+                    text={t('iniciarChat')}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -211,20 +206,14 @@ const FooterComponent = () => {
           >
             <div className="flex justify-center mb-6">
               <Image
-                src="/logo/isotipo-web.png"
+                src="/logo/logo-web.png"
                 alt="flasti logo"
-                width={28}
-                height={28}
+                width={110}
+                height={32}
                 className="object-contain"
                 priority
                 unoptimized={true}
               />
-            </div>
-
-            <div className="flex justify-center mb-4">
-              <p className="text-xs uppercase tracking-wider font-medium text-foreground/80 px-4 py-1 rounded-full" style={{ background: '#1a1a1a' }}>
-                {t('gananciaColectiva')}
-              </p>
             </div>
 
             <div className="flex justify-center mb-4">
@@ -291,12 +280,12 @@ const FooterComponent = () => {
                 <FeedbackTab />
               </div>
 
-              <div className="rounded-xl p-4" style={{ background: '#1a1a1a' }}>
+              <div className="col-span-2 rounded-xl p-4" style={{ background: '#1a1a1a' }}>
                 <h4 className="font-bold mb-3 text-sm font-outfit text-white uppercase inline-flex items-center">
                   {t('soporte')}
                 </h4>
-                <div className="flex flex-col items-center">
-                  <p className="font-bold dark:text-white text-foreground/80 text-xs mb-3 text-center">
+                <div className="flex flex-col items-start">
+                  <p className="font-bold dark:text-white text-foreground/80 text-xs mb-3 text-left">
                     {t('ayudaInmediata')}
                   </p>
                   <ChatButton
@@ -307,9 +296,7 @@ const FooterComponent = () => {
                 </div>
               </div>
 
-              <div className="rounded-xl p-4 flex items-center justify-center" style={{ background: '#1a1a1a' }}>
-                <RankingCard />
-              </div>
+
             </div>
           </div>
 
@@ -317,7 +304,6 @@ const FooterComponent = () => {
           <div className="hidden md:block w-full border-t border-white/10 mt-10"></div>
           <div className="hidden md:flex pt-12 pb-4 justify-between items-center w-full px-0 max-w-none">
             <div className="flex items-center gap-6 ml-6">
-              <RankingCard />
               <p className="text-sm dark:text-foreground/60 text-foreground/80 text-left flex items-center h-8">
                 <span className="relative z-10">© {new Date().getFullYear()} Flasti LLC. {t('derechosReservados')}</span>
               </p>

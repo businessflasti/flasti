@@ -1443,7 +1443,15 @@ const CheckoutContent = () => {
 
   return (
     <>
-      <div className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0 relative" style={{ background: "#0A0A0A" }}>
+      <div 
+        className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0 relative" 
+        style={{ 
+          background: "#0A0A0A",
+          transform: 'translate3d(0, 0, 0)',
+          contain: 'layout style',
+          backfaceVisibility: 'hidden'
+        }}
+      >
         
       {/* Eliminado Exit Intent Popup */}
 
@@ -1460,15 +1468,8 @@ const CheckoutContent = () => {
 
               {/* Moneda local - Hotmart o Mercado Pago */}
               <Card 
-                className={`bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-opacity duration-300 relative ${selectedPaymentMethod === "hotmart" ? "border-white" : "border-white/10"}`}
-                style={{ 
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                  transform: 'translate3d(0, 0, 0)',
-                  contain: 'layout style paint'
-                }}
+                className={`bg-[#121212] overflow-hidden rounded-3xl mobile-card relative ${selectedPaymentMethod === "hotmart" ? "border border-white" : ""}`}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -1599,7 +1600,7 @@ const CheckoutContent = () => {
                           </div>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-[#202020] backdrop-blur-sm">
+                        <div className="p-4 rounded-xl bg-[#202020]">
                           <div className="flex items-center justify-center gap-2 mb-2">
                             <h3 className="font-medium text-white">Selecciona tu método de pago</h3>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1668,7 +1669,7 @@ const CheckoutContent = () => {
                           {/* Formulario de datos para Mercado Pago */}
                           <div id="mercadopago-form-block" className="mercadopago-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#202020' }}>
                             <div className="flex items-center gap-2 mb-4">
-                              <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                              <div className="w-8 h-8 bg-[#2a2a2a] rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
@@ -1814,15 +1815,8 @@ const CheckoutContent = () => {
 
               {/* PayPal - OCULTO */}
               <Card 
-                className={`hidden bg-white/[0.03] backdrop-blur-xl border overflow-hidden rounded-3xl mobile-card transition-opacity duration-300 relative ${selectedPaymentMethod === "paypal" ? "border-white" : "border-white/10"}`}
-                style={{ 
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                  transform: 'translate3d(0, 0, 0)',
-                  contain: 'layout style paint'
-                }}
+                className={`hidden bg-[#121212] overflow-hidden rounded-3xl mobile-card relative ${selectedPaymentMethod === "paypal" ? "border border-white" : ""}`}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
                 <div
                   className="p-4 cursor-pointer flex items-center justify-between mobile-touch-friendly mobile-touch-feedback"
                   onClick={() => {
@@ -1837,7 +1831,7 @@ const CheckoutContent = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-white/[0.03] backdrop-blur-xl flex items-center justify-center border border-white/10">
+                    <div className="w-10 h-10 rounded-full bg-[#1a1a1a] flex items-center justify-center">
                       <div className="flex items-center justify-center w-full h-full pl-0.5">
                         <PayPalIcon className="text-white h-5 w-5 flex-shrink-0" />
                       </div>
@@ -1885,7 +1879,7 @@ const CheckoutContent = () => {
                       {/* Formulario de datos para PayPal */}
                       <div id="paypal-form-block" className="paypal-form-container mb-3 space-y-4 p-4 rounded-lg transition-all duration-300" style={{ background: '#202020' }}>
                         <div className="flex items-center gap-2 mb-4">
-                          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                          <div className="w-8 h-8 bg-[#2a2a2a] rounded-full flex items-center justify-center">
                             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
@@ -2107,7 +2101,7 @@ const CheckoutContent = () => {
               )}
 
               {/* Mensaje sobre el proceso después del pago */}
-              <div className="mt-6 p-4 rounded-xl border-2 border-dashed backdrop-blur-sm relative overflow-hidden" style={{ backgroundColor: 'rgba(140, 206, 152, 0.05)', borderColor: '#28A745' }}>
+              <div className="mt-6 p-4 rounded-xl border-2 border-dashed relative overflow-hidden" style={{ backgroundColor: '#0d1a0f', borderColor: '#28A745' }}>
                 {/* Decoración de fondo sutil */}
                 <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full bg-[#28A745]/5 blur-xl"></div>
                 <div className="absolute -bottom-2 -left-2 w-12 h-12 rounded-full bg-[#28A745]/5 blur-xl"></div>

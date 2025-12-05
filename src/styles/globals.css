@@ -274,8 +274,7 @@
   }
 
   .glow-effect {
-    filter: drop-shadow(0 0 15px rgba(140, 50, 250, 0.6));
-    animation: glow 2s infinite alternate;
+    /* Efecto glow deshabilitado */
   }
 
   .glass-card {
@@ -293,8 +292,7 @@
   }
 
   .neon-border {
-    box-shadow: 0 0 5px rgba(140, 50, 250, 0.7),
-                inset 0 0 5px rgba(140, 50, 250, 0.4);
+    /* Efecto neon deshabilitado */
   }
 
   .dropdown-menu {

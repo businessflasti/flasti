@@ -47,7 +47,14 @@ const FeatureCardsSection = () => {
     // Los bloques "Gana dinero real", "Horario flexible" y "Desde tu casa" se movieron a BenefitsSection
   ];
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section 
+      className="py-16 relative overflow-hidden bg-[#0A0A0A]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       {/* Elementos decorativos */}
       <div className="absolute inset-0 z-0">
       </div>
@@ -61,29 +68,35 @@ const FeatureCardsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+        <div 
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto"
+          style={{
+            contain: 'layout style',
+            transform: 'translate3d(0, 0, 0)'
+          }}
+        >
           {features.map((feature, index) => (
             <div
               key={index}
-              className="glass-card group overflow-hidden relative p-4 md:p-5 rounded-3xl flex flex-col items-center text-center border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10 hardware-accelerated"
+              className="overflow-hidden relative p-4 md:p-5 rounded-3xl flex flex-col items-center text-center bg-[#121212] transition-opacity duration-300"
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                contain: 'layout style paint'
+              }}
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/5 to-transparent"></div>
-
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-black/40 flex items-center justify-center mb-3 md:mb-4 mx-auto border border-white/10">
-                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${feature.gradientFrom} ${feature.gradientTo} flex items-center justify-center`}>
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#1a1a1a] flex items-center justify-center mb-3 md:mb-4 mx-auto">
+                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#252525] flex items-center justify-center`}>
                   <div className={feature.iconColor}>{feature.icon}</div>
                 </div>
               </div>
 
-              <h3 className="text-base md:text-lg font-bold mb-2 text-foreground group-hover:text-gradient transition-all duration-300 text-center">
+              <h3 className="text-base md:text-lg font-bold mb-2 text-foreground text-center">
                 {feature.title}
               </h3>
 
               <p className="text-foreground/70 text-xs md:text-sm text-center">
                 {feature.description}
               </p>
-
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
             </div>
           ))}
         </div>

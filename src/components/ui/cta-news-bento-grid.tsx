@@ -103,7 +103,7 @@ export const CTANewsBentoGrid: React.FC = () => {
     return (
       <CTABentoGrid className="w-full max-w-3xl mx-auto grid-cols-1 gap-6 md:gap-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="col-span-1 min-h-[8rem] md:min-h-[8.5rem] w-full bg-white/[0.03] backdrop-blur-2xl rounded-3xl border border-white/10 animate-pulse" />
+          <div key={i} className="col-span-1 min-h-[8rem] md:min-h-[8.5rem] w-full bg-[#121212] rounded-3xl border border-white/10 animate-pulse" />
         ))}
       </CTABentoGrid>
     );

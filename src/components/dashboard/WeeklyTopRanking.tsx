@@ -110,7 +110,7 @@ const WeeklyTopRanking: React.FC = () => {
   }, []);
 
   return (
-    <div className="mt-4 pt-4 border-t border-white/10">
+    <div className="mt-4 pt-4 border-t border-white/10" style={{ contain: 'layout style' }}>
       {/* Título */}
       <div className="mb-3 weekly-ranking-title">
         <h3 className="text-[10px] sm:text-xs font-bold text-white leading-tight">
@@ -150,26 +150,16 @@ const WeeklyTopRanking: React.FC = () => {
                 flex items-center justify-center
                 w-6 h-6 rounded-full
                 bg-gradient-to-br ${colors.gradient}
-                shadow-lg ${colors.glow}
+                shadow-lg
               `}>
                 <span className="text-[10px] font-bold text-white">#{user.rank}</span>
               </div>
 
-              {/* Contenedor con efecto glassmorphism */}
-              <div className={`
-                relative overflow-hidden rounded-xl
-                bg-white/[0.08] border border-white/10
-                p-2.5 transition-colors duration-300
-                hover:bg-white/[0.12] hover:border-white/20
-                ${colors.glow}
-              `}
-              style={{ willChange: 'auto' }}>
-                {/* Brillo superior */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
+              {/* Contenedor */}
+              <div className="relative overflow-hidden rounded-xl bg-[#121212] p-2.5" style={{ contain: 'layout style paint' }}>
                 <div className="relative flex items-center gap-2.5">
                   {/* Avatar profesional con loading */}
-                  <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
+                  <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white/10 flex-shrink-0">
                     {user.avatar_url ? (
                       <>
                         <img
@@ -222,7 +212,7 @@ const WeeklyTopRanking: React.FC = () => {
 
                   {/* Bandera del país */}
                   {user.country_code && (
-                    <div className="w-6 h-6 overflow-hidden rounded-full flex items-center justify-center bg-white/10 border border-white/10 flex-shrink-0">
+                    <div className="w-6 h-6 overflow-hidden rounded-full flex items-center justify-center bg-white/10 flex-shrink-0">
                       <img
                         src={`https://flagcdn.com/w20/${user.country_code.toLowerCase()}.png`}
                         alt={user.country_code}

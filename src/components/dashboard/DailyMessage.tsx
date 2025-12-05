@@ -105,11 +105,9 @@ export default function DailyMessage() {
   if (loading) {
     return (
       <Card 
-        className="relative backdrop-blur-2xl border border-white/10 h-full rounded-3xl"
-        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
+        className="relative border-0 h-full rounded-3xl bg-[#585C6C]"
+        style={{ contain: 'layout style paint' }}
       >
-        {/* Brillo superior glassmorphism */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         <CardContent className="p-3 sm:p-4 lg:p-6 flex items-center justify-center h-full">
           <div className="relative w-10 h-10">
             <div className="absolute inset-0 border-4 border-white/20 rounded-full"></div>
@@ -122,11 +120,9 @@ export default function DailyMessage() {
 
   return (
     <Card 
-      className="relative backdrop-blur-2xl border border-white/10 h-full overflow-hidden rounded-3xl"
-      style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
+      className="relative border-0 h-full overflow-hidden rounded-3xl bg-[#585C6C]"
+      style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)' }}
     >
-      {/* Brillo superior glassmorphism */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
       
       <CardContent className="p-3 sm:p-4 lg:p-6 flex flex-col h-full relative z-10">
         {/* Header con avatar de María */}
@@ -183,7 +179,7 @@ export default function DailyMessage() {
                   onClick={() => handleResponse('thanks')}
                   size="sm"
                   className="flex-1 text-white border-0 h-8 text-xs hover:opacity-90"
-                  style={{ backgroundColor: '#636777' }}
+                  style={{ backgroundColor: '#121212' }}
                 >
                   😊 Gracias
                 </Button>
@@ -191,7 +187,7 @@ export default function DailyMessage() {
                   onClick={() => handleResponse('like')}
                   size="sm"
                   className="flex-1 text-white border-0 h-8 text-xs hover:opacity-90"
-                  style={{ backgroundColor: '#636777' }}
+                  style={{ backgroundColor: '#121212' }}
                 >
                   👍 Me gusta
                 </Button>

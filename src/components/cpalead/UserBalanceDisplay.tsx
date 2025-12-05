@@ -172,11 +172,9 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   return (
     <TooltipProvider>
       <Card 
-        className="relative border border-white/10 h-full flex flex-col rounded-3xl overflow-hidden"
-        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)', willChange: 'auto' }}
+        className="relative border-0 h-full flex flex-col rounded-3xl overflow-hidden bg-[#585C6C]"
+        style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)' }}
       >
-        {/* Brillo superior glassmorphism */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         <CardContent className="p-4 flex-1 flex flex-col justify-between">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 flex-1">

@@ -165,7 +165,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                         <span className="text-2xl font-bold">$3.90</span>
                         <span className="text-foreground/70 text-xs ml-1">USD</span>
                       </div>
-                      <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">80% OFF</span>
+                      <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full">80% OFF</span>
                     </div>
                     <div className="flex items-center mt-1">
                       <span className="text-xs line-through text-red-500">$50</span>
@@ -183,7 +183,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                         <span className="text-2xl font-bold">AR$ 11.500</span>
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-xs line-through text-red-500">AR$ 57.500</span>
-                          <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">80% OFF</span>
+                          <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full">80% OFF</span>
                         </div>
                       </div>
                     </>
@@ -196,7 +196,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                         </div> 
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-sm line-through text-red-500">$50</span>
-                          <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">80% OFF</span>
+                          <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full">80% OFF</span>
                         </div>
                       </div>
                     </>
@@ -240,7 +240,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                     <Zap className="text-[#101010]" size={16} />
                   </div>
                   <div>
@@ -250,7 +250,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                     <Infinity className="text-[#101010]" size={16} />
                   </div>
                   <div>
@@ -260,7 +260,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                     <Shield className="text-[#101010]" size={16} />
                   </div>
                   <div>
@@ -272,7 +272,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
 
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                     <HeadphonesIcon className="text-[#101010]" size={16} />
                   </div>
                   <div>
@@ -282,7 +282,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                     <Sparkles className="text-[#101010]" size={16} />
                   </div>
                   <div>
@@ -292,7 +292,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                     <Gift className="text-[#101010]" size={16} />
                   </div>
                   <div>

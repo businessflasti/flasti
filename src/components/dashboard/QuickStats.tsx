@@ -143,7 +143,7 @@ export default function QuickStats() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm text-foreground/60 font-medium">Total de Clics</h3>
           <div className="w-8 h-8 rounded-full bg-[#9333ea]/10 flex items-center justify-center hardware-accelerated animate-scale">
-            <TrendingUp size={16} className="text-[#9333ea] icon-glow" />
+            <TrendingUp size={16} className="text-[#9333ea]" />
           </div>
         </div>
 
@@ -170,7 +170,7 @@ export default function QuickStats() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm text-foreground/60 font-medium">Comisiones Totales</h3>
           <div className="w-8 h-8 rounded-full bg-[#ec4899]/10 flex items-center justify-center hardware-accelerated animate-scale">
-            <DollarSign size={16} className="text-[#ec4899] icon-glow" />
+            <DollarSign size={16} className="text-[#ec4899]" />
           </div>
         </div>
 
@@ -197,7 +197,7 @@ export default function QuickStats() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm text-foreground/60 font-medium">Tasa de Conversión</h3>
           <div className="w-8 h-8 rounded-full bg-[#facc15]/10 flex items-center justify-center hardware-accelerated animate-scale">
-            <Users size={16} className="text-[#facc15] icon-glow" />
+            <Users size={16} className="text-[#facc15]" />
           </div>
         </div>
 
@@ -224,7 +224,7 @@ export default function QuickStats() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm text-foreground/60 font-medium">Última Actividad</h3>
           <div className="w-8 h-8 rounded-full bg-[#3b82f6]/10 flex items-center justify-center hardware-accelerated animate-scale">
-            <Clock size={16} className="text-[#3b82f6] icon-glow animate-rotate-slow" />
+            <Clock size={16} className="text-[#3b82f6] animate-rotate-slow" />
           </div>
         </div>
 

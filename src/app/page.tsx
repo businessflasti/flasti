@@ -6,13 +6,10 @@ import AdBlock from "@/components/ui/AdBlock";
 import AdBlockWrapper from "@/components/ui/AdBlockWrapper";
 import MainLayout from "@/components/layout/MainLayout";
 import StudiovaHeroSection from "@/components/sections/StudiovaHeroSection";
-import StatsSection from "@/components/sections/StatsSection";
 import TeamSection from "@/components/sections/TeamSection";
 import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import DashboardPreviewSection from "@/components/sections/DashboardPreviewSection";
-import ModernTestimonialsSection from "@/components/sections/ModernTestimonialsSection";
 import RegistrationFAQSection from "@/components/sections/RegistrationFAQSection";
-
 import CTASection from "@/components/sections/CTASection";
 import CountriesSection from "@/components/sections/CountriesSection";
 
@@ -86,17 +83,14 @@ export default function Home() {
   }, []);
 
   return (
-    <MainLayout disableChat={true} showStickyBanner={true}>
+    <MainLayout disableChat={true}>
       
       <div style={{ minHeight: "100vh", background: "#FEF9F3" }}>
-        {/* Sección Studiova Hero (nueva) */}
+        {/* Sección Hero principal */}
         <StudiovaHeroSection />
         
         {/* Sección: Países disponibles */}
         <CountriesSection />
-        
-        {/* Sección Stats (nueva) */}
-        <StatsSection />
         
         {/* Sección Team (nueva) */}
         <TeamSection />
@@ -107,11 +101,8 @@ export default function Home() {
         
         {/* Sección 4: Vista previa del Dashboard */}
         <DashboardPreviewSection />
-        
-        {/* Sección 5: Lo que nuestra comunidad comparte */}
-        <ModernTestimonialsSection />
 
-        {/* Sección 6: FAQ */}
+        {/* Sección 5: FAQ */}
         <RegistrationFAQSection />
         {/* Sección 8: Conoce a Flasti */}
         <CTASection />

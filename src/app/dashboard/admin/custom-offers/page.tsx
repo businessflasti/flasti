@@ -10,7 +10,6 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Gift, Save, Eye, EyeOff } from 'lucide-react';
 
 interface CustomOffer {
@@ -229,10 +228,15 @@ export default function CustomOffersAdmin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] relative overflow-hidden">
+    <div 
+      className="min-h-screen bg-[#0A0A0A] relative overflow-hidden"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 relative z-10">
-        <Breadcrumbs />
-        
         <div className="flex items-center gap-3 mb-6">
           <Gift className="w-8 h-8 text-white" />
           <h1 className="text-2xl md:text-3xl font-bold text-white">Ofertas Personalizadas</h1>

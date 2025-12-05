@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
@@ -14,14 +15,12 @@ import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw, CheckCircle2, Wal
 import CountryFlag from '@/components/ui/CountryFlag';
 import { toast } from 'sonner';
 import OnboardingSlider from '@/components/dashboard/OnboardingSlider';
-import WelcomeBonus from '@/components/dashboard/WelcomeBonus';
 import AdBlock from '@/components/ui/AdBlock';
 import { useElementVisibility } from '@/hooks/useElementVisibility';
 import DailyMessage from '@/components/dashboard/DailyMessage';
 import PremiumServicesSlider from '@/components/premium/PremiumServicesSlider';
 
-// Importar estilos de animaciones y optimizaciones de rendimiento
-import "./animations.css";
+// Importar estilos de optimizaciones de rendimiento
 import "./performance.css";
 
 interface UserStats {
@@ -30,7 +29,6 @@ interface UserStats {
   todayEarnings: number;
   weekEarnings: number;
   totalTransactions: number;
-  welcomeBonusClaimed?: boolean;
 }
 
 export default function DashboardPage() {
@@ -40,17 +38,7 @@ export default function DashboardPage() {
   // Hook de visibilidad para elementos del dashboard
   const { isVisible, elements, isLoading } = useElementVisibility('dashboard');
   
-  // Debug: Ver estado del hook
-  useEffect(() => {
-    console.log('🔍 Dashboard - Estado de visibilidad:', {
-      isLoading,
-      elements,
-      welcome_bonus: isVisible('welcome_bonus'),
-      balance_display: isVisible('balance_display'),
-      video_tutorial: isVisible('video_tutorial'),
-      stat_today: isVisible('stat_today')
-    });
-  }, [elements, isLoading]);
+
   
   // Estado para controlar si se muestra el reproductor completo
   const [showFullPlayer, setShowFullPlayer] = useState(false);
@@ -59,8 +47,8 @@ export default function DashboardPage() {
   const [tutorialVideo, setTutorialVideo] = useState({
     sliderUrl: '/video/tutorial-bienvenida.mp4',
     playerUrl: '/video/tutorial-bienvenida.mp4',
-    title: '¡Te damos la bienvenida a flasti!',
-    description: 'Más que tecnología: construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.',
+    title: 'Bienvenido a flasti',
+    description: '',
     isClickable: true
   });
   
@@ -70,8 +58,7 @@ export default function DashboardPage() {
     totalEarnings: 0,
     todayEarnings: 0,
     weekEarnings: 0,
-    totalTransactions: 0,
-    welcomeBonusClaimed: false
+    totalTransactions: 0
   });
   const [isLoadingOffers, setIsLoadingOffers] = useState(true);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
@@ -164,7 +151,7 @@ export default function DashboardPage() {
               device_type: deviceType
             })
             .eq('user_id', user.id)
-            .then(() => console.log(`✅ País guardado: ${countryCode} - ${deviceType}`))
+            .then(() => {})
             .catch(err => console.error('Error guardando país:', err));
         }
       } catch (error) {
@@ -239,18 +226,12 @@ export default function DashboardPage() {
       }
       
       const url = `/api/cpalead/offers${params.toString() ? `?${params.toString()}` : ''}`;
-      console.log('🔄 Solicitando ofertas desde:', url);
       
       const response = await fetch(url);
       const result = await response.json();
       
       if (result.success) {
         setOffers(result.data);
-        console.log(`✅ CPALead: Cargadas ${result.count} ofertas para ${result.requestedCountry || 'detección automática'}`);
-        
-        if (result.stats) {
-          console.log('📊 Estadísticas de ofertas:', result.stats);
-        }
       } else {
         console.error('❌ Error fetching CPALead offers:', result.message);
         toast.error('Error al cargar las ofertas');
@@ -305,8 +286,7 @@ export default function DashboardPage() {
         totalEarnings: cpalead_stats.total_earnings || 0,
         todayEarnings: cpalead_stats.today_earnings || 0,
         weekEarnings: cpalead_stats.week_earnings || 0,
-        totalTransactions: cpalead_stats.total_transactions || 0,
-        welcomeBonusClaimed: profile.welcome_bonus_claimed || false
+        totalTransactions: cpalead_stats.total_transactions || 0
       };
 
       setUserStats(stats);
@@ -328,15 +308,12 @@ export default function DashboardPage() {
           .eq('is_active', true)
           .single();
 
-        if (error) {
-          console.error('Error al cargar video:', error);
-        } else if (data) {
-          console.log('📹 Video cargado:', data);
+        if (!error && data) {
           setTutorialVideo({
             sliderUrl: data.slider_video_url,
             playerUrl: data.player_video_url,
-            title: '¡Te damos la bienvenida a flasti!',
-            description: 'Más que tecnología: construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.',
+            title: 'Bienvenido a flasti',
+            description: '',
             isClickable: data.is_clickable
           });
         }
@@ -357,8 +334,7 @@ export default function DashboardPage() {
           schema: 'public',
           table: 'tutorial_video'
         },
-        (payload) => {
-          console.log('📹 Video actualizado en tiempo real:', payload);
+        () => {
           loadTutorialVideo();
         }
       )
@@ -380,8 +356,7 @@ export default function DashboardPage() {
     const handleCountryChange = () => {
       const currentCountry = localStorage.getItem('userCountry');
       if (currentCountry && currentCountry !== 'GLOBAL') {
-        console.log('🌍 País detectado/cambiado, recargando ofertas para:', currentCountry);
-        fetchOffers(true); // Force refresh
+        fetchOffers(true);
       }
     };
 
@@ -392,7 +367,6 @@ export default function DashboardPage() {
     const countryCheckInterval = setInterval(() => {
       const currentCountry = localStorage.getItem('userCountry');
       if (currentCountry && currentCountry !== 'GLOBAL' && offers.length === 0) {
-        console.log('🔄 País disponible, recargando ofertas...');
         fetchOffers();
       }
     }, 5000); // Verificar cada 5 segundos
@@ -441,101 +415,92 @@ export default function DashboardPage() {
   }, [cpaLeadData]);
 
   return (
-    <div className="min-h-screen overscroll-none relative bg-[#0A0A0A]">
+    <div className="min-h-screen overscroll-none relative overflow-x-hidden bg-[#0A0A0A]">
       
       {/* Container principal con mejor padding y max-width */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10" style={{ contain: 'layout style' }}>
         
-        {/* Bono de bienvenida móvil - Fuera del contenedor - Controlable */}
-        {user?.id && isVisible('welcome_bonus') && (
-          <div className="md:hidden mb-4">
-            <WelcomeBonus 
-              userId={user.id} 
-              onBonusClaimed={() => {
-                toast.success('¡Bono acreditado exitosamente!');
-                fetchUserStats();
-              }}
-            />
-          </div>
-        )}
 
-        {/* Balance móvil - FUERA del contenedor con imagen de fondo */}
-        {user?.id && isVisible('balance_display') && (
-          <div className="md:hidden mb-4">
-            <UserBalanceDisplay
-              initialBalance={userStats.balance}
-              userId={user.id}
-              currency="USD"
-              showControls={true}
-            />
-          </div>
-        )}
 
-        {/* Contenedor móvil con imagen de fondo - Mensaje del Día y Video */}
+        {/* Contenedor móvil con imagen de fondo - Balance y Asesora */}
         {user?.id && (
-          <div 
-            className="md:hidden mb-4 rounded-2xl overflow-hidden p-4 pb-6"
-            style={{
-              backgroundImage: 'url(/images/fondo.webp)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
-          >
-            {/* Mensaje del Día */}
-            <div className="w-full mb-4">
+          <div className="md:hidden mb-4 rounded-2xl overflow-hidden p-4 pb-6 relative">
+            {/* Imagen de fondo optimizada con Next.js Image */}
+            <Image
+              src="/images/fondo.webp"
+              alt=""
+              fill
+              priority
+              className="object-cover -z-10"
+              sizes="100vw"
+            />
+            
+            {/* Balance móvil - DENTRO del contenedor con imagen de fondo */}
+            {isVisible('balance_display') && (
+              <div className="w-full mb-4">
+                <UserBalanceDisplay
+                  initialBalance={userStats.balance}
+                  userId={user.id}
+                  currency="USD"
+                  showControls={true}
+                />
+              </div>
+            )}
+            
+            {/* Mensaje del Día (Asesora) */}
+            <div className="w-full">
               <DailyMessage />
             </div>
+          </div>
+        )}
 
-            {/* Tutorial móvil */}
-            {isVisible('video_tutorial') && (
-              <>
-              <div className="relative h-[200px] bg-black rounded-3xl overflow-hidden">
+        {/* Tutorial móvil - FUERA del contenedor con imagen de fondo */}
+        {user?.id && isVisible('video_tutorial') && (
+          <div className="md:hidden mb-4">
+            <div className="relative h-[200px] bg-black rounded-3xl overflow-hidden">
               <Card 
-                className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 h-full overflow-hidden rounded-3xl transition-all duration-700 group"
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className="relative bg-[#121212] h-full overflow-hidden rounded-3xl"
+                style={{ contain: 'layout style paint' }}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-                
-                {/* Imagen de fondo con zoom */}
+                {/* Imagen de fondo */}
                 <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
                   <img
                     src="/images/tutorial.webp"
                     alt="Tutorial"
                     className="w-full h-full object-cover"
-                    style={{
-                      animation: 'slowZoom 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate',
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)'
-                    }}
+                    loading="lazy"
                   />
                 </div>
                 
                 {/* Overlay oscuro */}
-                <div className="absolute inset-0 bg-black/75 z-[1]"></div>
+                <div className="absolute inset-0 bg-[#000000]/75 z-[1]"></div>
 
                 {/* Contenido */}
                 <div className="relative z-10 h-full flex flex-col justify-between p-6">
-                  {/* Título en la parte superior */}
                   <div>
                     <h3 className="text-xl font-bold text-white">
                       {tutorialVideo.title}
                     </h3>
+                    <p className="text-sm text-white/70 mt-1">
+                      Aprende cómo funciona la plataforma
+                    </p>
                   </div>
 
-                  {/* Botón en la parte inferior - Sin badge en mobile */}
                   <div className="flex flex-col gap-3">
                     {tutorialVideo.isClickable && (
                       <div className="flex justify-end">
                         <button
                           onClick={() => setShowFullPlayer(true)}
-                          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
+                          className="rounded-full border-[3px] border-[#3A3A3A] overflow-hidden flex items-stretch gap-0"
                         >
-                          Ver tutorial de Inicio
-                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
+                          <span className="pl-5 pr-3 py-2.5 bg-[#E5E5E5] text-black font-bold flex items-center">
+                            Ver video
+                          </span>
+                          <div className="pr-5 pl-3 bg-[#121212] flex items-center justify-center">
+                            <svg className="w-5 h-5" fill="#FACD48" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
                         </button>
                       </div>
                     )}
@@ -568,40 +533,22 @@ export default function DashboardPage() {
                   </div>
                 )}
               </Card>
-              
-              <style jsx>{`
-                @keyframes slowZoom {
-                  0% {
-                    transform: scale3d(1, 1, 1);
-                  }
-                  100% {
-                    transform: scale3d(1.08, 1.08, 1);
-                  }
-                }
-              `}</style>
-              </div>
-              
-              {/* Badge con descripción - Solo visible en mobile, debajo del bloque */}
-              <div className="mt-3 px-3 py-2 rounded-lg bg-black/75 backdrop-blur-sm">
-                <p className="text-[11px] leading-relaxed text-white/90 text-left">
-                  <span className="font-bold">Más que tecnología:</span> construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.
-                </p>
-              </div>
-              </>
-            )}
+            </div>
           </div>
         )}
 
         {/* Layout Desktop: Columna izquierda (Balance + Bono) y Columna derecha (Video) */}
         {user?.id && (
-          <div 
-            className="hidden md:block mb-4 lg:mb-6 rounded-2xl overflow-hidden py-6 px-4"
-            style={{
-              backgroundImage: 'url(/images/fondo.webp)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
-          >
+          <div className="hidden md:block mb-4 lg:mb-6 rounded-2xl overflow-hidden py-6 px-4 relative">
+            {/* Imagen de fondo optimizada con Next.js Image */}
+            <Image
+              src="/images/fondo.webp"
+              alt=""
+              fill
+              priority
+              className="object-cover -z-10"
+              sizes="100vw"
+            />
             <div className="grid md:grid-cols-2 gap-4">
             {/* Columna izquierda: Balance + Mensaje del Día (o Slider Premium) */}
             <div className="grid grid-cols-2 gap-4 h-[400px]">
@@ -621,78 +568,56 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Columna derecha: Bono + Video Tutorial (o Slider Premium) */}
+            {/* Columna derecha: Video Tutorial */}
             <div className="flex flex-col gap-4 h-[400px]">
-              {/* Bono de bienvenida - Sin AdBlock después */}
-              {!userStats.welcomeBonusClaimed && isVisible('welcome_bonus') && (
-                <div className="flex-shrink-0">
-                  <WelcomeBonus 
-                    userId={user.id} 
-                    onBonusClaimed={() => {
-                      toast.success('¡Bono acreditado exitosamente!');
-                      fetchUserStats();
-                    }}
-                  />
-                </div>
-              )}
-
               {/* Tutorial */}
               <div className="flex-1 min-h-0">
               <Card 
-                className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 h-full overflow-hidden rounded-3xl transition-all duration-700 group"
-                style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
+                className="relative bg-[#121212] h-full overflow-hidden rounded-3xl"
+                style={{ contain: 'layout style paint' }}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-                
-                {/* Imagen de fondo con zoom */}
+                {/* Imagen de fondo */}
                 <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
                   <img
                     src="/images/tutorial.webp"
                     alt="Tutorial"
                     className="w-full h-full object-cover"
-                    style={{
-                      animation: 'slowZoom 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate',
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)'
-                    }}
+                    loading="lazy"
                   />
                 </div>
                 
                 {/* Overlay oscuro */}
-                <div className="absolute inset-0 bg-black/75 z-[1]"></div>
+                <div className="absolute inset-0 bg-[#000000]/75 z-[1]"></div>
 
                 {/* Contenido */}
                 <div className="relative z-10 h-full flex flex-col justify-between p-6">
-                  {/* Título en la parte superior */}
                   <div>
                     <h3 className="text-xl font-bold text-white">
                       {tutorialVideo.title}
                     </h3>
+                    <p className="text-sm text-white/70 mt-1">
+                      Aprende cómo funciona la plataforma
+                    </p>
                   </div>
 
-                  {/* Botón y badge - Desktop (botón arriba) */}
                   <div className="flex flex-col gap-3">
                     {tutorialVideo.isClickable && (
-                      <div className="flex justify-start">
+                      <div className="flex justify-end">
                         <button
                           onClick={() => setShowFullPlayer(true)}
-                          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-100 font-semibold text-sm transition-all hover:scale-105 shadow-lg text-black"
+                          className="rounded-full border-[3px] border-[#3A3A3A] overflow-hidden flex items-stretch gap-0"
                         >
-                          Ver tutorial de Inicio
-                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
+                          <span className="pl-5 pr-3 py-2.5 bg-[#E5E5E5] text-black font-bold flex items-center">
+                            Ver video
+                          </span>
+                          <div className="pr-5 pl-3 bg-[#121212] flex items-center justify-center">
+                            <svg className="w-5 h-5" fill="#FACD48" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
                         </button>
                       </div>
                     )}
-
-                    <div className="px-3 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
-                      <p className="text-[11px] leading-relaxed text-white/80">
-                        <span className="font-bold">Más que tecnología:</span> construimos relaciones sostenibles basadas en la confianza, la seguridad y la innovación. Flasti es una plataforma global que impulsa a miles de personas hacia un futuro próspero, conectado y lleno de oportunidades.
-                      </p>
-                    </div>
                   </div>
                 </div>
 
@@ -722,176 +647,92 @@ export default function DashboardPage() {
                   </div>
                 )}
               </Card>
-              
-              <style jsx>{`
-                @keyframes slowZoom {
-                  0% {
-                    transform: scale3d(1, 1, 1);
-                  }
-                  100% {
-                    transform: scale3d(1.08, 1.08, 1);
-                  }
-                }
-              `}</style>
               </div>
             </div>
             </div>
           </div>
         )}
 
-        {/* Estadísticas con estilo glassmorphism exclusivo */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6">
+        {/* Estadísticas */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6" style={{ contain: 'layout style' }}>
           {isVisible('stat_today') && (
-            <div className="relative group">
-
-              
-              {/* Tarjeta glassmorphism */}
-              <div 
-                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-              >
-                
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
-                {/* Contenido */}
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
-                        Hoy
-                      </p>
-                      <p className="text-2xl lg:text-3xl font-bold text-white">
-                        ${userStats.todayEarnings.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
-                      <TrendingUp className="w-6 h-6 text-[#121212]" />
-                    </div>
-                  </div>
+            <div className="rounded-3xl p-4 lg:p-6 bg-[#121212]" style={{ contain: 'layout style paint' }}>
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                    Hoy
+                  </p>
+                  <p className="text-2xl lg:text-3xl font-bold text-white">
+                    ${userStats.todayEarnings.toFixed(2)}
+                  </p>
                 </div>
-
-
+                <div className="p-3 rounded-xl bg-white">
+                  <TrendingUp className="w-6 h-6 text-[#121212]" />
+                </div>
               </div>
             </div>
           )}
 
           {isVisible('stat_week') && (
-            <div className="relative group">
-
-              
-              {/* Tarjeta glassmorphism */}
-              <div 
-                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-              >
-
-                
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
-                {/* Contenido */}
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Semana</p>
-                      <p className="text-2xl lg:text-3xl font-bold text-white">
-                        ${userStats.weekEarnings.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
-                      <Calendar className="w-6 h-6 text-[#121212]" />
-                    </div>
-                  </div>
+            <div className="rounded-3xl p-4 lg:p-6 bg-[#121212]" style={{ contain: 'layout style paint' }}>
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Semana</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-white">
+                    ${userStats.weekEarnings.toFixed(2)}
+                  </p>
                 </div>
-
-
+                <div className="p-3 rounded-xl bg-white">
+                  <Calendar className="w-6 h-6 text-[#121212]" />
+                </div>
               </div>
             </div>
           )}
 
           {isVisible('stat_total') && (
-            <div className="relative group">
-
-              
-              {/* Tarjeta glassmorphism */}
-              <div 
-                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-              >
-
-                
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
-                {/* Contenido */}
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Total</p>
-                      <p className="text-2xl lg:text-3xl font-bold text-white">
-                        ${userStats.totalEarnings.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
-                      <Wallet className="w-6 h-6 text-[#121212]" />
-                    </div>
-                  </div>
+            <div className="rounded-3xl p-4 lg:p-6 bg-[#121212]" style={{ contain: 'layout style paint' }}>
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-white/60 uppercase tracking-wider">Total</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-white">
+                    ${userStats.totalEarnings.toFixed(2)}
+                  </p>
                 </div>
-
-
+                <div className="p-3 rounded-xl bg-white">
+                  <Wallet className="w-6 h-6 text-[#121212]" />
+                </div>
               </div>
             </div>
           )}
 
           {isVisible('stat_completed') && (
-            <div className="relative group">
-
-              
-              {/* Tarjeta glassmorphism */}
-              <div 
-                className="relative backdrop-blur-2xl rounded-3xl p-4 lg:p-6 border border-white/10 transition-all duration-700 overflow-hidden"
-                style={{ backgroundColor: '#121212', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-              >
-
-                
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
-                {/* Contenido */}
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
-                        Completas
-                      </p>
-                      <p className="text-2xl lg:text-3xl font-bold text-white">
-                        {userStats.totalTransactions}
-                      </p>
-                    </div>
-                    <div className="relative p-3 rounded-xl bg-white transition-opacity duration-300">
-                      <CheckCircle2 className="w-6 h-6 text-[#121212]" />
-                    </div>
-                  </div>
+            <div className="rounded-3xl p-4 lg:p-6 bg-[#121212]" style={{ contain: 'layout style paint' }}>
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                    Completas
+                  </p>
+                  <p className="text-2xl lg:text-3xl font-bold text-white">
+                    {userStats.totalTransactions}
+                  </p>
                 </div>
-
-
+                <div className="p-3 rounded-xl bg-white">
+                  <CheckCircle2 className="w-6 h-6 text-[#121212]" />
+                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Contenido principal con tabs mejorado - Controlable */}
+        {/* Contenido principal - Ofertas */}
         {isVisible('offers_section') && (
           <Tabs defaultValue="offers" className="space-y-4">
 
             <TabsContent value="offers" className="space-y-4">
               <Card 
-                className="relative backdrop-blur-2xl border border-white/10 rounded-3xl"
-                style={{ backgroundColor: '#121212' }}
+                className="rounded-3xl bg-[#121212]"
+                style={{ contain: 'layout style' }}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
               <CardHeader className="pb-4">
                 {/* Título */}
                 <div className="mb-3">

@@ -13,7 +13,7 @@ const BackButton = () => {
   return (
     <button
       onClick={() => router.push('/dashboard')}
-      className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-card/30 backdrop-blur-sm border border-primary/20 hover:border-primary/50 transition-colors group flex items-center justify-center"
+      className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-[#121212] border border-primary/20 hover:border-primary/50 transition-colors group flex items-center justify-center"
       aria-label="Volver al Inicio"
     >
       <ArrowLeft

@@ -36,7 +36,7 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
   };
 
   return (
-    <div className="relative group">
+    <div className="relative">
       {/* Contenido original (borroso) */}
       {children}
       
@@ -66,10 +66,10 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
           {/* Título y descripción */}
           <div className="text-center space-y-2 mb-4">
             <h3 className="text-white font-bold text-lg drop-shadow-lg">
-              {isReadyToUnlock ? 'Microtarea lista para desbloquear' : 'Microtarea bloqueada'}
+              Microtarea lista para desbloquear
             </h3>
             <p className="text-white/90 text-sm drop-shadow-md px-4">
-              {isReadyToUnlock ? 'Desbloqueá para seguir avanzando' : 'Completá las microtareas anteriores para avanzar'}
+              Desbloqueá para seguir avanzando
             </p>
           </div>
 

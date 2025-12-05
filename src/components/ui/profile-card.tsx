@@ -169,26 +169,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           flex-direction: column;
           align-items: center;
           border-radius: 1.5rem;
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(40px);
-          -webkit-backdrop-filter: blur(40px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: #121212;
           transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
           transform: translate3d(0, 0, 0);
           backface-visibility: hidden;
           contain: layout style paint;
-        }
-
-        .card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-          border-radius: 1.5rem 1.5rem 0 0;
         }
 
         .card__img {
@@ -215,15 +201,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           position: absolute;
           width: 114px;
           height: 114px;
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
+          background: #1a1a1a;
           border-radius: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
           top: calc(50% - 57px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
           transition: all 0.3s ease;
         }
 

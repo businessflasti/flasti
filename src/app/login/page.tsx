@@ -11,7 +11,6 @@ import { FormEvent, useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
-import AdBlock from "@/components/ui/AdBlock";
 
 const getLoginErrorMessage = (error: any): string => {
   const defaultMessage = 'Error al iniciar sesión';
@@ -35,8 +34,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loginStep, setLoginStep] = useState('');
-  const [isAdVisible, setIsAdVisible] = useState(true);
-  const adInsRef = useRef<HTMLModElement>(null);
+
 
   useEffect(() => {
     // Cambia el fondo del body a #0B1017 en vez de negro
@@ -46,30 +44,7 @@ export default function LoginPage() {
     };
   }, []);
 
-  useEffect(() => {
-    try {
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch (err) {
-      console.error("AdSense error:", err);
-    }
 
-    // Comprobar si el anuncio se ha cargado después de un tiempo
-    const adCheckTimeout = setTimeout(() => {
-      if (adInsRef.current) {
-        // Google AdSense añade data-ad-status="unfilled" si no puede cargar un anuncio.
-        // También comprobamos si el elemento está vacío y no tiene altura como respaldo.
-        const isUnfilled = adInsRef.current.dataset.adStatus === 'unfilled';
-        const isEmpty = adInsRef.current.innerHTML.trim() === '' && adInsRef.current.clientHeight === 0;
-
-        if (isUnfilled || isEmpty) {
-          console.log("Anuncio no cargado, ocultando el bloque.");
-          setIsAdVisible(false);
-        }
-      }
-    }, 3500); // Esperar 3.5 segundos para dar tiempo a AdSense a cargar.
-
-    return () => clearTimeout(adCheckTimeout);
-  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -131,14 +106,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
 
-      <div className="container mx-auto flex justify-center gap-x-24 gap-y-12 flex-col lg:flex-row lg:items-stretch relative z-10">
-        {/* Bloque de anuncio */}
-        <div className="order-2 lg:order-1 flex flex-col justify-center lg:mt-16">
-          <AdBlock adClient="ca-pub-8330194041691289" adSlot="2159902041" alwaysVisible />
-        </div>
-        
+      <div className="container mx-auto flex justify-center relative z-10">
         {/* Formulario de Login - Estilo gamificado */}
-        <div className="w-full max-w-md order-1 lg:order-2 flex flex-col justify-center lg:-mt-4">
+        <div className="w-full max-w-md flex flex-col justify-center">
           {/* Logo centrado */}
           <div className="flex justify-center mb-6 mt-4">
             <Link href="/">

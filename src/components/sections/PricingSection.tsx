@@ -38,7 +38,6 @@ const LoginAccordion = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
     </div>
   );
 };
@@ -72,15 +71,15 @@ const CountdownTimer = () => {
         <span className="text-sm font-medium">{t('ofertaTermina')}</span>
       </div>
       <div className="flex items-center space-x-2">
-        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 shadow-inner">
+        <div className="bg-black/30 px-3 py-2 rounded-md shadow-inner">
           <span className="text-xl font-mono font-bold text-white">{timeLeft.hours.toString().padStart(2, '0')}</span>
         </div>
         <span className="text-xl font-bold text-white">:</span>
-        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner">
+        <div className="bg-black/30 px-3 py-2 rounded-md shadow-inner">
           <span className="text-xl font-mono font-bold text-white">{timeLeft.minutes.toString().padStart(2, '0')}</span>
         </div>
         <span className="text-xl font-bold text-white">:</span>
-        <div className="bg-black/30 backdrop-blur-sm px-3 py-2 rounded-md border border-white/10 shadow-inner">
+        <div className="bg-black/30 px-3 py-2 rounded-md shadow-inner">
           <span className="text-xl font-mono font-bold text-white">{timeLeft.seconds.toString().padStart(2, '0')}</span>
         </div>
       </div>
@@ -91,12 +90,17 @@ const CountdownTimer = () => {
 const PricingSection = () => {
   const { t } = useLanguage();
   return (
-    <section className="py-24 relative overflow-hidden">
-      {/* Elementos decorativos del fondo */}
+    <section 
+      className="py-24 relative overflow-hidden bg-[#0A0A0A]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
+      {/* Elementos decorativos del fondo - simplificados */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5ZDRlZGQiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djNjMCAxLjEtLjkgMi0yIDJoLTJ2MWgyYTMgMyAwIDAgMCAzLTN2LTNoLTF6bS04LTRoMXYyaC0xVjMwem0tNCAxOGg0djFoLTR6TTQ2IDQyaDJ2MWgtMnYxaC0xdi0yaDF6bS0yIDRoM3YxaC0zeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary/5 blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-accent/5 blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-30"></div>
       </div>
 
       <div className="container-custom relative z-10">
@@ -112,8 +116,6 @@ const PricingSection = () => {
         <div className="max-w-3xl mx-auto">
           {/* Single Plan */}
           <Card className="glass-card overflow-hidden relative group h-full transition-colors">
-            <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 to-transparent"></div>
 
             <div className="absolute right-5 top-5">
               <div className="bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white text-xs font-medium py-1 px-3 rounded-full flex items-center gap-1">
@@ -126,7 +128,7 @@ const PricingSection = () => {
 
             <div className="p-8 relative z-10">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-3xl bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4 border border-white/10">
+                <div className="w-12 h-12 rounded-3xl bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center mr-4">
                   <Sparkles className="text-[#3c66ce]" size={24} />
                 </div>
                 <div>
@@ -137,7 +139,7 @@ const PricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-3xl border border-white/10">
+              <div className="mb-8 bg-gradient-to-br from-[#9333ea]/10 to-[#3c66ce]/10 p-6 rounded-3xl">
                 <div className="flex items-baseline mb-2">
                   <span className="text-4xl font-bold">$3.90</span>
                   <span className="text-foreground/70 text-sm ml-2">USD</span>
@@ -152,7 +154,7 @@ const PricingSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0">
                       <Zap className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
@@ -162,7 +164,7 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0">
                       <Infinity className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
@@ -172,7 +174,7 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0">
                       <Shield className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
@@ -184,7 +186,7 @@ const PricingSection = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0">
                       <HeadphonesIcon className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
@@ -194,7 +196,7 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0">
                       <Sparkles className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
@@ -204,7 +206,7 @@ const PricingSection = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0 border border-white/10">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9333ea]/20 to-[#3c66ce]/20 flex items-center justify-center flex-shrink-0">
                       <Gift className="text-[#3c66ce]" size={16} />
                     </div>
                     <div>
@@ -249,7 +251,7 @@ const PricingSection = () => {
                 </div>
               </div>
 
-              <div className="mb-6 bg-black/20 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden">
+              <div className="mb-6 bg-black/20 rounded-3xl overflow-hidden">
                 <div className="p-3 relative">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">

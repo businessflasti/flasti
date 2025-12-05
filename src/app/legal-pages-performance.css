@@ -31,10 +31,10 @@ html {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Reducir repaints en elementos con backdrop-filter */
-[class*="backdrop-blur"] {
-  will-change: transform;
+/* Optimizar tarjetas con fondos sólidos */
+.rounded-3xl {
   transform: translate3d(0, 0, 0);
+  contain: layout style paint;
 }
 
 /* Optimizar grids */

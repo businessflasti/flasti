@@ -124,7 +124,7 @@ const LocationBadge = () => {
   }, [language]);
 
   return (
-    <div className="flex items-center justify-center gap-2 bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-full px-4 py-1.5 text-sm">
+    <div className="flex items-center justify-center gap-2 bg-white/[0.03] backdrop-blur-xl border-0 rounded-full px-4 py-1.5 text-sm">
       {locationData.loading ? (
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-foreground/20 animate-pulse"></div>
@@ -146,7 +146,7 @@ const LocationBadge = () => {
         </div>
       ) : (
         <>
-          <div className="w-5 h-5 overflow-hidden rounded-full flex-shrink-0 border border-white/10 flex items-center justify-center bg-primary/10">
+          <div className="w-5 h-5 overflow-hidden rounded-full flex-shrink-0 flex items-center justify-center bg-primary/10">
             {locationData.countryCode && locationData.countryCode !== 'global' ? (
               <img
                 src={`https://flagcdn.com/w20/${locationData.countryCode}.png`}

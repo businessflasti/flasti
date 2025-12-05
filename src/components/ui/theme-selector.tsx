@@ -72,7 +72,7 @@ const ThemeSelector = ({ variant = 'icon', size = 'md' }: ThemeSelectorProps) =>
       )}
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-[rgba(20,20,25,0.95)] backdrop-blur-md border border-white/5 rounded-lg shadow-xl z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-[#141419] border border-white/5 rounded-lg shadow-xl z-50">
           <div className="py-1">
             {themes.map((t) => (
               <button

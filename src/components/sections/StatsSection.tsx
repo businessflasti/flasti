@@ -75,7 +75,7 @@ const StatsSection = () => {
       <div className="container-custom max-w-[1200px] mb-16 text-center relative z-10">
         <div className="flex flex-col items-center gap-3 mb-4">
           <div className="flex justify-center">
-            <div className="bg-gradient-to-r from-[#FAD74A] to-[#f5c71a] backdrop-blur-sm py-1 px-2 rounded-full border border-yellow-500/40">
+            <div className="bg-gradient-to-r from-[#FAD74A] to-[#f5c71a] py-1 px-2 rounded-full border border-yellow-500/40">
               <div className="flex -space-x-2">
                 <div className="w-7 h-7 rounded-full overflow-hidden ring-2 ring-yellow-600/60">
                   <img src="/images/principal/profile1.jpg" alt={t('usuario1')} className="w-full h-full object-cover" loading="lazy" />
@@ -117,18 +117,15 @@ const StatsSection = () => {
                 willChange: 'transform'
               }}
             >
-              {/* Tarjeta glassmorphism optimizada */}
+              {/* Tarjeta optimizada */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl p-8 border border-white/10 transition-opacity duration-300 overflow-hidden"
+                className="relative bg-[#121212] rounded-3xl p-8 transition-opacity duration-300 overflow-hidden"
                 style={{
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
                   transform: 'translate3d(0, 0, 0)',
                   contain: 'layout style paint'
                 }}
               >
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
                 {/* Contenido */}
                 <div className="relative z-10">
                   <div

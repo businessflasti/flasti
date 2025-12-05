@@ -189,7 +189,7 @@ export function PlaceholdersAndVanishInput({
   return (
     <div
       className={cn(
-        "w-full relative max-w-xl mx-auto bg-white/[0.03] backdrop-blur-2xl h-12 rounded-full overflow-hidden border border-white/10 shadow-2xl transition duration-200 px-4",
+        "w-full relative max-w-xl mx-auto bg-[#121212] h-12 rounded-full overflow-hidden border border-white/10 shadow-2xl transition duration-200 px-4",
         className
       )}
     >

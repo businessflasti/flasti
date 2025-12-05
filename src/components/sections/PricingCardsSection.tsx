@@ -115,7 +115,7 @@ const PricingCardsSection = () => {
 								<Button
 									className={`w-full ${
 										plan.buttonVariant === "default"
-											? "glow-effect bg-gradient-to-r from-[#3c66ce] to-[#3359b6] hover:opacity-90 transition-opacity text-white"
+											? "bg-gradient-to-r from-[#3c66ce] to-[#3359b6] hover:opacity-90 transition-opacity text-white"
 											: "border-[#3c66ce]/30 hover:bg-[#3c66ce]/10 transition-colors"
 									}`}
 								>

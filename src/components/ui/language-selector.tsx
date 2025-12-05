@@ -47,7 +47,7 @@ const LanguageSelector = (props: { mobile?: boolean }) => {
     <div className={`relative ${props.mobile ? 'block md:hidden' : 'hidden md:block'}`} ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-border/30 shadow-sm backdrop-blur-md font-semibold min-w-[90px] h-8 focus:ring-2 focus:ring-primary/40 focus:outline-none w-full justify-center"
+        className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-border/30 shadow-sm font-semibold min-w-[90px] h-8 focus:ring-2 focus:ring-primary/40 focus:outline-none w-full justify-center"
         aria-label="Select language"
         style={{ minWidth: 90, height: 32, background: '#1a1a1a' }}
       >

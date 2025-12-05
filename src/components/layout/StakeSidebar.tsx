@@ -47,21 +47,30 @@ export default function StakeSidebar({ isOpen = false, onClose }: StakeSidebarPr
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 stake-overlay lg:hidden z-40"
+          className="fixed inset-0 bg-[#0A0A0A]/90 lg:hidden z-40"
           onClick={onClose}
           aria-hidden="true"
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden'
+          }}
         />
       )}
 
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-16 left-0 h-[calc(100vh-4rem)] stake-bg-primary
-          border-r border-[#2A3F4F]/50 z-50
-          transition-transform duration-stake-normal ease-stake-ease-out
+          fixed top-16 left-0 h-[calc(100vh-4rem)] bg-[#121212]
+          border-r border-white/10 z-50
+          transition-transform duration-300 ease-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
           w-64
         `}
+        style={{
+          transform: isOpen ? 'translate3d(0, 0, 0)' : undefined,
+          backfaceVisibility: 'hidden',
+          contain: 'layout style paint'
+        }}
       >
         <div className="flex flex-col h-full">
           {/* Mobile Close Button */}

@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { Save, Eye, Upload } from 'lucide-react';
@@ -104,17 +103,20 @@ export default function BannerConfigPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0B1017] relative overflow-hidden">
+    <div 
+      className="min-h-screen bg-[#0B1017] relative overflow-hidden"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6 relative z-10">
-        <Breadcrumbs />
-
         <div className="flex items-center gap-3 mb-6">
           <h1 className="text-2xl md:text-3xl font-bold text-white">Configuración del Banner</h1>
         </div>
 
-        <Card className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-          
+        <Card className="bg-[#121212] rounded-3xl relative">
           <CardHeader>
             <CardTitle className="text-white">Editar Banner Superior</CardTitle>
             <p className="text-sm text-white/60 mt-2">
@@ -463,9 +465,7 @@ function CTANewsBlocksEditor() {
   }
 
   return (
-    <Card className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-      
+    <Card className="bg-[#121212] rounded-3xl relative">
       <CardHeader>
         <CardTitle className="text-white">Bloques CTA Bento Grid</CardTitle>
         <p className="text-sm text-white/60 mt-2">

@@ -74,23 +74,20 @@ const RegistrationFAQSection = React.memo(() => {
 							}}
 						>
 							<div 
-								className="bg-white/[0.03] backdrop-blur-2xl overflow-hidden relative rounded-3xl border border-white/10 transition-opacity duration-300 shadow-2xl"
+								className="bg-[#121212] overflow-hidden relative rounded-3xl transition-opacity duration-300 shadow-2xl"
 								style={{
 									transform: 'translate3d(0, 0, 0)',
 									contain: 'layout style paint'
 								}}
 							>
 								
-								{/* Brillo superior glassmorphism */}
-								<div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-								
 								<button
 									className="w-full py-5 px-4 flex items-center justify-between text-left relative z-10"
 									onClick={() => toggleFAQ(index)}
 								> 
 									<div className="flex items-center gap-3">
-										<div className={`w-10 h-10 rounded-full bg-gradient-to-br ${faq.color} flex items-center justify-center shadow-lg transition-transform duration-300 flex-shrink-0`}>
-											<div className="text-white">
+										<div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg transition-transform duration-300 flex-shrink-0">
+											<div className="text-black">
 												{faq.icon && React.cloneElement(faq.icon, { className: 'h-5 w-5' })}
 											</div>
 										</div>

@@ -47,15 +47,12 @@ export default function NosotrosPage() {
           }}
         >
           <div 
-            className="p-8 rounded-3xl transition-opacity duration-300 relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl"
+            className="p-8 rounded-3xl transition-opacity duration-300 relative overflow-hidden bg-[#121212] shadow-2xl"
             style={{
               transform: 'translate3d(0, 0, 0)',
               contain: 'layout style paint'
             }}
           >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            
             <div className="relative z-10">
               <h2 className="text-2xl font-bold mb-4 text-white">Nuestra Misión</h2>
             <p className="text-foreground/80 mb-4">
@@ -68,15 +65,12 @@ export default function NosotrosPage() {
           </div>
 
           <div 
-            className="p-8 rounded-3xl transition-opacity duration-300 relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl"
+            className="p-8 rounded-3xl transition-opacity duration-300 relative overflow-hidden bg-[#121212] shadow-2xl"
             style={{
               transform: 'translate3d(0, 0, 0)',
               contain: 'layout style paint'
             }}
           >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            
             <div className="relative z-10">
               <h2 className="text-2xl font-bold mb-4 text-white">Nuestra Visión</h2>
             <p className="text-foreground/80 mb-4">
@@ -103,15 +97,12 @@ export default function NosotrosPage() {
             }}
           >
             <div 
-              className="p-6 rounded-3xl transition-opacity duration-300 bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl relative"
+              className="p-6 rounded-3xl transition-opacity duration-300 bg-[#121212] shadow-2xl relative"
               style={{
                 transform: 'translate3d(0, 0, 0)',
                 contain: 'layout style paint'
               }}
             >
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
               <div className="relative z-10">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,15 +117,12 @@ export default function NosotrosPage() {
             </div>
 
             <div 
-              className="p-6 rounded-3xl transition-opacity duration-300 bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl relative"
+              className="p-6 rounded-3xl transition-opacity duration-300 bg-[#121212] shadow-2xl relative"
               style={{
                 transform: 'translate3d(0, 0, 0)',
                 contain: 'layout style paint'
               }}
             >
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
               <div className="relative z-10">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -148,10 +136,7 @@ export default function NosotrosPage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,10 +150,7 @@ export default function NosotrosPage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -182,10 +164,7 @@ export default function NosotrosPage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -199,10 +178,7 @@ export default function NosotrosPage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -225,15 +201,12 @@ export default function NosotrosPage() {
           </h2>
 
           <div 
-            className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl transition-opacity duration-300"
+            className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-[#121212] shadow-2xl transition-opacity duration-300"
             style={{
               transform: 'translate3d(0, 0, 0)',
               contain: 'layout style paint'
             }}
           >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="md:w-24 flex flex-col items-center">

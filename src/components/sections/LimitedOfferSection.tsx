@@ -23,14 +23,16 @@ const LimitedOfferSection = () => {
   }, []);
 
   return (
-    <section className="py-16 relative overflow-hidden">
-      {/* Elementos decorativos del fondo */}
-      <div className="absolute inset-0 z-0 hardware-accelerated">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#d4386c]/10 to-transparent opacity-30"></div>
-        <div className="absolute top-20 right-1/4 w-64 h-64 rounded-full bg-[#ec4899]/10 blur-3xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-[#f97316]/10 blur-3xl"></div>
-        <div className="absolute top-40 left-[20%] w-3 h-3 rounded-full bg-[#ec4899] animate-pulse"></div>
-        <div className="absolute bottom-40 right-[15%] w-2 h-2 rounded-full bg-[#f97316] animate-ping"></div>
+    <section 
+      className="py-16 relative overflow-hidden bg-[#0A0A0A]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
+      {/* Elementos decorativos del fondo - simplificados */}
+      <div className="absolute inset-0 z-0">
       </div>
 
       {/* Contenedor principal */}

@@ -69,7 +69,7 @@ const CompaniesSection = () => {
         </h2>
 
         <div className="flex justify-center mb-16">
-          <Button className="bg-transparent border border-primary text-primary hover:bg-primary/5 glow-effect">
+          <Button className="bg-transparent border border-primary text-primary hover:bg-primary/5">
             Agenda una demo
           </Button>
         </div>

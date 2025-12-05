@@ -191,15 +191,7 @@ export default function AdminDashboard() {
                   </svg>
                   Ranking
                 </Button>
-                <Button 
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold"
-                  onClick={() => window.location.href = '/dashboard/admin/banner-config'}
-                >
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/>
-                  </svg>
-                  Banner
-                </Button>
+
                 <Button 
                   className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold"
                   onClick={() => window.location.href = '/dashboard/admin/custom-offers'}

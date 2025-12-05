@@ -8,7 +8,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { DollarSign, CreditCard, AlertCircle, CheckCircle, Landmark, ArrowRightLeft, Wallet } from 'lucide-react';
@@ -182,10 +181,15 @@ export default function WithdrawalsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] relative overflow-hidden">
+    <div 
+      className="min-h-screen bg-[#0A0A0A] relative overflow-hidden"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6 relative z-10">
-      <Breadcrumbs />
-      
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-white">Solicitar Retiro</h1>
@@ -194,21 +198,11 @@ export default function WithdrawalsPage() {
       {/* Información del saldo */}
       {!pageLoading && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
-            style={{ 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              transform: 'translate3d(0, 0, 0)',
-              contain: 'layout style paint'
-            }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <Card className="bg-[#121212] rounded-3xl">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 transition-opacity duration-300 border border-green-300/20">
-                  <DollarSign className="w-5 h-5 text-white drop-shadow-lg" />
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+                <div className="p-3 rounded-2xl bg-white">
+                  <DollarSign className="w-5 h-5 text-black" />
                 </div>
                 <div>
                   <p className="text-sm text-white/80">Saldo Disponible</p>
@@ -220,21 +214,11 @@ export default function WithdrawalsPage() {
             </CardContent>
           </Card>
 
-          <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
-            style={{ 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              transform: 'translate3d(0, 0, 0)',
-              contain: 'layout style paint'
-            }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <Card className="bg-[#121212] rounded-3xl">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 transition-opacity duration-300 border border-blue-300/20">
-                  <CheckCircle className="w-5 h-5 text-white drop-shadow-lg" />
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+                <div className="p-3 rounded-2xl bg-white">
+                  <CheckCircle className="w-5 h-5 text-black" />
                 </div>
                 <div>
                   <p className="text-sm text-white/80">Total Ganado</p>
@@ -246,21 +230,11 @@ export default function WithdrawalsPage() {
             </CardContent>
           </Card>
 
-          <Card 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl transition-opacity duration-300 relative"
-            style={{ 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              transform: 'translate3d(0, 0, 0)',
-              contain: 'layout style paint'
-            }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <Card className="bg-[#121212] rounded-3xl">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 transition-opacity duration-300 border border-purple-300/20">
-                  <CreditCard className="w-5 h-5 text-white drop-shadow-lg" />
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+                <div className="p-3 rounded-2xl bg-white">
+                  <CreditCard className="w-5 h-5 text-black" />
                 </div>
                 <div>
                   <p className="text-sm text-white/80">Total Retirado</p>
@@ -295,12 +269,7 @@ export default function WithdrawalsPage() {
             <p className="text-gray-400 font-medium">Cargando métodos de retiro...</p>
           </div>
         ) : (
-          <div 
-            className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <div className="bg-[#121212] rounded-3xl">
             <div className="p-6 border-b border-white/10">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <ArrowRightLeft className="w-5 h-5" />
@@ -310,7 +279,7 @@ export default function WithdrawalsPage() {
             <div className="p-6">
               <form onSubmit={handleWithdraw} className="space-y-6">
                 {/* Información importante */}
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                <div className="bg-blue-500/10 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5" />
                     <div>
@@ -334,7 +303,7 @@ export default function WithdrawalsPage() {
                       value={amount}
                       onChange={e => setAmount(e.target.value)}
                       placeholder="Introduce tu monto"
-                      className="bg-background border-border focus:border-primary"
+                      className="bg-background border-0 focus:ring-0"
                     />
                     <p className="text-xs text-blue-400/80 mt-1">
                       Mínimo: $3.00 USD
@@ -350,7 +319,7 @@ export default function WithdrawalsPage() {
                       value={destination}
                       onChange={e => setDestination(e.target.value)}
                       placeholder="Introduce tu email"
-                      className="bg-background border-border focus:border-primary"
+                      className="bg-background border-0 focus:ring-0"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Debe ser un email válido de PayPal

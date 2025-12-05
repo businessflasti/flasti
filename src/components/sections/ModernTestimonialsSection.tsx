@@ -51,7 +51,7 @@ const MobileTestimonialCard = ({
       }}
     >
       <div 
-        className="bg-white/[0.03] backdrop-blur-2xl p-6 rounded-3xl flex flex-col h-full border border-white/10 shadow-2xl transition-opacity duration-300"
+        className="bg-[#121212] p-6 rounded-3xl flex flex-col h-full shadow-2xl transition-opacity duration-300"
         style={{
           transform: 'translate3d(0, 0, 0)',
           contain: 'layout style paint'
@@ -129,7 +129,7 @@ const DesktopTestimonialCard = ({
       }}
     >
       <div 
-        className="bg-white/[0.03] backdrop-blur-2xl p-8 rounded-3xl flex md:flex-row border border-white/10 shadow-2xl transition-opacity duration-300"
+        className="bg-[#121212] p-8 rounded-3xl flex md:flex-row shadow-2xl transition-opacity duration-300"
         style={{
           transform: 'translate3d(0, 0, 0)',
           contain: 'layout style paint'
@@ -240,7 +240,14 @@ const ModernTestimonialsSection = () => {
   }, [mobileEmblaApi, onMobileSelect]);
 
   return (
-    <section className="py-12 md:py-16 relative overflow-hidden bg-[#101011]">
+    <section 
+      className="py-12 md:py-16 relative overflow-hidden bg-[#101011]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
 
       <div className="container-custom relative z-10 max-w-5xl mx-auto px-4">
         {/* Main heading */}
@@ -268,7 +275,7 @@ const ModernTestimonialsSection = () => {
           
           {/* Navigation buttons */}
           <button
-            className="absolute top-1/2 -left-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 flex items-center justify-center text-white z-10 transition-all duration-300 shadow-lg"
+            className="absolute top-1/2 -left-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white z-10 transition-all duration-300 shadow-lg"
             onClick={() => desktopEmblaApi?.scrollPrev()}
             aria-label="Previous testimonial"
           >
@@ -276,7 +283,7 @@ const ModernTestimonialsSection = () => {
           </button>
           
           <button
-            className="absolute top-1/2 -right-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 flex items-center justify-center text-white z-10 transition-all duration-300 shadow-lg"
+            className="absolute top-1/2 -right-4 transform -translate-y-1/2 w-12 h-12 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white z-10 transition-all duration-300 shadow-lg"
             onClick={() => desktopEmblaApi?.scrollNext()}
             aria-label="Next testimonial"
           >
@@ -298,7 +305,7 @@ const ModernTestimonialsSection = () => {
           
           {/* Navigation buttons for mobile */}
           <button
-            className="absolute top-1/2 left-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 flex items-center justify-center text-white z-10 shadow-lg"
+            className="absolute top-1/2 left-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white z-10 shadow-lg"
             onClick={() => mobileEmblaApi?.scrollPrev()}
             aria-label="Previous testimonial"
           >
@@ -306,7 +313,7 @@ const ModernTestimonialsSection = () => {
           </button>
           
           <button
-            className="absolute top-1/2 right-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 flex items-center justify-center text-white z-10 shadow-lg"
+            className="absolute top-1/2 right-0 transform -translate-y-1/2 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white z-10 shadow-lg"
             onClick={() => mobileEmblaApi?.scrollNext()}
             aria-label="Next testimonial"
           >
@@ -332,7 +339,7 @@ const ModernTestimonialsSection = () => {
 
         {/* Rating display */}
         <div className="flex justify-center items-center mt-8">
-          <div className="bg-white/[0.05] backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full flex items-center gap-3 shadow-xl">
+          <div className="bg-[#1a1a1a] border border-white/10 px-6 py-3 rounded-full flex items-center gap-3 shadow-xl">
             <div className="flex">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Star

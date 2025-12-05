@@ -5,11 +5,7 @@ import Logo from "@/components/ui/logo";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Link from 'next/link';
 
-interface HeaderProps {
-  showStickyBanner?: boolean;
-}
-
-export default function Header({ showStickyBanner = false }: HeaderProps) {
+export default function Header() {
   const { t } = useLanguage();
 
   return (

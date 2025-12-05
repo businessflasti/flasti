@@ -50,7 +50,7 @@ export const CTABentoGridItem: React.FC<CTABentoGridItemProps> = ({
   return (
     <div
       className={cn(
-        "relative bg-white/[0.03] backdrop-blur-2xl justify-between flex flex-col h-full rounded-3xl border border-white/10 transition-opacity duration-300 shadow-2xl overflow-hidden",
+        "relative bg-[#121212] justify-between flex flex-col h-full rounded-3xl transition-opacity duration-300 shadow-2xl overflow-hidden",
         className
       )}
       style={{
@@ -59,10 +59,6 @@ export const CTABentoGridItem: React.FC<CTABentoGridItemProps> = ({
         backfaceVisibility: 'hidden'
       }}
     >
-      
-      {/* Brillo superior glassmorphism */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-      
       {header}
       <div className="px-4 md:px-6 pb-4 md:pb-4 mt-3 md:mt-2 relative z-10">
         {icon}

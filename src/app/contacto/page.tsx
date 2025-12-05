@@ -118,10 +118,7 @@ export default function ContactoPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10 w-full flex flex-col items-center">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Mail className="w-6 h-6 text-primary" />
@@ -137,10 +134,7 @@ export default function ContactoPage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10 w-full flex flex-col items-center">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <MessageCircle className="w-6 h-6 text-primary" />
@@ -157,10 +151,7 @@ export default function ContactoPage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 shadow-2xl relative group">
-              {/* Brillo superior glassmorphism */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              
+            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-[#121212] shadow-2xl relative group">
               <div className="relative z-10 w-full flex flex-col items-center">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Phone className="w-6 h-6 text-primary" />
@@ -175,15 +166,12 @@ export default function ContactoPage() {
           </div>
 
           <div 
-            className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl transition-opacity duration-300"
+            className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-[#121212] shadow-2xl transition-opacity duration-300"
             style={{
               transform: 'translate3d(0, 0, 0)',
               contain: 'layout style paint'
             }}
           >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            
             <div className="relative z-10">
               <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
                 Envíanos un mensaje

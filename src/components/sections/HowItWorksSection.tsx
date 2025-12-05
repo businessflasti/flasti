@@ -51,7 +51,14 @@ const HowItWorksSection = React.memo(() => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
+    <section 
+      className="py-24 relative overflow-hidden bg-[#0A0A0A]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
@@ -89,21 +96,18 @@ const HowItWorksSection = React.memo(() => {
                 willChange: 'transform'
               }}
             >
-              {/* Tarjeta principal con glassmorphism optimizada */}
+              {/* Tarjeta principal optimizada */}
               <div 
-                className="relative bg-white/[0.03] backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/10 transition-opacity duration-300 shadow-2xl"
+                className="relative bg-[#121212] rounded-3xl overflow-hidden transition-opacity duration-300 shadow-2xl"
                 style={{
                   transform: 'translate3d(0, 0, 0)',
                   contain: 'layout style paint'
                 }}
               >
                 
-                {/* Brillo superior glassmorphism */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
                 {/* Número del paso - Esquina superior izquierda */}
                 <div className="absolute top-4 left-4 z-20">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${step.color} flex items-center justify-center text-black font-black text-xl shadow-lg`}>
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-black text-xl shadow-lg">
                     {step.number}
                   </div>
                 </div>
@@ -130,7 +134,7 @@ const HowItWorksSection = React.memo(() => {
 
                   {/* Badge con glassmorphism */}
                   <div className="flex justify-center">
-                    <div className={`inline-flex items-center gap-2 bg-gradient-to-r ${step.color} text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg transition-all duration-300`}>
+                    <div className="inline-flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg transition-all duration-300">
                       <span>{step.badge}</span>
                       <span className="bg-black/20 text-white px-2 py-0.5 rounded-full text-xs">
                         {step.icon}

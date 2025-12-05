@@ -59,14 +59,23 @@ export const MobileMenu = () => {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-[#0A0A0A]/90 z-40"
           onClick={toggleMenu}
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden'
+          }}
         />
       )}
 
       {/* Menu panel */}
       <div
-        className={`fixed top-0 right-0 w-3/4 h-full bg-card/95 backdrop-blur-md border-l border-border/20 p-6 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 w-3/4 h-full bg-[#121212] border-l border-white/10 p-6 shadow-xl z-50 transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        style={{
+          transform: isOpen ? 'translate3d(0, 0, 0)' : 'translate3d(100%, 0, 0)',
+          backfaceVisibility: 'hidden',
+          contain: 'layout style paint'
+        }}
       >
         <div className="flex flex-col h-full">
           {/* User info */}

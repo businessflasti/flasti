@@ -156,8 +156,7 @@ const CountriesSection = () => {
           align-items: center;
           justify-content: center;
           margin-right: 0.5rem;
-          background: ${isLowPerformance ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.03)'};
-          ${isLowPerformance ? '' : 'backdrop-filter: blur(10px);'}
+          background: #1a1a1a;
           overflow: hidden;
         }
         

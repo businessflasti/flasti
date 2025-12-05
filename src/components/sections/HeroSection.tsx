@@ -190,7 +190,14 @@ const HeroSection = React.memo(function HeroSection() {
   }, []);
 
   return (
-    <section className="pt-20 pb-24 relative overflow-hidden">
+    <section 
+      className="pt-20 pb-24 relative overflow-hidden"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        contain: 'layout style paint',
+        backfaceVisibility: 'hidden'
+      }}
+    >
       {/* Fondo negro absoluto debajo de todo */}
       <div className="absolute inset-0 z-[-20] bg-black"></div>
       {/* Efectos de luces y gradientes solo si no es móvil de gama baja */}
@@ -224,7 +231,7 @@ const HeroSection = React.memo(function HeroSection() {
           {/* Estadísticas */}
           <div className="flex flex-row justify-center gap-4 sm:gap-8 mb-10 mt-8 animate-entry animate-entry-delay-3 hardware-accelerated hero-stats-container">
             <div className={
-              `rounded-3xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
+              `rounded-3xl text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
             }>
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.generatedAmount} prefix="$" />
@@ -235,7 +242,7 @@ const HeroSection = React.memo(function HeroSection() {
               </p>
             </div>
             <div className={
-              `rounded-3xl border border-white/5 text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
+              `rounded-3xl text-center flex-1 max-w-[200px] sm:max-w-[220px] md:max-w-[240px] px-3 sm:px-6 py-3 sm:py-4 bg-[#282828]`
             }>
               <p className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-t from-[#bfa14a] via-[#ffe066] to-[#fffbe6] bg-clip-text text-transparent" style={{WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundImage: 'linear-gradient(to top, #bfa14a 0%, #ffe066 60%, #fffbe6 100%)', filter: 'brightness(1.1)'}}>
                 <AnimatedCounter value={stats.microtasksCompleted} />

@@ -49,10 +49,8 @@ const AudienceSection = () => {
 					{audiences.map((audience, index) => (
 						<div
 							key={index}
-							className="glass-card group overflow-hidden relative p-6 rounded-3xl border border-[#3c66ce]/30 hover:border-[#3c66ce] transition-all hover:shadow-lg hover:shadow-[#3c66ce]/10"
+							className="glass-card group overflow-hidden relative p-6 rounded-3xl bg-[#121212] transition-all hover:shadow-lg"
 						>
-							<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#3c66ce]/5 to-transparent"></div>
-
 							<div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#3c66ce] to-[#3359b6] flex items-center justify-center mb-5 mx-auto">
 								<div className="text-white">{audience.icon}</div>
 							</div>
@@ -64,8 +62,6 @@ const AudienceSection = () => {
 							<p className="text-foreground/70 text-sm text-center">
 								{audience.description}
 							</p>
-
-							<div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
 						</div>
 					))}
 				</div>

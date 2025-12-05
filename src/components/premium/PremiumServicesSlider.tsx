@@ -25,12 +25,9 @@ export default function PremiumServicesSlider({
 
   return (
     <Card 
-      className="relative backdrop-blur-2xl border border-white/10 h-full overflow-hidden rounded-3xl transition-all duration-700"
+      className="relative backdrop-blur-2xl border-0 h-full overflow-hidden rounded-3xl transition-all duration-700"
       style={{ backgroundColor: '#0B0F17', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
     >
-      {/* Brillo superior glassmorphism */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
-
       {/* Imagen o Video de fondo */}
       <div 
         className="absolute inset-0 w-full h-full overflow-hidden"

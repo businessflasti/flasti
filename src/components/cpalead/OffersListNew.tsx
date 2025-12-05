@@ -13,7 +13,6 @@ import PremiumCardOverlay from '@/components/premium/PremiumCardOverlay';
 import { useRouter } from 'next/navigation';
 import { usePremiumStatus } from '@/components/premium/hooks/usePremiumStatus';
 import { useCardLockConfig } from '@/components/premium/hooks/useCardLockConfig';
-import WelcomeBonus from '@/components/dashboard/WelcomeBonus';
 import PremiumTaskModal from '@/components/dashboard/PremiumTaskModal';
 import { supabase } from '@/lib/supabase';
 import CompletedTaskOverlay from './CompletedTaskOverlay';
@@ -108,6 +107,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const [stats, setStats] = useState<OffersStats | null>(null);
   const [userCountry, setUserCountry] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [loadingCpaLead, setLoadingCpaLead] = useState(true);
+  const [loadingCustomOffers, setLoadingCustomOffers] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -130,9 +131,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const [customOffers, setCustomOffers] = useState<CustomOffer[]>([]);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState<CustomOffer | null>(null);
-  const [welcomeBonusClaimed, setWelcomeBonusClaimed] = useState(false);
   const [completedOfferIds, setCompletedOfferIds] = useState<string[]>([]); // IDs de ofertas completadas
   const { shouldLockCard } = useCardLockConfig();
+
+  // Estado de carga unificado: mostrar contenido cuando custom offers estén listas
+  // Las ofertas de CPALead pueden cargar después sin bloquear la UI
+  const isInitialLoading = loadingCustomOffers;
 
   // Debug premium status
   useEffect(() => {
@@ -150,13 +154,13 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     }
   }, [userCountry, refreshing, onDataUpdate]);
 
-  // Función para obtener ofertas (ahora acepta country opcional)
+  // Función para obtener ofertas de CPALead (ahora acepta country opcional)
   const fetchOffers = useCallback(async (forceRefresh = false, countryParam?: string) => {
     try {
       if (forceRefresh) {
         setRefreshing(true);
       } else {
-        setLoading(true);
+        setLoadingCpaLead(true);
       }
       setError(null);
 
@@ -229,11 +233,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       setError(error instanceof Error ? error.message : 'Error desconocido');
     } finally {
       setLoading(false);
+      setLoadingCpaLead(false);
       setRefreshing(false);
     }
   }, []);
 
-  // Nueva función: detectar país vía API server-side
+  // Nueva función: detectar país vía API server-side (no bloquea ofertas personalizadas)
   const detectCountry = async (force = false) => {
     try {
       console.log('🌍 Iniciando detección de país...', { force });
@@ -244,7 +249,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         if (cached && cached !== 'null') {
           console.log('🌍 País desde cache:', cached);
           setUserCountry(cached);
-          await fetchOffers(false, cached);
+          // No usar await para no bloquear - las ofertas de CPALead cargan en background
+          fetchOffers(false, cached);
           return;
         }
       }
@@ -262,7 +268,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         setUserCountry(json.country);
         localStorage.setItem('userCountry', json.country);
         localStorage.setItem('userCountryTime', Date.now().toString());
-        await fetchOffers(false, json.country);
+        // No usar await para no bloquear
+        fetchOffers(false, json.country);
         return;
       }
 
@@ -276,7 +283,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           console.log('🌍 Países disponibles:', listJson.countries.length);
           setCountriesList(listJson.countries);
           setShowCountryModal(true);
-          setLoading(false); // Importante: detener el loading aquí
+          setLoading(false);
+          setLoadingCpaLead(false);
           return;
         }
       }
@@ -285,7 +293,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       console.log('🌍 Usando US como fallback');
       setUserCountry('US');
       localStorage.setItem('userCountry', 'US');
-      await fetchOffers(false, 'US');
+      fetchOffers(false, 'US');
       
     } catch (error) {
       console.error('❌ Error detectando país:', error);
@@ -293,17 +301,17 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
       console.log('🌍 Error - usando US como fallback');
       setUserCountry('US');
       localStorage.setItem('userCountry', 'US');
-      await fetchOffers(false, 'US');
+      fetchOffers(false, 'US');
     }
   };
 
-  // Cargar ofertas personalizadas y estado del bono
+  // Cargar ofertas personalizadas PRIMERO (prioridad alta - desde Supabase)
   useEffect(() => {
     const loadCustomOffersAndBonusStatus = async () => {
-      if (!user) return;
-
+      setLoadingCustomOffers(true);
+      
       try {
-        // Cargar ofertas personalizadas activas
+        // Cargar ofertas personalizadas activas - PRIORIDAD ALTA
         const { data: offers, error: offersError } = await supabase
           .from('custom_offers')
           .select('*')
@@ -314,31 +322,25 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           setCustomOffers(offers);
         }
 
-        // Cargar estado del bono de bienvenida
-        const { data: profile, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('welcome_bonus_claimed')
-          .eq('user_id', user.id)
-          .single();
-
-        if (!profileError && profile) {
-          setWelcomeBonusClaimed(profile.welcome_bonus_claimed || false);
-        }
-
         // Cargar ofertas personalizadas completadas por el usuario
-        const { data: completions, error: completionsError } = await supabase
-          .from('custom_offers_completions')
-          .select('offer_id')
-          .eq('user_id', user.id);
+        if (user) {
+          const { data: completions, error: completionsError } = await supabase
+            .from('custom_offers_completions')
+            .select('offer_id')
+            .eq('user_id', user.id);
 
-        if (!completionsError && completions) {
-          setCompletedOfferIds(completions.map(c => c.offer_id));
+          if (!completionsError && completions) {
+            setCompletedOfferIds(completions.map(c => c.offer_id));
+          }
         }
       } catch (error) {
         console.error('Error loading custom offers:', error);
+      } finally {
+        setLoadingCustomOffers(false);
       }
     };
 
+    // Ejecutar inmediatamente al montar
     loadCustomOffersAndBonusStatus();
   }, [user]);
 
@@ -396,8 +398,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     return code;
   };
 
-  // Renderizar estado de carga
-  if (loading) {
+  // Renderizar estado de carga - Solo mostrar cuando las ofertas personalizadas están cargando
+  if (isInitialLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-16 space-y-4">
         <div className="relative">
@@ -410,36 +412,38 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           </div>
           <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 animate-spin"></div>
         </div>
-        <p className="text-gray-400 font-medium">Verificando tu ubicación…</p>
+        <p className="text-gray-400 font-medium">Cargando microtareas...</p>
+      </div>
+    );
+  }
 
-        {/* Selector inline dentro del bloque de ofertas si corresponde */}
-        {showCountryModal && (
-          <div className="w-full max-w-2xl mt-6">
-            <Card className="bg-[#121212] border-gray-700">
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
-                  <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
+  // Selector de país si es necesario
+  if (showCountryModal && loadingCpaLead) {
+    return (
+      <div className="w-full max-w-2xl mx-auto">
+        <Card className="bg-[#121212] border-gray-700">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
+              <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
 
-                  <select
-                    className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
-                    value={selectedCountryManual}
-                    onChange={(e) => setSelectedCountryManual(e.target.value)}
-                  >
-                    <option value="">-- Selecciona --</option>
-                    {countriesList.map((c) => (
-                      <option key={c} value={c}>{c} - {getCountryName(c)}</option>
-                    ))}
-                  </select>
+              <select
+                className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
+                value={selectedCountryManual}
+                onChange={(e) => setSelectedCountryManual(e.target.value)}
+              >
+                <option value="">-- Selecciona --</option>
+                {countriesList.map((c) => (
+                  <option key={c} value={c}>{c} - {getCountryName(c)}</option>
+                ))}
+              </select>
 
-                  <div className="flex justify-end gap-2">
-                    <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+              <div className="flex justify-end gap-2">
+                <button onClick={handleConfirmManualCountry} className="px-4 py-2 rounded bg-blue-600 text-white" disabled={!selectedCountryManual}>Confirmar</button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -509,7 +513,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     <div className="space-y-6">
 
       {/* Lista de ofertas */}
-      {offers.length === 0 ? (
+      {offers.length === 0 && customOffers.length === 0 && !loadingCpaLead ? (
         <Card className="bg-[#121212] border-gray-700">
           <CardContent className="pt-6">
             <div className="text-center">
@@ -541,7 +545,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                     imageUrl={customOffer.image_url}
                   >
                     <Card 
-                      className="relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden h-full"
+                      className="relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden h-full"
+                      style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)' }}
                     >
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
@@ -622,8 +627,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   taskNumber={customOffer.position}
                 >
                   <Card 
-                    className={`relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
-                    style={isLocked ? { height: '360px' } : undefined}
+                    className={`relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    style={isLocked ? { height: '360px', contain: 'layout style paint' } : { contain: 'layout style paint' }}
                   >
                     <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>
                       <div className="flex items-start justify-between">
@@ -739,6 +744,32 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
             );
           })}
 
+          {/* Skeletons mientras cargan ofertas de CPALead */}
+          {loadingCpaLead && offers.length === 0 && [...Array(6)].map((_, i) => (
+            <div key={`skeleton-${i}`} className="relative">
+              <Card className="bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden h-[360px] animate-pulse">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 space-y-3">
+                      <div className="h-5 bg-gray-700 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+                      <div className="h-6 bg-green-900/30 rounded w-24"></div>
+                    </div>
+                    <div className="ml-3 w-[60px] h-[60px] bg-gray-700 rounded-lg"></div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-3">
+                    <div className="h-4 bg-gray-700 rounded w-full"></div>
+                    <div className="h-4 bg-gray-700 rounded w-2/3"></div>
+                    <div className="h-10 bg-gray-700 rounded w-full mt-4"></div>
+                    <div className="h-10 bg-gray-800 rounded w-full"></div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+
           {/* Ofertas de CPALead */}
           {offers.map((offer, index) => {
             const isLocked = shouldLockCard(offer, isPremium);
@@ -771,8 +802,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   isReadyToUnlock={isReadyToUnlock}
                 >
                   <Card 
-                    className={`relative bg-[#121212] backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
-                    style={isLocked ? { height: '360px' } : undefined}
+                    className={`relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    style={isLocked ? { height: '360px', contain: 'layout style paint' } : { contain: 'layout style paint' }}
                   >
                     <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>
                       <div className="flex items-start justify-between">

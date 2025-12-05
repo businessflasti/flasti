@@ -50,7 +50,7 @@ export const BentoGridItem: React.FC<BentoGridItemProps> = ({
   return (
     <div
       className={cn(
-        "relative bg-white/[0.03] backdrop-blur-2xl justify-between flex flex-col space-y-2 h-full rounded-3xl border border-white/10 transition-opacity duration-300 shadow-2xl",
+        "relative bg-[#121212] justify-between flex flex-col space-y-2 h-full rounded-3xl transition-opacity duration-300 shadow-2xl",
         className
       )}
       style={{
@@ -59,10 +59,6 @@ export const BentoGridItem: React.FC<BentoGridItemProps> = ({
         backfaceVisibility: 'hidden'
       }}
     >
-      
-      {/* Brillo superior glassmorphism */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-t-3xl"></div>
-      
       {header}
       <div className="relative z-10">
         {icon}

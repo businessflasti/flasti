@@ -117,11 +117,11 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
       {/* Widget de chat para soporte */}
       <TawkToWidget showBubble={true} />
       
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-5xl mx-auto relative z-10" style={{ contain: 'layout style' }}>
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
             Centro de Soporte
@@ -132,19 +132,9 @@ export default function SupportPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div 
-            className="p-6 rounded-3xl transition-opacity duration-300 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative"
-            style={{ 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              transform: 'translate3d(0, 0, 0)',
-              contain: 'layout style paint'
-            }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center mb-4 transition-opacity duration-300 border border-blue-300/20">
-              <Mail className="w-7 h-7 text-white drop-shadow-lg" />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+          <div className="p-6 rounded-3xl flex flex-col items-center text-center bg-[#121212]">
+            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4">
+              <Mail className="w-7 h-7 text-black" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Email de Soporte</h3>
             <p className="text-gray-400 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
@@ -156,19 +146,9 @@ export default function SupportPage() {
             </a>
           </div>
 
-          <div 
-            className="p-6 rounded-3xl transition-opacity duration-300 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative"
-            style={{ 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              transform: 'translate3d(0, 0, 0)',
-              contain: 'layout style paint'
-            }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 flex items-center justify-center mb-4 transition-opacity duration-300 border border-green-300/20">
-              <MessageCircle className="w-7 h-7 text-white drop-shadow-lg" />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+          <div className="p-6 rounded-3xl flex flex-col items-center text-center bg-[#121212]">
+            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4">
+              <MessageCircle className="w-7 h-7 text-black" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Chat en vivo</h3>
             <p className="text-gray-400 mb-4">Habla con nuestro equipo en tiempo real</p>
@@ -181,19 +161,9 @@ export default function SupportPage() {
             />
           </div>
 
-          <div 
-            className="p-6 rounded-3xl transition-opacity duration-300 flex flex-col items-center text-center bg-white/[0.03] backdrop-blur-2xl border border-white/10 relative"
-            style={{ 
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-              transform: 'translate3d(0, 0, 0)',
-              contain: 'layout style paint'
-            }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 flex items-center justify-center mb-4 transition-opacity duration-300 border border-purple-300/20">
-              <Phone className="w-7 h-7 text-white drop-shadow-lg" />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
+          <div className="p-6 rounded-3xl flex flex-col items-center text-center bg-[#121212]">
+            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4">
+              <Phone className="w-7 h-7 text-black" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Soporte Telefónico</h3>
             <p className="text-gray-400 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
@@ -203,12 +173,7 @@ export default function SupportPage() {
           </div>
         </div>
 
-        <div 
-          className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-white/[0.03] backdrop-blur-2xl border border-white/10"
-          style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-        >
-          {/* Brillo superior glassmorphism */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div className="p-8 md:p-10 rounded-3xl overflow-hidden bg-[#121212]">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
             Enviar solicitud de soporte
           </h2>

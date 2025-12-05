@@ -148,7 +148,14 @@ const TestimonialsSection = React.memo(() => {
 	};
 
 	return (
-		<section className="py-16 relative overflow-hidden">
+		<section 
+			className="py-16 relative overflow-hidden"
+			style={{
+				transform: 'translate3d(0, 0, 0)',
+				contain: 'layout style paint',
+				backfaceVisibility: 'hidden'
+			}}
+		>
 			{/* Elementos decorativos eliminados completamente */}
 
 			<div className="container-custom relative z-10">

@@ -273,23 +273,18 @@ export default function PerfilPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0A0A0A] p-4 relative overflow-hidden" style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}>
       
       <div className="relative z-10">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto" style={{ contain: 'layout style' }}>
         <h1 className="text-3xl font-bold text-white mb-8">Mi Perfil</h1>
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Información del Usuario */}
-          <Card 
-            className="p-6 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <Card className="p-6 bg-[#121212] rounded-3xl">
             <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
-              <div className="relative p-2 rounded-xl bg-gradient-to-br from-[#6E40FF]/20 to-[#6E40FF]/5">
-                <User className="h-5 w-5 text-[#6E40FF]" />
+              <div className="p-2 rounded-xl bg-white">
+                <User className="h-5 w-5 text-black" />
               </div>
               Información Personal
             </h2>
@@ -338,10 +333,10 @@ export default function PerfilPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 transition-opacity duration-300">
+              <div className="p-4 bg-gray-800/50 rounded-lg">
                 <div className="flex items-center mb-2 gap-2">
-                  <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5">
-                    <Mail className="h-3.5 w-3.5 text-[#2DE2E6]" />
+                  <div className="p-1.5 rounded-lg bg-white">
+                    <Mail className="h-3.5 w-3.5 text-black" />
                   </div>
                   <span className="text-sm text-gray-400">Correo Electrónico</span>
                 </div>
@@ -350,10 +345,10 @@ export default function PerfilPage() {
                 </p>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg border border-white/10 transition-opacity duration-300">
+              <div className="p-4 bg-gray-800/50 rounded-lg">
                 <div className="flex items-center mb-2 gap-2">
-                  <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-[#238636]/20 to-[#238636]/5">
-                    <Shield className="h-3.5 w-3.5 text-[#3fb950]" />
+                  <div className="p-1.5 rounded-lg bg-white">
+                    <Shield className="h-3.5 w-3.5 text-black" />
                   </div>
                   <span className="text-sm text-gray-400">Estado de la cuenta</span>
                 </div>
@@ -363,15 +358,10 @@ export default function PerfilPage() {
           </Card>
 
           {/* Cambio de Contraseña */}
-          <Card 
-            className="p-6 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-3xl transition-all duration-700 relative"
-            style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)' }}
-          >
-            {/* Brillo superior glassmorphism */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <Card className="p-6 bg-[#121212] rounded-3xl">
             <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
-              <div className="relative p-2 rounded-xl bg-gradient-to-br from-[#2DE2E6]/20 to-[#2DE2E6]/5">
-                <Lock className="h-5 w-5 text-[#2DE2E6]" />
+              <div className="p-2 rounded-xl bg-white">
+                <Lock className="h-5 w-5 text-black" />
               </div>
               Cambiar Contraseña
             </h2>
@@ -386,7 +376,7 @@ export default function PerfilPage() {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 transition-opacity duration-300"
+                  className="bg-[#0d1117] border-0 text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 transition-opacity duration-300"
                   placeholder="Ingresa tu nueva contraseña"
                   required
                 />
@@ -404,7 +394,7 @@ export default function PerfilPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 focus:border-[#6e40ff]/50 transition-opacity duration-300"
+                  className="bg-[#0d1117] border-0 text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 transition-opacity duration-300"
                   placeholder="Confirma tu nueva contraseña"
                   required
                 />
@@ -412,14 +402,14 @@ export default function PerfilPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#238636] text-white shadow-lg shadow-[#238636]/20 transition-opacity duration-300"
+                className="w-full bg-[#238636] text-white transition-opacity duration-300"
                 disabled={isLoading}
               >
                 {isLoading ? 'Actualizando...' : 'Cambiar Contraseña'}
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <div className="mt-6 p-4 bg-blue-500/10 rounded-lg">
               <h3 className="text-sm font-medium text-blue-400 mb-2">Consejos de seguridad:</h3>
               <ul className="text-xs text-gray-400 space-y-1">
                 <li>• Usa al menos 8 caracteres</li>

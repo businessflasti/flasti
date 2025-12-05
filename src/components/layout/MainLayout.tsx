@@ -9,7 +9,6 @@ import { usePathname } from 'next/navigation';
 import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { Sidebar } from "@/components/ui/sidebar";
-import { StickyBannerDemo } from "@/components/ui/sticky-banner-demo";
 import Header from "@/components/layout/Header";
 
 // Cargar el componente de notificaciones FOMO de forma diferida
@@ -28,7 +27,6 @@ const DashboardChatWidget = dynamic(
 interface MainLayoutProps {
   children: React.ReactNode;
   disableChat?: boolean;
-  showStickyBanner?: boolean;
 }
 
 // Estilo global para prevenir scroll horizontal
@@ -38,7 +36,7 @@ const globalStyle = `
   }
 `;
 
-const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner = false }: MainLayoutProps) => {
+const MainLayoutComponent = ({ children, disableChat = false }: MainLayoutProps) => {
   const pathname = usePathname();
   const isInternalPage = pathname?.startsWith('/dashboard');
   const isContactPage = pathname === '/contacto';
@@ -88,27 +86,21 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
 
   return (
     <ToastProvider>
-      {/* Banner - Solo en páginas principales - NO STICKY */}
-      {showStickyBanner && !isInternalPage && (
-        <div className="w-full">
-          <StickyBannerDemo />
-        </div>
-      )}
-      
       {/* Header normal para páginas externas - STICKY */}
       {!isInternalPage && (
-        <Header showStickyBanner={showStickyBanner} />
+        <Header />
       )}
 
       <style jsx global>{globalStyle}</style>
       <div
         ref={containerRef}
         className={`min-h-screen flex flex-col relative ${(isInternalPage || isContactPage) ? '' : 'gradient-background'}`}
-        style={(isInternalPage || isContactPage) ? { background: '#0B1017' } : {}}
+        style={(isInternalPage || isContactPage) ? { background: '#0A0A0A' } : {}}
       >
         {/* Sidebar colapsable solo en dashboard */}
+        {/* NOTA: No aplicar transform al contenedor del sidebar porque rompe position:fixed del aside interno */}
         {isInternalPage && (
-          <div className="fixed top-0 left-0 z-50 h-full">
+          <div className="fixed top-0 left-0 z-50 h-screen">
             {isMobile ? (
               <Sidebar open={mobileMenuOpen} setOpen={setMobileMenuOpen} />
             ) : (
@@ -128,7 +120,7 @@ const MainLayoutComponent = ({ children, disableChat = false, showStickyBanner =
         <main
           className={`flex-grow relative hardware-accelerated overflow-x-hidden ${isInternalPage ? 'ml-0 lg:ml-56 transition-all mobile-main-scroll' : 'mobile-main-scroll'}`}
           style={isInternalPage ? { 
-            background: '#0B1017',
+            background: '#0A0A0A',
             paddingTop: '0',
             position: 'relative',
             zIndex: 1
