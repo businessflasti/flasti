@@ -392,9 +392,14 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   };
 
   // Manejar click en oferta
-  const handleOfferClick = (offer: CPALeadOffer) => {
+  const handleOfferClick = (offer: CPALeadOffer, isLocked: boolean) => {
     if (!user) {
       router.push('/auth/login');
+      return;
+    }
+    
+    // No permitir click si está bloqueada
+    if (isLocked) {
       return;
     }
 
@@ -549,11 +554,16 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
             // Verificar si esta oferta ya fue completada
             const isCompleted = completedOfferIds.includes(customOffer.id);
             
-            // Oferta 1: siempre desbloqueada (a menos que ya esté completada)
-            // Oferta 2: bloqueada hasta que se complete la oferta 1
-            const offer1 = customOffers.find(o => o.position === 1);
-            const isOffer1Completed = offer1 ? completedOfferIds.includes(offer1.id) : false;
-            const isLocked = customOffer.position === 2 && !isOffer1Completed;
+            // Lógica de bloqueo secuencial:
+            // - Tarea 1 (position 1): siempre desbloqueada
+            // - Tarea 2+ (position > 1): bloqueada hasta que la anterior esté completada
+            const previousOffer = customOffers.find(o => o.position === customOffer.position - 1);
+            const isPreviousCompleted = previousOffer ? completedOfferIds.includes(previousOffer.id) : true;
+            const isLocked = customOffer.position > 1 && !isPreviousCompleted;
+            
+            // Para ofertas personalizadas, isReadyToUnlock es false (no tienen botón desbloquear)
+            // Se desbloquean automáticamente al completar la anterior
+            const isReadyToUnlock = false;
             
             // Si está completada, mostrar overlay de completado
             if (isCompleted) {
@@ -644,6 +654,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   isLocked={isLocked}
                   onUnlockClick={() => setShowWelcomeModal(true)}
                   taskNumber={customOffer.position}
+                  isReadyToUnlock={isReadyToUnlock}
                 >
                   <Card 
                     className={`relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
@@ -791,15 +802,17 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
           {/* Ofertas de CPALead */}
           {offers.map((offer, index) => {
+            // Verificar si la tarea 2 (position 2) está completada
+            const offer2 = customOffers.find(o => o.position === 2);
+            const isOffer2Completed = offer2 ? completedOfferIds.includes(offer2.id) : false;
+            
+            // Las ofertas CPALead SIEMPRE están bloqueadas (hasta comprar premium)
             const isLocked = shouldLockCard(offer, isPremium);
             
-            // Verificar si las 2 ofertas personalizadas están completadas
-            const allCustomOffersCompleted = customOffers.length === 2 && 
-              customOffers.every(co => completedOfferIds.includes(co.id));
-            
-            // Solo la PRIMERA oferta general (index 0) debe mostrar "lista para desbloquear"
-            // cuando las 2 ofertas personalizadas estén completadas
-            const isReadyToUnlock = isLocked && index === 0 && allCustomOffersCompleted;
+            // Después de completar tarea 2, TODAS las ofertas CPALead muestran "lista para desbloquear"
+            // Pero solo la primera (index 0) tiene el botón "Desbloquear"
+            const isReadyToUnlock = isLocked && isOffer2Completed;
+            const showUnlockButton = isReadyToUnlock && index === 0;
             
             // Debug lock status
             if (index < 3) {
@@ -819,6 +832,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   onUnlockClick={() => router.push('/dashboard/premium')}
                   taskNumber={index + 1}
                   isReadyToUnlock={isReadyToUnlock}
+                  showUnlockButton={showUnlockButton}
                 >
                   <Card 
                     className={`relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
@@ -901,7 +915,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                         {isLocked ? (
                           <div className="mt-auto space-y-3">
                             <Button
-                              onClick={() => handleOfferClick(offer)}
+                              onClick={() => handleOfferClick(offer, isLocked)}
                               className="w-full text-white hover:opacity-90 transition-opacity"
                               style={{ backgroundColor: '#3C66CE' }}
                               disabled={!user || isLocked}
@@ -927,7 +941,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                         ) : (
                           <>
                             <Button
-                              onClick={() => handleOfferClick(offer)}
+                              onClick={() => handleOfferClick(offer, isLocked)}
                               className="w-full text-white hover:opacity-90 transition-opacity"
                               style={{ backgroundColor: '#3C66CE' }}
                               disabled={!user || isLocked}

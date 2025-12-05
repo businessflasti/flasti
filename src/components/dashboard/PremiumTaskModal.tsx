@@ -457,13 +457,6 @@ export default function PremiumTaskModal({
               
               {/* Reproductor de audio o video */}
               <div className={styles.audioSection}>
-                {!isVideoTask && (
-                  <label className={styles.sectionLabel}>
-                    <Headphones className="w-4 h-4" />
-                    Escucha el audio y escribe las 5 palabras que se mencionan
-                  </label>
-                )}
-                
                 {isVideoTask ? (
                   <video 
                     ref={videoRef}

@@ -5,7 +5,12 @@ import { Lock, Sparkles, Zap, DollarSign } from 'lucide-react';
 import { PremiumCardOverlayProps } from './types';
 import styles from './PremiumCardOverlay.module.css';
 
-const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
+interface ExtendedPremiumCardOverlayProps extends PremiumCardOverlayProps {
+  isReadyToUnlock?: boolean;
+  showUnlockButton?: boolean;
+}
+
+const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
   isLocked,
   onUnlockClick,
   lockReason = 'premium',
@@ -15,7 +20,8 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
   className = '',
   children,
   taskNumber,
-  isReadyToUnlock = false
+  isReadyToUnlock = false,
+  showUnlockButton
 }) => {
   // Si no está bloqueado, renderizar solo los children
   if (!isLocked) {
@@ -35,6 +41,15 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
     onUnlockClick();
   };
 
+  // Textos dinámicos según el estado
+  const title = isReadyToUnlock 
+    ? "Microtarea lista para desbloquear" 
+    : "Microtarea bloqueada";
+  
+  const subtitle = isReadyToUnlock 
+    ? "Desbloqueá para seguir avanzando" 
+    : "Completa la microtarea anterior para continuar";
+
   return (
     <div className="relative">
       {/* Contenido original (borroso) */}
@@ -43,6 +58,7 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
       {/* Overlay de bloqueo */}
       <div 
         className={overlayClasses}
+        style={{ cursor: isReadyToUnlock ? 'pointer' : 'default' }}
         onClick={isReadyToUnlock ? handleClick : undefined}
         role={isReadyToUnlock ? "button" : undefined}
         tabIndex={isReadyToUnlock ? 0 : undefined}
@@ -66,15 +82,15 @@ const PremiumCardOverlay: React.FC<PremiumCardOverlayProps> = ({
           {/* Título y descripción */}
           <div className="text-center space-y-2 mb-4">
             <h3 className="text-white font-bold text-lg drop-shadow-lg">
-              Microtarea lista para desbloquear
+              {title}
             </h3>
             <p className="text-white/90 text-sm drop-shadow-md px-4">
-              Desbloqueá para seguir avanzando
+              {subtitle}
             </p>
           </div>
 
-          {/* Botón de desbloqueo (solo si está listo para desbloquear) */}
-          {isReadyToUnlock && (
+          {/* Botón de desbloqueo (solo si showUnlockButton es true, o si no se especifica, usa isReadyToUnlock) */}
+          {(showUnlockButton !== undefined ? showUnlockButton : isReadyToUnlock) && (
             <button 
               className={styles.unlockButton}
               onClick={(e) => {
