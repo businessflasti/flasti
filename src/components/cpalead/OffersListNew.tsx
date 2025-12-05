@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { CPALeadOffer } from '@/lib/cpa-lead-api';
 import { ExternalLink, DollarSign, Globe, Tag, RefreshCw, Zap } from 'lucide-react';
@@ -110,6 +110,10 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   const [loadingCpaLead, setLoadingCpaLead] = useState(true);
   const [loadingCustomOffers, setLoadingCustomOffers] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  
+  // Refs para evitar recargas innecesarias cuando el usuario vuelve a la pestaña
+  const hasLoadedCustomOffers = useRef(false);
+  const hasLoadedCpaLeadOffers = useRef(false);
   const [lastUpdate, setLastUpdate] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [countriesList, setCountriesList] = useState<string[]>([]);
@@ -136,7 +140,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
   // Estado de carga unificado: mostrar contenido cuando custom offers estén listas
   // Las ofertas de CPALead pueden cargar después sin bloquear la UI
-  const isInitialLoading = loadingCustomOffers;
+  // Si ya hay datos cargados, no mostrar loading (evita bug al volver a la pestaña)
+  const isInitialLoading = loadingCustomOffers && customOffers.length === 0;
 
   // Debug premium status
   useEffect(() => {
@@ -202,6 +207,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         setLastUpdate(new Date(data.timestamp).toLocaleTimeString());
         setIsUsingManualMapping(data.isUsingManualMapping || false);
         setMappingInfo(data.mappingInfo || null);
+        hasLoadedCpaLeadOffers.current = true; // Marcar como cargado
         
         console.log(`✅ ${data.count} tareas obtenidas para ${data.country}`);
         if (data.isUsingManualMapping) {
@@ -307,6 +313,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
   // Cargar ofertas personalizadas PRIMERO (prioridad alta - desde Supabase)
   useEffect(() => {
+    // Si ya se cargaron, no volver a cargar (evita el bug al volver a la pestaña)
+    if (hasLoadedCustomOffers.current && customOffers.length > 0) {
+      setLoadingCustomOffers(false);
+      return;
+    }
+    
     const loadCustomOffersAndBonusStatus = async () => {
       setLoadingCustomOffers(true);
       
@@ -320,6 +332,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
         if (!offersError && offers) {
           setCustomOffers(offers);
+          hasLoadedCustomOffers.current = true;
         }
 
         // Cargar ofertas personalizadas completadas por el usuario
@@ -344,8 +357,14 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
     loadCustomOffersAndBonusStatus();
   }, [user]);
 
-  // Cargar ofertas al montar el componente: antes detectar país
+  // Cargar ofertas de CPALead al montar el componente
   useEffect(() => {
+    // Si ya se cargaron, no volver a cargar
+    if (hasLoadedCpaLeadOffers.current && offers.length > 0) {
+      setLoadingCpaLead(false);
+      return;
+    }
+    
     detectCountry();
   }, []); // Remover dependencia para evitar bucles
 
