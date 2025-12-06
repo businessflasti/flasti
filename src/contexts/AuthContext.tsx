@@ -80,7 +80,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             while (retryCount < maxRetries && !profileData) {
               try {
-                // Obtener el perfil del usuario
+                // Obtener el perfil del usuario - primero de user_profiles para tener first_name y last_name
+                const { data: userProfileData, error: userProfileError } = await supabase
+                  .from('user_profiles')
+                  .select('*')
+                  .eq('user_id', sessionData.session.user.id)
+                  .single();
+
+                if (!userProfileError && userProfileData) {
+                  console.log('AuthContext: Perfil encontrado en user_profiles');
+                  profileData = {
+                    id: sessionData.session.user.id,
+                    email: sessionData.session.user.email,
+                    level: userProfileData.level || 1,
+                    balance: userProfileData.balance || 0,
+                    avatar_url: userProfileData.avatar_url || null,
+                    created_at: userProfileData.created_at || new Date().toISOString(),
+                    first_name: userProfileData.first_name || null,
+                    last_name: userProfileData.last_name || null
+                  };
+                  break;
+                }
+
+                // Si no está en user_profiles, buscar en profiles
                 const { data: pData, error: pError } = await supabase
                   .from('profiles')
                   .select('*')
@@ -91,47 +113,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                   profileData = pData;
                   break;
                 } else if (pError.code === 'PGRST116') {
-                  // Si no se encuentra el perfil en 'profiles', buscar en 'user_profiles'
-                  console.log('AuthContext: Perfil no encontrado en profiles, buscando en user_profiles');
-                  const { data: userProfileData, error: userProfileError } = await supabase
-                    .from('user_profiles')
-                    .select('*')
-                    .eq('user_id', sessionData.session.user.id)
-                    .single();
+                  // Si no se encuentra en ninguna tabla, crear un perfil básico
+                  console.log('AuthContext: Perfil no encontrado en ninguna tabla, creando perfil básico');
+                  profileData = {
+                    id: sessionData.session.user.id,
+                    email: sessionData.session.user.email,
+                    level: 1,
+                    balance: 0,
+                    avatar_url: null,
+                    created_at: new Date().toISOString()
+                  };
 
-                  if (!userProfileError && userProfileData) {
-                    console.log('AuthContext: Perfil encontrado en user_profiles');
-                    // Convertir el formato de user_profiles a profiles
-                    profileData = {
-                      id: sessionData.session.user.id,
-                      email: sessionData.session.user.email,
-                      level: userProfileData.level || 1,
-                      balance: userProfileData.balance || 0,
-                      avatar_url: userProfileData.avatar_url || null,
-                      created_at: userProfileData.created_at || new Date().toISOString()
-                    };
-                    break;
-                  } else {
-                    // Si no se encuentra en ninguna tabla, crear un perfil básico
-                    console.log('AuthContext: Perfil no encontrado, creando perfil básico');
-                    profileData = {
-                      id: sessionData.session.user.id,
-                      email: sessionData.session.user.email,
-                      level: 1,
-                      balance: 0,
-                      avatar_url: null,
-                      created_at: new Date().toISOString()
-                    };
-
-                    // Intentar guardar el perfil básico
-                    try {
-                      await supabase.from('profiles').insert(profileData);
-                      console.log('AuthContext: Perfil básico creado correctamente');
-                    } catch (insertErr) {
-                      console.warn('AuthContext: No se pudo guardar el perfil básico, pero continuando:', insertErr);
-                    }
-                    break;
+                  // Intentar guardar el perfil básico
+                  try {
+                    await supabase.from('profiles').insert(profileData);
+                    console.log('AuthContext: Perfil básico creado correctamente');
+                  } catch (insertErr) {
+                    console.warn('AuthContext: No se pudo guardar el perfil básico, pero continuando:', insertErr);
                   }
+                  break;
                 } else {
                   profileError = pError;
                   console.warn(`AuthContext: Error al obtener perfil (intento ${retryCount + 1}):`, pError);
@@ -200,73 +200,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(session.user);
 
           try {
-            // Obtener el perfil del usuario
-            let { data: profileData, error: profileError } = await supabase
-              .from('profiles')
+            // Obtener el perfil del usuario - primero de user_profiles para tener first_name y last_name
+            const { data: userProfileData, error: userProfileError } = await supabase
+              .from('user_profiles')
               .select('*')
-              .eq('id', session.user.id)
+              .eq('user_id', session.user.id)
               .single();
 
-            // Si no se encuentra el perfil en 'profiles', buscar en 'user_profiles'
-            if (profileError && profileError.code === 'PGRST116') {
-              console.log('AuthContext: Perfil no encontrado en profiles, buscando en user_profiles');
-              const { data: userProfileData, error: userProfileError } = await supabase
-                .from('user_profiles')
+            if (!userProfileError && userProfileData) {
+              console.log('AuthContext: Perfil encontrado en user_profiles (evento)');
+              const profileData = {
+                id: session.user.id,
+                email: session.user.email,
+                level: userProfileData.level || 1,
+                balance: userProfileData.balance || 0,
+                avatar_url: userProfileData.avatar_url || null,
+                created_at: userProfileData.created_at || new Date().toISOString(),
+                first_name: userProfileData.first_name || null,
+                last_name: userProfileData.last_name || null
+              };
+              setProfile(profileData);
+            } else {
+              // Si no está en user_profiles, buscar en profiles
+              const { data: profileData, error: profileError } = await supabase
+                .from('profiles')
                 .select('*')
-                .eq('user_id', session.user.id)
+                .eq('id', session.user.id)
                 .single();
 
-              if (!userProfileError && userProfileData) {
-                console.log('AuthContext: Perfil encontrado en user_profiles');
-                // Convertir el formato de user_profiles a profiles
-                profileData = {
-                  id: session.user.id,
-                  email: session.user.email,
-                  level: userProfileData.level || 1,
-                  balance: userProfileData.balance || 0,
-                  avatar_url: userProfileData.avatar_url || null,
-                  created_at: userProfileData.created_at || new Date().toISOString()
-                };
-                profileError = null;
+              if (!profileError && profileData) {
+                console.log('AuthContext: Perfil cargado desde profiles (evento)');
+                setProfile(profileData);
+              } else {
+                console.log('AuthContext: Perfil no encontrado en ninguna tabla (evento)');
               }
-            }
-
-            if (profileError) {
-              console.error('AuthContext: Error al obtener perfil en evento:', profileError);
-
-              // Si el perfil no existe, intentar crearlo
-              if (profileError.code === 'PGRST116') {
-                console.log('AuthContext: Perfil no encontrado, intentando crear uno nuevo');
-                const { error: insertError } = await supabase
-                  .from('profiles')
-                  .insert({
-                    id: session.user.id,
-                    email: session.user.email,
-                    level: 1,
-                    balance: 0,
-                    avatar_url: null,
-                    created_at: new Date().toISOString()
-                  });
-
-                if (insertError) {
-                  console.error('AuthContext: Error al crear perfil:', insertError);
-                } else {
-                  console.log('AuthContext: Perfil creado correctamente');
-                  // Cargar el perfil recién creado
-                  const { data: newProfileData } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', session.user.id)
-                    .single();
-
-                  if (newProfileData) {
-                    setProfile(newProfileData);
-                  }
-                }
-              }
-            } else if (profileData) {
-              console.log('AuthContext: Perfil cargado correctamente en evento');
-              setProfile(profileData);
             }
           } catch (err) {
             console.error('AuthContext: Error al cargar perfil en evento:', err);
@@ -524,9 +491,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Establecer el usuario en el estado
       setUser(data.user);
 
-      // Intentar cargar el perfil existente
+      // Intentar cargar el perfil existente - primero de user_profiles para tener first_name y last_name
       try {
-        // Buscar primero en la tabla profiles
+        const { data: userProfileData, error: userProfileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', data.user.id)
+          .single();
+
+        if (!userProfileError && userProfileData) {
+          console.log('Perfil encontrado en tabla user_profiles');
+          const mappedProfile = {
+            id: data.user.id,
+            email: data.user.email || email,
+            phone: userProfileData.phone || '',
+            level: userProfileData.level || 1,
+            balance: userProfileData.balance || 0,
+            avatar_url: userProfileData.avatar_url || null,
+            created_at: userProfileData.created_at || new Date().toISOString(),
+            first_name: userProfileData.first_name || null,
+            last_name: userProfileData.last_name || null
+          };
+          setProfile(mappedProfile);
+          setLoading(false);
+          return { error: null };
+        }
+
+        // Si no está en user_profiles, buscar en profiles
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*')
@@ -536,36 +527,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!profileError && profileData) {
           console.log('Perfil encontrado en tabla profiles');
           setProfile(profileData);
-
-          // Login exitoso (sin tracking de Yandex)
-
-          setLoading(false);
-          return { error: null };
-        }
-
-        // Si no se encuentra en profiles, buscar en user_profiles
-        const { data: userProfileData, error: userProfileError } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('user_id', data.user.id)
-          .single();
-
-        if (!userProfileError && userProfileData) {
-          console.log('Perfil encontrado en tabla user_profiles');
-          // Convertir el formato de user_profiles a profiles
-          const mappedProfile = {
-            id: data.user.id,
-            email: data.user.email || email,
-            phone: userProfileData.phone || '',
-            level: userProfileData.level || 1,
-            balance: userProfileData.balance || 0,
-            avatar_url: userProfileData.avatar_url || null,
-            created_at: userProfileData.created_at || new Date().toISOString()
-          };
-          setProfile(mappedProfile);
-
-          // Login exitoso desde user_profiles (sin tracking de Yandex)
-
           setLoading(false);
           return { error: null };
         }

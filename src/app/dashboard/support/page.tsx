@@ -127,7 +127,7 @@ export default function SupportPage() {
             Centro de Soporte
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Estamos aquí para ayudarte. Si tienes alguna pregunta, problema técnico o necesitas asistencia, no dudes en contactarnos.
+            Hola{profile?.first_name ? ` ${profile.first_name}` : ''}, estamos aquí para ayudarte, si tienes alguna pregunta, problema técnico o necesitas asistencia, no dudes en contactarnos.
           </p>
         </div>
 
@@ -182,7 +182,7 @@ export default function SupportPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="name" className="block text-sm font-medium text-white">
-                  Nombre
+                  Nombre completo
                 </label>
                 <Input
                   id="name"
@@ -191,7 +191,8 @@ export default function SupportPage() {
                   onChange={handleChange}
                   placeholder="Tu nombre"
                   required
-                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white"
+                  disabled
+                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white opacity-75"
                   autoComplete="off"
                 />
               </div>
