@@ -44,11 +44,11 @@ const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
   // Textos dinámicos según el estado
   const title = isReadyToUnlock 
     ? "Microtarea lista para desbloquear" 
-    : "Microtarea bloqueada";
+    : "Microtarea lista para desbloquear";
   
   const subtitle = isReadyToUnlock 
     ? "Desbloqueá para seguir avanzando" 
-    : "Completa la microtarea anterior para continuar";
+    : "Completa la microtarea anterior para avanzar";
 
   return (
     <div className="relative">
