@@ -171,7 +171,7 @@ export default function WeeklyRankingAdmin() {
 
         {/* Message */}
         {message && (
-          <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-500/10 border border-green-500/20 text-green-400' : 'bg-red-500/10 border border-red-500/20 text-red-400'}`}>
+          <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-500/10 border border-0 text-green-400' : 'bg-red-500/10 border border-0 text-red-400'}`}>
             {message.text}
           </div>
         )}
@@ -282,7 +282,7 @@ export default function WeeklyRankingAdmin() {
                       onClick={() => removeUser(index)}
                       variant="destructive"
                       size="sm"
-                      className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20"
+                      className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-0"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

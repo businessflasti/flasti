@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Users, Crown, X, Search, DollarSign, Trash2, Monitor, Smartphone, Tablet } from "lucide-react";
+import { Users, Crown, X, DollarSign, Trash2, Monitor, Smartphone, Tablet } from "lucide-react";
 import CountryFlag from '@/components/ui/CountryFlag';
 import EmailRecoveryBadge from '@/components/admin/EmailRecoveryBadge';
 import { toast } from 'sonner';
@@ -19,18 +19,20 @@ interface User {
   country?: string | null;
   device_type?: string | null;
   balance?: number;
+  first_name?: string | null;
+  last_name?: string | null;
 }
 
 const getDeviceIcon = (deviceType: string | null | undefined) => {
-  if (!deviceType) return <Monitor className="w-4 h-4 text-gray-600" />;
+  if (!deviceType) return <Monitor className="w-4 h-4 text-white" />;
   
   const type = deviceType.toLowerCase();
   if (type.includes('mobile') || type.includes('phone')) {
-    return <Smartphone className="w-4 h-4 text-blue-400" />;
+    return <Smartphone className="w-4 h-4 text-white" />;
   } else if (type.includes('tablet')) {
-    return <Tablet className="w-4 h-4 text-purple-400" />;
+    return <Tablet className="w-4 h-4 text-white" />;
   } else {
-    return <Monitor className="w-4 h-4 text-green-400" />;
+    return <Monitor className="w-4 h-4 text-white" />;
   }
 };
 
@@ -295,30 +297,28 @@ export default function UsersListCompact() {
 
   if (loading) {
     return (
-      <Card className="bg-[#1a1a1a] border-blue-500/20">
-        <CardContent className="p-12 text-center">
-          <div className="animate-spin text-4xl mb-4">⟳</div>
-          <p className="text-white">Cargando usuarios...</p>
+      <Card className="bg-[#121212] border-0">
+        <CardContent className="p-12 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Búsqueda y Filtros */}
-      <Card className="bg-[#1a1a1a] border-blue-500/20">
-        <CardContent className="p-6">
+    <Card className="bg-[#121212] border-0">
+
+      <CardContent className="space-y-6">
+        {/* Búsqueda y Filtros */}
+        <div className="p-6 bg-[#121212] rounded-xl">
           <div className="flex flex-col gap-4">
             {/* Búsqueda */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Buscar por email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-[#0a0a0a] border-white/10 text-white"
+                className="bg-[#0a0a0a] border-0 text-white"
               />
             </div>
 
@@ -330,8 +330,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'all' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('all')}
                 className={dateFilter === 'all' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Todos
               </Button>
@@ -340,8 +340,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'today' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('today')}
                 className={dateFilter === 'today' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Hoy
               </Button>
@@ -350,8 +350,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'yesterday' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('yesterday')}
                 className={dateFilter === 'yesterday' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Ayer
               </Button>
@@ -360,8 +360,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'dayBeforeYesterday' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('dayBeforeYesterday')}
                 className={dateFilter === 'dayBeforeYesterday' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Antes de ayer
               </Button>
@@ -370,8 +370,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'lastWeek' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('lastWeek')}
                 className={dateFilter === 'lastWeek' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Última semana
               </Button>
@@ -380,8 +380,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'month' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('month')}
                 className={dateFilter === 'month' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Este Mes
               </Button>
@@ -390,8 +390,8 @@ export default function UsersListCompact() {
                 variant={dateFilter === 'year' ? 'default' : 'outline'}
                 onClick={() => setDateFilter('year')}
                 className={dateFilter === 'year' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Este Año
               </Button>
@@ -405,8 +405,8 @@ export default function UsersListCompact() {
                 variant={premiumFilter === 'all' ? 'default' : 'outline'}
                 onClick={() => setPremiumFilter('all')}
                 className={premiumFilter === 'all' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'border-white/10 text-white hover:bg-white/10'}
+                  ? 'bg-white text-black border-0 hover:bg-white' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-white/10 hover:text-white'}
               >
                 Todos
               </Button>
@@ -415,8 +415,8 @@ export default function UsersListCompact() {
                 variant={premiumFilter === 'premium' ? 'default' : 'outline'}
                 onClick={() => setPremiumFilter('premium')}
                 className={premiumFilter === 'premium' 
-                  ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-bold' 
-                  : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}
+                  ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-bold border-0 hover:from-amber-500 hover:to-yellow-500' 
+                  : 'border-0 bg-[#1a1a1a] text-amber-400 hover:bg-amber-500/10 hover:text-white'}
               >
                 <Crown className="w-3 h-3 mr-1" />
                 Premium
@@ -426,8 +426,8 @@ export default function UsersListCompact() {
                 variant={premiumFilter === 'free' ? 'default' : 'outline'}
                 onClick={() => setPremiumFilter('free')}
                 className={premiumFilter === 'free' 
-                  ? 'bg-gray-500 text-white' 
-                  : 'border-gray-500/30 text-gray-400 hover:bg-gray-500/10'}
+                  ? 'bg-gray-500 text-white border-0 hover:bg-gray-500' 
+                  : 'border-0 bg-[#1a1a1a] text-gray-400 hover:bg-gray-500/10 hover:text-white'}
               >
                 Gratuito
               </Button>
@@ -437,23 +437,14 @@ export default function UsersListCompact() {
           <div className="mt-4 text-sm text-gray-400">
             Mostrando {filteredUsers.length} de {users.length} usuarios
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* Lista de Usuarios */}
-      <Card className="bg-[#1a1a1a] border-blue-500/20">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Users className="w-5 h-5 text-blue-500" />
-            Usuarios Registrados ({filteredUsers.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
+        {/* Lista de Usuarios */}
+        <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/10">
-                  <th className="text-left py-3 px-4 text-sm font-bold text-gray-400">Email</th>
+                  <th className="text-left py-3 px-4 text-sm font-bold text-gray-400">Usuario</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Balance</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">País</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Dispositivo</th>
@@ -467,7 +458,12 @@ export default function UsersListCompact() {
                   <tr key={u.user_id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                     <td className="py-4 px-4">
                       <div className="flex flex-col">
-                        <span className="text-sm text-white font-medium">{u.email}</span>
+                        {(u.first_name || u.last_name) && (
+                          <span className="text-sm text-white font-bold">
+                            {`${u.first_name || ''} ${u.last_name || ''}`.trim()}
+                          </span>
+                        )}
+                        <span className="text-sm text-gray-400">{u.email}</span>
                         <span className="text-xs text-gray-500">
                           {new Date(u.created_at).toLocaleDateString('es-ES', { 
                             day: '2-digit', 
@@ -535,13 +531,13 @@ export default function UsersListCompact() {
                               placeholder="Monto"
                               value={balanceAmount}
                               onChange={(e) => setBalanceAmount(e.target.value)}
-                              className="w-24 h-8 bg-[#0a0a0a] border-white/10 text-white text-sm"
+                              className="w-24 h-8 bg-[#0a0a0a] border-0 text-white text-sm"
                               autoFocus
                             />
                             <Button
                               size="sm"
                               onClick={() => handleAddBalance(u.email)}
-                              className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border border-green-500/20 h-8 w-8 p-0"
+                              className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border-0 h-8 w-8 p-0"
                               title="Confirmar"
                             >
                               ✓
@@ -552,7 +548,7 @@ export default function UsersListCompact() {
                                 setAddBalanceUserId(null);
                                 setBalanceAmount('');
                               }}
-                              className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/20 h-8 w-8 p-0"
+                              className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border-0 h-8 w-8 p-0"
                               title="Cancelar"
                             >
                               ✕
@@ -562,7 +558,7 @@ export default function UsersListCompact() {
                           <Button
                             size="sm"
                             onClick={() => setAddBalanceUserId(u.user_id)}
-                            className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border border-green-500/20 w-8 h-8 p-0"
+                            className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border-0 w-8 h-8 p-0"
                             title="Añadir Saldo USD"
                           >
                             <DollarSign className="w-4 h-4" />
@@ -575,7 +571,7 @@ export default function UsersListCompact() {
                             size="sm"
                             onClick={() => handleDeactivatePremium(u.user_id)}
                             disabled={processingUserId === u.user_id}
-                            className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/20 w-8 h-8 p-0"
+                            className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border-0 w-8 h-8 p-0"
                             title="Quitar Premium"
                           >
                             <X className="w-4 h-4" />
@@ -585,7 +581,7 @@ export default function UsersListCompact() {
                             size="sm"
                             onClick={() => handleActivatePremium(u.user_id, u.email)}
                             disabled={processingUserId === u.user_id}
-                            className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold w-8 h-8 p-0"
+                            className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold border-0 w-8 h-8 p-0"
                             title="Activar Premium"
                           >
                             <Crown className="w-4 h-4" />
@@ -597,7 +593,7 @@ export default function UsersListCompact() {
                           size="sm"
                           onClick={() => handleDeleteUser(u.user_id, u.email)}
                           disabled={deletingUserId === u.user_id}
-                          className="bg-red-600/20 text-red-500 hover:bg-red-600/30 border border-red-600/20 w-8 h-8 p-0"
+                          className="bg-red-600/20 text-red-500 hover:bg-red-600/30 border-0 w-8 h-8 p-0"
                           title="Eliminar Usuario"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -615,9 +611,8 @@ export default function UsersListCompact() {
                 <p className="text-gray-400">No se encontraron usuarios</p>
               </div>
             )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

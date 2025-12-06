@@ -285,7 +285,7 @@ export default function UsersManagement() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black">
+      <div className="flex items-center justify-center min-h-screen bg-[#0A0A0A]">
         <div className="text-center">
           <div className="animate-spin text-4xl mb-4">⟳</div>
           <p className="text-white">Cargando usuarios...</p>
@@ -296,7 +296,7 @@ export default function UsersManagement() {
 
   if (!isAdmin) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A0A0A]">
         <h1 className="text-3xl font-bold mb-4 text-white">Acceso Restringido</h1>
         <Button onClick={() => router.push('/dashboard')}>Volver al Dashboard</Button>
       </div>
@@ -304,10 +304,10 @@ export default function UsersManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+    <div className="min-h-screen bg-[#0A0A0A] p-6">
       <div className="max-w-[1800px] mx-auto">
         {/* Búsqueda y Filtros */}
-        <Card className="bg-[#1a1a1a] border-blue-500/20 mb-6">
+        <Card className="bg-[#121212] border-0 mb-6">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               {/* Búsqueda */}
@@ -405,7 +405,7 @@ export default function UsersManagement() {
         </Card>
 
         {/* Lista de Usuarios */}
-        <Card className="bg-[#1a1a1a] border-blue-500/20">
+        <Card className="bg-[#121212] border-0">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-500" />
@@ -512,7 +512,7 @@ export default function UsersManagement() {
                               <Button
                                 size="sm"
                                 onClick={() => handleAddBalance(u.email)}
-                                className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border border-green-500/20 h-8"
+                                className="bg-green-500/20 text-green-400 hover:bg-green-500/30 border border-0 h-8"
                               >
                                 ✓
                               </Button>
@@ -522,7 +522,7 @@ export default function UsersManagement() {
                                   setAddBalanceUserId(null);
                                   setBalanceAmount('');
                                 }}
-                                className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/20 h-8"
+                                className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-0 h-8"
                               >
                                 ✕
                               </Button>
@@ -531,7 +531,7 @@ export default function UsersManagement() {
                             <Button
                               size="sm"
                               onClick={() => setAddBalanceUserId(u.user_id)}
-                              className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-blue-500/20"
+                              className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-0"
                               title="Agregar o restar saldo"
                             >
                               <DollarSign className="w-3 h-3 mr-1" />
@@ -545,7 +545,7 @@ export default function UsersManagement() {
                               size="sm"
                               onClick={() => handleDeactivatePremium(u.user_id)}
                               disabled={processingUserId === u.user_id}
-                              className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/20"
+                              className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-0"
                             >
                               <X className="w-3 h-3 mr-1" />
                               {processingUserId === u.user_id ? 'Procesando...' : 'Quitar Premium'}

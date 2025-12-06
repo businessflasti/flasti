@@ -6,32 +6,17 @@ import { Input } from "@/components/ui/input";
 import { CountryPriceService, type CountryPrice } from '@/lib/country-price-service';
 import { toast } from 'sonner';
 import { DollarSign } from 'lucide-react';
-import Script from 'next/script';
 import CountryFlag from '@/components/ui/CountryFlag';
 
 export default function CountryPricesPage() {
   const [prices, setPrices] = useState<CountryPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [hotmartLoaded, setHotmartLoaded] = useState(false);
   const [lockedPrices, setLockedPrices] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     loadPrices();
   }, []);
-
-  useEffect(() => {
-    if (hotmartLoaded && typeof window !== 'undefined') {
-      // @ts-ignore
-      if (window.checkoutElements) {
-        // @ts-ignore
-        const elements = window.checkoutElements.init('inlineCheckout', {
-          offer: '5h87lps7'
-        });
-        elements.mount('#inline_checkout');
-      }
-    }
-  }, [hotmartLoaded]);
 
   // Escuchar evento del botón en el header
   useEffect(() => {
@@ -127,7 +112,7 @@ export default function CountryPricesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin text-4xl mb-4">⟳</div>
           <p className="text-white">Cargando...</p>
@@ -137,20 +122,12 @@ export default function CountryPricesPage() {
   }
 
   return (
-    <>
-      <Script 
-        src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"
-        onLoad={() => setHotmartLoaded(true)}
-      />
-      
-      <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+    <div className="min-h-screen bg-[#0A0A0A] p-6">
         <div className="max-w-[1800px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-            {/* Columna Izquierda: Precios */}
-            <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6">
 
-              {/* Lista de Precios - Súper Compacta (2 por línea) */}
-              <Card className="bg-[#1a1a1a] border-blue-500/20">
+            {/* Lista de Precios - Súper Compacta (2 por línea) */}
+            <Card className="bg-[#121212] border-0">
                 <CardContent className="p-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {prices.map(price => {
@@ -197,7 +174,7 @@ export default function CountryPricesPage() {
                             }
                             onChange={(e) => handlePriceChange(price.country_code, e.target.value)}
                             disabled={isLocked}
-                            className={`bg-[#1a1a1a] border-white/10 text-white font-bold h-8 text-xs w-[100px] ${
+                            className={`bg-[#121212] border-white/10 text-white font-bold h-8 text-xs w-[100px] ${
                               isLocked ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             min="0"
@@ -230,26 +207,9 @@ export default function CountryPricesPage() {
                     })}
                   </div>
                 </CardContent>
-              </Card>
-            </div>
-
-            {/* Columna Derecha: Hotmart - Sticky que sigue el scroll */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-6">
-                <Card className="bg-[#1a1a1a] border-amber-500/20">
-                  <CardContent className="p-4">
-                    <div 
-                      id="inline_checkout" 
-                      className="bg-[#0a0a0a] rounded-lg overflow-hidden"
-                      style={{ minHeight: '400px', maxHeight: 'calc(100vh - 150px)', overflowY: 'auto' }}
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
+            </Card>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -179,7 +179,7 @@ export default function CountryAssignmentsPage() {
         </div>
 
         {/* Formulario para nueva asignación */}
-        <Card className="bg-[#1a1a1a] border-white/10">
+        <Card className="bg-[#121212] border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Plus className="w-5 h-5" />
@@ -201,7 +201,7 @@ export default function CountryAssignmentsPage() {
                   value={newMapping.user_country}
                   onChange={(e) => setNewMapping({ ...newMapping, user_country: e.target.value.toUpperCase() })}
                   maxLength={2}
-                  className="bg-[#101010] border-gray-700 text-white uppercase"
+                  className="bg-[#101010] border-0 text-white uppercase"
                 />
                 <p className="text-xs text-gray-500">
                   Código ISO de 2 letras (ej: AR, PE, MX)
@@ -218,7 +218,7 @@ export default function CountryAssignmentsPage() {
                   value={newMapping.offer_country}
                   onChange={(e) => setNewMapping({ ...newMapping, offer_country: e.target.value.toUpperCase() })}
                   maxLength={2}
-                  className="bg-[#101010] border-gray-700 text-white uppercase"
+                  className="bg-[#101010] border-0 text-white uppercase"
                 />
                 <p className="text-xs text-gray-500">
                   Código ISO de 2 letras (ej: ES, CO, US)
@@ -234,7 +234,7 @@ export default function CountryAssignmentsPage() {
                   placeholder="Razón de la asignación..."
                   value={newMapping.notes}
                   onChange={(e) => setNewMapping({ ...newMapping, notes: e.target.value })}
-                  className="bg-[#101010] border-gray-700 text-white"
+                  className="bg-[#101010] border-0 text-white"
                 />
               </div>
             </div>
@@ -253,7 +253,7 @@ export default function CountryAssignmentsPage() {
         </Card>
 
         {/* Lista de asignaciones */}
-        <Card className="bg-[#1a1a1a] border-white/10">
+        <Card className="bg-[#121212] border-white/10">
           <CardHeader>
             <CardTitle className="text-white">
               Asignaciones Activas ({mappings.length})
@@ -276,7 +276,7 @@ export default function CountryAssignmentsPage() {
                 {mappings.map((mapping) => (
                   <div
                     key={mapping.id}
-                    className="flex items-center justify-between p-4 bg-[#101010] rounded-lg border border-gray-700 hover:border-gray-600 transition-colors"
+                    className="flex items-center justify-between p-4 bg-[#101010] rounded-lg border border-0 hover:border-gray-600 transition-colors"
                   >
                     <div className="flex items-center gap-4 flex-1">
                       <div className="flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function CountryAssignmentsPage() {
         </Card>
 
         {/* Información adicional */}
-        <Card className="bg-[#1a1a1a] border-yellow-500/20">
+        <Card className="bg-[#121212] border-yellow-500/20">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-yellow-500/10 rounded-lg">

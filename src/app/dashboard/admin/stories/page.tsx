@@ -204,7 +204,7 @@ export default function StoriesAdminPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6">
           {/* Formulario - Columna izquierda */}
           <div className="lg:col-span-1">
-            <div className="bg-[#1a1a1a] rounded-2xl p-4 md:p-6 border border-white/5 sticky top-4">
+            <div className="bg-[#121212] rounded-2xl p-4 md:p-6 border border-white/5 sticky top-4">
           <form onSubmit={handleSubmit} className="space-y-3 md:space-y-5">
             {/* Avatar */}
             <div>
@@ -299,7 +299,7 @@ export default function StoriesAdminPage() {
 
           {/* Lista de historias - Columna derecha */}
           <div className="lg:col-span-2">
-            <div className="bg-[#1a1a1a] rounded-2xl p-4 md:p-6 border border-white/5">
+            <div className="bg-[#121212] rounded-2xl p-4 md:p-6 border border-white/5">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-semibold text-white">
                   Historias Activas

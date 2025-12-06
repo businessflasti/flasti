@@ -106,13 +106,9 @@ export default function DailyMessage() {
     return (
       <Card 
         className="relative border-0 h-full rounded-3xl bg-[#585C6C]"
-        style={{ contain: 'layout style paint' }}
       >
         <CardContent className="p-3 sm:p-4 lg:p-6 flex items-center justify-center h-full">
-          <div className="relative w-10 h-10">
-            <div className="absolute inset-0 border-4 border-white/20 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-transparent border-t-white rounded-full animate-spin"></div>
-          </div>
+          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
         </CardContent>
       </Card>
     );

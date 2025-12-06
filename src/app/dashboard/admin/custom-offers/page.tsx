@@ -244,7 +244,7 @@ export default function CustomOffersAdmin() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Oferta 1 */}
-          <Card className="bg-[#1a1a1a] border-white/10">
+          <Card className="bg-[#121212] border-white/10">
             <CardHeader>
               <CardTitle className="text-white flex items-center justify-between">
                 <span>Oferta #1</span>
@@ -482,7 +482,7 @@ export default function CustomOffersAdmin() {
           </Card>
 
           {/* Oferta 2 */}
-          <Card className="bg-[#1a1a1a] border-white/10">
+          <Card className="bg-[#121212] border-white/10">
             <CardHeader>
               <CardTitle className="text-white flex items-center justify-between">
                 <span>Oferta #2</span>

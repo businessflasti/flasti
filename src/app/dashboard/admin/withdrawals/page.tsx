@@ -208,10 +208,10 @@ export default function AdminWithdrawalsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+    <div className="min-h-screen bg-[#0A0A0A] p-6">
       <div className="max-w-[1800px] mx-auto">
         {/* Búsqueda y Filtros */}
-        <Card className="bg-[#1a1a1a] border-blue-500/20 mb-6">
+        <Card className="bg-[#121212] border-0 mb-6">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
@@ -279,7 +279,7 @@ export default function AdminWithdrawalsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Lista */}
           <div className="lg:col-span-2">
-            <Card className="bg-[#1a1a1a] border-blue-500/20">
+            <Card className="bg-[#121212] border-0">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-blue-500" />
@@ -335,7 +335,7 @@ export default function AdminWithdrawalsPage() {
 
           {/* Detalles */}
           <div>
-            <Card className="bg-[#1a1a1a] border-blue-500/20 sticky top-6">
+            <Card className="bg-[#121212] border-0 sticky top-6">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-blue-500" />

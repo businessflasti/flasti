@@ -124,10 +124,7 @@ const WeeklyTopRanking: React.FC = () => {
       {/* Spinner mientras carga */}
       {isLoading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="relative w-10 h-10">
-            <div className="absolute inset-0 border-4 border-white/10 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-transparent border-t-white/60 rounded-full animate-spin"></div>
-          </div>
+          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
         </div>
       ) : topUsers.length === 0 ? (
         /* Mensaje cuando no hay datos */

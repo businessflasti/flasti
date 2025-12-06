@@ -33,9 +33,7 @@ const PageLoader = () => {
       className={styles.loaderWrapper + (visible ? "" : " " + styles.hide)}
       aria-hidden={!visible}
     >
-      <svg viewBox="0 0 16 16" height="48" width="48" className={styles.windowsLoadingSpinner}>
-        <circle r="7px" cy="8px" cx="8px"></circle>
-      </svg>
+      <div className={styles.spinner}></div>
     </div>
   );
 };

@@ -32,24 +32,11 @@ const getAvatarColor = (text: string) => {
   return colors[Math.abs(hash) % colors.length];
 };
 
-const getCurrentMonthYear = () => {
-  const now = new Date();
-  const months = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
-  return `${months[now.getMonth()]} ${now.getFullYear()}`;
-};
-
 function SidebarComponent({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
   const { profile, user, signOut, updateAvatar } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [currentMonthYear, setCurrentMonthYear] = useState(getCurrentMonthYear);
   const [refreshKey, setRefreshKey] = useState(0);
   const pathname = usePathname();
-
-  // Actualizar mes/año solo cada minuto
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentMonthYear(getCurrentMonthYear()), 60000);
-    return () => clearInterval(interval);
-  }, []);
   
   const userEmail = user?.email || profile?.email || '';
   const userName = profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}`.trim() : (profile?.full_name || user?.user_metadata?.full_name);
@@ -156,12 +143,14 @@ function SidebarComponent({ open, setOpen }: { open: boolean, setOpen: (v: boole
           </button>
         </div>
 
-        {/* Badge mes/año */}
-        <div className="w-full flex justify-center mb-6">
-          <span className="text-white text-xs font-bold px-4 py-2 rounded-full bg-[#121212] tracking-wide">
-            {currentMonthYear}
-          </span>
-        </div>
+        {/* Badge nombre usuario */}
+        {userName && (
+          <div className="w-full flex justify-center mb-6">
+            <span className="text-white text-xs font-bold px-4 py-2 rounded-full bg-[#121212] tracking-wide">
+              {userName}
+            </span>
+          </div>
+        )}
 
         {/* Navegación */}
         <nav className="flex flex-col gap-1 w-full px-3" role="menu">

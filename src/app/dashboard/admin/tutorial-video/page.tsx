@@ -92,7 +92,7 @@ export default function TutorialVideoPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin text-4xl mb-4">⟳</div>
           <p className="text-white">Cargando...</p>
@@ -102,7 +102,7 @@ export default function TutorialVideoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+    <div className="min-h-screen bg-[#0A0A0A] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         
         {/* Header */}
@@ -112,7 +112,7 @@ export default function TutorialVideoPage() {
 
         {/* Editor Compacto */}
         <div>(
-          <Card className="bg-[#1a1a1a] border-blue-500/20">
+          <Card className="bg-[#121212] border-0">
             <CardContent className="p-6 space-y-4">
               
               {/* Videos lado a lado */}

@@ -94,7 +94,7 @@ export default function EmailTemplatesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin text-4xl mb-4">⟳</div>
           <p className="text-white">Cargando plantillas...</p>
@@ -104,10 +104,10 @@ export default function EmailTemplatesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#1a1a1a] to-black p-6">
+    <div className="min-h-screen bg-[#0A0A0A] p-6">
       <div className="max-w-[1800px] mx-auto">
         <Tabs value={activeTemplate} onValueChange={setActiveTemplate}>
-          <TabsList className="bg-[#1a1a1a] border border-white/10">
+          <TabsList className="bg-[#121212] border border-white/10">
             <TabsTrigger value="recovery_1" className="data-[state=active]:bg-blue-500/20">
               <Mail className="w-4 h-4 mr-2" />
               Correo 1
@@ -130,7 +130,7 @@ export default function EmailTemplatesPage() {
               <TabsContent key={templateKey} value={templateKey} className="space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Editor */}
-                  <Card className="bg-[#1a1a1a] border-blue-500/20">
+                  <Card className="bg-[#121212] border-0">
                     <CardHeader>
                       <CardTitle className="text-white flex items-center justify-between">
                         <span className="flex items-center gap-2">
@@ -173,7 +173,7 @@ export default function EmailTemplatesPage() {
                         />
                       </div>
 
-                      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                      <div className="bg-blue-500/10 border border-0 rounded-lg p-4">
                         <h4 className="text-sm font-medium text-blue-400 mb-2">Variables disponibles:</h4>
                         <ul className="text-xs text-blue-300 space-y-1">
                           <li><code className="bg-blue-500/20 px-2 py-1 rounded">{'{{user_name}}'}</code> - Nombre del usuario</li>
@@ -184,7 +184,7 @@ export default function EmailTemplatesPage() {
                   </Card>
 
                   {/* Vista Previa */}
-                  <Card className="bg-[#1a1a1a] border-blue-500/20">
+                  <Card className="bg-[#121212] border-0">
                     <CardHeader>
                       <CardTitle className="text-white flex items-center justify-between">
                         <span className="flex items-center gap-2">
