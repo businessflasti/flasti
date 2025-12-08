@@ -445,12 +445,7 @@ export default function FomoNotifications() {
           }}
           className="fixed bottom-4 left-1/2 sm:left-4 -translate-x-1/2 sm:translate-x-0 z-50 w-[280px] sm:w-[320px] md:w-[360px] fomo-notification"
         >
-          <div className={`
-            backdrop-blur-sm text-white rounded-lg shadow-xl p-2.5 flex items-center gap-3
-            ${currentNotification.type === 'registration'
-              ? 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95'
-              : 'bg-gradient-to-r from-[#0f172a]/95 to-[#1e293b]/95'}
-          `}>
+          <div className="backdrop-blur-sm text-white rounded-lg shadow-xl p-2.5 flex items-center gap-3 bg-[#121212]">
             <div className="flex-shrink-0 relative">
               {/* Logo de Flasti */}
               <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">

@@ -43,17 +43,9 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
     return 'U';
   };
   
-  // Función para generar un color basado en el email/nombre
-  const getAvatarColor = (text: string) => {
-    const colors = [
-      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
-    ];
-    let hash = 0;
-    for (let i = 0; i < text.length; i++) {
-      hash = text.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return colors[Math.abs(hash) % colors.length];
+  // Color fijo para todos los avatares genéricos
+  const getAvatarColor = () => {
+    return '#85C1E9';
   };
   
   const userEmail = user?.email || profile?.email || '';
@@ -61,7 +53,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
     ? `${profile.first_name} ${profile.last_name || ''}`.trim()
     : (profile?.name || user?.user_metadata?.full_name || '');
   const initials = getInitials(userEmail, userName);
-  const avatarColor = getAvatarColor(userEmail || userName || 'default');
+  const avatarColor = getAvatarColor();
 
   const [detectedCountry, setDetectedCountry] = useState<string>('--');
   const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
@@ -189,7 +181,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 </div>
                 {profile?.first_name && (
                   <div className="text-xs text-gray-400 ml-2 md:ml-0">
-                    ¡Bienvenido, {profile.first_name}!
+                    Bienvenido, {profile.first_name}!
                   </div>
                 )}
               </div>

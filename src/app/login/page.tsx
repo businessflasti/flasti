@@ -76,7 +76,6 @@ export default function LoginPage() {
         toast.error(getLoginErrorMessage(error));
       } else {
         setLoginStep('Verificando configuración...');
-        toast.success('Inicio de sesión exitoso');
         // Redirigir a dashboard para admins
         setTimeout(() => router.push('/dashboard'), 500);
         return;
@@ -140,8 +139,8 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Tu dirección de correo electrónico"
-                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  placeholder="Tu correo electrónico"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -162,7 +161,7 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Tu contraseña"
-                    className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                    className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required

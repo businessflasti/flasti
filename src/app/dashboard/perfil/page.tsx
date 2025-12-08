@@ -68,16 +68,9 @@ export default function PerfilPage() {
     return 'U';
   };
   
-  const getAvatarColor = (text: string) => {
-    const colors = [
-      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-      '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
-    ];
-    let hash = 0;
-    for (let i = 0; i < text.length; i++) {
-      hash = text.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return colors[Math.abs(hash) % colors.length];
+  // Color fijo para todos los avatares genéricos
+  const getAvatarColor = () => {
+    return '#85C1E9';
   };
 
   const handleSelectFile = () => {
@@ -304,7 +297,7 @@ export default function PerfilPage() {
                     ) : (
                       <div 
                         className="h-full w-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                        style={{ backgroundColor: getAvatarColor(user?.email || userData?.name || 'default') }}
+                        style={{ backgroundColor: getAvatarColor() }}
                       >
                         {getInitials(user?.email, userData?.name)}
                       </div>

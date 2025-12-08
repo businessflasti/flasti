@@ -95,7 +95,7 @@ export default function DailyMessage() {
 
       setIsRead(true);
       setResponseType(type);
-      toast.success(type === 'thanks' ? '¡Gracias por tu respuesta! 😊' : '¡Nos alegra que te guste! 👍');
+      toast.success('Respuesta recibida');
     } catch (error) {
       console.error('Error saving response:', error);
       toast.error('Error al guardar respuesta');

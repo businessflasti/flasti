@@ -69,7 +69,6 @@ export default function RegisterPage() {
             const { error: loginError } = await signIn(email, password);
 
             if (!loginError) {
-              toast.success('Inicio de sesión exitoso');
               router.push('/dashboard');
               return;
             } else {
@@ -104,7 +103,6 @@ export default function RegisterPage() {
       // Registro exitoso
       console.log('Registro completado con éxito');
       toast.dismiss(loadingToast);
-      toast.success('¡Registro exitoso! Redirigiendo...');
 
       // Redirigir directamente al dashboard en vez de a welcome
       setTimeout(() => {
@@ -154,7 +152,7 @@ export default function RegisterPage() {
                   id="firstName"
                   type="text"
                   placeholder="Tu nombre"
-                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required
@@ -168,7 +166,7 @@ export default function RegisterPage() {
                   id="lastName"
                   type="text"
                   placeholder="Tu apellido"
-                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required
@@ -183,8 +181,8 @@ export default function RegisterPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="Tu dirección de correo electrónico"
-                className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                placeholder="Tu correo electrónico"
+                className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -200,7 +198,7 @@ export default function RegisterPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

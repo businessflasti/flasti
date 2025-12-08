@@ -116,7 +116,7 @@ const WeeklyTopRanking: React.FC = () => {
         <h3 className="text-[10px] sm:text-xs font-bold text-white leading-tight">
           {settings.title}
         </h3>
-        <p className="text-[8px] sm:text-[10px] text-white/60 leading-tight">
+        <p className="text-[10px] sm:text-[10px] text-white/60 leading-tight">
           {settings.subtitle}
         </p>
       </div>

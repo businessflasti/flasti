@@ -285,7 +285,7 @@ const CheckoutContent = () => {
   };
 
   // Países que usan USD nativamente (no mostrar conversión)
-  const usdNativeCountries = ['US', 'PR', 'EC', 'SV', 'PA'];
+  const usdNativeCountries = ['US', 'PR', 'EC', 'SV', 'VE'];
 
   // Inicializar con 'hotmart' para que la sección "Moneda local" esté abierta por defecto
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("hotmart");
@@ -1577,7 +1577,6 @@ const CheckoutContent = () => {
                                   <span>$ 5.90 USD</span>
                                   {countryPrice.countryCode && 
                                    !usdNativeCountries.includes(countryPrice.countryCode) && 
-                                   countryPrice.countryCode !== 'VE' && 
                                    countryPrice.currencyCode !== 'USD' && (
                                     <>
                                       <span className="text-white/40">≈</span>

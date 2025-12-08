@@ -25,11 +25,8 @@ const getInitials = (email: string | undefined, name: string | undefined) => {
   return 'U';
 };
 
-const getAvatarColor = (text: string) => {
-  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'];
-  let hash = 0;
-  for (let i = 0; i < text.length; i++) hash = text.charCodeAt(i) + ((hash << 5) - hash);
-  return colors[Math.abs(hash) % colors.length];
+const getAvatarColor = () => {
+  return '#85C1E9';
 };
 
 function SidebarComponent({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
@@ -40,7 +37,7 @@ function SidebarComponent({ open, setOpen }: { open: boolean, setOpen: (v: boole
   
   const userEmail = user?.email || profile?.email || '';
   const userName = profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}`.trim() : (profile?.full_name || user?.user_metadata?.full_name);
-  const avatarColor = getAvatarColor(userEmail || userName || 'default');
+  const avatarColor = getAvatarColor();
   const hasCustomAvatar = profile?.avatar_url;
   
   // Handler optimizado para subir avatar

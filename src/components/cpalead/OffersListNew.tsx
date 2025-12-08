@@ -13,7 +13,7 @@ import PremiumCardOverlay from '@/components/premium/PremiumCardOverlay';
 import { useRouter } from 'next/navigation';
 import { usePremiumStatus } from '@/components/premium/hooks/usePremiumStatus';
 import { useCardLockConfig } from '@/components/premium/hooks/useCardLockConfig';
-import PremiumTaskModal from '@/components/dashboard/PremiumTaskModal';
+
 import { supabase } from '@/lib/supabase';
 import CompletedTaskOverlay from './CompletedTaskOverlay';
 
@@ -133,8 +133,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
   // Estados para ofertas personalizadas
   const [customOffers, setCustomOffers] = useState<CustomOffer[]>([]);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState<CustomOffer | null>(null);
+
   const [completedOfferIds, setCompletedOfferIds] = useState<string[]>([]); // IDs de ofertas completadas
   const { shouldLockCard } = useCardLockConfig();
 
@@ -643,7 +642,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
               <div key={`custom-${customOffer.id}`} className="relative">
                 <PremiumCardOverlay
                   isLocked={isLocked}
-                  onUnlockClick={() => setShowWelcomeModal(true)}
+                  onUnlockClick={() => window.location.href = `/dashboard/task/${customOffer.id}`}
                   taskNumber={customOffer.position}
                   isReadyToUnlock={isReadyToUnlock}
                 >
@@ -703,8 +702,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                           <div className="mt-auto space-y-3">
                             <Button
                               onClick={() => {
-                                setSelectedOffer(customOffer);
-                                setShowWelcomeModal(true);
+                                window.location.href = `/dashboard/task/${customOffer.id}`;
                               }}
                               className="w-full text-white hover:opacity-90 transition-opacity"
                               style={{ backgroundColor: '#6765F2' }}
@@ -732,8 +730,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                           <>
                             <Button
                               onClick={() => {
-                                setSelectedOffer(customOffer);
-                                setShowWelcomeModal(true);
+                                window.location.href = `/dashboard/task/${customOffer.id}`;
                               }}
                               className="w-full text-white hover:opacity-90 transition-opacity"
                               style={{ backgroundColor: '#6765F2' }}
@@ -820,7 +817,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
               <div key={offer.id} className="relative">
                 <PremiumCardOverlay
                   isLocked={isLocked}
-                  onUnlockClick={() => router.push('/dashboard/premium')}
+                  onUnlockClick={() => window.location.href = '/dashboard/premium'}
                   taskNumber={index + 1}
                   isReadyToUnlock={isReadyToUnlock}
                   showUnlockButton={showUnlockButton}
@@ -966,38 +963,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
         </div>
       )}
 
-      {/* Modal Premium para ofertas personalizadas */}
-      {showWelcomeModal && user && selectedOffer && (
-        <PremiumTaskModal
-          userId={user.id}
-          customOfferId={selectedOffer.id}
-          modalTitle={selectedOffer.modal_title}
-          modalSubtitle={selectedOffer.modal_subtitle}
-          audioUrl={selectedOffer.audio_url}
-          videoUrl={selectedOffer.video_url}
-          inputPlaceholder={selectedOffer.input_placeholder}
-          inputLabel={selectedOffer.input_label}
-          helpText={selectedOffer.help_text}
-          amount={selectedOffer.amount}
-          imageUrl={selectedOffer.image_url}
-          taskType={selectedOffer.task_type}
-          partnerName={selectedOffer.partner_name}
-          partnerLogo={selectedOffer.partner_logo}
-          objective={selectedOffer.objective}
-          blockBgColor={selectedOffer.block_bg_color}
-          imageBgColor={selectedOffer.image_bg_color}
-          userCountry={userCountry}
-          onClose={() => {
-            setShowWelcomeModal(false);
-            setSelectedOffer(null);
-          }}
-          onComplete={() => {
-            setShowWelcomeModal(false);
-            setSelectedOffer(null);
-            window.location.reload();
-          }}
-        />
-      )}
+
     </div>
   );
 };

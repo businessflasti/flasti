@@ -219,7 +219,7 @@ const PremiumPage = () => {
 
   // Función para navegar al checkout
   const handleCheckoutNavigation = () => {
-    router.push('/dashboard/checkout');
+    window.location.href = '/dashboard/checkout';
   };
 
   // Función para volver al dashboard - URL completa para evitar caché
