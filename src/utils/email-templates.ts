@@ -1,7 +1,16 @@
+import 'server-only';
 import { createClient } from '@supabase/supabase-js';
-import Handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
+
+// Dynamic import for Handlebars to avoid webpack require.extensions error
+let Handlebars: typeof import('handlebars') | null = null;
+async function getHandlebars() {
+  if (!Handlebars) {
+    Handlebars = (await import('handlebars')).default;
+  }
+  return Handlebars;
+}
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -41,6 +50,9 @@ async function getCompiledTemplate(templateName: EmailTemplate): Promise<Handleb
   }
 
   try {
+    // Obtener Handlebars dinámicamente
+    const hbs = await getHandlebars();
+    
     // Ruta a la plantilla
     const templatePath = path.join(process.cwd(), 'email-templates', `${templateName}.html`);
     
@@ -48,7 +60,7 @@ async function getCompiledTemplate(templateName: EmailTemplate): Promise<Handleb
     const templateSource = fs.readFileSync(templatePath, 'utf-8');
     
     // Compilar la plantilla
-    const template = Handlebars.compile(templateSource);
+    const template = hbs.compile(templateSource);
     
     // Guardar en caché
     templateCache[templateName] = template;
