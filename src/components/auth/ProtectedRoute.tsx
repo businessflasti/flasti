@@ -4,7 +4,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import PageLoader from '@/components/ui/PageLoader';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading, updateBalance } = useAuth();
@@ -12,6 +11,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   const [redirectAttempted, setRedirectAttempted] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
 
   // Función para verificar la conexión con Supabase
   const checkConnection = async () => {
@@ -46,6 +46,17 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       return () => clearTimeout(timer);
     }
   }, [connectionError, retryCount]);
+
+  // Timeout de seguridad: si loading tarda más de 10 segundos, forzar redirección
+  useEffect(() => {
+    if (loading) {
+      const timeout = setTimeout(() => {
+        console.log('ProtectedRoute: Timeout de carga alcanzado');
+        setLoadingTimeout(true);
+      }, 10000);
+      return () => clearTimeout(timeout);
+    }
+  }, [loading]);
 
   useEffect(() => {
     // Verificar conexión al cargar el componente
@@ -117,8 +128,23 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     return null;
   }
 
-  // Si estamos cargando o no hay usuario, no renderizar nada (dejar que PageLoader maneje)
-  if (loading || !user) {
+  // Si el timeout de carga se alcanzó y no hay usuario, redirigir a login
+  if (loadingTimeout && !user) {
+    console.log('ProtectedRoute: Timeout alcanzado sin usuario, redirigiendo a login');
+    if (!redirectAttempted) {
+      setRedirectAttempted(true);
+      router.push('/login');
+    }
+    return null;
+  }
+
+  // Si estamos cargando, mostrar un indicador mínimo (el PageLoader global ya maneja esto)
+  if (loading && !loadingTimeout) {
+    return null;
+  }
+
+  // Si no hay usuario después de cargar, no renderizar nada (ya se redirigió)
+  if (!user) {
     return null;
   }
 

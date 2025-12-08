@@ -175,33 +175,31 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
         className="relative border-0 h-full flex flex-col rounded-3xl overflow-hidden bg-[#585C6C]"
 
       >
-        <CardContent className="p-4 flex-1 flex flex-col justify-between">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex items-center gap-2 sm:gap-3 flex-1">
-              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white flex-shrink-0">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-[#101010]" />
+        <CardContent className="p-3 flex-1 flex flex-col min-h-0">
+          <div className="flex items-start justify-between gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-1">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white flex-shrink-0">
+                <DollarSign className="w-4 h-4 text-[#101010]" />
               </div>
               
               <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                    Balance
-                  </span>
-                </div>
+                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
+                  Balance
+                </span>
                 
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-1.5">
                   {isVisible ? (
-                    <span className="text-xl sm:text-2xl font-bold text-white">
+                    <span className="text-lg sm:text-xl font-bold text-white">
                       {formatCurrency(balance)}
                     </span>
                   ) : (
-                    <span className="text-xl sm:text-2xl font-bold text-muted-foreground">
+                    <span className="text-lg sm:text-xl font-bold text-muted-foreground">
                       ••••••
                     </span>
                   )}
                   
                   {isLoading && (
-                    <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground animate-spin" />
+                    <RefreshCw className="w-3 h-3 text-muted-foreground animate-spin" />
                   )}
                 </div>
               </div>
@@ -212,27 +210,18 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsVisible(!isVisible)}
-                className="balance-eye-button h-10 w-10 p-0 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] transition-colors flex-shrink-0"
+                className="balance-eye-button h-8 w-8 p-0 rounded-lg bg-white/[0.08] hover:bg-white/[0.12] transition-colors flex-shrink-0"
                 style={{ willChange: 'auto' }}
               >
                 {isVisible ? (
-                  <EyeOff className="w-4 h-4 text-white" />
+                  <EyeOff className="w-3.5 h-3.5 text-white" />
                 ) : (
-                  <Eye className="w-4 h-4 text-white" />
+                  <Eye className="w-3.5 h-3.5 text-white" />
                 )}
               </Button>
             )}
           </div>
 
-          {/* Información adicional */}
-          {isVisible && (
-            <div className="mt-3 pt-3 border-t border-primary/20">
-              <div className="flex items-center justify-between text-[10px] sm:text-xs text-muted-foreground">
-                <span>Total ganado: {formatCurrency(balanceStats.totalEarnings)}</span>
-              </div>
-            </div>
-          )}
-          
           {/* Top 3 Ranking Semanal */}
           <WeeklyTopRanking />
         </CardContent>

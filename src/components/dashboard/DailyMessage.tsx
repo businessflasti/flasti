@@ -95,7 +95,7 @@ export default function DailyMessage() {
 
       setIsRead(true);
       setResponseType(type);
-      toast.success('Respuesta recibida');
+      toast.success(type === 'thanks' ? '¡Gracias por tu respuesta! 😊' : '¡Nos alegra que te guste! 👍');
     } catch (error) {
       console.error('Error saving response:', error);
       toast.error('Error al guardar respuesta');
@@ -105,10 +105,16 @@ export default function DailyMessage() {
   if (loading) {
     return (
       <Card 
-        className="relative border-0 h-full rounded-3xl bg-[#585C6C]"
+        className="relative backdrop-blur-2xl border border-white/10 h-full rounded-3xl"
+        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
       >
-        <CardContent className="p-3 sm:p-4 lg:p-6 flex items-center justify-center h-full">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+        {/* Brillo superior glassmorphism */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <CardContent className="p-2.5 sm:p-3 lg:p-4 flex items-center justify-center h-full">
+          <div className="relative w-8 h-8">
+            <div className="absolute inset-0 border-3 border-white/20 rounded-full"></div>
+            <div className="absolute inset-0 border-3 border-transparent border-t-white rounded-full animate-spin"></div>
+          </div>
         </CardContent>
       </Card>
     );
@@ -116,23 +122,25 @@ export default function DailyMessage() {
 
   return (
     <Card 
-      className="relative border-0 h-full overflow-hidden rounded-3xl bg-[#585C6C]"
-
+      className="relative backdrop-blur-2xl border border-white/10 h-full overflow-hidden rounded-3xl"
+      style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
     >
+      {/* Brillo superior glassmorphism */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
       
-      <CardContent className="p-3 sm:p-4 lg:p-6 flex flex-col h-full relative z-10">
+      <CardContent className="p-2.5 sm:p-3 lg:p-4 flex flex-col h-full relative z-10">
         {/* Header con avatar de María */}
-        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+        <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
           {/* Avatar de María */}
           <div className="relative flex-shrink-0">
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden transition-all duration-300 ${
+            <div className={`w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full overflow-hidden transition-all duration-300 ${
               isRead ? 'opacity-70' : ''
             }`}>
               <Image
                 src="/images/tutors/soporte-maria.png"
                 alt="María - Asesora Flasti"
-                width={48}
-                height={48}
+                width={40}
+                height={40}
                 className={`w-full h-full object-cover transition-all duration-300 ${
                   isRead ? 'grayscale opacity-80' : ''
                 }`}
@@ -142,24 +150,24 @@ export default function DailyMessage() {
 
           {/* Info de María - Centrada verticalmente */}
           <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-white truncate">
+            <h3 className="text-[11px] sm:text-xs lg:text-sm font-bold text-white truncate leading-tight">
               Laura Martínez
             </h3>
-            <p className="text-[10px] sm:text-xs transition-all duration-300 truncate text-white">
+            <p className="text-[9px] sm:text-[10px] lg:text-xs transition-all duration-300 truncate text-white/80 leading-tight">
               Guía de Flasti
             </p>
           </div>
 
           {/* Indicador de actividad alineado con el nombre y etiqueta */}
-          <div className={`flex-shrink-0 w-2 h-2 sm:w-2 sm:h-2 rounded-full mr-6 sm:mr-2 ${
+          <div className={`flex-shrink-0 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-4 sm:mr-1 ${
             isRead ? 'bg-orange-400 animate-pulse-orange' : 'bg-green-400 animate-pulse-green'
           }`}></div>
         </div>
 
         {/* Mensaje en burbuja de chat */}
-        <div className="flex-1 flex flex-col gap-2">
-          <div className="rounded-2xl rounded-tl-sm p-2.5 sm:p-3 lg:p-4 w-full border transition-all duration-300 bg-transparent border-[#686C7C]">
-            <p className={`text-xs sm:text-sm lg:text-base leading-relaxed transition-all duration-300 ${
+        <div className="flex-1 flex flex-col gap-1.5">
+          <div className="rounded-xl rounded-tl-sm p-2 sm:p-2.5 lg:p-3 w-full border transition-all duration-300 bg-transparent border-[#686C7C]">
+            <p className={`text-[10px] sm:text-xs lg:text-sm leading-snug transition-all duration-300 ${
               isRead ? 'text-white/65' : 'text-white/95'
             }`}>
               {message}
@@ -168,22 +176,22 @@ export default function DailyMessage() {
 
           {/* Botones de respuesta */}
           {!isRead && (
-            <div className="flex flex-col gap-1.5">
-              <p className="text-[10px] sm:text-xs text-gray-400 font-medium">Responder:</p>
-              <div className="flex gap-2">
+            <div className="flex flex-col gap-1">
+              <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium">Responder:</p>
+              <div className="flex gap-1.5">
                 <Button
                   onClick={() => handleResponse('thanks')}
                   size="sm"
-                  className="flex-1 text-white border-0 h-8 text-xs hover:opacity-90"
-                  style={{ backgroundColor: '#121212' }}
+                  className="flex-1 text-white border-0 h-6 sm:h-7 text-[10px] sm:text-xs hover:opacity-90"
+                  style={{ backgroundColor: '#636777' }}
                 >
                   😊 Gracias
                 </Button>
                 <Button
                   onClick={() => handleResponse('like')}
                   size="sm"
-                  className="flex-1 text-white border-0 h-8 text-xs hover:opacity-90"
-                  style={{ backgroundColor: '#121212' }}
+                  className="flex-1 text-white border-0 h-6 sm:h-7 text-[10px] sm:text-xs hover:opacity-90"
+                  style={{ backgroundColor: '#636777' }}
                 >
                   👍 Me gusta
                 </Button>
@@ -193,8 +201,8 @@ export default function DailyMessage() {
         </div>
 
         {/* Footer con estado */}
-        <div className="mt-2 sm:mt-3 flex items-center justify-center">
-          <div className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 ${
+        <div className="mt-1.5 sm:mt-2 flex items-center justify-center">
+          <div className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all duration-300 ${
             isRead 
               ? 'bg-gray-600/20 border border-gray-500/30' 
               : 'bg-white shadow-lg'
@@ -202,26 +210,26 @@ export default function DailyMessage() {
             {isRead ? (
               <>
                 <svg 
-                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" 
+                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-300" 
                   fill="currentColor" 
                   viewBox="0 0 20 20"
                 >
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                 </svg>
-                <span className="text-[10px] sm:text-xs font-medium text-gray-300">
+                <span className="text-[9px] sm:text-[10px] font-medium text-gray-300">
                   Mensaje leído
                 </span>
               </>
             ) : (
               <>
                 <svg 
-                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black animate-swing" 
+                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-black animate-swing" 
                   fill="currentColor" 
                   viewBox="0 0 20 20"
                 >
                   <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
                 </svg>
-                <span className="text-[10px] sm:text-xs font-bold text-black">
+                <span className="text-[9px] sm:text-[10px] font-bold text-black">
                   Nuevo mensaje
                 </span>
               </>

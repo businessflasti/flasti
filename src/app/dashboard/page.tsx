@@ -493,10 +493,10 @@ export default function DashboardPage() {
                           onClick={() => setShowFullPlayer(true)}
                           className="rounded-full border-[3px] border-[#3A3A3A] overflow-hidden flex items-stretch gap-0"
                         >
-                          <span className="pl-5 pr-3 py-2.5 bg-[#E5E5E5] text-black font-bold flex items-center">
+                          <span className="pl-5 pr-3 py-2.5 bg-[#E5E5E5] text-[#1A1A1A] font-bold flex items-center">
                             Ver video
                           </span>
-                          <div className="pr-5 pl-3 bg-[#121212] flex items-center justify-center">
+                          <div className="pr-5 pl-3 bg-[#1A1A1A] flex items-center justify-center">
                             <svg className="w-5 h-5" fill="#FACD48" viewBox="0 0 24 24">
                               <path d="M8 5v14l11-7z" />
                             </svg>
@@ -549,9 +549,9 @@ export default function DashboardPage() {
               className="object-cover -z-10"
               sizes="100vw"
             />
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-[7fr_10fr] gap-4">
             {/* Columna izquierda: Balance + Mensaje del Día (o Slider Premium) */}
-            <div className="grid grid-cols-2 gap-4 h-[400px]">
+            <div className="grid grid-cols-2 gap-3 h-[320px]">
               {/* Balance */}
               <div className="h-full">
                 <UserBalanceDisplay
@@ -569,7 +569,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Columna derecha: Video Tutorial */}
-            <div className="flex flex-col gap-4 h-[400px]">
+            <div className="flex flex-col gap-4 h-[320px]">
               {/* Tutorial */}
               <div className="flex-1 min-h-0">
               <Card 
@@ -607,10 +607,10 @@ export default function DashboardPage() {
                           onClick={() => setShowFullPlayer(true)}
                           className="rounded-full border-[3px] border-[#3A3A3A] overflow-hidden flex items-stretch gap-0"
                         >
-                          <span className="pl-5 pr-3 py-2.5 bg-[#E5E5E5] text-black font-bold flex items-center">
+                          <span className="pl-5 pr-3 py-2.5 bg-[#E5E5E5] text-[#1A1A1A] font-bold flex items-center">
                             Ver video
                           </span>
-                          <div className="pr-5 pl-3 bg-[#121212] flex items-center justify-center">
+                          <div className="pr-5 pl-3 bg-[#1A1A1A] flex items-center justify-center">
                             <svg className="w-5 h-5" fill="#FACD48" viewBox="0 0 24 24">
                               <path d="M8 5v14l11-7z" />
                             </svg>
