@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/supabase';
@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
 import { toast } from 'sonner';
 
-export default function DailyMessage() {
+const DailyMessage = memo(function DailyMessage() {
   const { profile, user } = useAuth();
   const [message, setMessage] = useState('');
   const [messageVersion, setMessageVersion] = useState(0);
@@ -16,31 +16,7 @@ export default function DailyMessage() {
   const [isRead, setIsRead] = useState(false);
   const [responseType, setResponseType] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadMessage();
-
-    // Suscripción en tiempo real para cambios de mensaje
-    const channel = supabase
-      .channel('daily_message_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'daily_message',
-        },
-        () => {
-          loadMessage();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [profile, user]);
-
-  const loadMessage = async () => {
+  const loadMessage = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('daily_message')
@@ -76,9 +52,33 @@ export default function DailyMessage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
-  const handleResponse = async (type: 'thanks' | 'like') => {
+  useEffect(() => {
+    loadMessage();
+
+    // Suscripción en tiempo real para cambios de mensaje
+    const channel = supabase
+      .channel('daily_message_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'daily_message',
+        },
+        () => {
+          loadMessage();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [loadMessage]);
+
+  const handleResponse = useCallback(async (type: 'thanks' | 'like') => {
     if (!user) return;
 
     try {
@@ -100,21 +100,22 @@ export default function DailyMessage() {
       console.error('Error saving response:', error);
       toast.error('Error al guardar respuesta');
     }
-  };
+  }, [user, messageVersion]);
 
   if (loading) {
     return (
       <Card 
-        className="relative backdrop-blur-2xl border border-white/10 h-full rounded-3xl"
-        style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
+        className="relative border-0 h-full rounded-3xl"
+        style={{ backgroundColor: '#585C6C' }}
       >
-        {/* Brillo superior glassmorphism */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         <CardContent className="p-2.5 sm:p-3 lg:p-4 flex items-center justify-center h-full">
-          <div className="relative w-8 h-8">
-            <div className="absolute inset-0 border-3 border-white/20 rounded-full"></div>
-            <div className="absolute inset-0 border-3 border-transparent border-t-white rounded-full animate-spin"></div>
-          </div>
+          <div 
+            className="w-8 h-8 rounded-full animate-spin"
+            style={{ 
+              border: '2px solid rgba(255, 255, 255, 0.2)',
+              borderTopColor: '#fff'
+            }}
+          />
         </CardContent>
       </Card>
     );
@@ -122,25 +123,23 @@ export default function DailyMessage() {
 
   return (
     <Card 
-      className="relative backdrop-blur-2xl border border-white/10 h-full overflow-hidden rounded-3xl"
-      style={{ backgroundColor: 'rgba(11, 15, 23, 0.6)' }}
+      className="relative border-0 h-full overflow-hidden rounded-3xl"
+      style={{ backgroundColor: '#585C6C' }}
     >
-      {/* Brillo superior glassmorphism */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
       
-      <CardContent className="p-2.5 sm:p-3 lg:p-4 flex flex-col h-full relative z-10">
+      <CardContent className="p-2.5 sm:p-3 lg:p-5 flex flex-col h-full relative z-10">
         {/* Header con avatar de María */}
-        <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
+        <div className="flex items-center gap-2 lg:gap-3 mb-1.5 sm:mb-2 lg:mb-3">
           {/* Avatar de María */}
           <div className="relative flex-shrink-0">
-            <div className={`w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full overflow-hidden transition-all duration-300 ${
+            <div className={`w-7 h-7 sm:w-8 sm:h-8 lg:w-11 lg:h-11 rounded-full overflow-hidden transition-all duration-300 ${
               isRead ? 'opacity-70' : ''
             }`}>
               <Image
                 src="/images/tutors/soporte-maria.png"
                 alt="María - Asesora Flasti"
-                width={40}
-                height={40}
+                width={44}
+                height={44}
                 className={`w-full h-full object-cover transition-all duration-300 ${
                   isRead ? 'grayscale opacity-80' : ''
                 }`}
@@ -165,9 +164,12 @@ export default function DailyMessage() {
         </div>
 
         {/* Mensaje en burbuja de chat */}
-        <div className="flex-1 flex flex-col gap-1.5">
-          <div className="rounded-xl rounded-tl-sm p-2 sm:p-2.5 lg:p-3 w-full border transition-all duration-300 bg-transparent border-[#686C7C]">
-            <p className={`text-[10px] sm:text-xs lg:text-sm leading-snug transition-all duration-300 ${
+        <div className="flex-1 flex flex-col gap-3 lg:gap-3.5">
+          <div 
+            className="rounded-xl rounded-tl-sm p-2 sm:p-2.5 lg:p-3.5 w-full bg-transparent"
+            style={{ border: '1px solid #7A7E8C' }}
+          >
+            <p className={`text-[10px] sm:text-xs lg:text-sm leading-snug lg:leading-relaxed ${
               isRead ? 'text-white/65' : 'text-white/95'
             }`}>
               {message}
@@ -176,25 +178,23 @@ export default function DailyMessage() {
 
           {/* Botones de respuesta */}
           {!isRead && (
-            <div className="flex flex-col gap-1">
-              <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium">Responder:</p>
-              <div className="flex gap-1.5">
-                <Button
+            <div className="flex flex-col gap-3 lg:gap-3.5">
+              <p className="text-[9px] sm:text-[10px] lg:text-xs text-gray-400 font-medium">Responder:</p>
+              <div className="flex gap-1.5 lg:gap-2">
+                <button
                   onClick={() => handleResponse('thanks')}
-                  size="sm"
-                  className="flex-1 text-white border-0 h-6 sm:h-7 text-[10px] sm:text-xs hover:opacity-90"
-                  style={{ backgroundColor: '#636777' }}
+                  className="flex-1 h-6 sm:h-7 lg:h-8 text-[10px] sm:text-xs hover:opacity-90 rounded-md font-medium bg-white"
+                  style={{ color: '#121212' }}
                 >
                   😊 Gracias
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={() => handleResponse('like')}
-                  size="sm"
-                  className="flex-1 text-white border-0 h-6 sm:h-7 text-[10px] sm:text-xs hover:opacity-90"
-                  style={{ backgroundColor: '#636777' }}
+                  className="flex-1 h-6 sm:h-7 lg:h-8 text-[10px] sm:text-xs hover:opacity-90 rounded-md font-medium bg-white"
+                  style={{ color: '#121212' }}
                 >
                   👍 Me gusta
-                </Button>
+                </button>
               </div>
             </div>
           )}
@@ -202,39 +202,44 @@ export default function DailyMessage() {
 
         {/* Footer con estado */}
         <div className="mt-1.5 sm:mt-2 flex items-center justify-center">
-          <div className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all duration-300 ${
-            isRead 
-              ? 'bg-gray-600/20 border border-gray-500/30' 
-              : 'bg-white shadow-lg'
-          }`}>
-            {isRead ? (
-              <>
-                <svg 
-                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-300" 
-                  fill="currentColor" 
-                  viewBox="0 0 20 20"
-                >
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                </svg>
-                <span className="text-[9px] sm:text-[10px] font-medium text-gray-300">
-                  Mensaje leído
-                </span>
-              </>
-            ) : (
-              <>
-                <svg 
-                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-black animate-swing" 
-                  fill="currentColor" 
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-                </svg>
-                <span className="text-[9px] sm:text-[10px] font-bold text-black">
-                  Nuevo mensaje
-                </span>
-              </>
-            )}
-          </div>
+          {isRead ? (
+            <div 
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full"
+              style={{ 
+                backgroundColor: 'transparent',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
+              <svg 
+                className="w-3.5 h-3.5 text-white/60" 
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              <span className="text-[11px] sm:text-xs font-medium text-white/60">
+                Mensaje leído
+              </span>
+            </div>
+          ) : (
+            <div 
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full"
+              style={{ backgroundColor: '#656979' }}
+            >
+              <svg 
+                className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white animate-swing" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+              </svg>
+              <span className="text-[9px] sm:text-[10px] font-bold text-white">
+                Nuevo mensaje
+              </span>
+            </div>
+          )}
         </div>
 
         <style jsx>{`
@@ -287,4 +292,8 @@ export default function DailyMessage() {
       </CardContent>
     </Card>
   );
-}
+});
+
+DailyMessage.displayName = 'DailyMessage';
+
+export default DailyMessage;

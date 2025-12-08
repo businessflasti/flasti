@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { TrendingUp } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -15,6 +15,10 @@ interface TopUser {
 interface RankingSettings {
   title: string;
   subtitle: string;
+}
+
+interface WeeklyTopRankingProps {
+  variant?: 'default' | 'dark';
 }
 
 // Sin datos por defecto - mostrar loader hasta que carguen los datos reales
@@ -53,43 +57,43 @@ const getRankColor = (rank: number) => {
   }
 };
 
-const WeeklyTopRanking: React.FC = () => {
+const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'default' }) => {
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
   const [settings, setSettings] = useState<RankingSettings>(defaultSettings);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const itemBgColor = variant === 'dark' ? '#1A1A1A' : '#656978';
+
+  const fetchTopRanking = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('weekly_top_ranking')
+        .select('*')
+        .order('rank', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching top ranking:', error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        const formattedData: TopUser[] = data.map(item => ({
+          rank: item.rank,
+          earnings: parseFloat(item.earnings),
+          name: item.name,
+          country_code: item.country_code,
+          avatar_url: item.avatar_url
+        }));
+        setTopUsers(formattedData);
+      }
+    } catch (error) {
+      console.error('Error fetching top ranking:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchTopRanking = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('weekly_top_ranking')
-          .select('*')
-          .order('rank', { ascending: true });
-
-        if (error) {
-          console.error('Error fetching top ranking:', error);
-          return;
-        }
-
-        if (data && data.length > 0) {
-          const formattedData: TopUser[] = data.map(item => ({
-            rank: item.rank,
-            earnings: parseFloat(item.earnings),
-            name: item.name,
-            country_code: item.country_code,
-            avatar_url: item.avatar_url
-          }));
-          setTopUsers(formattedData);
-          
-          // NO actualizar títulos - mantener los valores por defecto fijos
-        }
-      } catch (error) {
-        console.error('Error fetching top ranking:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchTopRanking();
 
     // Suscribirse a cambios en tiempo real
@@ -107,12 +111,12 @@ const WeeklyTopRanking: React.FC = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [fetchTopRanking]);
 
   return (
-    <div className="mt-4 pt-4 border-t border-white/10">
+    <div className="mt-3 pt-3 border-t border-white/10 flex-1 flex flex-col">
       {/* Título */}
-      <div className="mb-3 weekly-ranking-title">
+      <div className="mb-7 weekly-ranking-title">
         <h3 className="text-[10px] sm:text-xs font-bold text-white leading-tight">
           {settings.title}
         </h3>
@@ -124,10 +128,13 @@ const WeeklyTopRanking: React.FC = () => {
       {/* Spinner mientras carga */}
       {isLoading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="relative w-10 h-10">
-            <div className="absolute inset-0 border-4 border-white/10 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-transparent border-t-white/60 rounded-full animate-spin"></div>
-          </div>
+          <div 
+            className="w-8 h-8 rounded-full animate-spin"
+            style={{ 
+              border: '2px solid rgba(255, 255, 255, 0.2)',
+              borderTopColor: '#fff'
+            }}
+          />
         </div>
       ) : topUsers.length === 0 ? (
         /* Mensaje cuando no hay datos */
@@ -136,7 +143,7 @@ const WeeklyTopRanking: React.FC = () => {
         </div>
       ) : (
         /* Lista de top usuarios */
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1">
           {topUsers.map((user) => {
           const colors = getRankColor(user.rank);
           return (
@@ -148,28 +155,20 @@ const WeeklyTopRanking: React.FC = () => {
               <div className={`
                 absolute -top-1.5 -left-1.5 z-10
                 flex items-center justify-center
-                w-6 h-6 rounded-full
+                w-5 h-5 sm:w-6 sm:h-6 rounded-full
                 bg-gradient-to-br ${colors.gradient}
-                shadow-lg ${colors.glow}
               `}>
-                <span className="text-[10px] font-bold text-white">#{user.rank}</span>
+                <span className="text-[9px] sm:text-[10px] font-bold text-white">{user.rank}</span>
               </div>
 
-              {/* Contenedor con efecto glassmorphism */}
-              <div className={`
-                relative overflow-hidden rounded-xl
-                bg-white/[0.08] border border-white/10
-                p-2.5 transition-colors duration-300
-                hover:bg-white/[0.12] hover:border-white/20
-                ${colors.glow}
-              `}
-              style={{ willChange: 'auto' }}>
-                {/* Brillo superior */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                
-                <div className="relative flex items-center gap-2.5">
+              {/* Contenedor optimizado */}
+              <div 
+                className="relative overflow-hidden rounded-xl p-2 sm:p-2.5"
+                style={{ backgroundColor: itemBgColor }}
+              >
+                <div className="flex items-center gap-2 sm:gap-2.5">
                   {/* Avatar profesional con loading */}
-                  <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white/10 border border-white/10 flex-shrink-0">
+                  <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-slate-600 flex-shrink-0">
                     {user.avatar_url ? (
                       <>
                         <img
@@ -193,7 +192,7 @@ const WeeklyTopRanking: React.FC = () => {
                         />
                         {/* Loading skeleton mientras carga */}
                         <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-slate-600 animate-pulse">
-                          <span className="text-white/60 text-xs font-bold">
+                          <span className="text-white/60 text-[10px] font-bold">
                             {user.name.charAt(0)}
                           </span>
                         </div>
@@ -201,7 +200,7 @@ const WeeklyTopRanking: React.FC = () => {
                     ) : (
                       /* Placeholder profesional y neutro cuando no hay imagen */
                       <div className="w-full h-full flex items-center justify-center bg-slate-600">
-                        <span className="text-white text-xs font-bold">
+                        <span className="text-white text-[10px] font-bold">
                           {user.name.charAt(0)}
                         </span>
                       </div>
@@ -210,19 +209,19 @@ const WeeklyTopRanking: React.FC = () => {
 
                   {/* Info del usuario */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-white/70 truncate">{user.name}</p>
+                    <p className="text-[9px] sm:text-[10px] text-white/70 truncate">{user.name}</p>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3 text-green-400" />
-                      <span className="text-xs font-bold text-white">
+                      <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-400" />
+                      <span className="text-[10px] sm:text-xs font-bold text-white">
                         ${user.earnings.toLocaleString()}
                       </span>
-                      <span className="text-[10px] text-white/50">USD</span>
+                      <span className="text-[9px] sm:text-[10px] text-white/50">USD</span>
                     </div>
                   </div>
 
                   {/* Bandera del país */}
                   {user.country_code && (
-                    <div className="w-6 h-6 overflow-hidden rounded-full flex items-center justify-center bg-white/10 border border-white/10 flex-shrink-0">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 overflow-hidden rounded-full flex items-center justify-center bg-slate-600 flex-shrink-0">
                       <img
                         src={`https://flagcdn.com/w20/${user.country_code.toLowerCase()}.png`}
                         alt={user.country_code}
@@ -242,6 +241,8 @@ const WeeklyTopRanking: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+WeeklyTopRanking.displayName = 'WeeklyTopRanking';
 
 export default WeeklyTopRanking;

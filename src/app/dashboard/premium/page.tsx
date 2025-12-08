@@ -341,7 +341,7 @@ const PremiumPage = () => {
                     
                     {/* Weekly Top Ranking */}
                     <div className="mt-6 -ml-11">
-                      <WeeklyTopRanking />
+                      <WeeklyTopRanking variant="dark" />
                     </div>
                   </div>
                 </div>
