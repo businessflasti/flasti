@@ -62,7 +62,7 @@ const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'def
   const [settings, setSettings] = useState<RankingSettings>(defaultSettings);
   const [isLoading, setIsLoading] = useState(true);
   
-  const itemBgColor = variant === 'dark' ? '#1A1A1A' : '#656978';
+  const itemBgColor = variant === 'dark' ? '#1A1A1A' : '#1A1A1A';
 
   const fetchTopRanking = useCallback(async () => {
     try {

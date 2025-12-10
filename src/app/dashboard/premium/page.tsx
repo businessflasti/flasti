@@ -410,24 +410,6 @@ const PremiumPage = () => {
             {/* Bloque de imagen solo visible en móvil - ARRIBA del pricing */}
             <div className="lg:hidden mb-6">
               <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212', background: '#121212' }}>
-                {/* Badge de ubicación y punto verde - Móvil - Arriba de la imagen */}
-                <div className="flex justify-between items-center mb-3">
-                  {countryPrice.countryCode && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#1a1a1a] whitespace-nowrap">
-                      <CountryFlag countryCode={countryPrice.countryCode} size="sm" />
-                      <span className="text-white font-semibold text-[10px]">
-                        {countryPrice.countryCode}
-                      </span>
-                      <span className="text-white/40 text-[10px]">•</span>
-                      <span className="text-white/70 text-[10px]">
-                        {currentDate || 'Cargando...'}
-                      </span>
-                    </div>
-                  )}
-                  {/* Punto verde decorativo */}
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                </div>
-                
                 {/* Imagen del dashboard */}
                 <div className="relative mb-4 rounded-2xl overflow-hidden">
                   <img 

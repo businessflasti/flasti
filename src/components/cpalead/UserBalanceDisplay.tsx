@@ -172,7 +172,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   return (
     <TooltipProvider>
       <Card 
-        className="relative border-0 h-full flex flex-col rounded-3xl overflow-hidden bg-[#585C6C]"
+        className="relative border-0 h-full flex flex-col rounded-3xl overflow-hidden bg-[#121212]"
 
       >
         <CardContent className="p-3 lg:p-4 flex-1 flex flex-col min-h-0">

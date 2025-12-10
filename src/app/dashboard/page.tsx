@@ -421,31 +421,15 @@ export default function DashboardPage() {
         
 
 
-        {/* Contenedor móvil con imagen de fondo - Balance y Asesora */}
-        {user?.id && (
-          <div className="md:hidden mb-4 rounded-2xl overflow-hidden p-4 pb-6 relative">
-            {/* Imagen de fondo optimizada con Next.js Image */}
-            <Image
-              src="/images/fondo.webp"
-              alt=""
-              fill
-              priority
-              className="object-cover -z-10"
-              sizes="100vw"
+        {/* Balance móvil */}
+        {user?.id && isVisible('balance_display') && (
+          <div className="md:hidden mb-4">
+            <UserBalanceDisplay
+              initialBalance={userStats.balance}
+              userId={user.id}
+              currency="USD"
+              showControls={true}
             />
-            
-            {/* Balance móvil - DENTRO del contenedor con imagen de fondo */}
-            {isVisible('balance_display') && (
-              <div className="w-full mb-4">
-                <UserBalanceDisplay
-                  initialBalance={userStats.balance}
-                  userId={user.id}
-                  currency="USD"
-                  showControls={true}
-                />
-              </div>
-            )}
-            
           </div>
         )}
 
@@ -532,20 +516,10 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Layout Desktop: Columna izquierda (Balance + Bono) y Columna derecha (Video) */}
+        {/* Layout Desktop: Balance y Video Tutorial */}
         {user?.id && (
-          <div className="hidden md:block mb-4 lg:mb-6 rounded-2xl overflow-hidden py-6 px-4 relative">
-            {/* Imagen de fondo optimizada con Next.js Image */}
-            <Image
-              src="/images/fondo.webp"
-              alt=""
-              fill
-              priority
-              className="object-cover -z-10"
-              sizes="100vw"
-            />
-            <div className="grid md:grid-cols-[4fr_13fr] gap-4">
-            {/* Columna izquierda: Balance */}
+          <div className="hidden md:grid md:grid-cols-[4fr_13fr] gap-4 mb-4 lg:mb-6">
+            {/* Balance */}
             <div className="h-[380px]">
               <UserBalanceDisplay
                 initialBalance={userStats.balance}
@@ -555,10 +529,8 @@ export default function DashboardPage() {
               />
             </div>
 
-            {/* Columna derecha: Video Tutorial */}
-            <div className="flex flex-col gap-4 h-[380px]">
-              {/* Tutorial */}
-              <div className="flex-1 min-h-0">
+            {/* Video Tutorial */}
+            <div className="h-[380px]">
               <Card 
                 className="relative bg-[#121212] h-full overflow-hidden rounded-3xl"
                 style={{ contain: 'layout style paint' }}
@@ -634,8 +606,6 @@ export default function DashboardPage() {
                   </div>
                 )}
               </Card>
-              </div>
-            </div>
             </div>
           </div>
         )}
