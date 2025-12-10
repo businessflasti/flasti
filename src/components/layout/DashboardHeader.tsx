@@ -250,33 +250,6 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
               
               {/* Contenedor de badges */}
               <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-                {/* Badge de ubicación - Izquierda - Controlable */}
-                {isVisible('country_badge') && !isCheckoutPage && (
-                  <div>
-                    {detectedCountry && detectedCountry !== '--' && detectedCountry !== 'GLOBAL' ? (
-                      <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-md bg-[#121212] backdrop-blur-xl border-0 shadow-lg whitespace-nowrap">
-                        <CountryFlag countryCode={detectedCountry} size="md" />
-                        <span className="text-white font-bold text-xs">
-                          {detectedCountry}
-                        </span>
-                        {getCountryName(detectedCountry) && (
-                          <span className="text-white/70 text-xs">
-                            {getCountryName(detectedCountry)}
-                          </span>
-                        )}
-                        <span className="text-white/30 text-xs">•</span>
-                        <span className="text-white/70 text-xs">
-                          {currentDateTime.date}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-[#121212] backdrop-blur-xl border-0 shadow-lg whitespace-nowrap">
-                        <span className="text-white/50 text-xs">Detectando ubicación...</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                
                 {/* Badge de Testimonios - Derecha (todas las páginas excepto checkout) - Controlable */}
                 {isVisible('stories') && !isCheckoutPage && stories.length > 0 && (
                   <Stories stories={stories} />

@@ -26,8 +26,6 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [dailyMessage, setDailyMessage] = useState('');
-  const [savingMessage, setSavingMessage] = useState(false);
 
   // Verificar si el usuario es administrador
   useEffect(() => {
@@ -40,8 +38,6 @@ export default function AdminDashboard() {
       if (!adminStatus) {
         toast.error('No tienes permisos para acceder a esta página');
         router.push('/dashboard');
-      } else {
-        loadDailyMessage();
       }
 
       setLoading(false);
@@ -49,48 +45,6 @@ export default function AdminDashboard() {
 
     checkAdminStatus();
   }, [user, router]);
-
-  // Cargar mensaje del día
-  const loadDailyMessage = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('daily_message')
-        .select('message')
-        .eq('is_active', true)
-        .single();
-
-      if (!error && data) {
-        setDailyMessage(data.message);
-      }
-    } catch (error) {
-      console.error('Error loading message:', error);
-    }
-  };
-
-  // Guardar mensaje del día
-  const saveDailyMessage = async () => {
-    if (!dailyMessage.trim()) {
-      toast.error('El mensaje no puede estar vacío');
-      return;
-    }
-
-    setSavingMessage(true);
-    try {
-      const { error } = await supabase
-        .from('daily_message')
-        .update({ message: dailyMessage.trim() })
-        .eq('is_active', true);
-
-      if (error) throw error;
-
-      toast.success('Mensaje actualizado correctamente');
-    } catch (error) {
-      console.error('Error saving message:', error);
-      toast.error('Error al guardar mensaje');
-    } finally {
-      setSavingMessage(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -144,28 +98,6 @@ export default function AdminDashboard() {
                 ))}
               </div>
 
-              {/* Separador Vertical */}
-              <div className="w-px h-8 bg-white/10"></div>
-
-              {/* Mensaje del Día Compacto */}
-              <div className="flex-1 flex items-center gap-3">
-                <p className="text-xs text-gray-500 whitespace-nowrap">Mensaje del día:</p>
-                <Input
-                  value={dailyMessage}
-                  onChange={(e) => setDailyMessage(e.target.value)}
-                  placeholder="Mensaje para usuarios..."
-                  className="bg-[#1a1a1a] border-0 text-white text-sm flex-1"
-                  maxLength={500}
-                />
-                <Button
-                  onClick={saveDailyMessage}
-                  disabled={savingMessage}
-                  size="sm"
-                  className="bg-white text-black text-xs px-4 hover:bg-white"
-                >
-                  {savingMessage ? '...' : 'Guardar'}
-                </Button>
-              </div>
             </div>
           </CardContent>
         </Card>

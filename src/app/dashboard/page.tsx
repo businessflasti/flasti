@@ -11,13 +11,12 @@ import UserBalanceDisplay from '@/components/cpalead/UserBalanceDisplay';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Calendar, TrendingUp, Target, Gift, Globe, RefreshCw, CheckCircle2, Wallet } from 'lucide-react';
+import { Calendar, TrendingUp, Target, Gift, Globe, CheckCircle2, Wallet } from 'lucide-react';
 import CountryFlag from '@/components/ui/CountryFlag';
 import { toast } from 'sonner';
 import OnboardingSlider from '@/components/dashboard/OnboardingSlider';
 import AdBlock from '@/components/ui/AdBlock';
 import { useElementVisibility } from '@/hooks/useElementVisibility';
-import DailyMessage from '@/components/dashboard/DailyMessage';
 import PremiumServicesSlider from '@/components/premium/PremiumServicesSlider';
 
 // Importar estilos de optimizaciones de rendimiento
@@ -174,8 +173,8 @@ export default function DashboardPage() {
     const updateDateTime = () => {
       const now = new Date();
       
-      // Formatear fecha
-      const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+      // Formatear fecha con día completo
+      const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
       const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
       
       const dayName = days[now.getDay()];
@@ -447,10 +446,6 @@ export default function DashboardPage() {
               </div>
             )}
             
-            {/* Mensaje del Día (Asesora) */}
-            <div className="w-full">
-              <DailyMessage />
-            </div>
           </div>
         )}
 
@@ -549,23 +544,15 @@ export default function DashboardPage() {
               className="object-cover -z-10"
               sizes="100vw"
             />
-            <div className="grid md:grid-cols-[8fr_9fr] gap-4">
-            {/* Columna izquierda: Balance + Mensaje del Día (o Slider Premium) */}
-            <div className="grid grid-cols-2 gap-3 h-[380px]">
-              {/* Balance */}
-              <div className="h-full">
-                <UserBalanceDisplay
-                  initialBalance={userStats.balance}
-                  userId={user.id}
-                  currency="USD"
-                  showControls={true}
-                />
-              </div>
-
-              {/* Mensaje del Día */}
-              <div className="h-full">
-                <DailyMessage />
-              </div>
+            <div className="grid md:grid-cols-[4fr_13fr] gap-4">
+            {/* Columna izquierda: Balance */}
+            <div className="h-[380px]">
+              <UserBalanceDisplay
+                initialBalance={userStats.balance}
+                userId={user.id}
+                currency="USD"
+                showControls={true}
+              />
             </div>
 
             {/* Columna derecha: Video Tutorial */}
@@ -739,55 +726,26 @@ export default function DashboardPage() {
                   <CardTitle className="font-bold text-white">
                     <span className="text-lg md:text-2xl">Microtareas disponibles hoy</span>
                   </CardTitle>
-                  <CardDescription className="text-xs md:text-sm text-gray-400 mt-1">
-                    Las microtareas se actualizan automáticamente, revise periódicamente para acceder a nuevas microtareas disponibles
-                  </CardDescription>
                 </div>
                 
-                {/* Controles debajo del título */}
-                <div className="flex items-center justify-between">
-                  {/* Badge de ubicación - Solo móvil (izquierda) */}
-                  <div className="flex md:hidden">
-                    {detectedCountry && detectedCountry !== '--' && detectedCountry !== 'GLOBAL' ? (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#101010] shadow-sm whitespace-nowrap">
-                        <CountryFlag countryCode={detectedCountry} size="sm" />
-                        <span className="text-white font-semibold text-[10px]">
-                          {detectedCountry}
-                        </span>
-                        <span className="text-white/40 text-[10px]">•</span>
-                        <span className="text-white/70 text-[10px]">
-                          {currentDateTime.date}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-[#101010] shadow-sm">
-                        <span className="text-white/50 text-[10px]">Detectando...</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Botón actualizar - Desktop izquierda, Móvil derecha */}
-                  <div className="flex md:ml-0 ml-auto">
-                    {/* Botón escritorio */}
-                    <button 
-                      className="hidden md:flex items-center space-x-2 px-4 py-2 text-sm bg-white text-black rounded-full transition-opacity duration-300 disabled:opacity-50"
-                      disabled={!cpaLeadData || cpaLeadData.refreshing}
-                      onClick={cpaLeadData?.handleRefresh}
-                    >
-                      <RefreshCw className={`w-4 h-4 ${cpaLeadData?.refreshing ? 'animate-spin' : ''}`} />
-                      <span>{cpaLeadData?.refreshing ? 'Actualizando...' : 'Actualizar'}</span>
-                    </button>
-                    
-                    {/* Botón móvil */}
-                    <button 
-                      className="flex md:hidden items-center space-x-2 px-3 py-1.5 text-xs bg-white text-black rounded-full transition-opacity duration-300 disabled:opacity-50"
-                      disabled={!cpaLeadData || cpaLeadData.refreshing}
-                      onClick={cpaLeadData?.handleRefresh}
-                    >
-                      <RefreshCw className={`w-3 h-3 ${cpaLeadData?.refreshing ? 'animate-spin' : ''}`} />
-                      <span>{cpaLeadData?.refreshing ? 'Actualizando...' : 'Actualizar'}</span>
-                    </button>
-                  </div>
+                {/* Badge de ubicación */}
+                <div className="flex">
+                  {detectedCountry && detectedCountry !== '--' && detectedCountry !== 'GLOBAL' ? (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#1A1A1A] whitespace-nowrap">
+                      <CountryFlag countryCode={detectedCountry} size="sm" />
+                      <span className="text-white font-semibold text-[10px] md:text-xs">
+                        {detectedCountry}
+                      </span>
+                      <span className="text-white/40 text-[10px] md:text-xs">•</span>
+                      <span className="text-white/70 text-[10px] md:text-xs">
+                        {currentDateTime.date}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-[#1A1A1A]">
+                      <span className="text-white/50 text-[10px] md:text-xs">Detectando...</span>
+                    </div>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
