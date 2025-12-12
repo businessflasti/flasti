@@ -653,7 +653,7 @@ export default function DashboardPage() {
                   {/* Título */}
                   <div className="mb-3">
                     <h2 className="font-bold">
-                      <span className="text-lg md:text-2xl" style={{ color: '#111827' }}>Microtareas disponibles hoy</span>
+                      <span className="text-lg md:text-2xl" style={{ color: '#111827' }}>Área de trabajo</span>
                     </h2>
                   </div>
                   

@@ -45,23 +45,12 @@ export default function TaskPage() {
 
   const taskId = params.id as string;
   const isVideoTask = offer?.task_type?.toLowerCase() === 'video' || !!offer?.video_url;
-  const userCountry = profile?.country || 'US';
 
   const getTodayDate = () => {
     const now = new Date();
     const day = now.getDate().toString().padStart(2, '0');
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     return `${day}/${month}`;
-  };
-
-  const getCountryName = (code: string) => {
-    try {
-      if ((Intl as any).DisplayNames) {
-        const dn = new (Intl as any).DisplayNames(['es'], { type: 'region' });
-        return dn.of(code);
-      }
-    } catch (e) {}
-    return code;
   };
 
   // Cargar tarea inmediatamente al montar - sin esperar auth
@@ -231,7 +220,7 @@ export default function TaskPage() {
             <div className={styles.successCircle}>
               <Check className="w-16 h-16 text-white" strokeWidth={3} />
             </div>
-            <h2 className={styles.successTitle}>¡COMPLETADO!</h2>
+            <h2 className={styles.successTitle} style={{ color: '#111827' }}>¡COMPLETADO!</h2>
             <div className={styles.successAmount}>
               <span className={styles.amountValue}>+${offer.amount.toFixed(2)}</span>
               <span className={styles.amountCurrency}>USD</span>
@@ -276,10 +265,6 @@ export default function TaskPage() {
                     <Award className="w-4 h-4 text-yellow-400" />
                     <span>+${offer.amount.toFixed(2)} USD</span>
                   </div>
-                  <div className={styles.detailItem}>
-                    {isVideoTask ? <Video className="w-4 h-4 text-purple-400" /> : <Headphones className="w-4 h-4 text-purple-400" />}
-                    <span>{offer.task_type || 'Audio'}</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -302,12 +287,12 @@ export default function TaskPage() {
                 </div>
               </div>
               <div className={styles.statCard}>
-                <div className={styles.countryFlag}>
-                  <img src={`https://flagcdn.com/w40/${userCountry.toLowerCase()}.png`} alt={getCountryName(userCountry)} className={styles.flagImage} />
-                </div>
                 <div>
-                  <div className={styles.statValue}>{getCountryName(userCountry)}</div>
-                  <div className={styles.statLabel}>Ubicación</div>
+                  <div className={styles.statValue} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {isVideoTask ? <Video className="w-4 h-4 text-purple-400" /> : <Headphones className="w-4 h-4 text-purple-400" />}
+                    {offer.task_type || 'Audio'}
+                  </div>
+                  <div className={styles.statLabel}>Categoría</div>
                 </div>
               </div>
               <div className={styles.statCard}>
