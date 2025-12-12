@@ -266,19 +266,16 @@ export default function PerfilPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] p-4 relative overflow-hidden">
+    <div className="min-h-screen p-4 relative overflow-hidden" style={{ background: '#F6F3F3' }}>
       
       <div className="relative z-10">
       <div className="max-w-4xl mx-auto" style={{ contain: 'layout style' }}>
-        <h1 className="text-3xl font-bold text-white mb-8">Mi Perfil</h1>
+        <h1 className="text-3xl font-bold mb-8" style={{ color: '#111827' }}>Mi Perfil</h1>
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Información del Usuario */}
-          <Card className="p-6 bg-[#121212] rounded-3xl">
-            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-white">
-                <User className="h-5 w-5 text-black" />
-              </div>
+          <Card className="p-6 rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
+            <h2 className="text-xl font-semibold mb-6" style={{ color: '#111827' }}>
               Información Personal
             </h2>
 
@@ -286,7 +283,7 @@ export default function PerfilPage() {
               <div className="flex items-center space-x-3">
                 {/* Avatar con funcionalidad de subida */}
                 <div className="relative">
-                  <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-[#30363d] shadow-lg">
+                  <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
                     {profile?.avatar_url ? (
                       <img
                         key={`profile-avatar-${refreshKey}`}
@@ -297,14 +294,15 @@ export default function PerfilPage() {
                     ) : (
                       <div 
                         className="h-full w-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                        style={{ backgroundColor: getAvatarColor() }}
+                        style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                       >
                         {getInitials(user?.email, userData?.name)}
                       </div>
                     )}
                   </div>
                   <button
-                    className="absolute bottom-0 right-0 bg-[#238636] text-white p-2 rounded-full shadow-md transition-opacity duration-300"
+                    className="absolute bottom-0 right-0 text-white p-2 rounded-full shadow-md transition-opacity duration-300"
+                    style={{ background: '#111827' }}
                     onClick={handleSelectFile}
                     aria-label="Cambiar foto de perfil"
                   >
@@ -312,56 +310,53 @@ export default function PerfilPage() {
                   </button>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-lg font-semibold" style={{ color: '#111827' }}>
                     {userData?.first_name 
                       ? `${userData.first_name} ${userData.last_name || ''}`.trim()
                       : (userData?.name || user?.email?.split('@')[0] || '')}
                   </h3>
-                  <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full inline-block mt-1">
+                  <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full inline-block mt-1">
                     Activo
                   </span>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     Haz clic en la cámara para cambiar tu foto
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg">
+              <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
                 <div className="flex items-center mb-2 gap-2">
-                  <div className="p-1.5 rounded-lg bg-white">
-                    <Mail className="h-3.5 w-3.5 text-black" />
+                  <div className="p-1.5 rounded-lg" style={{ background: '#0D50A4' }}>
+                    <Mail className="h-3.5 w-3.5 text-white" />
                   </div>
-                  <span className="text-sm text-gray-400">Correo Electrónico</span>
+                  <span className="text-sm text-gray-500">Correo Electrónico</span>
                 </div>
-                <p className="text-white font-medium">
+                <p className="font-medium" style={{ color: '#111827' }}>
                   {user?.email || 'No especificado'}
                 </p>
               </div>
 
-              <div className="p-4 bg-gray-800/50 rounded-lg">
+              <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
                 <div className="flex items-center mb-2 gap-2">
-                  <div className="p-1.5 rounded-lg bg-white">
-                    <Shield className="h-3.5 w-3.5 text-black" />
+                  <div className="p-1.5 rounded-lg" style={{ background: '#0D50A4' }}>
+                    <Shield className="h-3.5 w-3.5 text-white" />
                   </div>
-                  <span className="text-sm text-gray-400">Estado de la cuenta</span>
+                  <span className="text-sm text-gray-500">Estado de la cuenta</span>
                 </div>
-                <p className="text-green-400 font-medium">Verificada</p>
+                <p className="text-green-600 font-medium">Verificada</p>
               </div>
             </div>
           </Card>
 
           {/* Cambio de Contraseña */}
-          <Card className="p-6 bg-[#121212] rounded-3xl">
-            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-white">
-                <Lock className="h-5 w-5 text-black" />
-              </div>
+          <Card className="p-6 rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
+            <h2 className="text-xl font-semibold mb-6" style={{ color: '#111827' }}>
               Cambiar Contraseña
             </h2>
 
             <form onSubmit={handlePasswordChange} className="space-y-4">
               <div>
-                <label htmlFor="newPassword" className="text-sm font-medium text-gray-300 block mb-2">
+                <label htmlFor="newPassword" className="text-sm font-medium block mb-2" style={{ color: '#111827' }}>
                   Nueva Contraseña
                 </label>
                 <Input
@@ -369,7 +364,8 @@ export default function PerfilPage() {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-[#0d1117] border-0 text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 transition-opacity duration-300"
+                  className="border-gray-200 focus:ring-1 focus:ring-[#0D50A4]/30 transition-opacity duration-300"
+                  style={{ background: '#F3F3F3', color: '#111827' }}
                   placeholder="Ingresa tu nueva contraseña"
                   required
                 />
@@ -379,7 +375,7 @@ export default function PerfilPage() {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-300 block mb-2">
+                <label htmlFor="confirmPassword" className="text-sm font-medium block mb-2" style={{ color: '#111827' }}>
                   Confirmar Nueva Contraseña
                 </label>
                 <Input
@@ -387,7 +383,8 @@ export default function PerfilPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-[#0d1117] border-0 text-[#c9d1d9] placeholder-[#6e7681] focus:ring-1 focus:ring-[#6e40ff]/30 transition-opacity duration-300"
+                  className="border-gray-200 focus:ring-1 focus:ring-[#0D50A4]/30 transition-opacity duration-300"
+                  style={{ background: '#F3F3F3', color: '#111827' }}
                   placeholder="Confirma tu nueva contraseña"
                   required
                 />
@@ -395,16 +392,17 @@ export default function PerfilPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#238636] text-white transition-opacity duration-300"
+                className="w-full text-white transition-opacity duration-300"
+                style={{ background: '#0D50A4' }}
                 disabled={isLoading}
               >
                 {isLoading ? 'Actualizando...' : 'Cambiar Contraseña'}
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-blue-500/10 rounded-lg">
-              <h3 className="text-sm font-medium text-blue-400 mb-2">Consejos de seguridad:</h3>
-              <ul className="text-xs text-gray-400 space-y-1">
+            <div className="mt-6 p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+              <h3 className="text-sm font-medium mb-2" style={{ color: '#0D50A4' }}>Consejos de seguridad:</h3>
+              <ul className="text-xs text-gray-600 space-y-1">
                 <li>• Usa al menos 8 caracteres</li>
                 <li>• Incluye mayúsculas y minúsculas</li>
                 <li>• Agrega números y símbolos</li>

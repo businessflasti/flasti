@@ -18,14 +18,14 @@ interface RankingSettings {
 }
 
 interface WeeklyTopRankingProps {
-  variant?: 'default' | 'dark';
+  variant?: 'default' | 'dark' | 'light';
 }
 
 // Sin datos por defecto - mostrar loader hasta que carguen los datos reales
 
 const defaultSettings: RankingSettings = {
-  title: 'Reporte semanal de actividad',
-  subtitle: 'Ingresos verificados'
+  title: 'Ranking semanal',
+  subtitle: 'Reporte de ingresos'
 };
 
 const getRankColor = (rank: number) => {
@@ -62,7 +62,8 @@ const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'def
   const [settings, setSettings] = useState<RankingSettings>(defaultSettings);
   const [isLoading, setIsLoading] = useState(true);
   
-  const itemBgColor = variant === 'dark' ? '#1A1A1A' : '#1A1A1A';
+  const isLight = variant === 'light';
+  const itemBgColor = isLight ? '#F3F3F3' : '#1A1A1A';
 
   const fetchTopRanking = useCallback(async () => {
     try {
@@ -114,13 +115,16 @@ const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'def
   }, [fetchTopRanking]);
 
   return (
-    <div className="mt-3 pt-3 border-t border-white/10 flex-1 flex flex-col">
+    <div className={`mt-3 pt-3 flex-1 flex flex-col ${isLight ? 'border-t border-gray-200/50' : 'border-t border-white/10'}`}>
       {/* Título */}
       <div className="mb-7 weekly-ranking-title">
-        <h3 className="text-[10px] sm:text-xs font-bold text-white leading-tight">
+        <h3 
+          className="text-[10px] sm:text-xs font-bold leading-tight"
+          style={{ color: isLight ? '#111827' : '#fff' }}
+        >
           {settings.title}
         </h3>
-        <p className="text-[8px] sm:text-[10px] text-white/60 leading-tight">
+        <p className={`text-[8px] sm:text-[10px] leading-tight ${isLight ? 'text-gray-500' : 'text-white/60'}`}>
           {settings.subtitle}
         </p>
       </div>
@@ -131,14 +135,14 @@ const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'def
           <div 
             className="w-8 h-8 rounded-full animate-spin"
             style={{ 
-              border: '2px solid rgba(255, 255, 255, 0.2)',
-              borderTopColor: '#fff'
+              border: '2px solid rgba(0, 0, 0, 0.1)',
+              borderTopColor: '#0D50A4'
             }}
           />
         </div>
       ) : topUsers.length === 0 ? (
         /* Mensaje cuando no hay datos */
-        <div className="text-center py-6 text-white/40 text-xs">
+        <div className={`text-center py-6 text-xs ${isLight ? 'text-gray-400' : 'text-white/40'}`}>
           No hay datos disponibles
         </div>
       ) : (
@@ -152,13 +156,11 @@ const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'def
               className="relative group"
             >
               {/* Badge con el número en la esquina superior izquierda */}
-              <div className={`
-                absolute -top-1.5 -left-1.5 z-10
-                flex items-center justify-center
-                w-5 h-5 sm:w-6 sm:h-6 rounded-full
-                bg-gradient-to-br ${colors.gradient}
-              `}>
-                <span className="text-[9px] sm:text-[10px] font-bold text-white">{user.rank}</span>
+              <div 
+                className={`absolute -top-1.5 -left-1.5 z-10 flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full ${!isLight ? `bg-gradient-to-br ${colors.gradient}` : ''}`}
+                style={isLight ? { background: '#111827' } : undefined}
+              >
+                <span className="text-[9px] sm:text-[10px] font-bold text-white relative z-10">{user.rank}</span>
               </div>
 
               {/* Contenedor optimizado */}
@@ -209,13 +211,13 @@ const WeeklyTopRanking: React.FC<WeeklyTopRankingProps> = memo(({ variant = 'def
 
                   {/* Info del usuario */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-[9px] sm:text-[10px] text-white/70 truncate">{user.name}</p>
+                    <p className={`text-[9px] sm:text-[10px] truncate ${isLight ? 'text-gray-600' : 'text-white/70'}`}>{user.name}</p>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-400" />
-                      <span className="text-[10px] sm:text-xs font-bold text-white">
+                      <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-500" />
+                      <span className={`text-[10px] sm:text-xs font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>
                         ${user.earnings.toLocaleString()}
                       </span>
-                      <span className="text-[9px] sm:text-[10px] text-white/50">USD</span>
+                      <span className={`text-[9px] sm:text-[10px] ${isLight ? 'text-gray-400' : 'text-white/50'}`}>USD</span>
                     </div>
                   </div>
 

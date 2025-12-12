@@ -117,71 +117,73 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
+    <div className="min-h-screen pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden" style={{ background: '#F6F3F3' }}>
       {/* Widget de chat para soporte */}
       <TawkToWidget showBubble={true} />
       
       <div className="max-w-5xl mx-auto relative z-10" style={{ contain: 'layout style' }}>
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4" style={{ color: '#111827' }}>
             Centro de Soporte
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Hola{profile?.first_name ? ` ${profile.first_name}` : ''}, estamos aquí para ayudarte, si tienes alguna pregunta, problema técnico o necesitas asistencia, no dudes en contactarnos.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="p-6 rounded-3xl flex flex-col items-center text-center bg-[#121212]">
-            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4">
-              <Mail className="w-7 h-7 text-black" />
+          <div className="p-6 rounded-3xl flex flex-col items-center text-center shadow-sm" style={{ background: '#FFFFFF' }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#0D50A4' }}>
+              <Mail className="w-7 h-7 text-white" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Email de Soporte</h3>
-            <p className="text-gray-400 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
+            <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>Email de Soporte</h3>
+            <p className="text-gray-500 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
             <a
               href="mailto:access@flasti.com"
-              className="text-white hover:text-gray-200 transition-colors"
+              className="hover:opacity-80 transition-colors"
+              style={{ color: '#0D50A4' }}
             >
               access@flasti.com
             </a>
           </div>
 
-          <div className="p-6 rounded-3xl flex flex-col items-center text-center bg-[#121212]">
-            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4">
-              <MessageCircle className="w-7 h-7 text-black" />
+          <div className="p-6 rounded-3xl flex flex-col items-center text-center shadow-sm" style={{ background: '#FFFFFF' }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#0D50A4' }}>
+              <MessageCircle className="w-7 h-7 text-white" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Chat en vivo</h3>
-            <p className="text-gray-400 mb-4">Habla con nuestro equipo en tiempo real</p>
+            <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>Chat en vivo</h3>
+            <p className="text-gray-500 mb-4">Habla con nuestro equipo en tiempo real</p>
             <ChatButton
               variant="default"
               size="sm"
-              className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-lg shadow-md transition-all"
+              className="flex items-center justify-center gap-2 text-white hover:opacity-90 px-4 py-2 rounded-lg shadow-md transition-all"
+              style={{ background: '#0D50A4' }}
               text="Iniciar chat"
               showIcon={true}
             />
           </div>
 
-          <div className="p-6 rounded-3xl flex flex-col items-center text-center bg-[#121212]">
-            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4">
-              <Phone className="w-7 h-7 text-black" />
+          <div className="p-6 rounded-3xl flex flex-col items-center text-center shadow-sm" style={{ background: '#FFFFFF' }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#0D50A4' }}>
+              <Phone className="w-7 h-7 text-white" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Soporte Telefónico</h3>
-            <p className="text-gray-400 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
-            <span className="text-white">
+            <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>Soporte Telefónico</h3>
+            <p className="text-gray-500 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
+            <span style={{ color: '#111827' }}>
               +1 (234) 567-890
             </span>
           </div>
         </div>
 
-        <div className="p-8 md:p-10 rounded-3xl overflow-hidden bg-[#121212]">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
+        <div className="p-8 md:p-10 rounded-3xl overflow-hidden shadow-sm" style={{ background: '#FFFFFF' }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: '#111827' }}>
             Enviar solicitud de soporte
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="name" className="block text-sm font-medium text-white">
+                <label htmlFor="name" className="block text-sm font-medium" style={{ color: '#111827' }}>
                   Nombre completo
                 </label>
                 <Input
@@ -192,13 +194,14 @@ export default function SupportPage() {
                   placeholder="Tu nombre"
                   required
                   disabled
-                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white opacity-75"
+                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 opacity-75"
+                  style={{ background: '#F3F3F3', color: '#111827' }}
                   autoComplete="off"
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-white">
+                <label htmlFor="email" className="block text-sm font-medium" style={{ color: '#111827' }}>
                   Email
                 </label>
                 <Input
@@ -210,13 +213,14 @@ export default function SupportPage() {
                   placeholder="tu@email.com"
                   required
                   disabled
-                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white opacity-75"
+                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 opacity-75"
+                  style={{ background: '#F3F3F3', color: '#111827' }}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="subject" className="block text-sm font-medium text-white">
+              <label htmlFor="subject" className="block text-sm font-medium" style={{ color: '#111827' }}>
                 Asunto
               </label>
               <Input
@@ -226,12 +230,13 @@ export default function SupportPage() {
                 onChange={handleChange}
                 placeholder="Describe brevemente tu problema o consulta"
                 required
-                className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white"
+                className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                style={{ background: '#F3F3F3', color: '#111827' }}
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="message" className="block text-sm font-medium text-white">
+              <label htmlFor="message" className="block text-sm font-medium" style={{ color: '#111827' }}>
                 Descripción detallada
               </label>
               <Textarea
@@ -241,7 +246,8 @@ export default function SupportPage() {
                 onChange={handleChange}
                 placeholder="Describe tu problema o consulta con el mayor detalle posible..."
                 required
-                className="w-full min-h-[150px] rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#101010] text-white"
+                className="w-full min-h-[150px] rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                style={{ background: '#F3F3F3', color: '#111827' }}
               />
             </div>
 
@@ -249,19 +255,20 @@ export default function SupportPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full md:w-auto min-w-[200px] bg-white text-black hover:bg-gray-200"
+                className="w-full md:w-auto min-w-[200px] text-white hover:opacity-90"
+                style={{ background: '#0D50A4' }}
               >
                 {isSubmitting ? "Enviando..." : "Enviar solicitud"}
               </Button>
 
               {submitSuccess && (
-                <p className="mt-4 text-green-400 text-center">
+                <p className="mt-4 text-green-600 text-center">
                   ¡Solicitud enviada con éxito! Te responderemos a la brevedad.
                 </p>
               )}
 
               {submitError && (
-                <p className="mt-4 text-red-400 text-center">
+                <p className="mt-4 text-red-600 text-center">
                   {submitError}
                 </p>
               )}

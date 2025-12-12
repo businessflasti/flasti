@@ -158,9 +158,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
       <style jsx>{`
         .card {
-          --main-color: #fff;
-          --submain-color: #ccc;
-          --bg-color: #0D1117;
+          --main-color: #111827;
+          --submain-color: #6B7280;
+          --bg-color: #FFFFFF;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           position: relative;
           width: 300px;
@@ -169,8 +169,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           flex-direction: column;
           align-items: center;
           border-radius: 1.5rem;
-          background: #121212;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          background: #FFFFFF;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .card__img {
@@ -197,13 +197,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           position: absolute;
           width: 114px;
           height: 114px;
-          background: #1a1a1a;
+          background: #FFFFFF;
           border-radius: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
           top: calc(50% - 57px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
           transition: all 0.3s ease;
         }
 
@@ -218,7 +218,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           margin-top: 48px; /* reducido desde 60px */
           font-weight: 600;
           font-size: 18px;
-          color: #FFFFFF;
+          color: #111827;
           font-family: 'Segoe UI Display Semibold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
@@ -226,7 +226,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           margin-top: 8px; /* reducido desde 10px */
           font-weight: 400;
           font-size: 13px;
-          color: var(--submain-color);
+          color: #6B7280;
           text-align: center;
           line-height: 1.4;
           padding: 0 15px;

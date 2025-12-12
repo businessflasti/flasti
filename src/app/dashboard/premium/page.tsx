@@ -228,7 +228,7 @@ const PremiumPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden">
+    <div className="min-h-screen pt-16 md:pt-8 pb-16 md:pb-8 px-4 relative overflow-hidden" style={{ backgroundColor: '#F6F3F3' }}>
       
       {/* Layout responsive: Desktop 2 columnas, Móvil 1 columna */}
       <div className="max-w-7xl mx-auto relative z-10" style={{ contain: 'layout style' }}>
@@ -238,17 +238,17 @@ const PremiumPage = () => {
           <div className="lg:w-1/2 order-2 lg:order-1">
             {/* Bloque de imagen del dashboard - Solo visible en desktop */}
             <div className="hidden lg:block mb-4">
-              <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+              <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
                 {/* Badge de ubicación y punto verde - Solo móvil - Arriba de la imagen */}
                 <div className="md:hidden flex justify-between items-center mb-3">
                   {countryPrice.countryCode && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-[#1a1a1a] whitespace-nowrap">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md whitespace-nowrap" style={{ backgroundColor: '#F3F3F3' }}>
                       <CountryFlag countryCode={countryPrice.countryCode} size="sm" />
-                      <span className="text-white font-semibold text-[10px]">
+                      <span className="font-semibold text-[10px]" style={{ color: '#111827' }}>
                         {countryPrice.countryCode}
                       </span>
-                      <span className="text-white/40 text-[10px]">•</span>
-                      <span className="text-white/70 text-[10px]">
+                      <span className="text-[10px]" style={{ color: '#9CA3AF' }}>•</span>
+                      <span className="text-[10px]" style={{ color: '#6B7280' }}>
                         {currentDate || 'Cargando...'}
                       </span>
                     </div>
@@ -271,10 +271,10 @@ const PremiumPage = () => {
                 
                 {/* Texto descriptivo */}
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold" style={{ color: '#111827' }}>
                     ¡Felicitaciones! Ya ha completado 2 microtareas.
                   </h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm" style={{ color: '#6B7280' }}>
                     Su panel tiene más microtareas disponibles para usted el dia de hoy. Complete la activación para continuar generando ingresos de forma ilimitada.
                   </p>
                 </div>
@@ -285,120 +285,112 @@ const PremiumPage = () => {
             {/* FAQ Section fuera de la tarjeta principal */}
             <div className="space-y-4 mb-6 lg:mb-4">
               {/* FAQ 1 - Pago único (ahora primera) */}
-              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
+              <div className="overflow-hidden relative rounded-3xl" style={{ backgroundColor: '#FFFFFF' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 0 ? null : 0)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0">
-                      <div className="text-[#101010]">
-                        <Info className="h-4 w-4 text-[#101010]" />
-                      </div>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0" style={{ backgroundColor: '#0D50A4' }}>
+                      <Info className="h-4 w-4 text-white" />
                     </div>
-                    <span className="font-medium text-white leading-relaxed flex items-center">¿A qué se destina el pago único?</span>
+                    <span className="font-medium leading-relaxed flex items-center" style={{ color: '#111827' }}>¿A qué se destina el pago único?</span>
                   </div>
-                  <div className="text-white">
+                  <div style={{ color: '#111827' }}>
                     {activeQuestion === 0 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 0 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-sm transition-all duration-300 ${activeQuestion === 0 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
-                  <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>El registro a la plataforma es gratuito. No obstante, se solicita un pago único para desbloquear <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>todas las microtareas de forma ilimitada</strong>. Esta activación nos permite cubrir los costos operativos y de verificación necesarios para mantener un entorno seguro, estable y exclusivo para nuestros usuarios. Este pago es definitivo y otorga acceso de por vida a todas las microtareas.</span>
+                  <div className="pt-3 pb-1 border-t pl-11" style={{ borderColor: '#E5E7EB' }}>
+                    <span style={{ color: '#6B7280' }}>El registro a la plataforma es gratuito. No obstante, se solicita un pago único para desbloquear <strong style={{ color: '#111827', fontWeight: 700 }}>todas las microtareas de forma ilimitada</strong>. Esta activación nos permite cubrir los costos operativos y de verificación necesarios para mantener un entorno seguro, estable y exclusivo para nuestros usuarios. Este pago es definitivo y otorga acceso de por vida a todas las microtareas.</span>
                   </div>
                 </div>
               </div>
 
               {/* FAQ 2 - Cuánto dinero (ahora segunda) */}
-              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
+              <div className="overflow-hidden relative rounded-3xl" style={{ backgroundColor: '#FFFFFF' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 1 ? null : 1)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0">
-                      <div className="text-[#101010]">
-                        <DollarSign className="h-4 w-4 text-[#101010]" />
-                      </div>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0" style={{ backgroundColor: '#0D50A4' }}>
+                      <DollarSign className="h-4 w-4 text-white" />
                     </div>
-                    <span className="font-medium text-white leading-relaxed flex items-center mt-1">¿Cuánto dinero puedo ganar?</span>
+                    <span className="font-medium leading-relaxed flex items-center mt-1" style={{ color: '#111827' }}>¿Cuánto dinero puedo ganar?</span>
                   </div>
-                  <div className="text-white">
+                  <div style={{ color: '#111827' }}>
                     {activeQuestion === 1 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 1 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-sm transition-all duration-300 ${activeQuestion === 1 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
-                  <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>
-                      Nuestra plataforma compensa las microtareas completadas con pagos que oscilan <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>entre $0.50 USD y $10 USD</strong>. Usted tiene la flexibilidad de elegir la microtarea de su interés, visualizando su compensación antes de comenzar. Las actividades incluyen opciones populares como: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido (texto, imagen o audio) entre muchas otras.
+                  <div className="pt-3 pb-1 border-t pl-11" style={{ borderColor: '#E5E7EB' }}>
+                    <span style={{ color: '#6B7280' }}>
+                      Nuestra plataforma compensa las microtareas completadas con pagos que oscilan <strong style={{ color: '#111827', fontWeight: 700 }}>entre $0.50 USD y $10 USD</strong>. Usted tiene la flexibilidad de elegir la microtarea de su interés, visualizando su compensación antes de comenzar. Las actividades incluyen opciones populares como: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido (texto, imagen o audio) entre muchas otras.
                     </span>
                     
                     {/* Weekly Top Ranking */}
                     <div className="mt-6 -ml-11">
-                      <WeeklyTopRanking variant="dark" />
+                      <WeeklyTopRanking variant="light" />
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Pregunta original 2 */}
-              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
+              <div className="overflow-hidden relative rounded-3xl" style={{ backgroundColor: '#FFFFFF' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 2 ? null : 2)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
-                      <div className="text-[#101010]">
-                        <MapPin className="h-4 w-4 text-[#101010]" />
-                      </div>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0 mt-0.5" style={{ backgroundColor: '#0D50A4' }}>
+                      <MapPin className="h-4 w-4 text-white" />
                     </div>
-                    <span className="font-medium text-white leading-relaxed">¿Hay microtareas disponibles para mi ubicación?</span>
+                    <span className="font-medium leading-relaxed" style={{ color: '#111827' }}>¿Hay microtareas disponibles para mi ubicación?</span>
                   </div>
-                  <div className="text-white">
+                  <div style={{ color: '#111827' }}>
                     {activeQuestion === 2 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 2 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-sm transition-all duration-300 ${activeQuestion === 2 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
-                  <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>Sí, nuestro <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>sistema de geolocalización avanzada</strong> ya ha detectado y confirmado su país para asignarle microtareas específicas para su región. La plataforma está completamente operativa para usted ahora mismo, lo que le garantiza un flujo constante de oportunidades diarias adaptadas a su contexto particular.</span>
+                  <div className="pt-3 pb-1 border-t pl-11" style={{ borderColor: '#E5E7EB' }}>
+                    <span style={{ color: '#6B7280' }}>Sí, nuestro <strong style={{ color: '#111827', fontWeight: 700 }}>sistema de geolocalización avanzada</strong> ya ha detectado y confirmado su país para asignarle microtareas específicas para su región. La plataforma está completamente operativa para usted ahora mismo, lo que le garantiza un flujo constante de oportunidades diarias adaptadas a su contexto particular.</span>
                   </div>
                 </div>
               </div>
 
               {/* Pregunta original 3 */}
-              <div className="overflow-hidden relative rounded-3xl bg-[#121212]">
+              <div className="overflow-hidden relative rounded-3xl" style={{ backgroundColor: '#FFFFFF' }}>
                 <button
                   className="w-full pt-6 pb-3 px-4 flex items-center justify-between text-left focus:outline-none focus:ring-0 border-0"
                   onClick={() => setActiveQuestion(activeQuestion === 3 ? null : 3)}
                 >
                   <div className="flex items-start">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
-                      <div className="text-[#101010]">
-                        <Shield className="h-4 w-4 text-[#101010]" />
-                      </div>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0 mt-0.5" style={{ backgroundColor: '#0D50A4' }}>
+                      <Shield className="h-4 w-4 text-white" />
                     </div>
-                    <span className="font-medium text-white leading-relaxed">¿Qué cubre la garantía de 7 días?</span>
+                    <span className="font-medium leading-relaxed" style={{ color: '#111827' }}>¿Qué cubre la garantía de 7 días?</span>
                   </div>
-                  <div className="text-white">
+                  <div style={{ color: '#111827' }}>
                     {activeQuestion === 3 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 <div
-                  className={`px-4 pb-4 pt-0 text-foreground/70 text-sm transition-all duration-300 ${activeQuestion === 3 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+                  className={`px-4 pb-4 pt-0 text-sm transition-all duration-300 ${activeQuestion === 3 ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
                 >
-                  <div className="pt-3 pb-1 border-t border-white/10 pl-11">
-                    <span style={{ color: '#AEAEB0' }}>Usted cuenta con una <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>Garantía Incondicional de 7 Días</strong>. Estamos seguros de la calidad de nuestro servicio, por lo que su pago está completamente protegido. Si la plataforma no cumple con sus expectativas, usted puede solicitar el reembolso del <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>100% de su dinero</strong> dentro de los primeros 7 días. El proceso es directo y no requiere justificaciones ni formularios adicionales.</span>
+                  <div className="pt-3 pb-1 border-t pl-11" style={{ borderColor: '#E5E7EB' }}>
+                    <span style={{ color: '#6B7280' }}>Usted cuenta con una <strong style={{ color: '#111827', fontWeight: 700 }}>Garantía Incondicional de 7 Días</strong>. Estamos seguros de la calidad de nuestro servicio, por lo que su pago está completamente protegido. Si la plataforma no cumple con sus expectativas, usted puede solicitar el reembolso del <strong style={{ color: '#111827', fontWeight: 700 }}>100% de su dinero</strong> dentro de los primeros 7 días. El proceso es directo y no requiere justificaciones ni formularios adicionales.</span>
                   </div>
                 </div>
               </div>
@@ -409,7 +401,7 @@ const PremiumPage = () => {
           <div className="lg:w-1/2 order-1 lg:order-2">
             {/* Bloque de imagen solo visible en móvil - ARRIBA del pricing */}
             <div className="lg:hidden mb-6">
-              <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#121212', background: '#121212' }}>
+              <div className="rounded-3xl p-6 relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
                 {/* Imagen del dashboard */}
                 <div className="relative mb-4 rounded-2xl overflow-hidden">
                   <img 
@@ -423,10 +415,10 @@ const PremiumPage = () => {
                 
                 {/* Texto descriptivo */}
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold" style={{ color: '#111827' }}>
                     ¡Felicitaciones! Ya ha completado 2 microtareas.
                   </h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm" style={{ color: '#6B7280' }}>
                     Su panel tiene más microtareas disponibles para usted el dia de hoy. Complete la activación para continuar generando ingresos de forma ilimitada.
                   </p>
                 </div>
@@ -438,7 +430,7 @@ const PremiumPage = () => {
 
             <div className="max-w-2xl mx-auto lg:mx-0">
         {/* Contenido del pricing - Extraído del modal */}
-        <Card className="bg-[#121212] overflow-hidden relative h-full rounded-3xl">
+        <Card className="overflow-hidden relative h-full rounded-3xl" style={{ backgroundColor: '#FFFFFF' }}>
 
 
 
@@ -457,18 +449,18 @@ const PremiumPage = () => {
                 />
               </div>
               <div>
-                <h3 className="text-lg text-white group-hover:text-white transition-all duration-300">Acceso Total | Desbloquee todas sus Microtareas</h3>
+                <h3 className="text-lg transition-all duration-300" style={{ color: '#111827' }}>Acceso Total | Desbloquee todas sus Microtareas</h3>
 
               </div>
             </div>
 
-            <div className="mb-8 bg-[#1a1a1a] p-6 rounded-3xl">
+            <div className="mb-8 p-6 rounded-3xl" style={{ backgroundColor: '#F3F3F3' }}>
               {/* Versión móvil - Diseño más compacto */}
               <div className="md:hidden">
                 {isArgentina ? (
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold">
+                      <span className="text-xl font-bold" style={{ color: '#111827' }}>
                         {!isInitialized ? (
                           <span className="animate-pulse">...</span>
                         ) : (
@@ -482,14 +474,14 @@ const PremiumPage = () => {
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
-                        <span className="text-2xl font-bold">
+                        <span className="text-2xl font-bold" style={{ color: '#111827' }}>
                           {!isInitialized ? (
                             <span className="animate-pulse">...</span>
                           ) : (
                             `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
                           )}
                         </span>
-                        <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
+                        <span className="text-sm ml-1" style={{ color: '#6B7280' }}>{countryPrice.currencyCode}</span>
                       </div>
                       <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
                     </div>
@@ -504,14 +496,14 @@ const PremiumPage = () => {
                     <>
                       <div className="flex items-center w-full">
                         <div className="flex items-center">
-                          <span className="text-4xl font-bold">
+                          <span className="text-4xl font-bold" style={{ color: '#111827' }}>
                             {!isInitialized ? (
                               <span className="animate-pulse">...</span>
                             ) : (
                               `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
                             )}
                           </span>
-                          <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
+                          <span className="text-sm ml-1" style={{ color: '#6B7280' }}>{countryPrice.currencyCode}</span>
                         </div>
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
@@ -522,14 +514,14 @@ const PremiumPage = () => {
                     <>
                       <div className="flex items-center w-full">
                         <div className="flex items-center">
-                          <span className="text-4xl font-bold">
+                          <span className="text-4xl font-bold" style={{ color: '#111827' }}>
                             {!isInitialized ? (
                               <span className="animate-pulse">...</span>
                             ) : (
                               `${countryPrice.currencySymbol}${formatPrice(countryPrice.price, countryPrice.countryCode)}`
                             )}
                           </span>
-                          <span className="text-sm ml-1 text-muted-foreground">{countryPrice.currencyCode}</span>
+                          <span className="text-sm ml-1" style={{ color: '#6B7280' }}>{countryPrice.currencyCode}</span>
                         </div> 
                         <div className="flex items-center gap-1 ml-3">
                           <span className="text-xs font-bold text-white bg-[#16a34a] px-2 py-0.5 rounded-full shadow-sm shadow-[#16a34a]/20 border border-[#16a34a]/30">Microtareas ilimitadas</span>
@@ -540,7 +532,7 @@ const PremiumPage = () => {
                 </div>
               </div>
 
-              <p className="text-xs md:text-sm text-foreground/70 mt-2">
+              <p className="text-xs md:text-sm mt-2" style={{ color: '#6B7280' }}>
                 Pago único - Sin suscripciones ni cargos recurrentes
               </p>
 
@@ -553,8 +545,8 @@ const PremiumPage = () => {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm text-white">Acceso Inmediato</h4>
-                  <p className="text-xs text-white/70">Continúa generando ingresos sin demoras.</p>
+                  <h4 className="font-medium text-sm" style={{ color: '#111827' }}>Acceso Inmediato</h4>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>Continúa generando ingresos sin demoras.</p>
                 </div>
               </div>
 
@@ -564,8 +556,8 @@ const PremiumPage = () => {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm text-white">Acceso de por vida</h4>
-                  <p className="text-xs text-white/70">Sin límites de tiempo ni renovaciones.</p>
+                  <h4 className="font-medium text-sm" style={{ color: '#111827' }}>Acceso de por vida</h4>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>Sin límites de tiempo ni renovaciones.</p>
                 </div>
               </div>
 
@@ -575,8 +567,8 @@ const PremiumPage = () => {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm text-white">Garantía de 7 días</h4>
-                  <p className="text-xs text-white/70">Devolución total, sin preguntas ni condiciones.</p>
+                  <h4 className="font-medium text-sm" style={{ color: '#111827' }}>Garantía de 7 días</h4>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>Devolución total, sin preguntas ni condiciones.</p>
                 </div>
               </div>
 
@@ -586,8 +578,8 @@ const PremiumPage = () => {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-sm text-white">Soporte 24/7</h4>
-                  <p className="text-xs text-white/70">Asistencia personalizada paso a paso.</p>
+                  <h4 className="font-medium text-sm" style={{ color: '#111827' }}>Soporte 24/7</h4>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>Asistencia personalizada paso a paso.</p>
                 </div>
               </div>
             </div>
@@ -610,14 +602,14 @@ const PremiumPage = () => {
             
             {/* Bloque de Testimonios - Debajo del pricing en MÓVIL */}
             <div className="mt-6 lg:hidden">
-              <Card className="bg-[#121212] overflow-hidden rounded-2xl">
+              <Card className="overflow-hidden rounded-2xl" style={{ backgroundColor: '#FFFFFF' }}>
                 <div className="p-4 md:p-6">
                   {/* Título compacto */}
                   <div className="text-center mb-4">
-                    <h2 className="text-lg md:text-xl font-bold text-white mb-1">
+                    <h2 className="text-lg md:text-xl font-bold mb-1" style={{ color: '#111827' }}>
                       Testimonios de la Comunidad
                     </h2>
-                    <p className="text-white/60 text-xs md:text-sm">
+                    <p className="text-xs md:text-sm" style={{ color: '#6B7280' }}>
                       Conoce las experiencias de quienes ya activaron su acceso
                     </p>
                   </div>
@@ -630,14 +622,14 @@ const PremiumPage = () => {
             
             {/* Bloque de Testimonios - Debajo del pricing en desktop */}
             <div className="mt-4 hidden lg:block">
-              <Card className="bg-[#121212] overflow-hidden rounded-2xl">
+              <Card className="overflow-hidden rounded-2xl" style={{ backgroundColor: '#FFFFFF' }}>
                 <div className="p-4 md:p-6">
                   {/* Título compacto */}
                   <div className="text-center mb-4">
-                    <h2 className="text-lg md:text-xl font-bold text-white mb-1">
+                    <h2 className="text-lg md:text-xl font-bold mb-1" style={{ color: '#111827' }}>
                       Testimonios de la Comunidad
                     </h2>
-                    <p className="text-white/60 text-xs md:text-sm">
+                    <p className="text-xs md:text-sm" style={{ color: '#6B7280' }}>
                       Conoce las experiencias de quienes ya activaron su acceso
                     </p>
                   </div>
@@ -734,7 +726,8 @@ const TestimonialsSlider = () => {
     <div className="relative">
       {/* Tarjeta de testimonio - Compacta */}
       <div 
-        className="bg-[#1a1a1a] rounded-xl p-4 md:p-5"
+        className="rounded-xl p-4 md:p-5"
+        style={{ backgroundColor: '#F3F3F3' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -752,13 +745,13 @@ const TestimonialsSlider = () => {
               />
             </div>
             <div className="text-center">
-              <h3 className="font-semibold text-white text-sm md:text-base whitespace-nowrap">{currentTestimonial.name}</h3>
+              <h3 className="font-semibold text-sm md:text-base whitespace-nowrap" style={{ color: '#111827' }}>{currentTestimonial.name}</h3>
             </div>
           </div>
 
           {/* Contenido del testimonio - Texto completo */}
           <div className="flex-1 min-w-0">
-            <p className="text-white/75 text-xs md:text-sm leading-relaxed italic">
+            <p className="text-xs md:text-sm leading-relaxed italic" style={{ color: '#6B7280' }}>
               "{currentTestimonial.content}"
             </p>
           </div>
@@ -769,7 +762,8 @@ const TestimonialsSlider = () => {
       <div className="flex items-center justify-center gap-3 mt-3">
         <button
           onClick={prevSlide}
-          className="w-7 h-7 rounded-full bg-[#1a1a1a] hover:bg-[#252525] flex items-center justify-center text-white transition-all"
+          className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
+          style={{ backgroundColor: '#E5E7EB', color: '#111827' }}
           aria-label="Anterior"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -785,8 +779,8 @@ const TestimonialsSlider = () => {
               onClick={() => setCurrentIndex(index)}
               className={`w-1.5 h-1.5 rounded-full transition-all ${
                 index === currentIndex
-                  ? "bg-green-500 scale-125"
-                  : "bg-white/20"
+                  ? "bg-[#0D50A4] scale-125"
+                  : "bg-gray-300"
               }`}
               aria-label={`Ir a testimonio ${index + 1}`}
             />
@@ -795,7 +789,8 @@ const TestimonialsSlider = () => {
 
         <button
           onClick={nextSlide}
-          className="w-7 h-7 rounded-full bg-[#1a1a1a] hover:bg-[#252525] flex items-center justify-center text-white transition-all"
+          className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
+          style={{ backgroundColor: '#E5E7EB', color: '#111827' }}
           aria-label="Siguiente"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

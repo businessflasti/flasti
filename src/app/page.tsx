@@ -85,7 +85,7 @@ export default function Home() {
   return (
     <MainLayout disableChat={true}>
       
-      <div style={{ minHeight: "100vh", background: "#FEF9F3" }}>
+      <div style={{ minHeight: "100vh", background: "#F6F3F3" }}>
         {/* Sección Hero principal */}
         <StudiovaHeroSection />
         

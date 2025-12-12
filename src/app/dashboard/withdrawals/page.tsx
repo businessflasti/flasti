@@ -182,31 +182,32 @@ export default function WithdrawalsPage() {
 
   return (
     <div 
-      className="min-h-screen bg-[#0A0A0A] relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden"
       style={{
         transform: 'translate3d(0, 0, 0)',
         contain: 'layout style',
-        backfaceVisibility: 'hidden'
+        backfaceVisibility: 'hidden',
+        background: '#F6F3F3'
       }}
     >
       <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6 relative z-10">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Solicitar Retiro</h1>
+        <h1 className="text-2xl md:text-3xl font-bold" style={{ color: '#111827' }}>Solicitar Retiro</h1>
       </div>
 
       {/* Información del saldo */}
       {!pageLoading && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <DollarSign className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ background: '#0D50A4' }}>
+                  <DollarSign className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Saldo Disponible</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm text-gray-500">Saldo Disponible</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {formatCurrency(userBalance.balance)}
                   </p>
                 </div>
@@ -214,15 +215,15 @@ export default function WithdrawalsPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <CheckCircle className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ background: '#0D50A4' }}>
+                  <CheckCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Total Ganado</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm text-gray-500">Total Ganado</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {formatCurrency(userBalance.total_earnings)}
                   </p>
                 </div>
@@ -230,15 +231,15 @@ export default function WithdrawalsPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <CreditCard className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ background: '#0D50A4' }}>
+                  <CreditCard className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Total Retirado</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm text-gray-500">Total Retirado</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {formatCurrency(userBalance.total_withdrawals)}
                   </p>
                 </div>
@@ -255,14 +256,13 @@ export default function WithdrawalsPage() {
         transition={{ duration: 0.5, delay: 0.05 }}
       >
         {pageLoading ? (
-          <div className="flex flex-col items-center justify-center py-16 space-y-4">
-            <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-            <p className="text-gray-400 font-medium">Cargando métodos de retiro...</p>
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(0, 0, 0, 0.1)', borderTopColor: '#0D50A4' }}></div>
           </div>
         ) : (
-          <div className="bg-[#121212] rounded-3xl">
-            <div className="p-6 border-b border-white/10">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="text-xl font-bold flex items-center gap-2" style={{ color: '#111827' }}>
                 <ArrowRightLeft className="w-5 h-5" />
                 Elige tu método de retiro
               </h2>
@@ -270,12 +270,12 @@ export default function WithdrawalsPage() {
             <div className="p-6">
               <form onSubmit={handleWithdraw} className="space-y-6">
                 {/* Información importante */}
-                <div className="bg-blue-500/10 rounded-lg p-4">
+                <div className="rounded-lg p-4" style={{ background: '#F3F3F3' }}>
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 mt-0.5" style={{ color: '#0D50A4' }} />
                     <div>
-                      <h4 className="font-medium text-blue-400 mb-1">Información importante</h4>
-                      <ul className="text-sm text-blue-300 space-y-1">
+                      <h4 className="font-medium mb-1" style={{ color: '#0D50A4' }}>Información importante</h4>
+                      <ul className="text-sm text-gray-600 space-y-1">
                         <li>• Los retiros se procesan en 24 horas hábiles</li>
                         <li>• Asegúrate de que el email de PayPal coincida con el registrado en Flasti</li>
                       </ul>
@@ -285,7 +285,7 @@ export default function WithdrawalsPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#111827' }}>
                       Monto a retirar
                     </label>
                     <Input
@@ -294,15 +294,16 @@ export default function WithdrawalsPage() {
                       value={amount}
                       onChange={e => setAmount(e.target.value)}
                       placeholder="Introduce tu monto"
-                      className="bg-background border-0 focus:ring-0"
+                      className="border-0 focus:ring-0"
+                      style={{ background: '#F3F3F3', color: '#111827' }}
                     />
-                    <p className="text-xs text-blue-400/80 mt-1">
+                    <p className="text-xs mt-1" style={{ color: '#0D50A4' }}>
                       Mínimo: $3.00 USD
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#111827' }}>
                       Email de PayPal
                     </label>
                     <Input
@@ -310,28 +311,29 @@ export default function WithdrawalsPage() {
                       value={destination}
                       onChange={e => setDestination(e.target.value)}
                       placeholder="Introduce tu email"
-                      className="bg-background border-0 focus:ring-0"
+                      className="border-0 focus:ring-0"
+                      style={{ background: '#F3F3F3', color: '#111827' }}
                     />
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-gray-500 mt-1">
                       Debe ser un email válido de PayPal
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#111827' }}>
                     Método de retiro
                   </label>
                   <div className="space-y-3">
-                    <div className="flex-1 flex items-center gap-3 p-4 bg-primary/10 border border-primary/20 rounded-lg">
-                      <PayPalIcon className="w-5 h-5 text-white" />
-                      <span className="font-medium text-white">PayPal</span>
-                      <Badge className="ml-auto bg-green-500/20 text-green-400 border-green-500/30">
+                    <div className="flex-1 flex items-center gap-3 p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+                      <PayPalIcon className="w-5 h-5" style={{ color: '#0D50A4' }} />
+                      <span className="font-medium" style={{ color: '#111827' }}>PayPal</span>
+                      <Badge className="ml-auto bg-green-100 text-green-600 border-green-200">
                         Disponible
                       </Badge>
                     </div>
                     
-                    <div className="flex-1 flex items-center gap-3 p-4 bg-gray-500/10 border border-gray-500/20 rounded-lg opacity-60 cursor-not-allowed">
+                    <div className="flex-1 flex items-center gap-3 p-4 rounded-lg opacity-60 cursor-not-allowed" style={{ background: '#F3F3F3' }}>
                       <Landmark className="w-5 h-5 text-gray-400" />
                       <div className="flex-1">
                         <span className="font-medium text-gray-400 block">Transferencia Bancaria</span>
@@ -339,7 +341,7 @@ export default function WithdrawalsPage() {
                           Completa mínimo 5 microtareas para desbloquear retiros en tu moneda local
                         </p>
                       </div>
-                      <Badge className="ml-auto bg-gray-500/20 text-gray-400 border-gray-500/30">
+                      <Badge className="ml-auto bg-gray-100 text-gray-500 border-gray-200">
                         Pendiente
                       </Badge>
                     </div>
@@ -349,12 +351,13 @@ export default function WithdrawalsPage() {
                 <Button
                   type="submit"
                   disabled={loading || userBalance.balance <= 0}
-                  className="w-full bg-white hover:bg-white/90 text-[#101010]"
+                  className="w-full text-white hover:opacity-90"
+                  style={{ background: '#0D50A4' }}
                   size="lg"
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">
-                      <span className="animate-spin h-5 w-5 border-2 border-[#101010] border-t-transparent rounded-full"></span>
+                      <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
                       Procesando...
                     </span>
                   ) : (

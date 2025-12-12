@@ -155,14 +155,14 @@ const SkeletonWallet = () => {
 
   return (
     <div className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2">
-      <div className="flex flex-row rounded-full border border-gray-200 p-2 items-center space-x-2 bg-white">
-        <div className="w-6 h-6 rounded-full bg-[#f0f0f0] flex items-center justify-center shrink-0">
+      <div className="flex flex-row rounded-full p-2 items-center space-x-2" style={{ backgroundColor: '#F3F3F3' }}>
+        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0">
           <img src="/images/paypal.webp" alt="PayPal" className="h-4 w-4 object-contain" />
         </div>
         <span className="text-xs font-medium text-[#101010]">PayPal</span>
       </div>
-      <div className="flex flex-row rounded-3xl border border-gray-200 p-2 items-center space-x-2 bg-white">
-        <div className="w-6 h-6 rounded-full bg-[#f0f0f0] flex items-center justify-center shrink-0">
+      <div className="flex flex-row rounded-3xl p-2 items-center space-x-2" style={{ backgroundColor: '#F3F3F3' }}>
+        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0">
           <img src="/images/banco.webp" alt="Banco" className="h-4 w-4 object-contain" />
         </div>
         <span className="text-xs font-medium text-[#101010]">Transferencia bancaria</span>
@@ -196,8 +196,8 @@ const SkeletonAI = () => {
 const SkeletonEarnings = () => {
   return (
     <div className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-row space-x-2">
-      <div className="h-full w-1/3 rounded-3xl bg-white px-2 py-4 border border-gray-200 flex flex-col items-center justify-center min-h-[8rem]">
-        <div className="w-10 h-10 rounded-full bg-blue-400 border border-blue-500 flex items-center justify-center">
+      <div className="h-full w-1/3 rounded-3xl px-2 py-4 flex flex-col items-center justify-center min-h-[8rem]" style={{ backgroundColor: '#F3F3F3' }}>
+        <div className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center">
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
           </svg>
@@ -211,8 +211,8 @@ const SkeletonEarnings = () => {
           </p>
         </div>
       </div>
-      <div className="h-full w-1/3 rounded-3xl bg-white px-2 py-4 border border-gray-200 flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-full bg-[#EA4085] border border-[#EA4085] flex items-center justify-center">
+      <div className="h-full w-1/3 rounded-3xl px-2 py-4 flex flex-col items-center justify-center" style={{ backgroundColor: '#F3F3F3' }}>
+        <div className="w-10 h-10 rounded-full bg-[#EA4085] flex items-center justify-center">
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -227,8 +227,8 @@ const SkeletonEarnings = () => {
           </p>
         </div>
       </div>
-      <div className="h-full w-1/3 rounded-3xl bg-white px-2 py-4 border border-gray-200 flex flex-col items-center justify-center">
-        <div className="w-10 h-10 rounded-full bg-yellow-400 border border-yellow-500 flex items-center justify-center">
+      <div className="h-full w-1/3 rounded-3xl px-2 py-4 flex flex-col items-center justify-center" style={{ backgroundColor: '#F3F3F3' }}>
+        <div className="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.5 2C5.4 2 2 5.4 2 9.5V14c0 4.1 3.4 7.5 7.5 7.5H14c4.1 0 7.5-3.4 7.5-7.5V9.5C21.5 5.4 18.1 2 14 2H9.5z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 10.8v1.5M16.5 10.8v1.5M12 7v1.5M9.8 15h3.7" />
@@ -250,7 +250,7 @@ const SkeletonEarnings = () => {
 const SkeletonSupport = () => {
   return (
     <div className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2">
-      <div className="flex flex-row rounded-3xl border border-gray-200 p-2 items-center space-x-2 bg-white">
+      <div className="flex flex-row rounded-3xl p-2 items-center space-x-2" style={{ backgroundColor: '#F3F3F3' }}>
         <div className="w-10 h-10 rounded-full bg-[#E85433] flex items-center justify-center">
           <span className="text-white text-xs font-bold">24</span>
         </div>
@@ -258,7 +258,7 @@ const SkeletonSupport = () => {
           Estamos a tu lado...
         </p>
       </div>
-      <div className="flex flex-row rounded-full border border-gray-200 p-2 items-center justify-end space-x-2 w-3/4 ml-auto bg-white">
+      <div className="flex flex-row rounded-full p-2 items-center justify-end space-x-2 w-3/4 ml-auto" style={{ backgroundColor: '#F3F3F3' }}>
         <p className="text-xs text-[#101010]">¡Siempre aquí para ti!</p>
         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 shrink-0 flex items-center justify-center">
           <span className="text-white text-xs font-bold">7</span>

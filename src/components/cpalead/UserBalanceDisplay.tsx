@@ -15,6 +15,7 @@ interface UserBalanceDisplayProps {
   userId: string;
   currency?: string;
   showControls?: boolean;
+  variant?: 'dark' | 'light';
 }
 
 interface BalanceStats {
@@ -28,8 +29,10 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   initialBalance, 
   userId, 
   currency = 'USD',
-  showControls = true 
+  showControls = true,
+  variant = 'dark'
 }) => {
+  const isLight = variant === 'light';
   const [balance, setBalance] = useState(initialBalance);
   const [balanceStats, setBalanceStats] = useState<BalanceStats>({
     balance: initialBalance,
@@ -172,34 +175,47 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   return (
     <TooltipProvider>
       <Card 
-        className="relative border-0 h-full flex flex-col rounded-3xl overflow-hidden bg-[#121212]"
-
+        className={`relative border-0 h-full flex flex-col rounded-3xl overflow-hidden ${
+          isLight ? 'shadow-sm' : 'shadow-lg bg-[#121212]'
+        }`}
+        style={isLight ? { background: '#FFFFFF' } : undefined}
       >
         <CardContent className="p-3 lg:p-4 flex-1 flex flex-col min-h-0">
           <div className="flex items-start justify-between gap-2 flex-shrink-0 mb-1 lg:mb-2">
             <div className="flex items-center gap-2 lg:gap-3 flex-1">
-              <div className="flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-white flex-shrink-0">
-                <DollarSign className="w-4 h-4 lg:w-5 lg:h-5 text-[#101010]" />
+              <div 
+                className="flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 rounded-full flex-shrink-0"
+                style={{ background: isLight ? '#0C50A4' : '#fff' }}
+              >
+                <DollarSign className={`w-4 h-4 lg:w-5 lg:h-5 ${isLight ? 'text-white' : 'text-[#101010]'}`} />
               </div>
               
               <div className="flex flex-col flex-1 min-w-0">
-                <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-muted-foreground">
+                <span className={`text-[10px] sm:text-xs lg:text-sm font-medium ${
+                  isLight ? 'text-gray-500' : 'text-muted-foreground'
+                }`}>
                   Balance
                 </span>
                 
                 <div className="flex items-center gap-1.5">
                   {isVisible ? (
-                    <span className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
+                    <span className={`text-lg sm:text-xl lg:text-2xl font-bold ${
+                      isLight ? 'text-gray-900' : 'text-white'
+                    }`}>
                       {formatCurrency(balance)}
                     </span>
                   ) : (
-                    <span className="text-lg sm:text-xl lg:text-2xl font-bold text-muted-foreground">
+                    <span className={`text-lg sm:text-xl lg:text-2xl font-bold ${
+                      isLight ? 'text-gray-400' : 'text-muted-foreground'
+                    }`}>
                       ••••••
                     </span>
                   )}
                   
                   {isLoading && (
-                    <RefreshCw className="w-3 h-3 text-muted-foreground animate-spin" />
+                    <RefreshCw className={`w-3 h-3 animate-spin ${
+                      isLight ? 'text-gray-400' : 'text-muted-foreground'
+                    }`} />
                   )}
                 </div>
               </div>
@@ -210,20 +226,20 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsVisible(!isVisible)}
-                className="balance-eye-button h-8 w-8 lg:h-9 lg:w-9 p-0 rounded-lg bg-white/[0.08] hover:bg-white/[0.12] transition-colors flex-shrink-0"
-                style={{ willChange: 'auto' }}
+                className="balance-eye-button h-8 w-8 lg:h-9 lg:w-9 p-0 rounded-lg transition-colors flex-shrink-0 hover:opacity-80"
+                style={{ willChange: 'auto', backgroundColor: '#F3F3F3' }}
               >
                 {isVisible ? (
-                  <EyeOff className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" />
+                  <EyeOff className="w-3.5 h-3.5 lg:w-4 lg:h-4" style={{ color: '#111827' }} />
                 ) : (
-                  <Eye className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" />
+                  <Eye className="w-3.5 h-3.5 lg:w-4 lg:h-4" style={{ color: '#111827' }} />
                 )}
               </Button>
             )}
           </div>
 
           {/* Top 3 Ranking Semanal */}
-          <WeeklyTopRanking />
+          <WeeklyTopRanking variant={isLight ? 'light' : 'dark'} />
         </CardContent>
       </Card>
     </TooltipProvider>

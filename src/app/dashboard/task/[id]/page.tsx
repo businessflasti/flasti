@@ -215,8 +215,8 @@ export default function TaskPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#F6F3F3' }}>
+        <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: '#E5E7EB', borderTopColor: '#0D50A4' }}></div>
       </div>
     );
   }
@@ -249,7 +249,7 @@ export default function TaskPage() {
         <div className={styles.scrollIndicator}>
           <div className={styles.scrollIndicatorContent}>
             <span className={styles.scrollIndicatorText}>Desliza hacia abajo</span>
-            <ChevronDown className={styles.scrollIndicatorIcon} size={16} strokeWidth={2.5} color="rgba(255, 255, 255, 0.5)" />
+            <ChevronDown className={styles.scrollIndicatorIcon} size={16} strokeWidth={2.5} color="#FFFFFF" />
           </div>
           <button onClick={handleClose} className={styles.closeButtonMobile}>
             <X size={16} strokeWidth={2.5} />
@@ -342,9 +342,6 @@ export default function TaskPage() {
 
           <div className={styles.rightColumn}>
             <div className={styles.workArea}>
-              <button onClick={handleClose} className={styles.closeButtonDesktop}>
-                <X size={16} strokeWidth={2.5} />
-              </button>
               <h3 className={styles.workAreaTitle}>Área de trabajo</h3>
               
               <div className={styles.audioSection}>
@@ -353,26 +350,28 @@ export default function TaskPage() {
                     <source src={offer.video_url || offer.audio_url} type="video/mp4" />
                   </video>
                 ) : (
-                  <audio ref={audioRef} controls controlsList="nodownload noplaybackrate" onContextMenu={(e) => e.preventDefault()} className={styles.audioPlayer}>
-                    <source src={offer.audio_url} type="audio/mpeg" />
-                  </audio>
+                  <div style={{ backgroundColor: '#FFFFFF', borderRadius: '12px', padding: '4px' }}>
+                    <audio ref={audioRef} controls controlsList="nodownload noplaybackrate" onContextMenu={(e) => e.preventDefault()} className={styles.audioPlayer} style={{ backgroundColor: '#FFFFFF' }}>
+                      <source src={offer.audio_url} type="audio/mpeg" />
+                    </audio>
+                  </div>
                 )}
               </div>
 
               {isVideoTask ? (
                 <div className="space-y-3">
-                  <div className="bg-[#1a1a1a] rounded-xl p-4 relative">
-                    <div className="absolute -top-2 -left-2 w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                      <span className="text-black text-xs font-bold">1</span>
+                  <div className="rounded-xl p-4 relative" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+                    <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: '#0D50A4' }}>
+                      <span className="text-xs font-bold" style={{ color: '#FFFFFF' }}>1</span>
                     </div>
-                    <label className="block text-sm font-medium text-white/90 mb-2 ml-4">Anota el segundo exacto donde viste el error</label>
+                    <label className="block text-sm font-medium mb-2 ml-4" style={{ color: '#111827' }}>Anota el segundo exacto donde viste el error</label>
                     <input type="text" value={errorTime} onChange={(e) => setErrorTime(e.target.value)} placeholder="Ejemplo: 00:25" className={styles.textInput} style={{ height: '42px' }} autoComplete="off" />
                   </div>
-                  <div className="bg-[#1a1a1a] rounded-xl p-4 relative">
-                    <div className="absolute -top-2 -left-2 w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                      <span className="text-black text-xs font-bold">2</span>
+                  <div className="rounded-xl p-4 relative" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+                    <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: '#0D50A4' }}>
+                      <span className="text-xs font-bold" style={{ color: '#FFFFFF' }}>2</span>
                     </div>
-                    <label className="block text-sm font-medium text-white/90 mb-2 ml-4">Describe qué error encontraste</label>
+                    <label className="block text-sm font-medium mb-2 ml-4" style={{ color: '#111827' }}>Describe qué error encontraste</label>
                     <textarea value={errorDescription} onChange={(e) => setErrorDescription(e.target.value)} placeholder="Ejemplo: El video quedó en color blanco" className={styles.textInput} rows={2} autoComplete="off" />
                   </div>
                 </div>
@@ -402,11 +401,6 @@ export default function TaskPage() {
                 <div className={styles.securityBadge}>
                   <Check className="w-4 h-4 text-green-400" />
                   <span className={styles.badgeText}>Acreditación instantánea</span>
-                </div>
-                <div className={styles.badgeSeparator}></div>
-                <div className={styles.securityBadge} title="Cifrado SSL">
-                  <Shield className="w-4 h-4 text-green-400" />
-                  <span className={styles.badgeTextHideMobile}>Cifrado SSL</span>
                 </div>
               </div>
             </div>

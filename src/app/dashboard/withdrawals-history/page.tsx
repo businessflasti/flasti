@@ -123,35 +123,22 @@ export default function WithdrawalsHistoryPage() {
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':
-        return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Pendiente</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-700 border-yellow-200">Pendiente</Badge>;
       case 'approved':
       case 'completed':
-        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Aprobado</Badge>;
+        return <Badge className="bg-green-100 text-green-700 border-green-200">Aprobado</Badge>;
       case 'rejected':
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Rechazado</Badge>;
+        return <Badge className="bg-red-100 text-red-700 border-red-200">Rechazado</Badge>;
       default:
-        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">{status}</Badge>;
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return <Clock className="w-4 h-4 text-yellow-400" />;
-      case 'approved':
-      case 'completed':
-        return <CheckCircle className="w-4 h-4 text-green-400" />;
-      case 'rejected':
-        return <XCircle className="w-4 h-4 text-red-400" />;
-      default:
-        return <Clock className="w-4 h-4 text-gray-400" />;
+        return <Badge className="bg-gray-100 text-gray-700 border-gray-200">{status}</Badge>;
     }
   };
 
   return (
     <div 
-      className="min-h-screen bg-[#0A0A0A] relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden"
       style={{
+        backgroundColor: '#F6F3F3',
         transform: 'translate3d(0, 0, 0)',
         contain: 'layout style',
         backfaceVisibility: 'hidden'
@@ -160,21 +147,21 @@ export default function WithdrawalsHistoryPage() {
       <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 relative z-10">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Historial de Retiros</h1>
+        <h1 className="text-2xl md:text-3xl font-bold" style={{ color: '#111827' }}>Historial de Retiros</h1>
       </div>
 
       {/* Estadísticas de resumen */}
       {!loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0" style={{ backgroundColor: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <DollarSign className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ backgroundColor: '#0D50A4' }}>
+                  <DollarSign className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Total Solicitado</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm" style={{ color: '#6B7280' }}>Total Solicitado</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {formatCurrency(summary.total_requested)}
                   </p>
                 </div>
@@ -182,15 +169,15 @@ export default function WithdrawalsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0" style={{ backgroundColor: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <CheckCircle className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ backgroundColor: '#0D50A4' }}>
+                  <CheckCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Total Aprobado</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm" style={{ color: '#6B7280' }}>Total Aprobado</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {formatCurrency(summary.total_approved)}
                   </p>
                 </div>
@@ -198,15 +185,15 @@ export default function WithdrawalsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0" style={{ backgroundColor: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <Clock className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ backgroundColor: '#0D50A4' }}>
+                  <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Pendientes</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm" style={{ color: '#6B7280' }}>Pendientes</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {summary.pending_count}
                   </p>
                 </div>
@@ -214,15 +201,15 @@ export default function WithdrawalsHistoryPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121212] rounded-3xl">
+          <Card className="rounded-3xl border-0" style={{ backgroundColor: '#FFFFFF' }}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-white">
-                  <CreditCard className="w-5 h-5 text-black" />
+                <div className="p-3 rounded-2xl" style={{ backgroundColor: '#0D50A4' }}>
+                  <CreditCard className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Total Retiros</p>
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-sm" style={{ color: '#6B7280' }}>Total Retiros</p>
+                  <p className="text-xl font-bold" style={{ color: '#111827' }}>
                     {withdrawals.length}
                   </p>
                 </div>
@@ -239,15 +226,14 @@ export default function WithdrawalsHistoryPage() {
         transition={{ duration: 0.5, delay: 0.05 }}
       >
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-16 space-y-4">
-            <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-            <p className="text-gray-400 font-medium">Cargando historial de retiros...</p>
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="w-8 h-8 border-2 border-gray-300 rounded-full animate-spin" style={{ borderTopColor: '#0D50A4' }}></div>
           </div>
         ) : (
-          <div className="bg-[#121212] rounded-3xl">
-            <div className="p-6 border-b border-white/10">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <CreditCard className="w-5 h-5" />
+          <div className="rounded-3xl" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="p-6 border-b" style={{ borderColor: '#F3F3F3' }}>
+              <h2 className="text-xl font-bold flex items-center gap-2" style={{ color: '#111827' }}>
+                <CreditCard className="w-5 h-5" style={{ color: '#0D50A4' }} />
                 Historial Completo
                 {withdrawals.length > 0 && (
                   <Badge variant="secondary" className="ml-2">
@@ -259,11 +245,11 @@ export default function WithdrawalsHistoryPage() {
             <div className="p-6">
               {withdrawals.length === 0 ? (
                 <div className="text-center py-12">
-                  <CreditCard className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-foreground mb-2">
+                  <CreditCard className="w-16 h-16 mx-auto mb-4" style={{ color: '#6B7280' }} />
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>
                     No hay retiros aún
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p style={{ color: '#6B7280' }}>
                     Cuando solicites un retiro, aparecerá aquí con su estado.
                   </p>
                 </div>
@@ -271,19 +257,19 @@ export default function WithdrawalsHistoryPage() {
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Fecha</TableHead>
-                        <TableHead>Monto</TableHead>
-                        <TableHead>Método</TableHead>
-                        <TableHead>Destino</TableHead>
-                        <TableHead>Estado</TableHead>
-                        <TableHead>Procesado</TableHead>
+                      <TableRow style={{ backgroundColor: '#F3F3F3' }}>
+                        <TableHead style={{ color: '#6B7280' }}>Fecha</TableHead>
+                        <TableHead style={{ color: '#6B7280' }}>Monto</TableHead>
+                        <TableHead style={{ color: '#6B7280' }}>Método</TableHead>
+                        <TableHead style={{ color: '#6B7280' }}>Destino</TableHead>
+                        <TableHead style={{ color: '#6B7280' }}>Estado</TableHead>
+                        <TableHead style={{ color: '#6B7280' }}>Procesado</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {withdrawals.map((withdrawal) => (
-                        <TableRow key={withdrawal.id}>
-                          <TableCell className="text-sm">
+                        <TableRow key={withdrawal.id} style={{ borderColor: '#F3F3F3' }}>
+                          <TableCell className="text-sm" style={{ color: '#111827' }}>
                             {new Date(withdrawal.created_at).toLocaleDateString('es-ES', {
                               year: 'numeric',
                               month: 'short',
@@ -292,25 +278,24 @@ export default function WithdrawalsHistoryPage() {
                               minute: '2-digit'
                             })}
                           </TableCell>
-                          <TableCell className="font-bold text-primary">
+                          <TableCell className="font-bold" style={{ color: '#10B981' }}>
                             {formatCurrency(withdrawal.amount)}
                           </TableCell>
-                          <TableCell>
+                          <TableCell style={{ color: '#111827' }}>
                             <div className="flex items-center gap-2">
-                              <CreditCard className="w-4 h-4" />
+                              <CreditCard className="w-4 h-4" style={{ color: '#6B7280' }} />
                               {withdrawal.method}
                             </div>
                           </TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
+                          <TableCell className="text-sm" style={{ color: '#6B7280' }}>
                             {withdrawal.destination}
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              {getStatusIcon(withdrawal.status)}
                               {getStatusBadge(withdrawal.status)}
                             </div>
                           </TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
+                          <TableCell className="text-sm" style={{ color: '#6B7280' }}>
                             {withdrawal.processed_at 
                               ? new Date(withdrawal.processed_at).toLocaleDateString('es-ES')
                               : '-'

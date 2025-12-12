@@ -3,11 +3,11 @@
 import { ParallaxProvider } from "react-scroll-parallax";
 
 function StudiovaHeroSection() {
-    const scrollToStats = () => {
-        const statsSection = document.querySelector('#stats-section');
-        if (statsSection) {
+    const scrollToTeamSection = () => {
+        const teamSection = document.querySelector('#team-section');
+        if (teamSection) {
             const offset = 20;
-            const elementPosition = statsSection.getBoundingClientRect().top;
+            const elementPosition = teamSection.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - offset;
 
             window.scrollTo({
@@ -22,7 +22,7 @@ function StudiovaHeroSection() {
             <section 
                 className="relative flex items-start text-white h-full min-h-[70vh] pt-8 overflow-hidden"
                 style={{
-                    backgroundColor: '#0A0A0A'
+                    backgroundColor: '#F6F3F3'
                 }}
             >
                 
@@ -38,22 +38,6 @@ function StudiovaHeroSection() {
                 
                 {/* Overlay elegante */}
                 <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/80 to-black/90"></div>
-                
-                {/* Partículas flotantes sutiles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(15)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-1 h-1 bg-yellow-400/30 rounded-full animate-float-particle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 5}s`,
-                                animationDuration: `${8 + Math.random() * 4}s`
-                            }}
-                        />
-                    ))}
-                </div>
 
                 {/* Elementos decorativos de fondo mejorados */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -83,8 +67,9 @@ function StudiovaHeroSection() {
                             {/* Botón mejorado - Desktop */}
                             <div className="hidden lg:flex justify-start pt-4">
                                 <button
-                                    onClick={scrollToStats}
-                                    className="force-segoe-display group relative overflow-hidden bg-gradient-to-r from-white to-gray-50 text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-xl"
+                                    onClick={scrollToTeamSection}
+                                    className="force-segoe-display group relative overflow-hidden text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-xl"
+                                    style={{ backgroundColor: '#F6F3F3' }}
                                 >
                                     <span className="relative z-10 flex items-center gap-3">
                                         Descubre más
@@ -98,7 +83,7 @@ function StudiovaHeroSection() {
                             {/* Tarjetas móvil */}
                             <div className="lg:hidden relative pt-8 h-80">
                                 {/* Testimonial 1 - Móvil con efecto */}
-                                <div className="absolute top-0 left-4 bg-white rounded-3xl p-4 max-w-xs shadow-2xl animate-float-card">
+                                <div className="absolute top-0 left-4 rounded-3xl p-4 max-w-xs shadow-2xl animate-float-card" style={{ backgroundColor: '#F6F3F3' }}>
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="relative">
                                             <img 
@@ -181,8 +166,9 @@ function StudiovaHeroSection() {
                             {/* Botón móvil */}
                             <div className="lg:hidden flex justify-center -mt-[76px] pb-8">
                                 <button
-                                    onClick={scrollToStats}
-                                    className="force-segoe-display group relative overflow-hidden bg-gradient-to-r from-white to-gray-50 text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-xl"
+                                    onClick={scrollToTeamSection}
+                                    className="force-segoe-display group relative overflow-hidden text-black px-8 py-4 rounded-3xl text-lg font-semibold transition-all duration-300 shadow-xl"
+                                    style={{ backgroundColor: '#F6F3F3' }}
                                 >
                                     <span className="relative z-10 flex items-center gap-3">
                                         Descubre más
@@ -197,7 +183,7 @@ function StudiovaHeroSection() {
                         {/* Columna derecha - Desktop */}
                         <div className="hidden lg:block relative h-full">
                             {/* Testimonial 1 - Desktop mejorado */}
-                            <div className="absolute top-16 right-12 bg-white rounded-3xl p-6 max-w-sm shadow-2xl animate-float-card">
+                            <div className="absolute top-16 right-12 rounded-3xl p-6 max-w-sm shadow-2xl animate-float-card" style={{ backgroundColor: '#F6F3F3' }}>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="relative">
                                         <img 
@@ -280,17 +266,6 @@ function StudiovaHeroSection() {
                 </div>
 
                 <style jsx>{`
-                    @keyframes float-particle {
-                        0%, 100% {
-                            transform: translateY(0) translateX(0);
-                            opacity: 0.3;
-                        }
-                        50% {
-                            transform: translateY(-100px) translateX(50px);
-                            opacity: 0.6;
-                        }
-                    }
-
                     @keyframes pulse-glow {
                         0%, 100% {
                             opacity: 0.3;
@@ -327,10 +302,6 @@ function StudiovaHeroSection() {
                         100% {
                             transform: translateX(100%);
                         }
-                    }
-
-                    .animate-float-particle {
-                        animation: float-particle linear infinite;
                     }
 
                     .animate-pulse-glow {

@@ -2,14 +2,15 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = {
-  default: "bg-[#1a1a1a] text-white border border-[#101010]",
+  default: "bg-[#1a1a1a] text-white",
   success: "bg-green-600 text-white",
   warning: "bg-yellow-600 text-white",
   danger: "bg-red-600 text-white",
+  secondary: "bg-green-100 text-green-700",
 }
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  color?: "default" | "success" | "warning" | "danger"
+  color?: "default" | "success" | "warning" | "danger" | "secondary"
   className?: string
 }
 

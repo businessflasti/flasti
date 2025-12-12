@@ -81,11 +81,13 @@ interface CustomOffer {
 
 interface OffersListNewProps {
   onDataUpdate?: (data: { userCountry: string; refreshing: boolean; handleRefresh: () => void }) => void;
+  variant?: 'dark' | 'light';
 }
 
-const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
+const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate, variant = 'dark' }) => {
   const { user } = useAuth();
   const router = useRouter();
+  const isLight = variant === 'light';
 
   // Helper para limpiar HTML y decodificar entidades
   const cleanHtmlText = (text: string): string => {
@@ -424,9 +426,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   // Renderizar estado de carga - Solo mostrar cuando las ofertas personalizadas están cargando
   if (isInitialLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 space-y-4">
-        <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-        <p className="text-gray-400 font-medium">Cargando microtareas...</p>
+      <div className="flex flex-col items-center justify-center py-16">
+        <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(0, 0, 0, 0.1)', borderTopColor: '#0D50A4' }}></div>
       </div>
     );
   }
@@ -435,14 +436,14 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   if (showCountryModal && loadingCpaLead) {
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <Card className="bg-[#121212] border-gray-700">
+        <Card className="bg-[#111827] border-gray-600">
           <CardContent className="pt-6">
             <div className="text-center">
               <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
-              <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
+              <p className="text-gray-300 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
 
               <select
-                className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
+                className="w-full p-3 bg-[#1f2937] border border-gray-600 rounded mb-4 text-white"
                 value={selectedCountryManual}
                 onChange={(e) => setSelectedCountryManual(e.target.value)}
               >
@@ -478,7 +479,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           </Button>
         </div>
         
-        <Card className="bg-[#121212] border-red-500/50">
+        <Card className="bg-[#111827] border-red-500/50">
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-red-400 mb-4">Error al cargar tareas: {error}</p>
@@ -496,14 +497,14 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
   if (showCountryModal) {
     return (
       <div className="space-y-6 w-full max-w-4xl mx-auto">
-        <Card className="bg-[#121212] border-gray-700">
+        <Card className="bg-[#111827] border-gray-600">
           <CardContent className="pt-6">
             <div className="text-center">
               <h3 className="text-white text-lg font-semibold mb-2">Selecciona tu país</h3>
-              <p className="text-gray-400 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
+              <p className="text-gray-300 mb-4">No pudimos confirmar tu ubicación. Elige tu país para continuar...</p>
 
               <select
-                className="w-full p-3 bg-[#0b0b0b] border border-gray-700 rounded mb-4 text-white"
+                className="w-full p-3 bg-[#1f2937] border border-gray-600 rounded mb-4 text-white"
                 value={selectedCountryManual}
                 onChange={(e) => setSelectedCountryManual(e.target.value)}
               >
@@ -528,12 +529,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
 
       {/* Lista de ofertas */}
       {offers.length === 0 && customOffers.length === 0 && !loadingCpaLead ? (
-        <Card className="bg-[#121212] border-gray-700">
+        <Card className="bg-[#111827] border-gray-600">
           <CardContent className="pt-6">
             <div className="text-center">
-              <Globe className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-              <p className="text-gray-400 mb-2">No hay tareas disponibles para tu país ({userCountry})</p>
-              <p className="text-sm text-gray-500">Las tareas se actualizan automáticamente cada 5 minutos</p>
+              <Globe className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-300 mb-2">No hay tareas disponibles para tu país ({userCountry})</p>
+              <p className="text-sm text-gray-300">Las tareas se actualizan automáticamente cada 5 minutos</p>
             </div>
           </CardContent>
         </Card>
@@ -564,19 +565,19 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                     imageUrl={customOffer.image_url}
                   >
                     <Card 
-                      className="relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden h-full"
-                      style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)' }}
+                      className="relative border-0 rounded-3xl overflow-hidden h-full"
+                      style={{ contain: 'layout style paint', transform: 'translate3d(0,0,0)', background: '#F3F3F3' }}
                     >
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <CardTitle className="text-lg text-white line-clamp-2 mb-2">
+                            <CardTitle className="text-lg text-gray-900 line-clamp-2 mb-2">
                               {customOffer.title}
                             </CardTitle>
                             <div className="flex items-center space-x-2 mb-2">
                               <Badge 
                                 variant="secondary" 
-                                className="bg-green-900/50 text-green-300 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
+                                className="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
                               >
                                 <DollarSign className="w-3 h-3 mr-1 flex-shrink-0" />
                                 {customOffer.amount.toFixed(2)} USD
@@ -603,12 +604,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                       <CardContent className="pt-0">
                         <div className="space-y-3">
                           {customOffer.description && (
-                            <CardDescription className="text-gray-400 line-clamp-2">
+                            <CardDescription className="text-gray-600 line-clamp-2">
                               {customOffer.description}
                             </CardDescription>
                           )}
                           
-                          <div className="flex items-center text-sm text-gray-500">
+                          <div className="flex items-center text-sm text-gray-600">
                             <div className="flex items-center space-x-2">
                               <Tag className="w-4 h-4" />
                               <span>Dispositivo: todos</span>
@@ -624,8 +625,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             Completada
                           </Button>
                           
-                          <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
-                            <span className="text-white text-sm font-medium flex items-center justify-center">
+                          <div className="w-full rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#fff' }}>
+                            <span className="text-gray-900 text-sm font-medium flex items-center justify-center">
                               <DollarSign className="w-4 h-4 mr-1" />
                               Gana {customOffer.amount.toFixed(2)} USD
                             </span>
@@ -647,19 +648,19 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   isReadyToUnlock={isReadyToUnlock}
                 >
                   <Card 
-                    className={`relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
-                    style={isLocked ? { height: '360px', contain: 'layout style paint' } : { contain: 'layout style paint' }}
+                    className={`relative border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    style={isLocked ? { height: '360px', contain: 'layout style paint', background: '#F3F3F3' } : { contain: 'layout style paint', background: '#F3F3F3' }}
                   >
                     <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className={`text-lg text-white line-clamp-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
+                          <CardTitle className={`text-lg text-gray-900 line-clamp-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
                             {customOffer.title}
                           </CardTitle>
                           <div className={`flex items-center space-x-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
                             <Badge 
                               variant="secondary" 
-                              className="bg-green-900/50 text-green-300 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
+                              className="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
                             >
                               <DollarSign className="w-3 h-3 mr-1 flex-shrink-0" />
                               {customOffer.amount.toFixed(2)} USD
@@ -686,12 +687,12 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                     <CardContent className={`pt-0 ${isLocked ? 'flex-1 flex flex-col' : ''}`}>
                       <div className={isLocked ? 'space-y-4 flex-1 flex flex-col' : 'space-y-3'}>
                         {customOffer.description && (
-                          <CardDescription className={`text-gray-400 line-clamp-2 ${isLocked ? 'mb-1' : ''}`}>
+                          <CardDescription className={`text-gray-600 line-clamp-2 ${isLocked ? 'mb-1' : ''}`}>
                             {customOffer.description}
                           </CardDescription>
                         )}
                         
-                        <div className={`flex items-center text-sm text-gray-500 ${isLocked ? 'mb-1' : ''}`}>
+                        <div className={`flex items-center text-sm text-gray-600 ${isLocked ? 'mb-1' : ''}`}>
                           <div className="flex items-center space-x-2">
                             <Tag className="w-4 h-4" />
                             <span>Dispositivo: todos</span>
@@ -705,7 +706,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                                 window.location.href = `/dashboard/task/${customOffer.id}`;
                               }}
                               className="w-full text-white hover:opacity-90 transition-opacity"
-                              style={{ backgroundColor: '#6765F2' }}
+                              style={{ backgroundColor: '#0C50A4' }}
                               disabled={isLocked}
                             >
                               <ExternalLink className="w-4 h-4 mr-2" />
@@ -713,8 +714,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             </Button>
                             
                             {/* Botón decorativo motivador */}
-                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
-                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                            <div className="w-full rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#fff' }}>
+                              <span className="text-gray-900 text-sm font-medium flex items-center justify-center">
                                 <DollarSign className="w-4 h-4 mr-1" />
                                 Gana {customOffer.amount.toFixed(2)} USD
                               </span>
@@ -733,15 +734,15 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                                 window.location.href = `/dashboard/task/${customOffer.id}`;
                               }}
                               className="w-full text-white hover:opacity-90 transition-opacity"
-                              style={{ backgroundColor: '#6765F2' }}
+                              style={{ backgroundColor: '#0C50A4' }}
                             >
                               <ExternalLink className="w-4 h-4 mr-2" />
                               Acceder a la tarea
                             </Button>
                             
                             {/* Botón decorativo motivador */}
-                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
-                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                            <div className="w-full rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#fff' }}>
+                              <span className="text-gray-900 text-sm font-medium flex items-center justify-center">
                                 <DollarSign className="w-4 h-4 mr-1" />
                                 Gana {customOffer.amount.toFixed(2)} USD
                               </span>
@@ -765,23 +766,23 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
           {/* Skeletons mientras cargan ofertas de CPALead */}
           {loadingCpaLead && offers.length === 0 && [...Array(6)].map((_, i) => (
             <div key={`skeleton-${i}`} className="relative">
-              <Card className="bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden h-[360px] animate-pulse">
+              <Card className="border-0 rounded-3xl overflow-hidden h-[360px] animate-pulse" style={{ backgroundColor: '#F3F3F3' }}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 space-y-3">
-                      <div className="h-5 bg-gray-700 rounded w-3/4"></div>
-                      <div className="h-4 bg-gray-700 rounded w-1/2"></div>
-                      <div className="h-6 bg-green-900/30 rounded w-24"></div>
+                      <div className="h-5 rounded w-3/4" style={{ backgroundColor: '#E5E7EB' }}></div>
+                      <div className="h-4 rounded w-1/2" style={{ backgroundColor: '#E5E7EB' }}></div>
+                      <div className="h-6 rounded w-24" style={{ backgroundColor: '#D1FAE5' }}></div>
                     </div>
-                    <div className="ml-3 w-[60px] h-[60px] bg-gray-700 rounded-lg"></div>
+                    <div className="ml-3 w-[60px] h-[60px] rounded-lg" style={{ backgroundColor: '#FFFFFF' }}></div>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    <div className="h-4 bg-gray-700 rounded w-full"></div>
-                    <div className="h-4 bg-gray-700 rounded w-2/3"></div>
-                    <div className="h-10 bg-gray-700 rounded w-full mt-4"></div>
-                    <div className="h-10 bg-gray-800 rounded w-full"></div>
+                    <div className="h-4 rounded w-full" style={{ backgroundColor: '#E5E7EB' }}></div>
+                    <div className="h-4 rounded w-2/3" style={{ backgroundColor: '#E5E7EB' }}></div>
+                    <div className="h-10 rounded w-full mt-4" style={{ backgroundColor: '#FFFFFF' }}></div>
+                    <div className="h-10 rounded w-full" style={{ backgroundColor: '#FFFFFF' }}></div>
                   </div>
                 </CardContent>
               </Card>
@@ -823,25 +824,25 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                   showUnlockButton={showUnlockButton}
                 >
                   <Card 
-                    className={`relative bg-[#0A0A0A] border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
-                    style={isLocked ? { height: '360px', contain: 'layout style paint' } : { contain: 'layout style paint' }}
+                    className={`relative border-0 rounded-3xl overflow-hidden ${isLocked ? 'flex flex-col' : 'h-full'}`}
+                    style={isLocked ? { height: '360px', contain: 'layout style paint', background: '#F3F3F3' } : { contain: 'layout style paint', background: '#F3F3F3' }}
                   >
                     <CardHeader className={isLocked ? 'pb-4' : 'pb-3'}>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className={`text-lg text-white line-clamp-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
+                          <CardTitle className={`text-lg text-gray-900 line-clamp-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
                             {cleanHtmlText(offer.title)}
                           </CardTitle>
                           <div className={`flex items-center space-x-2 ${isLocked ? 'mb-3' : 'mb-2'}`}>
                             <Badge 
                               variant="secondary" 
-                              className="bg-green-900/50 text-green-300 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
+                              className="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit"
                             >
                               <DollarSign className="w-3 h-3 mr-1 flex-shrink-0" />
                               {offer.amount} {offer.payout_currency}
                             </Badge>
                             {offer.is_fast_pay && (
-                              <Badge variant="secondary" className="bg-yellow-900/50 text-yellow-300 px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit">
+                              <Badge variant="secondary" className="bg-yellow-100 text-yellow-700 px-3 py-1.5 whitespace-nowrap inline-flex items-center min-w-fit">
                                 <Zap className="w-3 h-3 mr-1 flex-shrink-0" />
                                 Fast Pay
                               </Badge>
@@ -868,7 +869,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                     <CardContent className={`pt-0 ${isLocked ? 'flex-1 flex flex-col' : ''}`}>
                       <div className={isLocked ? 'space-y-4 flex-1 flex flex-col' : 'space-y-3'}>
                         {offer.description && (
-                          <CardDescription className={`text-gray-400 line-clamp-2 ${isLocked ? 'mb-1' : ''}`}>
+                          <CardDescription className={`text-gray-600 line-clamp-2 ${isLocked ? 'mb-1' : ''}`}>
                             {(() => {
                               const cleanDescription = cleanHtmlText(offer.description);
                               
@@ -885,7 +886,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                           </CardDescription>
                         )}
                         
-                        <div className={`flex items-center text-sm text-gray-500 ${isLocked ? 'mb-1' : ''}`}>
+                        <div className={`flex items-center text-sm text-gray-600 ${isLocked ? 'mb-1' : ''}`}>
                           <div className="flex items-center space-x-2">
                             <Tag className="w-4 h-4" />
                             <span>
@@ -905,7 +906,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             <Button
                               onClick={() => handleOfferClick(offer, isLocked)}
                               className="w-full text-white hover:opacity-90 transition-opacity"
-                              style={{ backgroundColor: '#3C66CE' }}
+                              style={{ backgroundColor: '#0C50A4' }}
                               disabled={!user || isLocked}
                             >
                               <ExternalLink className="w-4 h-4 mr-2" />
@@ -913,8 +914,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             </Button>
                             
                             {/* Botón decorativo motivador */}
-                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
-                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                            <div className="w-full rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#fff' }}>
+                              <span className="text-gray-900 text-sm font-medium flex items-center justify-center">
                                 <DollarSign className="w-4 h-4 mr-1" />
                                 Gana {offer.amount} {offer.payout_currency}
                               </span>
@@ -931,7 +932,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             <Button
                               onClick={() => handleOfferClick(offer, isLocked)}
                               className="w-full text-white hover:opacity-90 transition-opacity"
-                              style={{ backgroundColor: '#3C66CE' }}
+                              style={{ backgroundColor: '#0C50A4' }}
                               disabled={!user || isLocked}
                             >
                               <ExternalLink className="w-4 h-4 mr-2" />
@@ -939,8 +940,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate }) => {
                             </Button>
                             
                             {/* Botón decorativo motivador */}
-                            <div className="w-full border border-gray-600 rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#1a1a1a' }}>
-                              <span className="text-white text-sm font-medium flex items-center justify-center">
+                            <div className="w-full rounded-md px-4 py-2 text-center" style={{ backgroundColor: '#fff' }}>
+                              <span className="text-gray-900 text-sm font-medium flex items-center justify-center">
                                 <DollarSign className="w-4 h-4 mr-1" />
                                 Gana {offer.amount} {offer.payout_currency}
                               </span>

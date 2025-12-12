@@ -111,17 +111,17 @@ export default function PayPalButtonCheckout() {
           `}</style>
         </div>
       )}
-      <div id="paypal-button-container"></div>
+      <div id="paypal-button-container" style={{ display: "flex", justifyContent: "center", width: "100%", maxWidth: "500px", margin: "0 auto" }}></div>
       
       {/* Imagen de métodos de pago - Superpuesta al iframe */}
       <div style={{ 
         position: "absolute",
-        bottom: "22px",
+        bottom: "18px",
         left: 0,
         right: 0,
         display: "flex", 
         justifyContent: "center",
-        background: "#202020",
+        background: "#F3F3F3",
         padding: "0.5rem 0",
         zIndex: 9999
       }}>
@@ -136,8 +136,8 @@ export default function PayPalButtonCheckout() {
       </div>
       
       {/* Mensaje de seguridad - Debajo de la imagen */}
-      <div className="flex items-center justify-center text-xs text-white/70 mt-4">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+      <div className="flex items-center justify-center text-xs mt-4" style={{ color: '#111827' }}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
         </svg>
         Pago 100% seguro, protegemos tus datos.

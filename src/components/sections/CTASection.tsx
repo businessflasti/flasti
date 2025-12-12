@@ -17,7 +17,7 @@ const CTASection = () => {
   ];
 
   return (
-    <section className="pt-6 pb-24 lg:py-16 relative overflow-hidden bg-[#0A0A0A]">
+    <section className="pt-6 pb-24 lg:py-16 relative overflow-hidden bg-[#F6F3F3]">
 
       <div className="container-custom relative z-10">
         {/* Layout Centrado */}
@@ -26,30 +26,30 @@ const CTASection = () => {
           {/* Contenido Centrado */}
           <div className="w-full max-w-2xl">
             <div className="mb-6 text-center">
-              <h3 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
+              <h3 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#111827' }}>
                 {language === 'es' ? 'Sobre nosotros' : language === 'en' ? 'About us' : 'Sobre nós'}
               </h3>
-              <p className="text-lg md:text-xl text-white/70">
+              <p className="text-lg md:text-xl" style={{ color: '#6B7280' }}>
                 {language === 'es' ? 'Conocé la visión que impulsa nuestro trabajo' : language === 'en' ? 'Discover the vision that drives our work' : 'Conheça a visão que impulsiona nosso trabalho'}
               </p>
             </div>
             
-            <div className="bg-[#121212] p-6 min-h-[28rem] md:min-h-[40rem] rounded-3xl shadow-2xl">
-              <p className="text-white/60 text-sm md:text-base mb-6 text-center leading-relaxed">
+            <div className="bg-[#FFFFFF] p-6 min-h-[28rem] md:min-h-[40rem] rounded-3xl shadow-2xl">
+              <p className="text-sm md:text-base mb-6 text-center leading-relaxed" style={{ color: '#6B7280' }}>
                 {t('ctaDescription')}
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg mx-auto">
                 {values.map((value, index) => (
                   <div key={index} className="group">
-                    <div className="bg-gradient-to-br from-white to-gray-50 p-5 md:p-6 text-center flex flex-col items-center justify-center rounded-3xl shadow-lg">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${value.color} flex items-center justify-center mb-3 rounded-2xl shadow-lg transition-transform duration-300`}>
+                    <div className="p-5 md:p-6 text-center flex flex-col items-center justify-center rounded-3xl" style={{ backgroundColor: '#F3F3F3' }}>
+                      <div className="w-10 h-10 flex items-center justify-center mb-3 rounded-2xl shadow-lg transition-transform duration-300" style={{ backgroundColor: '#0D50A4' }}>
                         <value.icon className="text-white h-5 w-5" />
                       </div>
-                      <h3 className="text-sm font-bold mb-2 !text-[#101010] transition-colors duration-300">
+                      <h3 className="text-sm font-bold mb-2 transition-colors duration-300" style={{ color: '#111827' }}>
                         {value.title}
                       </h3>
-                      <p className="text-xs text-[#101010]/70 leading-relaxed">
+                      <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
                         {value.desc}
                       </p>
                     </div>

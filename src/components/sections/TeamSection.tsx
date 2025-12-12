@@ -17,8 +17,8 @@ const TeamSection = React.memo(() => {
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500" />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
-            <DollarSign className="w-10 h-10 text-yellow-400" />
+          <div className="w-full h-full rounded-full flex items-center justify-center relative z-10" style={{ backgroundColor: '#0D50A4' }}>
+            <DollarSign className="w-10 h-10 text-white" />
           </div>
         </div>
       ),
@@ -31,8 +31,8 @@ const TeamSection = React.memo(() => {
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-500" />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
-            <GraduationCap className="w-10 h-10 text-blue-400" />
+          <div className="w-full h-full rounded-full flex items-center justify-center relative z-10" style={{ backgroundColor: '#0D50A4' }}>
+            <GraduationCap className="w-10 h-10 text-white" />
           </div>
         </div>
       ),
@@ -45,8 +45,8 @@ const TeamSection = React.memo(() => {
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500" />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
-            <Home className="w-10 h-10 text-green-400" />
+          <div className="w-full h-full rounded-full flex items-center justify-center relative z-10" style={{ backgroundColor: '#0D50A4' }}>
+            <Home className="w-10 h-10 text-white" />
           </div>
         </div>
       ),
@@ -59,8 +59,8 @@ const TeamSection = React.memo(() => {
       icon: (
         <div className="w-20 h-20 rounded-full overflow-hidden p-[12px] relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-violet-500 to-fuchsia-500" />
-          <div className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center relative z-10">
-            <Clock className="w-10 h-10 text-purple-400" />
+          <div className="w-full h-full rounded-full flex items-center justify-center relative z-10" style={{ backgroundColor: '#0D50A4' }}>
+            <Clock className="w-10 h-10 text-white" />
           </div>
         </div>
       ),
@@ -69,14 +69,14 @@ const TeamSection = React.memo(() => {
   ];
 
   return (
-    <div className="py-24 relative overflow-hidden bg-[#0A0A0A]">
+    <div id="team-section" className="py-24 relative overflow-hidden" style={{ backgroundColor: '#F6F3F3' }}>
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#111827' }}>
             Únete a nuestra comunidad
           </h2>
-          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center text-white/70">
+          <p className="mx-auto text-lg md:text-xl md:max-w-screen-md lg:max-w-full text-center" style={{ color: '#6B7280' }}>
             Miles de personas en todo el mundo ya están ganando dinero con nuestra plataforma
           </p>
         </div>

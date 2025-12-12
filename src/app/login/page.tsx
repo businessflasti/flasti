@@ -37,8 +37,8 @@ export default function LoginPage() {
 
 
   useEffect(() => {
-    // Cambia el fondo del body a #0B1017 en vez de negro
-    document.body.style.backgroundColor = '#0B1017';
+    // Cambia el fondo del body a #F6F3F3
+    document.body.style.backgroundColor = '#F6F3F3';
     return () => {
       document.body.style.backgroundColor = '';
     };
@@ -103,7 +103,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center px-4 py-12 relative overflow-hidden" style={{ backgroundColor: '#F6F3F3' }}>
 
       <div className="container mx-auto flex justify-center relative z-10">
         {/* Formulario de Login - Estilo gamificado */}
@@ -122,25 +122,27 @@ export default function LoginPage() {
           </div>
 
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold mb-2 text-white">Bienvenido</h1>
-            <p className="text-white/80">Inicia sesión en tu cuenta</p>
+            <h1 className="text-2xl font-bold mb-2" style={{ color: '#111827' }}>Bienvenido</h1>
+            <p style={{ color: '#6B7280' }}>Inicia sesión en tu cuenta</p>
           </div>
 
           <div 
-            className="bg-[#101011] rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden"
+            className="rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden"
+            style={{ backgroundColor: '#FFFFFF' }}
           >
             
             <div className="relative z-10">
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="email" className="block text-sm mb-2 text-[#c9d1d9] font-medium">
+                <label htmlFor="email" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
                   Correo electrónico
                 </label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Tu correo electrónico"
-                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -149,10 +151,10 @@ export default function LoginPage() {
 
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label htmlFor="password" className="block text-sm text-[#c9d1d9] font-medium">
+                  <label htmlFor="password" className="block text-sm font-medium" style={{ color: '#111827' }}>
                     Contraseña
                   </label>
-                  <Link href="/reset-password" className="text-xs text-[#58a6ff] transition-opacity duration-200">
+                  <Link href="/reset-password" className="text-xs transition-opacity duration-200" style={{ color: '#0D50A4' }}>
                     ¿Olvidaste tu contraseña?
                   </Link>
                 </div>
@@ -161,7 +163,8 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Tu contraseña"
-                    className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                    className="w-full py-3 px-4 pr-12 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                    style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -169,7 +172,8 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8b949e] transition-opacity duration-200"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity duration-200"
+                    style={{ color: '#6B7280' }}
                   >
                     {showPassword ? (
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -187,7 +191,8 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-all duration-200 mt-6 hover:bg-white hover:text-black"
+                className="w-full py-3 h-12 text-white font-semibold rounded-lg transition-all duration-200 mt-6"
+                style={{ backgroundColor: '#0D50A4' }}
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -203,9 +208,9 @@ export default function LoginPage() {
 
             {/* Separador elegante */}
             <div className="flex items-center gap-4 my-6">
-              <div className="flex-1 h-px bg-[#30363d]"></div>
-              <span className="text-sm text-[#8b949e]">o</span>
-              <div className="flex-1 h-px bg-[#30363d]"></div>
+              <div className="flex-1 h-px" style={{ backgroundColor: '#E5E7EB' }}></div>
+              <span className="text-sm" style={{ color: '#6B7280' }}>o</span>
+              <div className="flex-1 h-px" style={{ backgroundColor: '#E5E7EB' }}></div>
             </div>
 
             {/* Botones de redes sociales - Tamaño compacto */}
@@ -213,7 +218,8 @@ export default function LoginPage() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full py-3 h-12 bg-transparent hover:bg-[#21262d] text-[#c9d1d9] hover:text-[#c9d1d9] border border-[#30363d] hover:border-[#8b949e] rounded-lg transition-all duration-200"
+                className="w-full py-3 h-12 rounded-lg transition-all duration-200"
+                style={{ backgroundColor: '#F3F3F3', color: '#111827', border: 'none' }}
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
               >
@@ -231,12 +237,13 @@ export default function LoginPage() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full py-3 h-12 bg-transparent hover:bg-[#21262d] text-[#c9d1d9] hover:text-[#c9d1d9] border border-[#30363d] hover:border-[#8b949e] rounded-lg transition-all duration-200"
+                className="w-full py-3 h-12 rounded-lg transition-all duration-200"
+                style={{ backgroundColor: '#F3F3F3', color: '#111827', border: 'none' }}
                 onClick={handleFacebookSignIn}
                 disabled={isLoading}
               >
                 <div className="flex items-center gap-3">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="#1877F2" viewBox="0 0 24 24">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                   <span className="text-sm">Continuar con Facebook</span>
@@ -248,9 +255,9 @@ export default function LoginPage() {
 
           {/* Enlace a register */}
           <div className="text-center mt-6">
-            <p className="text-sm text-[#8b949e]">
+            <p className="text-sm" style={{ color: '#6B7280' }}>
               ¿No tienes cuenta en Flasti?{' '}
-              <Link href="/register" className="text-[#58a6ff] font-medium transition-opacity duration-200">
+              <Link href="/register" className="font-medium transition-opacity duration-200" style={{ color: '#0D50A4' }}>
                 Regístrate
               </Link>
             </p>

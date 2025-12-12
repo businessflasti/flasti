@@ -75,12 +75,16 @@ const FeedbackTab: React.FC = () => {
         <>
           {/* Overlay */}
           <div 
-            className="fixed inset-0 bg-black/80 z-50 animate-in fade-in duration-200"
+            className="fixed bg-black/80 animate-in fade-in duration-200"
+            style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 9998 }}
             onClick={handleClose}
           />
           
           {/* Modal Content */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          <div 
+            className="fixed flex items-center justify-center p-4 pointer-events-none"
+            style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+          >
             <div 
               className="w-full max-w-md bg-[#121212] text-white shadow-2xl rounded-2xl p-6 pt-10 relative overflow-hidden pointer-events-auto animate-in zoom-in-95 fade-in duration-200"
               onClick={(e) => e.stopPropagation()}

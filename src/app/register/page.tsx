@@ -21,8 +21,8 @@ export default function RegisterPage() {
 
 
   useEffect(() => {
-    // Cambia el fondo del body a #101010 en vez de negro
-    document.body.style.backgroundColor = '#101010';
+    // Cambia el fondo del body a #F6F3F3
+    document.body.style.backgroundColor = '#F6F3F3';
     return () => {
       document.body.style.backgroundColor = '';
     };
@@ -120,7 +120,7 @@ export default function RegisterPage() {
 
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center px-4 py-12 relative overflow-hidden" style={{ backgroundColor: '#F6F3F3' }}>
 
       <div className="container mx-auto flex justify-center relative z-10">
         {/* Formulario de Registro - Estilo gamificado */}
@@ -133,11 +133,12 @@ export default function RegisterPage() {
           </div>
 
           <div className="text-center mb-8 lg:mb-6">
-            <p className="text-white/80">Completa tu registro para comenzar</p>
+            <p style={{ color: '#6B7280' }}>Completa tu registro para comenzar</p>
           </div>
 
         <div 
-          className="bg-[#101011] rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden"
+          className="rounded-2xl shadow-2xl p-8 border-0 relative overflow-hidden"
+          style={{ backgroundColor: '#FFFFFF' }}
         >
           
           <div className="relative z-10">
@@ -145,28 +146,30 @@ export default function RegisterPage() {
             {/* Nombre y Apellido en una fila */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm mb-2 text-[#c9d1d9] font-medium">
+                <label htmlFor="firstName" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
                   Nombre
                 </label>
                 <Input
                   id="firstName"
                   type="text"
                   placeholder="Tu nombre"
-                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-sm mb-2 text-[#c9d1d9] font-medium">
+                <label htmlFor="lastName" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
                   Apellido
                 </label>
                 <Input
                   id="lastName"
                   type="text"
                   placeholder="Tu apellido"
-                  className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required
@@ -175,14 +178,15 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm mb-2 text-[#c9d1d9] font-medium">
+              <label htmlFor="email" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
                 Correo electrónico
               </label>
               <Input
                 id="email"
                 type="email"
                 placeholder="Tu correo electrónico"
-                className="w-full py-3 px-4 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -190,7 +194,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm mb-2 text-[#c9d1d9] font-medium">
+              <label htmlFor="password" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
                 Contraseña
               </label>
               <div className="relative">
@@ -198,7 +202,8 @@ export default function RegisterPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full py-3 px-4 pr-12 h-12 bg-[#151516] border-0 rounded-lg text-[#c9d1d9] placeholder-[#6e7681] placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  className="w-full py-3 px-4 pr-12 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                  style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -206,7 +211,8 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8b949e] transition-opacity duration-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity duration-200"
+                  style={{ color: '#6B7280' }}
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -224,7 +230,8 @@ export default function RegisterPage() {
 
             <Button
               type="submit"
-              className="w-full py-3 h-12 bg-[#238636] text-white font-semibold rounded-lg transition-all duration-200 mt-6 hover:bg-white hover:text-black"
+              className="w-full py-3 h-12 text-white font-semibold rounded-lg transition-all duration-200 mt-6"
+              style={{ backgroundColor: '#0D50A4' }}
               disabled={isLoading}
             >
               {isLoading ? (
@@ -242,9 +249,9 @@ export default function RegisterPage() {
 
           {/* Enlace a login */}
           <div className="text-center mt-6">
-            <p className="text-sm text-[#8b949e]">
+            <p className="text-sm" style={{ color: '#6B7280' }}>
               ¿Ya estás registrado en Flasti?{' '}
-              <Link href="/login" className="text-[#58a6ff] font-medium transition-opacity duration-200">
+              <Link href="/login" className="font-medium transition-opacity duration-200" style={{ color: '#0D50A4' }}>
                 Ingresa
               </Link>
             </p>

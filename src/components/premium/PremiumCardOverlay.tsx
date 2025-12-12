@@ -41,15 +41,6 @@ const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
     onUnlockClick();
   };
 
-  // Textos dinámicos según el estado
-  const title = isReadyToUnlock 
-    ? "Microtarea lista para desbloquear" 
-    : "Microtarea lista para desbloquear";
-  
-  const subtitle = isReadyToUnlock 
-    ? "Desbloqueá para seguir avanzando" 
-    : "Completa la microtarea anterior para avanzar";
-
   return (
     <div className="relative">
       {/* Contenido original (borroso) */}
@@ -72,25 +63,24 @@ const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
       >
         {/* Contenedor central con efectos */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-6">
-          {/* Ícono de candado */}
+          {/* Ícono de candado - animación solo si tiene botón desbloquear */}
           <div className="relative mb-4">
-            <div className="relative p-4">
+            <div className={`relative p-4 ${showUnlockButton ? styles.lockIconWrapper : ''}`}>
               <Lock className="w-12 h-12 text-white drop-shadow-2xl" />
             </div>
           </div>
           
-          {/* Título y descripción */}
-          <div className="text-center space-y-2 mb-4">
-            <h3 className="text-white font-bold text-lg drop-shadow-lg">
-              {title}
-            </h3>
-            <p className="text-white/90 text-sm drop-shadow-md px-4">
-              {subtitle}
-            </p>
-          </div>
+          {/* Título solo si tiene botón de desbloquear */}
+          {(showUnlockButton !== undefined ? showUnlockButton : false) && (
+            <div className="text-center space-y-2 mb-4">
+              <h3 className="text-white font-bold text-lg drop-shadow-lg">
+                Continúa generando ingresos
+              </h3>
+            </div>
+          )}
 
-          {/* Botón de desbloqueo (solo si showUnlockButton es true, o si no se especifica, usa isReadyToUnlock) */}
-          {(showUnlockButton !== undefined ? showUnlockButton : isReadyToUnlock) && (
+          {/* Botón de desbloqueo (solo si showUnlockButton es true) */}
+          {(showUnlockButton !== undefined ? showUnlockButton : false) && (
             <button 
               className={styles.unlockButton}
               onClick={(e) => {

@@ -51,14 +51,14 @@ const HowItWorksSection = React.memo(() => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
+    <section className="py-24 relative overflow-hidden bg-[#F6F3F3]">
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#111827' }}>
             {t('comoFunciona')}
           </h2>
-          <p className="max-w-2xl mx-auto text-center text-lg md:text-xl text-white/70">
+          <p className="max-w-2xl mx-auto text-center text-lg md:text-xl" style={{ color: '#6B7280' }}>
             {t('soloNecesitas')}
           </p>
         </div>
@@ -71,11 +71,11 @@ const HowItWorksSection = React.memo(() => {
               onClick={() => handleCardClick(step.number)}
             >
               {/* Tarjeta principal optimizada */}
-              <div className="relative bg-[#121212] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative bg-[#FFFFFF] rounded-3xl overflow-hidden shadow-2xl">
                 
                 {/* Número del paso - Esquina superior izquierda */}
                 <div className="absolute top-4 left-4 z-20">
-                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-black text-xl shadow-lg">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-black text-xl shadow-lg" style={{ backgroundColor: '#0D50A4', color: '#FFFFFF' }}>
                     {step.number}
                   </div>
                 </div>
@@ -87,24 +87,22 @@ const HowItWorksSection = React.memo(() => {
                     alt={step.title} 
                     src={step.image}
                   />
-                  {/* Overlay gradiente */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent"></div>
                 </div>
 
                 {/* Contenido */}
-                <div className="p-6 relative z-10">
-                  <h3 className="text-xl font-bold text-white mb-3 transition-all duration-300">
+                <div className="p-6 relative z-10" style={{ backgroundColor: '#F3F3F3' }}>
+                  <h3 className="text-xl font-bold mb-3 transition-all duration-300" style={{ color: '#111827' }}>
                     {step.title}
                   </h3>
-                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>
                     {step.description}
                   </p>
 
                   {/* Badge con glassmorphism */}
                   <div className="flex justify-center">
-                    <div className="inline-flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg transition-all duration-300">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold shadow-lg transition-all duration-300" style={{ backgroundColor: '#0D50A4', color: '#FFFFFF' }}>
                       <span>{step.badge}</span>
-                      <span className="bg-black/20 text-white px-2 py-0.5 rounded-full text-xs">
+                      <span className="px-2 py-0.5 rounded-full text-xs" style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: '#FFFFFF' }}>
                         {step.icon}
                       </span>
                     </div>
@@ -112,9 +110,9 @@ const HowItWorksSection = React.memo(() => {
                 </div>
               </div>
 
-              {/* Línea conectora con gradiente neón (solo entre tarjetas en desktop) */}
+              {/* Línea conectora (solo entre tarjetas en desktop) */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-5 w-10 h-0.5 bg-gradient-to-r from-[#6E40FF]/40 to-transparent z-0"></div>
+                <div className="hidden md:block absolute top-1/2 -right-5 w-10 h-0.5 z-0" style={{ backgroundColor: '#E5E7EB' }}></div>
               )}
             </div>
           ))}

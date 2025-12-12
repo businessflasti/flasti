@@ -8,7 +8,6 @@ import AffiliateTracker from "@/components/affiliate/AffiliateTracker";
 import { usePathname } from 'next/navigation';
 import DirectTawkToScript from "@/components/chat/DirectTawkToScript";
 import { ToastProvider } from "@/contexts/ToastContext";
-import { Sidebar } from "@/components/ui/sidebar";
 import Header from "@/components/layout/Header";
 
 // Cargar el componente de notificaciones FOMO de forma diferida
@@ -45,21 +44,6 @@ const MainLayoutComponent = ({ children, disableChat = false }: MainLayoutProps)
   // No mostrar el chat en páginas del dashboard
   const shouldShowChat = !disableChat && !isInternalPage;
 
-  // Renderizado optimizado de decorativos solo en desktop
-  const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
-  // Detectar si es móvil
-  const [isMobile, setIsMobile] = React.useState(false);
-  React.useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
-
   // Refs para medir la altura del header y exponerla como variable CSS
   const headerWrapperRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -95,32 +79,20 @@ const MainLayoutComponent = ({ children, disableChat = false }: MainLayoutProps)
       <div
         ref={containerRef}
         className={`min-h-screen flex flex-col relative ${(isInternalPage || isContactPage) ? '' : 'gradient-background'}`}
-        style={(isInternalPage || isContactPage) ? { background: '#0A0A0A' } : {}}
+        style={(isInternalPage || isContactPage) ? { background: '#F5F3F3' } : {}}
       >
-        {/* Sidebar colapsable solo en dashboard */}
-        {/* NOTA: No aplicar transform al contenedor del sidebar porque rompe position:fixed del aside interno */}
+        {/* Encabezado para dashboard */}
         {isInternalPage && (
-          <div className="fixed top-0 left-0 z-50 h-screen">
-            {isMobile ? (
-              <Sidebar open={mobileMenuOpen} setOpen={setMobileMenuOpen} />
-            ) : (
-              <Sidebar />
-            )}
-          </div>
-        )}
-
-        {/* Nuevo encabezado para dashboard y todas las páginas con sidebar */}
-        {isInternalPage && (
-          <div className="sticky top-0 z-40 w-full ml-0 lg:ml-56" ref={headerWrapperRef}>
-            <DashboardHeader onMenuClick={() => setMobileMenuOpen(true)} />
+          <div className="sticky top-0 z-40 w-full" ref={headerWrapperRef}>
+            <DashboardHeader />
           </div>
         )}
 
         {/* Contenido principal */}
         <main
-          className={`flex-grow relative hardware-accelerated overflow-x-hidden ${isInternalPage ? 'ml-0 lg:ml-56 transition-all mobile-main-scroll' : 'mobile-main-scroll'}`}
+          className={`flex-grow relative hardware-accelerated overflow-x-hidden mobile-main-scroll`}
           style={isInternalPage ? { 
-            background: '#0A0A0A',
+            background: '#F5F3F3',
             paddingTop: '0',
             position: 'relative',
             zIndex: 1

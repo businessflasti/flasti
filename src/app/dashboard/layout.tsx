@@ -6,7 +6,6 @@ import PullToRefresh from '@/components/ui/PullToRefresh';
 import { BalanceVisibilityProvider } from '@/contexts/BalanceVisibilityContext';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import GamificationProviders from '@/components/providers/GamificationProviders';
-import { Sidebar } from '@/components/ui/sidebar';
 
 // Importar estilos para mejorar la experiencia móvil
 import '@/styles/mobile-app.css';

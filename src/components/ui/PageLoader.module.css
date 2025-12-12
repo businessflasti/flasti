@@ -4,7 +4,7 @@
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background: #0A0A0A;
+  background: #F6F3F3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,8 +23,8 @@
 .spinner {
   width: 32px;
   height: 32px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #0D50A4;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

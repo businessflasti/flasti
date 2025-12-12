@@ -39,11 +39,15 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
 
   // Determinar qué logo usar
   const isLoginPage = pathname === "/login";
+  const isRegisterPage = pathname === "/register";
   let logoPath: string;
   
-  {
-    // Usar isotipo en login, logo completo en otras páginas
-    logoPath = isLoginPage ? "/logo/isotipo-web.png" : "/logo/logo-web.png";
+  if (isLoginPage) {
+    logoPath = "/logo/isotipo-web.png";
+  } else if (isRegisterPage) {
+    logoPath = "/logo/logo-register.png";
+  } else {
+    logoPath = "/logo/logo-web.png";
   }
   
   // Ajustar tamaños para isotipo en login (cuadrado)

@@ -99,8 +99,9 @@ export default function ContactoPage() {
       {/* Widget de chat para la página de contacto (visible) */}
       <TawkToWidget showBubble={true} />
       <div 
-        className="min-h-screen bg-[#0A0A0A]"
+        className="min-h-screen"
         style={{
+          backgroundColor: '#F6F3F3',
           transform: 'translate3d(0, 0, 0)',
           contain: 'layout style paint',
           backfaceVisibility: 'hidden'
@@ -109,56 +110,57 @@ export default function ContactoPage() {
         <div className="container-custom py-16 md:py-24">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4" style={{ color: '#111827' }}>
               Contáctanos
             </h1>
-            <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+            <p className="text-lg max-w-2xl mx-auto" style={{ color: '#6B7280' }}>
               Estamos aquí para ayudarte. Si tienes alguna pregunta, sugerencia o necesitas asistencia, no dudes en contactarnos.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-[#121212] shadow-2xl relative group">
+            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center relative group" style={{ backgroundColor: '#FFFFFF' }}>
               <div className="relative z-10 w-full flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Mail className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: '#0D50A4' }}>
+                <Mail className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Email</h3>
-              <p className="text-foreground/70 mb-4">Nuestro equipo te responderá en menos de 24 horas</p>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>Email</h3>
+              <p className="mb-4" style={{ color: '#6B7280' }}>Nuestro equipo te responderá en menos de 24 horas</p>
                 <a
                   href="mailto:access@flasti.com"
-                  className="text-white transition-opacity duration-300"
+                  className="transition-opacity duration-300"
+                  style={{ color: '#0D50A4' }}
                 >
                   access@flasti.com
                 </a>
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-[#121212] shadow-2xl relative group">
+            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center relative group" style={{ backgroundColor: '#FFFFFF' }}>
               <div className="relative z-10 w-full flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <MessageCircle className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: '#0D50A4' }}>
+                <MessageCircle className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Chat en vivo</h3>
-              <p className="text-foreground/70 mb-4">Habla con nuestro equipo en tiempo real</p>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>Chat en vivo</h3>
+              <p className="mb-4" style={{ color: '#6B7280' }}>Habla con nuestro equipo en tiempo real</p>
                 <ChatButton
                   variant="default"
                   size="sm"
-                  className="flex items-center justify-center gap-2 bg-white text-black px-4 py-2 rounded-lg shadow-md transition-opacity duration-300"
+                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-md transition-opacity duration-300 text-white !bg-[#0D50A4] hover:!bg-[#0A4080]"
                   text="Iniciar chat"
                   showIcon={true}
                 />
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center bg-[#121212] shadow-2xl relative group">
+            <div className="p-6 rounded-3xl transition-all duration-700 flex flex-col items-center text-center relative group" style={{ backgroundColor: '#FFFFFF' }}>
               <div className="relative z-10 w-full flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Phone className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: '#0D50A4' }}>
+                <Phone className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Teléfono</h3>
-              <p className="text-foreground/70 mb-4">Disponible de lunes a viernes, 9am - 6pm</p>
-                <span className="text-white">
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#111827' }}>Teléfono</h3>
+              <p className="mb-4" style={{ color: '#6B7280' }}>Disponible de lunes a viernes, 9am - 6pm</p>
+                <span style={{ color: '#111827' }}>
                   +1 (234) 567-890
                 </span>
               </div>
@@ -166,21 +168,22 @@ export default function ContactoPage() {
           </div>
 
           <div 
-            className="p-8 md:p-10 rounded-3xl relative overflow-hidden bg-[#121212] shadow-2xl transition-opacity duration-300"
+            className="p-8 md:p-10 rounded-3xl relative overflow-hidden transition-opacity duration-300"
             style={{
+              backgroundColor: '#FFFFFF',
               transform: 'translate3d(0, 0, 0)',
               contain: 'layout style paint'
             }}
           >
             <div className="relative z-10">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: '#111827' }}>
                 Envíanos un mensaje
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="block text-sm font-medium">
+                  <label htmlFor="name" className="block text-sm font-medium" style={{ color: '#111827' }}>
                     Nombre
                   </label>
                   <Input
@@ -190,12 +193,13 @@ export default function ContactoPage() {
                     onChange={handleChange}
                     placeholder="Tu nombre"
                     required
-                    className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#0d1117] text-[#c9d1d9]"
+                    className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                    style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="email" className="block text-sm font-medium">
+                  <label htmlFor="email" className="block text-sm font-medium" style={{ color: '#111827' }}>
                     Email
                   </label>
                   <Input
@@ -206,13 +210,14 @@ export default function ContactoPage() {
                     onChange={handleChange}
                     placeholder="tu@email.com"
                     required
-                    className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#0d1117] text-[#c9d1d9]"
+                    className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                    style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="subject" className="block text-sm font-medium">
+                <label htmlFor="subject" className="block text-sm font-medium" style={{ color: '#111827' }}>
                   Asunto
                 </label>
                 <Input
@@ -222,12 +227,13 @@ export default function ContactoPage() {
                   onChange={handleChange}
                   placeholder="¿Sobre qué quieres hablar?"
                   required
-                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#0d1117] text-[#c9d1d9]"
+                  className="w-full rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                  style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                 />
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="block text-sm font-medium">
+                <label htmlFor="message" className="block text-sm font-medium" style={{ color: '#111827' }}>
                   Mensaje
                 </label>
                 <Textarea
@@ -237,7 +243,8 @@ export default function ContactoPage() {
                   onChange={handleChange}
                   placeholder="Escribe tu mensaje aquí..."
                   required
-                  className="w-full min-h-[150px] rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0 bg-[#0d1117] text-[#c9d1d9]"
+                  className="w-full min-h-[150px] rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
+                  style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
                 />
               </div>
 
@@ -245,19 +252,20 @@ export default function ContactoPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full md:w-auto min-w-[200px] bg-white text-black transition-opacity duration-300"
+                  className="w-full md:w-auto min-w-[200px] text-white transition-opacity duration-300"
+                  style={{ backgroundColor: '#0D50A4' }}
                 >
                   {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                 </Button>
 
                 {submitSuccess && (
-                  <p className="mt-4 text-green-400 text-center">
+                  <p className="mt-4 text-green-600 text-center">
                     ¡Mensaje enviado con éxito! Te responderemos a la brevedad.
                   </p>
                 )}
 
                 {submitError && (
-                  <p className="mt-4 text-red-400 text-center">
+                  <p className="mt-4 text-red-600 text-center">
                     {submitError}
                   </p>
                 )}

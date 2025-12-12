@@ -42,14 +42,14 @@ const RegistrationFAQSection = React.memo(() => {
 	};
 
 	return (
-		<section className="py-16 relative overflow-hidden bg-[#0A0A0A]">
+		<section className="py-16 relative overflow-hidden bg-[#F6F3F3]">
 
 			<div className="container-custom relative z-10">
 				<div className="text-center mb-8">
-					<h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
+					<h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#111827' }}>
 						{t('faqTitle')}
 					</h2>
-					<p className="max-w-2xl mx-auto text-lg md:text-xl text-white/70">
+					<p className="max-w-2xl mx-auto text-lg md:text-xl" style={{ color: '#6B7280' }}>
 						{t('faqSubtitle')}
 					</p>
 				</div>
@@ -57,23 +57,23 @@ const RegistrationFAQSection = React.memo(() => {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
 					{getFaqs(t).map((faq, index) => (
 						<div key={index} className="group">
-							<div className="bg-[#121212] overflow-hidden relative rounded-3xl shadow-2xl">
+							<div className="bg-[#FFFFFF] overflow-hidden relative rounded-3xl shadow-2xl">
 								
 								<button
 									className="w-full py-5 px-4 flex items-center justify-between text-left relative z-10"
 									onClick={() => toggleFAQ(index)}
 								> 
 									<div className="flex items-center gap-3">
-										<div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg transition-transform duration-300 flex-shrink-0">
-											<div className="text-black">
+										<div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 flex-shrink-0" style={{ backgroundColor: '#0D50A4' }}>
+											<div className="text-white">
 												{faq.icon && React.cloneElement(faq.icon, { className: 'h-5 w-5' })}
 											</div>
 										</div>
-										<span className="font-semibold text-white transition-all duration-300 leading-tight">
+										<span className="font-semibold transition-all duration-300 leading-tight" style={{ color: '#111827' }}>
 											{faq.question}
 										</span>
 									</div>
-									<div className={`transition-all duration-300 flex-shrink-0 ${openIndex === index ? 'text-[#6E40FF] rotate-180' : 'text-white/60'}`}>
+									<div className={`transition-all duration-300 flex-shrink-0 ${openIndex === index ? 'rotate-180' : ''}`} style={{ color: openIndex === index ? '#0D50A4' : '#6B7280' }}>
 										<ChevronDown size={20} />
 									</div>
 								</button>
@@ -87,11 +87,11 @@ const RegistrationFAQSection = React.memo(() => {
 											transition={{ duration: 0.3 }}
 											className="overflow-hidden"
 										>
-											<div className="px-4 pb-6 pt-0 text-white/60 text-sm relative z-10">
-												<div className="pt-3 border-t border-white/10 pl-[52px] whitespace-pre-line leading-relaxed">
+											<div className="px-4 pb-6 pt-0 text-sm relative z-10" style={{ color: '#6B7280' }}>
+												<div className="pt-3 pl-[52px] whitespace-pre-line leading-relaxed" style={{ borderTop: '1px solid #E5E7EB' }}>
 													{faq.answer.split(/(entre \$0\.50 USD y \$10 USD)/g).map((part, i) => 
 														part.match(/entre \$0\.50 USD y \$10 USD/) ? (
-															<strong key={i} className="font-bold text-white">{part}</strong>
+															<strong key={i} className="font-bold" style={{ color: '#111827' }}>{part}</strong>
 														) : (
 															<React.Fragment key={i}>{part}</React.Fragment>
 														)

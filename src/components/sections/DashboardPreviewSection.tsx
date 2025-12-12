@@ -8,14 +8,14 @@ const DashboardPreviewSection = React.memo(() => {
   const { t } = useLanguage();
   
   return (
-    <section className="py-20 relative overflow-hidden bg-[#0A0A0A]">
+    <section className="py-20 relative overflow-hidden bg-[#F6F3F3]">
 
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-[#6E40FF] to-[#2DE2E6] bg-clip-text text-transparent animate-gradient-flow">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#111827' }}>
             {t('ingresaMundo')}
           </h2>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-center text-white/70">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-center" style={{ color: '#6B7280' }}>
             {t('accedeArea')}
           </p>
         </div>

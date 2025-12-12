@@ -50,22 +50,23 @@ export const BentoGridItem: React.FC<BentoGridItemProps> = ({
   return (
     <div
       className={cn(
-        "relative bg-[#121212] justify-between flex flex-col space-y-2 h-full rounded-3xl transition-opacity duration-300 shadow-2xl",
+        "relative justify-between flex flex-col space-y-2 h-full rounded-3xl transition-opacity duration-300 shadow-2xl",
         className
       )}
       style={{
         transform: 'translate3d(0, 0, 0)',
         contain: 'layout style paint',
-        backfaceVisibility: 'hidden'
+        backfaceVisibility: 'hidden',
+        backgroundColor: '#FFFFFF'
       }}
     >
       {header}
       <div className="relative z-10">
         {icon}
-        <div className="font-sans font-bold text-white mb-2 mt-1 transition-opacity duration-300">
+        <div className="font-sans font-bold mb-2 mt-1 transition-opacity duration-300" style={{ color: '#111827' }}>
           {title}
         </div>
-        <div className="font-sans font-normal text-white/60 text-xs">
+        <div className="font-sans font-normal text-xs" style={{ color: '#6B7280' }}>
           {description}
         </div>
       </div>

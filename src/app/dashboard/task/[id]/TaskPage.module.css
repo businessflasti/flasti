@@ -1,7 +1,7 @@
 /* Page Container - Reemplaza el overlay del modal */
 .pageContainer {
   min-height: 100vh;
-  background: #0A0A0A;
+  background: #F6F3F3;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -12,14 +12,15 @@
 
 @media (min-width: 1024px) {
   .pageContainer {
-    align-items: center;
+    align-items: flex-start;
     padding: 2rem;
+    padding-top: 1rem;
   }
 }
 
 /* Modal Content */
 .modalContent {
-  background: #121212;
+  background: #FFFFFF;
   border-radius: 24px;
   max-height: none;
   overflow: visible;
@@ -213,7 +214,7 @@
 }
 
 .statCard {
-  background: rgba(255, 255, 255, 0.03);
+  background: #F3F3F3;
   border: none;
   border-radius: 12px;
   padding: 0.875rem;
@@ -302,20 +303,22 @@
 
 .statCardCenter {
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  gap: 0.25rem;
 }
 
 @media (min-width: 1024px) {
   .statCardCenter {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
     padding: 0.75rem;
+    gap: 0.25rem;
   }
 }
 
@@ -348,7 +351,7 @@
 .statValue {
   font-size: 1.125rem;
   font-weight: 700;
-  color: white;
+  color: #111827;
   order: 1;
 }
 
@@ -360,7 +363,7 @@
 
 .statLabel {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6B7280;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -369,7 +372,7 @@
 
 .statObjective {
   font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #111827;
   line-height: 1.4;
   order: 1;
 }
@@ -382,7 +385,7 @@
 
 /* Instructions */
 .instructionsCard {
-  background: rgba(255, 255, 255, 0.03);
+  background: #F3F3F3;
   border: none;
   border-radius: 14px;
   padding: 1.25rem;
@@ -400,7 +403,7 @@
   gap: 0.5rem;
   font-size: 0.9375rem;
   font-weight: 700;
-  color: white;
+  color: #111827 !important;
   margin-bottom: 0.75rem;
 }
 
@@ -431,7 +434,7 @@
   counter-increment: instructions;
   display: flex;
   gap: 0.625rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6B7280;
   font-size: 0.8125rem;
   line-height: 1.4;
 }
@@ -449,8 +452,8 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background: #0D50A4;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -466,7 +469,7 @@
 }
 
 .workArea {
-  background: rgba(255, 255, 255, 0.02);
+  background: #F3F3F3;
   border: none;
   border-radius: 18px;
   padding: 1.5rem;
@@ -487,7 +490,7 @@
 .workAreaTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: white;
+  color: #111827 !important;
   margin-bottom: 0;
 }
 
@@ -495,7 +498,7 @@
   .workAreaTitle {
     font-size: 0.9375rem;
     margin-bottom: 0;
-    margin-top: 1.25rem;
+    margin-top: 0;
   }
 }
 
@@ -512,7 +515,7 @@
 }
 
 .inputContainer {
-  background: rgba(255, 255, 255, 0.02);
+  background: #FFFFFF;
   border: none;
   border-radius: 14px;
   padding: 1rem;
@@ -530,21 +533,30 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: #111827;
   margin-bottom: 0.5rem;
 }
 
 .audioPlayer {
   width: 100%;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.3);
+  background-color: #FFFFFF !important;
   outline: none;
+  padding: 8px;
+}
+
+.audioPlayer::-webkit-media-controls-panel {
+  background-color: #FFFFFF !important;
+}
+
+.audioPlayer::-webkit-media-controls-enclosure {
+  background-color: #FFFFFF !important;
 }
 
 .videoPlayer {
   width: 100%;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.3);
+  background: #FFFFFF;
   outline: none;
   max-height: 400px;
   object-fit: contain;
@@ -559,27 +571,28 @@
 .textInput {
   width: 100%;
   padding: 1rem;
-  background: #0a0a0a;
-  border: none;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
   border-radius: 12px;
-  color: white;
+  color: #111827;
   font-size: 1rem;
   resize: none;
 }
 
 .textInput:focus {
   outline: none;
+  border-color: #0D50A4;
 }
 
 .textInput::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: #9CA3AF;
 }
 
 /* Progress Bar */
 .progressBar {
   width: 100%;
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #E5E7EB;
   border-radius: 9999px;
   overflow: hidden;
   margin-top: 0.75rem;
@@ -587,7 +600,7 @@
 
 .progressFill {
   height: 100%;
-  background: #fbbf24;
+  background: #0D50A4;
   border-radius: 9999px;
 }
 
@@ -609,7 +622,7 @@
 
 .progressText {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6B7280;
   text-align: left;
   flex-shrink: 0;
   margin: 0;
@@ -617,7 +630,7 @@
 
 .helpTextInline {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6B7280;
   line-height: 1.4;
   display: none;
   margin: 0;
@@ -632,7 +645,7 @@
 
 .helpTextMobile {
   display: block;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6B7280;
   font-size: 0.8125rem;
   line-height: 1.5;
   text-align: center;
@@ -649,10 +662,10 @@
 .submitButton {
   width: 100%;
   padding: 1.125rem;
-  background: #fbbf24;
+  background: #0D50A4;
   border: none;
   border-radius: 12px;
-  color: black;
+  color: #FFFFFF;
   font-size: 0.9375rem;
   font-weight: 700;
   cursor: pointer;
@@ -682,7 +695,7 @@
   gap: 0.875rem;
   margin-top: 0.75rem;
   padding: 0.625rem 0.875rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: #FFFFFF;
   border-radius: 8px;
 }
 
@@ -698,7 +711,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6B7280;
   font-size: 0.8125rem;
   font-weight: 500;
 }
@@ -726,7 +739,7 @@
 .badgeSeparator {
   width: 1px;
   height: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #E5E7EB;
 }
 
 @media (min-width: 1024px) {
@@ -738,8 +751,8 @@
 .spinner {
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.2);
-  border-top-color: black;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -790,7 +803,7 @@
 .successTitle {
   font-size: 2.5rem;
   font-weight: 900;
-  color: white;
+  color: #111827;
   margin-bottom: 1rem;
   animation: fadeInUp 0.6s ease-out 0.2s both;
 }
@@ -815,12 +828,12 @@
 .amountCurrency {
   font-size: 1.5rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
+  color: #6B7280;
 }
 
 .successMessage {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6B7280;
   animation: fadeInUp 0.6s ease-out 0.6s both;
 }
 
@@ -880,7 +893,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.625rem 1rem;
-  background: #1a1a1a;
+  background: #0D50A4;
   z-index: 10;
   border-radius: 24px 24px 0 0;
 }
@@ -900,7 +913,7 @@
 
 .scrollIndicatorText {
   font-size: 0.6875rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -919,9 +932,9 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.2);
   border: none;
-  color: white;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
