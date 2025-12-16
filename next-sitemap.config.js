@@ -12,18 +12,33 @@ module.exports = {
     ],
   },
   exclude: [
-    '/dashboard/*',
-    '/api/*',
-    '/admin/*',
-    '/payment-confirmation-9d4e7b2a8f1c6e3b/*',
-    '/reset-password/*',
+    '/dashboard',
+    '/dashboard/**',
+    '/api/**',
+    '/admin/**',
+    '/payment-confirmation-9d4e7b2a8f1c6e3b',
+    '/payment-confirmation-9d4e7b2a8f1c6e3b/**',
     '/reset-password',
+    '/reset-password/**',
     '/informacion-legal',
     '/terminos',
   ],
   priority: 0.7,
   changefreq: 'weekly',
   transform: async (config, path) => {
+    // Excluir páginas que no deben estar en el sitemap
+    const excludePaths = [
+      '/dashboard',
+      '/payment-confirmation-9d4e7b2a8f1c6e3b',
+      '/reset-password',
+      '/informacion-legal',
+      '/terminos',
+    ];
+    
+    if (excludePaths.some(p => path.startsWith(p))) {
+      return null;
+    }
+    
     let priority = 0.7;
     let changefreq = 'weekly';
     
