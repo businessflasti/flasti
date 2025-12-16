@@ -139,7 +139,35 @@ const nextConfig = {
   },
   // Headers para páginas específicas
   async headers() {
-    return [];
+    return [
+      {
+        source: '/reset-password/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+      {
+        source: '/informacion-legal',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+      {
+        source: '/terminos',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+    ];
   },
   // Configuración de imágenes remotas
   images: {

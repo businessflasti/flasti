@@ -11,28 +11,36 @@ module.exports = {
       },
     ],
   },
-  exclude: ['/dashboard/*', '/api/*', '/admin/*', '/payment-confirmation-9d4e7b2a8f1c6e3b/*'],
+  exclude: [
+    '/dashboard/*',
+    '/api/*',
+    '/admin/*',
+    '/payment-confirmation-9d4e7b2a8f1c6e3b/*',
+    '/reset-password/*',
+    '/reset-password',
+    '/informacion-legal',
+    '/terminos',
+  ],
   priority: 0.7,
   changefreq: 'weekly',
   transform: async (config, path) => {
-    // Prioridades personalizadas por página
     let priority = 0.7;
     let changefreq = 'weekly';
     
     if (path === '/') {
       priority = 1.0;
       changefreq = 'daily';
-    } else if (path === '/register' || path === '/login') {
+    } else if (path === '/register') {
+      priority = 0.9;
+      changefreq = 'weekly';
+    } else if (path === '/login') {
       priority = 0.9;
       changefreq = 'weekly';
     } else if (path === '/nosotros' || path === '/contacto') {
       priority = 0.8;
       changefreq = 'monthly';
-    } else if (path.includes('/terminos') || path.includes('/privacidad') || path.includes('/informacion-legal')) {
-      priority = 0.4;
-      changefreq = 'yearly';
-    } else if (path.includes('/reset-password')) {
-      priority = 0.3;
+    } else if (path === '/privacidad') {
+      priority = 0.5;
       changefreq = 'yearly';
     }
     
