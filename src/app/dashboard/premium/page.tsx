@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { CountryPriceService } from '@/lib/country-price-service';
 import CountryFlag from '@/components/ui/CountryFlag';
 import ModernTestimonialsSection from '@/components/sections/ModernTestimonialsSection';
-import WeeklyTopRanking from '@/components/dashboard/WeeklyTopRanking';
 
 const PremiumPage = () => {
   const { t } = useLanguage();
@@ -334,11 +333,6 @@ const PremiumPage = () => {
                     <span style={{ color: '#6B7280' }}>
                       Nuestra plataforma compensa las microtareas completadas con pagos que oscilan <strong style={{ color: '#111827', fontWeight: 700 }}>entre $0.50 USD y $10 USD</strong>. Usted tiene la flexibilidad de elegir la microtarea de su interés, visualizando su compensación antes de comenzar. Las actividades incluyen opciones populares como: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido (texto, imagen o audio) entre muchas otras.
                     </span>
-                    
-                    {/* Weekly Top Ranking */}
-                    <div className="mt-6 -ml-11">
-                      <WeeklyTopRanking variant="light" />
-                    </div>
                   </div>
                 </div>
               </div>

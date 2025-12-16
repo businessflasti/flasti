@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Users, Crown, X, DollarSign, Trash2, Monitor, Smartphone, Tablet } from "lucide-react";
 import CountryFlag from '@/components/ui/CountryFlag';
-import EmailRecoveryBadge from '@/components/admin/EmailRecoveryBadge';
 import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 
@@ -21,6 +20,7 @@ interface User {
   balance?: number;
   first_name?: string | null;
   last_name?: string | null;
+  phone?: string | null;
 }
 
 const getDeviceIcon = (deviceType: string | null | undefined) => {
@@ -449,7 +449,6 @@ export default function UsersListCompact() {
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">País</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Dispositivo</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Estado</th>
-                  <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Correos</th>
                   <th className="text-right py-3 px-4 text-sm font-bold text-gray-400">Acciones</th>
                 </tr>
               </thead>
@@ -464,6 +463,9 @@ export default function UsersListCompact() {
                           </span>
                         )}
                         <span className="text-sm text-gray-400">{u.email}</span>
+                        {u.phone && (
+                          <span className="text-xs text-blue-400">{u.phone}</span>
+                        )}
                         <span className="text-xs text-gray-500">
                           {new Date(u.created_at).toLocaleDateString('es-ES', { 
                             day: '2-digit', 
@@ -509,17 +511,6 @@ export default function UsersListCompact() {
                       )}
                     </td>
                     
-                    {/* Columna de Correos */}
-                    <td className="py-4 px-4">
-                      <div className="flex items-center justify-center">
-                        <EmailRecoveryBadge 
-                          userId={u.user_id}
-                          userEmail={u.email}
-                          userName={u.email.split('@')[0]}
-                        />
-                      </div>
-                    </td>
-
                     {/* Columna de Acciones */}
                     <td className="py-4 px-4">
                       <div className="flex items-center justify-end gap-2">

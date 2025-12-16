@@ -13,9 +13,9 @@ export default function StructuredData() {
       "url": "https://flasti.com/contacto"
     },
     "sameAs": [
-      "https://www.facebook.com/flasti",
-      "https://twitter.com/flasti",
-      "https://www.instagram.com/flasti"
+      "https://www.instagram.com/flastiapp/",
+      "https://www.facebook.com/flastiapp",
+      "https://www.threads.com/@flastiapp"
     ]
   };
 
@@ -49,7 +49,7 @@ export default function StructuredData() {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Registro gratuito. Gana de $1 a $20 USD por microtarea completada."
+      "description": "Registro gratuito. Gana de $0.50 a $10 USD por microtarea completada."
     }
   };
 
@@ -103,7 +103,7 @@ export default function StructuredData() {
         "name": "¿Cuánto dinero puedo ganar?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Nuestra plataforma te recompensa por cada microtarea completada, con pagos de $1 hasta $20 USD, según la tarea que elijas. Algunas de las microtareas que encontrarás son: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido y muchas más."
+          "text": "Nuestra plataforma compensa las microtareas completadas con pagos que oscilan entre $0.50 USD y $10 USD. Usted tiene la flexibilidad de elegir la microtarea de su interés, visualizando su compensación antes de comenzar. Las actividades incluyen opciones populares como: mirar un video, probar un juego, descargar una aplicación, completar un registro, calificar un producto o servicio, escribir una reseña corta, llenar un formulario, revisar un contenido (texto, imagen o audio) entre muchas otras."
         }
       },
       {
@@ -127,7 +127,7 @@ export default function StructuredData() {
         "name": "¿Cómo me pagan en Flasti?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Flasti paga a través de PayPal y transferencias bancarias. El retiro mínimo es de $10 USD. Los pagos se procesan de forma rápida y segura. Miles de usuarios han recibido sus pagos exitosamente."
+          "text": "Flasti paga a través de PayPal y transferencias bancarias en tu moneda local. Los pagos se procesan de forma rápida y segura. Miles de usuarios han recibido sus pagos exitosamente."
         }
       },
       {
@@ -143,7 +143,7 @@ export default function StructuredData() {
         "name": "¿Cuánto tiempo toma empezar a ganar dinero?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Puedes empezar a ganar dinero inmediatamente después de registrarte. El proceso de registro es gratuito y toma menos de 5 minutos. Una vez registrado, puedes comenzar a completar microtareas y ganar entre $1 y $20 USD por tarea."
+          "text": "Puedes empezar a ganar dinero inmediatamente después de registrarte. El proceso de registro es gratuito y toma menos de 5 minutos. Una vez registrado, puedes comenzar a completar microtareas y ganar entre $0.50 y $10 USD por tarea."
         }
       }
     ]
@@ -162,8 +162,7 @@ export default function StructuredData() {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
       "bestRating": "5",
-      "worstRating": "1",
-      "ratingCount": "1000"
+      "worstRating": "1"
     },
     "offers": {
       "@type": "Offer",
@@ -192,7 +191,7 @@ export default function StructuredData() {
         "@type": "HowToStep",
         "position": 2,
         "name": "Elige una microtarea",
-        "text": "Explora las microtareas disponibles y elige la que más te guste. Hay tareas desde $1 hasta $20 USD."
+        "text": "Explora las microtareas disponibles y elige la que más te guste. Hay tareas desde $0.50 hasta $10 USD."
       },
       {
         "@type": "HowToStep",
@@ -204,7 +203,7 @@ export default function StructuredData() {
         "@type": "HowToStep",
         "position": 4,
         "name": "Recibe tu pago",
-        "text": "Una vez completada la tarea, recibes tu pago. Retira tus ganancias a través de PayPal o transferencia bancaria."
+        "text": "Una vez completada la tarea, recibes tu pago. Retira tus ganancias a través de PayPal o transferencia bancaria en tu moneda local."
       }
     ]
   };

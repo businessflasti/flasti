@@ -107,7 +107,7 @@ export default function TaskPage() {
     }
   }, [userInput, errorTime, errorDescription, isVideoTask]);
 
-  const handleClose = () => router.push('/dashboard');
+  const handleClose = () => window.location.href = '/dashboard';
 
   const handleSubmit = async () => {
     if (isClaiming || !user || !offer) return;

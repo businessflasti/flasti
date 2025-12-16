@@ -110,10 +110,10 @@ export async function GET(request: NextRequest) {
     
     console.log(`✅ [API /admin/users] ${allUsers.length} usuarios obtenidos en total`)
 
-    // Obtener información de premium, país, dispositivo, nombre y apellido de user_profiles
+    // Obtener información de premium, país, dispositivo, nombre, apellido y teléfono de user_profiles
     const { data: profiles, error: profilesError } = await supabase
       .from('user_profiles')
-      .select('user_id, is_premium, premium_activated_at, country, device_type, balance, first_name, last_name');
+      .select('user_id, is_premium, premium_activated_at, country, device_type, balance, first_name, last_name, phone');
     
     console.log(`✅ [API /admin/users] ${profiles?.length || 0} perfiles obtenidos`);
     if (profiles && profiles.length > 0) {
@@ -153,6 +153,7 @@ export async function GET(request: NextRequest) {
         email: u.email || 'Sin email',
         first_name: profile?.first_name || null,
         last_name: profile?.last_name || null,
+        phone: profile?.phone || null,
         created_at: u.created_at,
         last_sign_in_at: u.last_sign_in_at || null,
         is_premium: profile?.is_premium || false,

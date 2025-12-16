@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-// BenefitsSection removed due to persistent errors
-import AdBlock from "@/components/ui/AdBlock";
-import AdBlockWrapper from "@/components/ui/AdBlockWrapper";
 import MainLayout from "@/components/layout/MainLayout";
 import StudiovaHeroSection from "@/components/sections/StudiovaHeroSection";
 import TeamSection from "@/components/sections/TeamSection";
@@ -11,7 +8,6 @@ import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import DashboardPreviewSection from "@/components/sections/DashboardPreviewSection";
 import RegistrationFAQSection from "@/components/sections/RegistrationFAQSection";
 import CTASection from "@/components/sections/CTASection";
-import CountriesSection from "@/components/sections/CountriesSection";
 
 // Importar optimizaciones de rendimiento
 import "./performance.css";
@@ -89,10 +85,7 @@ export default function Home() {
         {/* Sección Hero principal */}
         <StudiovaHeroSection />
         
-        {/* Sección: Países disponibles */}
-        <CountriesSection />
-        
-        {/* Sección Team (nueva) */}
+        {/* Sección Team */}
         <TeamSection />
         
         {/* Sección 2: Accede a Flasti y comienza a ganar - REMOVED DUE TO ERRORS */}

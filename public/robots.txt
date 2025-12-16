@@ -4,6 +4,7 @@ Allow: /
 Disallow: /dashboard/
 Disallow: /api/
 Disallow: /admin/
+Disallow: /payment-confirmation-9d4e7b2a8f1c6e3b/
 
 # Host
 Host: https://flasti.com

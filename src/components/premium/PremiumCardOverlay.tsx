@@ -64,11 +64,18 @@ const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
         {/* Contenedor central con efectos */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-6">
           {/* Ícono de candado - animación solo si tiene botón desbloquear */}
-          <div className="relative mb-4">
+          <div className={showUnlockButton ? "relative mb-4" : "relative mb-2"}>
             <div className={`relative p-4 ${showUnlockButton ? styles.lockIconWrapper : ''}`}>
               <Lock className="w-12 h-12 text-white drop-shadow-2xl" />
             </div>
           </div>
+          
+          {/* Texto "Bloqueada" solo si NO tiene botón de desbloquear */}
+          {!showUnlockButton && (
+            <span className="text-white/80 text-sm font-medium tracking-wide">
+              Bloqueada
+            </span>
+          )}
           
           {/* Título solo si tiene botón de desbloquear */}
           {(showUnlockButton !== undefined ? showUnlockButton : false) && (

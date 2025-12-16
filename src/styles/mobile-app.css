@@ -1,5 +1,19 @@
 /* Estilos para mejorar la experiencia móvil del dashboard */
 
+/* Onboarding activo - bloquear interacciones y asegurar que el overlay cubra todo */
+body.onboarding-active {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+/* Reducir z-index del header cuando el onboarding está activo para que el overlay lo cubra */
+body.onboarding-active .sticky,
+body.onboarding-active header,
+body.onboarding-active [class*="z-40"],
+body.onboarding-active [class*="z-50"] {
+  z-index: 1 !important;
+}
+
 /* Ajustes generales para móviles */
 @media (max-width: 767px) {
   /* Eliminar scroll de rebote en iOS */

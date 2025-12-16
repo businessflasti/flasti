@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
-import WeeklyTopRanking from '@/components/dashboard/WeeklyTopRanking';
 
 interface UserBalanceDisplayProps {
   initialBalance: number;
@@ -175,7 +174,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   return (
     <TooltipProvider>
       <Card 
-        className={`relative border-0 h-full flex flex-col rounded-3xl overflow-hidden ${
+        className={`relative border-0 flex flex-col rounded-3xl overflow-hidden ${
           isLight ? 'shadow-sm' : 'shadow-lg bg-[#121212]'
         }`}
         style={isLight ? { background: '#FFFFFF' } : undefined}
@@ -237,9 +236,6 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
               </Button>
             )}
           </div>
-
-          {/* Top 3 Ranking Semanal */}
-          <WeeklyTopRanking variant={isLight ? 'light' : 'dark'} />
         </CardContent>
       </Card>
     </TooltipProvider>

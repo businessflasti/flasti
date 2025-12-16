@@ -542,6 +542,8 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate, variant = '
         <div className="offers-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" style={{ willChange: 'scroll-position', contain: 'layout style' }}>
           {/* Ofertas personalizadas */}
           {customOffers.map((customOffer, index) => {
+            // Agregar data-tour a la primera tarjeta para el onboarding
+            const isFirstTask = index === 0;
             // Verificar si esta oferta ya fue completada
             const isCompleted = completedOfferIds.includes(customOffer.id);
             
@@ -559,7 +561,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate, variant = '
             // Si está completada, mostrar overlay de completado
             if (isCompleted) {
               return (
-                <div key={`custom-${customOffer.id}`} className="relative">
+                <div key={`custom-${customOffer.id}`} className="relative" {...(isFirstTask ? { 'data-tour': 'first-task' } : {})}>
                   <CompletedTaskOverlay 
                     amount={customOffer.amount}
                     imageUrl={customOffer.image_url}
@@ -640,7 +642,7 @@ const OffersListNew: React.FC<OffersListNewProps> = ({ onDataUpdate, variant = '
             }
             
             return (
-              <div key={`custom-${customOffer.id}`} className="relative">
+              <div key={`custom-${customOffer.id}`} className="relative" {...(isFirstTask ? { 'data-tour': 'first-task' } : {})}>
                 <PremiumCardOverlay
                   isLocked={isLocked}
                   onUnlockClick={() => window.location.href = `/dashboard/task/${customOffer.id}`}

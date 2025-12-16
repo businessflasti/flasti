@@ -1,25 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  DollarSign,
-  CreditCard,
-  BarChart2,
-  Mail,
-  Eye,
-} from "lucide-react";
+import { DollarSign, CreditCard } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { adminService } from '@/lib/admin-service';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import UsersListCompact from '@/components/admin/UsersListCompact';
-import { supabase } from '@/lib/supabase';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -27,22 +16,17 @@ export default function AdminDashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Verificar si el usuario es administrador
   useEffect(() => {
     const checkAdminStatus = async () => {
       if (!user) return;
-
       const adminStatus = await adminService.isAdmin(user.id);
       setIsAdmin(adminStatus);
-
       if (!adminStatus) {
         toast.error('No tienes permisos para acceder a esta página');
         router.push('/dashboard');
       }
-
       setLoading(false);
     };
-
     checkAdminStatus();
   }, [user, router]);
 
@@ -59,9 +43,7 @@ export default function AdminDashboard() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A0A0A]">
         <h1 className="text-3xl font-bold mb-4 text-white">Acceso Restringido</h1>
         <p className="text-gray-400 mb-6">No tienes permisos para acceder a esta página</p>
-        <Button onClick={() => router.push('/dashboard')}>
-          Volver al Dashboard
-        </Button>
+        <Button onClick={() => router.push('/dashboard')}>Volver al Dashboard</Button>
       </div>
     );
   }
@@ -69,19 +51,14 @@ export default function AdminDashboard() {
   const menuItems = [
     { icon: CreditCard, label: 'Retiros', href: '/dashboard/admin/withdrawals' },
     { icon: DollarSign, label: 'Precios', href: '/dashboard/admin/country-prices' },
-    { icon: BarChart2, label: 'Asignaciones', href: '/dashboard/admin/country-assignments' },
-    { icon: Mail, label: 'Correos', href: '/dashboard/admin/email-templates' },
-    { icon: Eye, label: 'Visibilidad', href: '/dashboard/admin/visibility-control' },
   ];
 
   return (
     <div className="min-h-screen p-6 bg-[#0A0A0A]">
       <div className="max-w-[1800px] mx-auto space-y-6">
-        {/* Barra Superior - Menú + Mensaje del Día */}
         <Card className="bg-[#121212] border-0">
           <CardContent className="p-4">
             <div className="flex items-center gap-6">
-              {/* Botones de Menú */}
               <div className="flex gap-2">
                 {menuItems.map((item) => (
                   <button
@@ -97,12 +74,10 @@ export default function AdminDashboard() {
                   </button>
                 ))}
               </div>
-
             </div>
           </CardContent>
         </Card>
 
-        {/* Lista de Usuarios */}
         <UsersListCompact />
       </div>
     </div>

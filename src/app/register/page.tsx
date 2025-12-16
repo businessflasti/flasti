@@ -14,6 +14,7 @@ export default function RegisterPage() {
   const { signUp, signIn, loading } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +55,7 @@ export default function RegisterPage() {
     try {
       // Intentar registro directamente con nombre y apellido
       console.log('Iniciando proceso de registro...');
-      const { error } = await signUp(email, password, firstName, lastName);
+      const { error } = await signUp(email, password, firstName, lastName, phone);
 
       if (error) {
         console.log('Registro falló con error:', error.message);
@@ -175,6 +176,21 @@ export default function RegisterPage() {
                   required
                 />
               </div>
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
+                Teléfono móvil
+              </label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Tu número de teléfono"
+                className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
             </div>
 
             <div>

@@ -17,7 +17,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Flasti | Microtareas en Línea",
-  description: "Genera ingresos completando microtareas en línea. Trabaja desde casa sin experiencia previa y gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
+  description: "Genera ingresos completando microtareas en línea. Trabaja desde casa sin experiencia previa y gana de $0.50 a $10 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
   keywords: [
     "ganar dinero online",
     "trabajo en línea",
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Flasti",
     title: "Flasti | Microtareas en Línea",
-    description: "Genera ingresos completando microtareas en línea. Trabaja desde casa sin experiencia previa y gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
+    description: "Genera ingresos completando microtareas en línea. Trabaja desde casa sin experiencia previa y gana de $0.50 a $10 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
     url: "https://flasti.com",
     locale: "es_ES",
     images: [
@@ -108,10 +108,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@flasti",
-    creator: "@flasti",
+    site: "@flastiapp",
+    creator: "@flastiapp",
     title: "Flasti | Microtareas en Línea",
-    description: "Genera ingresos completando microtareas en línea. Trabaja desde casa sin experiencia previa y gana de $1 a $20 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
+    description: "Genera ingresos completando microtareas en línea. Trabaja desde casa sin experiencia previa y gana de $0.50 a $10 USD por tarea. Únete a más de 100K usuarios en más de 20 países.",
     images: ["https://flasti.com/logo/logo-web.png"],
   },
   alternates: {
@@ -138,21 +138,6 @@ export default function RootLayout({
 
         {/* Facebook Pixel - Colocado después de Yandex Metrica */}
         <FacebookPixel />
-
-        {/* Google AdSense */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8330194041691289"
-          crossOrigin="anonymous"
-        ></script>
-
-        {/* Configuración para AdSense: Deshabilitar anuncios superpuestos (vignettes) */}
-        <script dangerouslySetInnerHTML={{ __html: `
-          (window.adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-8330194041691289",
-            overlays: {bottom: false}
-          });
-        `}} />
 
         <script dangerouslySetInnerHTML={{ __html: `
           // Script adicional de protección contra copia

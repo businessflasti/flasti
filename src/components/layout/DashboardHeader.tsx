@@ -5,7 +5,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useBalanceVisibility } from '@/contexts/BalanceVisibilityContext';
 import { usePathname, useRouter } from 'next/navigation';
-import Stories from '@/components/ui/Stories';
 import { supabase } from '@/lib/supabase';
 import { useElementVisibility } from '@/hooks/useElementVisibility';
 import { FiUser, FiLogOut, FiSettings, FiDollarSign, FiClock, FiHome, FiAward, FiMessageCircle, FiChevronRight, FiEdit2 } from "react-icons/fi";
@@ -41,8 +40,6 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
   const avatarColor = getAvatarColor();
   const hasCustomAvatar = profile?.avatar_url;
   const isPremium = profile?.is_premium;
-
-  const [stories, setStories] = useState<any[]>([]);
 
   // Cerrar menú al hacer clic fuera (verificar tanto el botón como el panel)
   useEffect(() => {
@@ -102,20 +99,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Cargar historias
-  useEffect(() => {
-    const loadStories = async () => {
-      const { data } = await supabase
-        .from('stories')
-        .select('*')
-        .order('order', { ascending: true });
-      
-      if (data) {
-        setStories(data);
-      }
-    };
-    loadStories();
-  }, []);
+
 
 
 
@@ -168,7 +152,10 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
           {/* Logo y título/balance */}
           <div className="flex items-center gap-2 sm:gap-3 md:gap-5 flex-1 justify-start ml-2 sm:ml-4 md:ml-0">
             {isVisible('logo') && (
-              <a href="/dashboard" className="flex items-center justify-center flex-shrink-0">
+              <button 
+                onClick={() => window.location.href = '/dashboard'} 
+                className="flex items-center justify-center flex-shrink-0"
+              >
                 <Image 
                   src="/logo/isotipo-web.png" 
                   alt="Flasti" 
@@ -176,7 +163,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                   height={32} 
                   className="object-contain"
                 />
-              </a>
+              </button>
             )}
             
             {isVisible('page_title') && isMainDashboard ? (
@@ -228,26 +215,11 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
             ) : null}
           </div>
           
-          {/* Badges en el centro - Desktop */}
-          {!isMobile && (
-            <>
-              <div className="hidden md:block flex-[0.5]"></div>
-              <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-                {isVisible('stories') && !isCheckoutPage && stories.length > 0 && (
-                  <Stories stories={stories} />
-                )}
-              </div>
-              <div className="hidden md:block flex-[0.5]"></div>
-            </>
-          )}
+
           
           <div className="flex items-center gap-3 sm:gap-4 mr-2 md:mr-8 justify-end flex-shrink-0">
-            {isVisible('stories') && isMobile && !isCheckoutPage && stories.length > 0 && (
-              <Stories stories={stories} />
-            )}
-            
             {/* Nombre + Avatar con menú desplegable */}
-            <div className="relative" ref={menuRef}>
+            <div className="relative" ref={menuRef} data-tour="menu">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200 ${

@@ -14,30 +14,132 @@ const nextConfig = {
   staticPageGenerationTimeout: 1000,
   // Mover skipTrailingSlashRedirect a la raíz de la configuración
   skipTrailingSlashRedirect: true,
-  // Páginas que no deben ser indexadas
-  async headers() {
+  // Redirecciones para URLs antiguas (WordPress) que dan 404
+  async redirects() {
     return [
+      // URLs antiguas de WordPress que dan 404
       {
-        // Rutas específicas que no deben indexarse
-        source: '/register',
-        headers: [
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow'
-          }
-        ],
+        source: '/tag/:slug',
+        destination: '/',
+        permanent: true,
       },
       {
-        // Otras rutas que tampoco deben indexarse
-        source: '/(register-simple|apps|dashboard-new|aplicaciones)',
-        headers: [
+        source: '/index.php/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+      {
+        source: '/usuario/:path*',
+        destination: '/contacto',
+        permanent: true,
+      },
+      // URL duplicada de WordPress
+      {
+        source: '/',
+        has: [
           {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow'
-          }
+            type: 'query',
+            key: 'page_id',
+          },
         ],
-      }
-    ]
+        destination: '/',
+        permanent: true,
+      },
+      // Páginas antiguas que ya no existen
+      {
+        source: '/en',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/es',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/chat',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/tienda',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/blog',
+        destination: '/',
+        permanent: true,
+      },
+      // Páginas antiguas con noindex que ya no existen
+      {
+        source: '/register-simple',
+        destination: '/register',
+        permanent: true,
+      },
+      {
+        source: '/dashboard-new',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/aplicaciones',
+        destination: '/',
+        permanent: true,
+      },
+      // Archivos y páginas antiguas rastreadas sin indexar
+      {
+        source: '/ai-training-data.json',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/about-flasti.txt',
+        destination: '/nosotros',
+        permanent: true,
+      },
+      {
+        source: '/register-alt',
+        destination: '/register',
+        permanent: true,
+      },
+      {
+        source: '/legal',
+        destination: '/informacion-legal',
+        permanent: true,
+      },
+      // URLs antiguas bloqueadas por robots.txt que no existen
+      {
+        source: '/secure-registration-portal-7f9a2b3c5d8e',
+        destination: '/register',
+        permanent: true,
+      },
+      {
+        source: '/checkout',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/admin-access',
+        destination: '/',
+        permanent: true,
+      },
+      // Páginas indexadas que ya no existen
+      {
+        source: '/ayuda',
+        destination: '/contacto',
+        permanent: true,
+      },
+      {
+        source: '/apps',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
+  // Headers para páginas específicas
+  async headers() {
+    return [];
   },
   // Configuración de imágenes remotas
   images: {
