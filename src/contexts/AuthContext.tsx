@@ -97,7 +97,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     avatar_url: userProfileData.avatar_url || null,
                     created_at: userProfileData.created_at || new Date().toISOString(),
                     first_name: userProfileData.first_name || null,
-                    last_name: userProfileData.last_name || null
+                    last_name: userProfileData.last_name || null,
+                    is_premium: userProfileData.is_premium || false
                   };
                   break;
                 }
@@ -217,7 +218,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 avatar_url: userProfileData.avatar_url || null,
                 created_at: userProfileData.created_at || new Date().toISOString(),
                 first_name: userProfileData.first_name || null,
-                last_name: userProfileData.last_name || null
+                last_name: userProfileData.last_name || null,
+                is_premium: userProfileData.is_premium || false
               };
               setProfile(profileData);
             } else {
@@ -255,7 +257,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!user) return;
-    // Suscripción en tiempo real a cambios en el balance del usuario
+    // Suscripción en tiempo real a cambios en el balance y premium del usuario
     const channel = supabase
       .channel('realtime:user_profiles_balance')
       .on(
@@ -267,11 +269,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           filter: `user_id=eq.${user.id}`,
         },
         (payload) => {
-          if (payload.new && typeof payload.new.balance !== 'undefined') {
+          if (payload.new) {
             setProfile((prev: any) => ({
               ...prev,
-              balance: payload.new.balance,
+              balance: typeof payload.new.balance !== 'undefined' ? payload.new.balance : prev?.balance || 0,
               level: payload.new.level || prev?.level || 1,
+              is_premium: typeof payload.new.is_premium !== 'undefined' ? payload.new.is_premium : prev?.is_premium || false,
             }));
           }
         }
@@ -510,7 +513,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             avatar_url: userProfileData.avatar_url || null,
             created_at: userProfileData.created_at || new Date().toISOString(),
             first_name: userProfileData.first_name || null,
-            last_name: userProfileData.last_name || null
+            last_name: userProfileData.last_name || null,
+            is_premium: userProfileData.is_premium || false
           };
           setProfile(mappedProfile);
           setLoading(false);

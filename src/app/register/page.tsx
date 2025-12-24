@@ -179,21 +179,6 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
-                Teléfono móvil
-              </label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="Tu número de teléfono"
-                className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
-                style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-
-            <div>
               <label htmlFor="email" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
                 Correo electrónico
               </label>
@@ -206,6 +191,21 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-sm mb-2 font-medium" style={{ color: '#111827' }}>
+                Teléfono
+              </label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Tu teléfono"
+                className="w-full py-3 px-4 h-12 border-0 rounded-lg placeholder:text-xs focus:ring-0 focus:ring-offset-0 transition-all duration-200"
+                style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
 

@@ -5,13 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
-import { DollarSign, CreditCard, AlertCircle, CheckCircle, Landmark, ArrowRightLeft, Wallet } from 'lucide-react';
+import { DollarSign, CreditCard, AlertCircle, CheckCircle, Landmark, ArrowRightLeft, Wallet, Check } from 'lucide-react';
 import PayPalIcon from '@/components/icons/PayPalIcon';
+import Image from 'next/image';
 
 interface UserBalance {
   balance: number;
@@ -19,12 +20,158 @@ interface UserBalance {
   total_withdrawals: number;
 }
 
+// Componente de animación de éxito para retiro
+const WithdrawalSuccessAnimation: React.FC<{ amount: number; onComplete: () => void }> = ({ amount, onComplete }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onComplete();
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(8px)' }}
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+        className="relative w-full max-w-sm"
+      >
+        {/* Partículas de celebración */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ 
+                opacity: 0, 
+                scale: 0,
+                x: '50%',
+                y: '50%'
+              }}
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0.5],
+                x: `${50 + (Math.random() - 0.5) * 150}%`,
+                y: `${50 + (Math.random() - 0.5) * 150}%`
+              }}
+              transition={{ 
+                duration: 1.5,
+                delay: 0.3 + i * 0.05,
+                ease: 'easeOut'
+              }}
+              className="absolute w-2 h-2 rounded-full"
+              style={{ backgroundColor: i % 2 === 0 ? '#0D50A4' : '#10B981' }}
+            />
+          ))}
+        </div>
+
+        {/* Card principal */}
+        <div className="bg-white rounded-3xl overflow-hidden shadow-2xl text-center">
+          {/* Header */}
+          <div className="pt-10 pb-6 px-6">
+            {/* Círculo con logo PayPal */}
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', damping: 15, stiffness: 200, delay: 0.2 }}
+              className="relative mx-auto mb-6 w-28 h-28"
+            >
+              {/* Círculo con logo */}
+              <div 
+                className="w-28 h-28 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: '#F2F2F2' }}
+              >
+                <Image
+                  src="/images/paypal.png"
+                  alt="PayPal"
+                  width={70}
+                  height={70}
+                  className="object-contain"
+                />
+              </div>
+
+              {/* Check de confirmación */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', damping: 10, stiffness: 200, delay: 0.5 }}
+                className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                style={{ backgroundColor: '#10B981' }}
+              >
+                <Check className="w-6 h-6 text-white" strokeWidth={3} />
+              </motion.div>
+            </motion.div>
+
+            {/* Título */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-2xl font-bold mb-2"
+              style={{ color: '#111827' }}
+            >
+              ¡Retiro Exitoso!
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-gray-500 text-sm"
+            >
+              Tu solicitud está siendo procesada
+            </motion.p>
+          </div>
+
+          {/* Monto */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, type: 'spring', damping: 15 }}
+            className="py-6 mx-6 rounded-2xl mb-6"
+            style={{ backgroundColor: '#F0FDF4' }}
+          >
+            <p className="text-sm text-gray-500 mb-1">Monto del retiro</p>
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-4xl font-bold" style={{ color: '#10B981' }}>
+                ${amount.toFixed(2)}
+              </span>
+              <span className="text-lg font-medium text-gray-400">USD</span>
+            </div>
+          </motion.div>
+
+          {/* Info de tiempo */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="px-6 pb-8"
+          >
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span>Acreditación en las próximas 24hs</span>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function WithdrawalsPage() {
   const { user } = useAuth();
   const [amount, setAmount] = useState('');
   const [destination, setDestination] = useState('');
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [withdrawnAmount, setWithdrawnAmount] = useState(0);
   const [userBalance, setUserBalance] = useState<UserBalance>({
     balance: 0,
     total_earnings: 0,
@@ -113,9 +260,9 @@ export default function WithdrawalsPage() {
       return;
     }
     
-    // Validación de mínimo $3 USD
-    if (Number(amount) < 3) {
-      toast.error('Retiro disponible desde $3.00 USD');
+    // Validación de mínimo $5 USD
+    if (Number(amount) < 5) {
+      toast.error('Retiro disponible desde $5.00 USD');
       return;
     }
     
@@ -155,7 +302,8 @@ export default function WithdrawalsPage() {
       const data = await response.json();
       
       if (data.success) {
-        toast.success('¡Solicitud de retiro enviada correctamente!');
+        setWithdrawnAmount(Number(amount));
+        setShowSuccess(true);
         setAmount('');
         setDestination('');
         // Actualizar saldo
@@ -190,6 +338,16 @@ export default function WithdrawalsPage() {
         background: '#F6F3F3'
       }}
     >
+      {/* Animación de éxito */}
+      <AnimatePresence>
+        {showSuccess && (
+          <WithdrawalSuccessAnimation 
+            amount={withdrawnAmount} 
+            onComplete={() => setShowSuccess(false)} 
+          />
+        )}
+      </AnimatePresence>
+
       <div className="w-full max-w-4xl mx-auto px-4 py-8 pb-16 md:pb-8 space-y-6 relative z-10">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
@@ -276,7 +434,7 @@ export default function WithdrawalsPage() {
                     <div>
                       <h4 className="font-medium mb-1" style={{ color: '#0D50A4' }}>Información importante</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Los retiros se procesan en 24 horas hábiles</li>
+                        <li>• Los retiros se procesan en 48 horas hábiles</li>
                         <li>• Asegúrate de que el email de PayPal coincida con el registrado en Flasti</li>
                       </ul>
                     </div>
@@ -298,7 +456,7 @@ export default function WithdrawalsPage() {
                       style={{ background: '#F3F3F3', color: '#111827' }}
                     />
                     <p className="text-xs mt-1" style={{ color: '#0D50A4' }}>
-                      Mínimo: $3.00 USD
+                      Mínimo: $5.00 USD
                     </p>
                   </div>
 
@@ -326,7 +484,7 @@ export default function WithdrawalsPage() {
                   </label>
                   <div className="space-y-3">
                     <div className="flex-1 flex items-center gap-3 p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
-                      <PayPalIcon className="w-5 h-5" style={{ color: '#0D50A4' }} />
+                      <Image src="/images/paypaliso.webp" alt="PayPal" width={20} height={20} className="w-5 h-5 object-contain" />
                       <span className="font-medium" style={{ color: '#111827' }}>PayPal</span>
                       <Badge className="ml-auto bg-green-100 text-green-600 border-green-200">
                         Disponible

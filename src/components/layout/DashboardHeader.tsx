@@ -29,6 +29,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
   const isPremiumPage = pathname === '/dashboard/premium';
   const isAdminUsersPage = pathname === '/dashboard/admin/users';
   const isCountryPricesPage = pathname === '/dashboard/admin/country-prices';
+  const isUpgradePage = pathname === '/dashboard/upgrade';
 
   const getAvatarColor = () => '#85C1E9';
 
@@ -145,7 +146,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
         className="w-full flex items-center px-3 sm:px-6 sticky top-0 z-40"
         style={{ 
           minHeight: 64,
-          background: '#F5F3F3'
+          background: isUpgradePage ? '#202020' : '#F5F3F3'
         }}
       >
         <div className="flex items-center justify-between w-full max-w-[1920px] mx-auto">
@@ -157,7 +158,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 className="flex items-center justify-center flex-shrink-0"
               >
                 <Image 
-                  src="/logo/isotipo-web.png" 
+                  src={isUpgradePage ? "/logo/isotipo-web2.png" : "/logo/isotipo-web.png"}
                   alt="Flasti" 
                   width={32} 
                   height={32} 
@@ -176,6 +177,14 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
               <div className="text-left">
                 <div className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 leading-tight">
                   Medios de pago
+                </div>
+              </div>
+            ) : isUpgradePage ? (
+              <div className="flex items-center ml-2 md:ml-0">
+                <div className="w-px h-5 ml-0 mr-3" style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}></div>
+                <div className="user-balance-amount text-sm sm:text-lg font-bold" style={{ color: '#FFFFFF' }}>
+                  <span>${profile?.balance?.toFixed(2) ?? '0.00'}</span>
+                  <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.6)' }}>USD</span>
                 </div>
               </div>
             ) : isCountryPricesPage ? (
@@ -206,10 +215,12 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 </svg>
                 <span className="text-sm font-medium text-gray-700 transition-colors duration-200 pointer-events-none">Volver</span>
               </button>
-            ) : isVisible('balance_display') ? (
-              <div className="user-balance flex items-center justify-center">
-                <div className="user-balance-amount text-sm sm:text-lg font-bold text-gray-900 text-center">
-                  <span>${profile?.balance?.toFixed(2) ?? '0.00'} USD</span>
+            ) : isVisible('balance_display') && !isUpgradePage ? (
+              <div className="flex items-center">
+                <div className="w-px h-5 ml-0 mr-3" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}></div>
+                <div className="user-balance-amount text-sm sm:text-lg font-bold text-gray-900">
+                  <span>${profile?.balance?.toFixed(2) ?? '0.00'}</span>
+                  <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>USD</span>
                 </div>
               </div>
             ) : null}
@@ -227,20 +238,33 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                     ? 'bg-transparent md:rounded-b-none md:relative md:z-[60]' 
                     : 'hover:bg-white/60'
                 }`}
-                style={isMenuOpen && !isMobile ? { 
-                  borderBottomLeftRadius: 0, 
-                  borderBottomRightRadius: 0,
-                  marginBottom: -2
-                } : undefined}
+                style={{
+                  ...(isMenuOpen && !isMobile ? { 
+                    borderBottomLeftRadius: 0, 
+                    borderBottomRightRadius: 0,
+                    marginBottom: -2
+                  } : {}),
+                  ...(isUpgradePage && !isMenuOpen ? {
+                    backgroundColor: '#202020',
+                    borderRadius: '12px'
+                  } : {})
+                }}
               >
                 {firstName && !(isMenuOpen && !isMobile) && (
-                  <span className={`text-sm font-medium ${isMenuOpen ? 'text-gray-900' : 'text-gray-800'}`}>
+                  <span className={`text-sm font-medium ${isUpgradePage ? 'text-white' : isMenuOpen ? 'text-gray-900' : 'text-gray-800'}`}>
                     {firstName}
                   </span>
                 )}
                 
                 {!(isMenuOpen && !isMobile) && (
-                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 shadow-sm ring-2 ring-white">
+                  <div 
+                    className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 shadow-sm ring-2"
+                    style={{ 
+                      ringColor: isUpgradePage ? '#202020' : '#FFFFFF',
+                      borderColor: isUpgradePage ? '#202020' : '#FFFFFF',
+                      boxShadow: isUpgradePage ? '0 0 0 2px #202020' : '0 0 0 2px #FFFFFF'
+                    }}
+                  >
                     {hasCustomAvatar ? (
                       <Image 
                         src={profile.avatar_url}
@@ -252,7 +276,7 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                     ) : (
                       <div 
                         className="w-full h-full flex items-center justify-center"
-                        style={{ backgroundColor: '#F3F3F3' }}
+                        style={{ backgroundColor: isUpgradePage ? '#F6F3F3' : '#F3F3F3' }}
                       >
                         <FiUser className="w-4 h-4 text-gray-900" />
                       </div>
@@ -261,7 +285,8 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
                 )}
                 
                 <svg 
-                  className={`w-4 h-4 transition-transform duration-200 ${isMenuOpen ? 'rotate-180 text-[#0D50A4]' : 'text-gray-500'}`}
+                  className={`w-4 h-4 transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`}
+                  style={{ color: isMenuOpen && isUpgradePage ? '#F6F3F3' : isMenuOpen ? '#0D50A4' : isUpgradePage ? '#FFFFFF' : '#111827' }}
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"

@@ -38,8 +38,13 @@ const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    onUnlockClick();
+    if (onUnlockClick) {
+      onUnlockClick();
+    }
   };
+
+  // Determinar si el overlay es clickeable
+  const isClickable = isReadyToUnlock && onUnlockClick;
 
   return (
     <div className="relative">
@@ -49,17 +54,17 @@ const PremiumCardOverlay: React.FC<ExtendedPremiumCardOverlayProps> = ({
       {/* Overlay de bloqueo */}
       <div 
         className={overlayClasses}
-        style={{ cursor: isReadyToUnlock ? 'pointer' : 'default' }}
-        onClick={isReadyToUnlock ? handleClick : undefined}
-        role={isReadyToUnlock ? "button" : undefined}
-        tabIndex={isReadyToUnlock ? 0 : undefined}
-        onKeyDown={isReadyToUnlock ? (e) => {
+        style={{ cursor: isClickable ? 'pointer' : 'default' }}
+        onClick={isClickable ? handleClick : undefined}
+        role={isClickable ? "button" : undefined}
+        tabIndex={isClickable ? 0 : undefined}
+        onKeyDown={isClickable ? (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            onUnlockClick();
+            if (onUnlockClick) onUnlockClick();
           }
         } : undefined}
-        aria-label={isReadyToUnlock ? "Desbloquear contenido premium" : "Contenido bloqueado"}
+        aria-label={isClickable ? "Desbloquear contenido premium" : "Contenido bloqueado"}
       >
         {/* Contenedor central con efectos */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-6">

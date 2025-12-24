@@ -17,6 +17,9 @@ export default function PerfilPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   
+  // Estados para el flujo de cambio de contraseña
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
+  
   // Estados para nombre y apellido
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -216,8 +219,8 @@ export default function PerfilPage() {
     }
   };
 
-  // Función para cambiar la contraseña - VERSIÓN SIMPLE QUE FUNCIONA
-  const handlePasswordChange = (e: React.FormEvent) => {
+  // Función para cambiar la contraseña
+  const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validaciones
@@ -231,38 +234,31 @@ export default function PerfilPage() {
       return;
     }
 
-    // Activar loading
     setIsLoading(true);
 
-    // Cambiar contraseña y manejar respuesta
-    supabase.auth.updateUser({ password: newPassword })
-      .then(({ error }) => {
-        if (error) {
-          toast.error(`Error: ${error.message}`);
-          setIsLoading(false);
-        } else {
-          // ÉXITO - Mostrar notificación inmediatamente
-          toast.success('¡Contraseña actualizada correctamente!', {
-            duration: 5000,
-            position: 'top-center',
-            style: { 
-              backgroundColor: '#10b981', 
-              color: 'white',
-              fontSize: '16px',
-              fontWeight: 'bold'
-            }
-          });
-          
-          // Limpiar campos
-          setNewPassword('');
-          setConfirmPassword('');
-          setIsLoading(false);
-        }
+    // Usar la API que funciona
+    const response = await fetch('/api/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email: user?.email, 
+        newPassword 
       })
-      .catch((error) => {
-        toast.error(`Error: ${error.message}`);
-        setIsLoading(false);
-      });
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      toast.error(data.error || 'Error al cambiar la contraseña');
+      setIsLoading(false);
+      return;
+    }
+
+    // Éxito
+    toast.success('¡Contraseña actualizada correctamente!');
+    setTimeout(() => {
+      window.location.href = '/dashboard';
+    }, 1000);
   };
 
   return (
@@ -354,61 +350,90 @@ export default function PerfilPage() {
               Cambiar Contraseña
             </h2>
 
-            <form onSubmit={handlePasswordChange} className="space-y-4">
-              <div>
-                <label htmlFor="newPassword" className="text-sm font-medium block mb-2" style={{ color: '#111827' }}>
-                  Nueva Contraseña
-                </label>
-                <Input
-                  id="newPassword"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="border-gray-200 focus:ring-1 focus:ring-[#0D50A4]/30 transition-opacity duration-300"
-                  style={{ background: '#F3F3F3', color: '#111827' }}
-                  placeholder="Ingresa tu nueva contraseña"
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Mínimo 6 caracteres
+            {passwordChangeSuccess ? (
+              <div className="text-center space-y-4">
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>
+                    <Check className="h-8 w-8" style={{ color: '#10B981' }} />
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold" style={{ color: '#111827' }}>
+                  Tu contraseña ha sido cambiada con éxito
+                </h3>
+                <p className="text-sm" style={{ color: '#6B7280' }}>
+                  Ya puedes usar tu nueva contraseña
                 </p>
+                <Button
+                  onClick={() => setPasswordChangeSuccess(false)}
+                  className="w-full text-white transition-opacity duration-300"
+                  style={{ background: '#0D50A4' }}
+                >
+                  Listo
+                </Button>
               </div>
+            ) : (
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div>
+                  <label htmlFor="newPassword" className="text-sm font-medium block mb-2" style={{ color: '#111827' }}>
+                    Nueva contraseña
+                  </label>
+                  <Input
+                    id="newPassword"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="border-gray-200 focus:ring-1 focus:ring-[#0D50A4]/30 transition-opacity duration-300"
+                    style={{ background: '#F3F3F3', color: '#111827' }}
+                    placeholder="Mínimo 6 caracteres"
+                    required
+                    minLength={6}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="confirmPassword" className="text-sm font-medium block mb-2" style={{ color: '#111827' }}>
-                  Confirmar Nueva Contraseña
-                </label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="border-gray-200 focus:ring-1 focus:ring-[#0D50A4]/30 transition-opacity duration-300"
-                  style={{ background: '#F3F3F3', color: '#111827' }}
-                  placeholder="Confirma tu nueva contraseña"
-                  required
-                />
+                <div>
+                  <label htmlFor="confirmPassword" className="text-sm font-medium block mb-2" style={{ color: '#111827' }}>
+                    Confirmar nueva contraseña
+                  </label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="border-gray-200 focus:ring-1 focus:ring-[#0D50A4]/30 transition-opacity duration-300"
+                    style={{ background: '#F3F3F3', color: '#111827' }}
+                    placeholder="Repite tu contraseña"
+                    required
+                    minLength={6}
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full text-white transition-opacity duration-300"
+                  style={{ background: '#0D50A4' }}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center gap-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      <span>Actualizando...</span>
+                    </div>
+                  ) : 'Cambiar contraseña'}
+                </Button>
+              </form>
+            )}
+
+            {!passwordChangeSuccess && (
+              <div className="mt-6 p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+                <h3 className="text-sm font-medium mb-2" style={{ color: '#0D50A4' }}>Consejos de seguridad:</h3>
+                <ul className="text-xs text-gray-600 space-y-1">
+                  <li>• Usa al menos 8 caracteres</li>
+                  <li>• Incluye mayúsculas y minúsculas</li>
+                  <li>• Agrega números y símbolos</li>
+                  <li>• No uses información personal</li>
+                </ul>
               </div>
-
-              <Button
-                type="submit"
-                className="w-full text-white transition-opacity duration-300"
-                style={{ background: '#0D50A4' }}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Actualizando...' : 'Cambiar Contraseña'}
-              </Button>
-            </form>
-
-            <div className="mt-6 p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
-              <h3 className="text-sm font-medium mb-2" style={{ color: '#0D50A4' }}>Consejos de seguridad:</h3>
-              <ul className="text-xs text-gray-600 space-y-1">
-                <li>• Usa al menos 8 caracteres</li>
-                <li>• Incluye mayúsculas y minúsculas</li>
-                <li>• Agrega números y símbolos</li>
-                <li>• No uses información personal</li>
-              </ul>
-            </div>
+            )}
           </Card>
         </div>
 

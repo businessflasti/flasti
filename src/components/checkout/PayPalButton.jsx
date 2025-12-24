@@ -23,9 +23,15 @@ export default function PayPalButtonCheckout() {
               height: 50,
             },
             createOrder() {
+              // Leer valores del localStorage solo para enviar al servidor
+              // El servidor calcula el precio final de forma segura
+              const useBalance = localStorage.getItem('useBalanceForPayment') === 'true';
+              const balanceDiscount = parseFloat(localStorage.getItem('balanceDiscountAmount') || '0');
+              
               return fetch("/api/create-order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ useBalance, balanceDiscount }),
               })
                 .then((res) => res.json())
                 .then((data) => {
@@ -46,6 +52,9 @@ export default function PayPalButtonCheckout() {
                   if (result.error) {
                     throw new Error(result.error);
                   }
+                  // Limpiar localStorage después del pago exitoso
+                  localStorage.removeItem('useBalanceForPayment');
+                  localStorage.removeItem('balanceDiscountAmount');
                   window.location.href = "/dashboard";
                 });
             },
@@ -70,7 +79,14 @@ export default function PayPalButtonCheckout() {
       }
     }, 400);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Limpiar el contenedor de PayPal al desmontar
+      const container = document.getElementById("paypal-button-container");
+      if (container) {
+        container.innerHTML = "";
+      }
+    };
   }, []);
 
   return (
@@ -121,7 +137,7 @@ export default function PayPalButtonCheckout() {
         right: 0,
         display: "flex", 
         justifyContent: "center",
-        background: "#F3F3F3",
+        background: "#252525",
         padding: "0.5rem 0",
         zIndex: 9999
       }}>
@@ -136,8 +152,8 @@ export default function PayPalButtonCheckout() {
       </div>
       
       {/* Mensaje de seguridad - Debajo de la imagen */}
-      <div className="flex items-center justify-center text-xs mt-4" style={{ color: '#111827' }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+      <div className="flex items-center justify-center text-xs mt-4" style={{ color: '#9CA3AF' }}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
         </svg>
         Pago 100% seguro, protegemos tus datos.

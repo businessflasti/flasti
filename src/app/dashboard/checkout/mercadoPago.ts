@@ -57,25 +57,19 @@ function createMercadoPagoButton(mpContainer: HTMLElement): void {
   // Limpiar el contenedor
   mpContainer.innerHTML = '';
 
-  // Obtener precio actual
-  let amountARS = 5900;
-  const finalDiscountApplied = localStorage.getItem('flastiFinalDiscountApplied') === 'true';
-  const discountApplied = localStorage.getItem('flastiDiscountApplied') === 'true';
+  // Leer valores del localStorage para enviar al servidor
+  // El servidor calcula el precio final de forma segura
+  const useBalance = localStorage.getItem('useBalanceForPayment') === 'true';
+  const balanceDiscount = parseFloat(localStorage.getItem('balanceDiscountAmount') || '0');
 
-  if (finalDiscountApplied) {
-    amountARS = 5900;
-  } else if (discountApplied) {
-    amountARS = 5900;
-  }
-
-  console.log(`💰 Precio: AR$ ${amountARS.toLocaleString('es-AR')}`);
+  console.log(`💰 Enviando al servidor - useBalance: ${useBalance}, balanceDiscount: ${balanceDiscount}`);
 
   // Crear botón directamente (más rápido y confiable)
-  createFallbackButton(mpContainer, amountARS);
+  createFallbackButton(mpContainer, useBalance, balanceDiscount);
 }
 
 // Función para crear el botón oficial de Mercado Pago (diseño propio)
-function createFallbackButton(container: HTMLElement, amount: number, initPoint?: string): void {
+function createFallbackButton(container: HTMLElement, useBalance: boolean, balanceDiscount: number, initPoint?: string): void {
   // Limpiar completamente el contenedor
   while (container.firstChild) {
     container.removeChild(container.firstChild);
@@ -107,7 +101,7 @@ function createFallbackButton(container: HTMLElement, amount: number, initPoint?
         window.location.href = initPoint;
       }, 500);
     } else {
-      // Crear preferencia y redirigir
+      // Crear preferencia enviando los datos al servidor (el servidor calcula el precio)
       fetch('/api/mercadopago', {
         method: 'POST',
         headers: {
@@ -115,14 +109,18 @@ function createFallbackButton(container: HTMLElement, amount: number, initPoint?
         },
         body: JSON.stringify({
           title: 'Acceso completo a Flasti – Microtareas ilimitadas',
-          unitPrice: amount,
           currency: 'ARS',
-          quantity: 1
+          quantity: 1,
+          useBalance,
+          balanceDiscount
         }),
       })
       .then(response => response.json())
       .then(data => {
         if (data.init_point) {
+          // Limpiar localStorage después de crear la preferencia
+          localStorage.removeItem('useBalanceForPayment');
+          localStorage.removeItem('balanceDiscountAmount');
           window.location.href = data.init_point;
         } else {
           console.error('No se recibió init_point');

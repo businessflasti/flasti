@@ -299,6 +299,9 @@ const CheckoutContent = () => {
   const totalSeconds = useRef((17 * 60 * 60) + (47 * 60)); // 17 horas y 47 minutos en segundos
   const countdownInterval = useRef<NodeJS.Timeout | null>(null);
 
+  // Estado para el FAQ colapsable (inicia abierto)
+  const [isFaqOpen, setIsFaqOpen] = useState(true);
+
   // Estados para el formulario de PayPal
   const [paypalFormData, setPaypalFormData] = useState({
     fullName: '',
@@ -1444,7 +1447,7 @@ const CheckoutContent = () => {
   return (
     <>
       <div 
-        className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-16 md:pt-0 relative" 
+        className="min-h-screen mobile-smooth-scroll pb-16 md:pb-8 pt-4 md:pt-0 relative" 
         style={{ 
           background: "#F6F3F3",
           transform: 'translate3d(0, 0, 0)',
@@ -1455,7 +1458,7 @@ const CheckoutContent = () => {
         
       {/* Eliminado Exit Intent Popup */}
 
-      <div className="container-custom py-2 md:py-6 lg:py-12">
+      <div className="container-custom py-1 md:py-4 lg:py-8">
         <div className="max-w-4xl mx-auto">
           <div className="w-full">
             <div className="mb-4 lg:mb-8">
@@ -1497,65 +1500,18 @@ const CheckoutContent = () => {
                     }
                   }}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="w-full">
                     <div>
-                      <h3 className="font-medium md:pl-3" style={{ color: '#111827' }}>
-                        {isArgentina ? 'Moneda local' : 'Desbloquea al instante de forma rápida y segura'}
-                      </h3>
-
-                      <div className="grid grid-cols-10 md:flex md:flex-nowrap gap-1 mt-3 w-full pr-2 md:pl-3">
-                            {[
-                              // Primera línea (10 banderas)
-                              "🇦🇷", // Argentina
-                              "🇨🇴", // Colombia
-                              "🇻🇪", // Venezuela
-                              "🇵🇪", // Perú
-                              "🇲🇽", // México
-                              "🇵🇦", // Panamá
-                              "🇬🇹", // Guatemala
-                              "🇸🇻", // El Salvador
-                              "🇩🇴", // República Dominicana
-                              "🇵🇷", // Puerto Rico
-                              // Segunda línea (10 banderas)
-                              "🇪🇨", // Ecuador
-                              "🇵🇾", // Paraguay
-                              "🇪🇸", // España
-                              "🇨🇷", // Costa Rica
-                              "🇨🇱", // Chile
-                              "🇺🇾", // Uruguay
-                              "🇧🇴", // Bolivia
-                              "🇭🇳", // Honduras
-                              "🇺🇸", // Estados Unidos
-                              "🇧🇷"  // Brasil
-                            ].map((flag, index) => {
-                              // Obtener el código de país a partir del emoji de la bandera
-                              const countryCode = flag.codePointAt(0)! - 127397;
-                              const countryChar1 = String.fromCharCode(countryCode);
-                              const countryCode2 = flag.codePointAt(2)! - 127397;
-                              const countryChar2 = String.fromCharCode(countryCode2);
-                              const country = (countryChar1 + countryChar2).toLowerCase();
-
-                              return (
-                                <span key={index} className="w-4 h-4 md:w-5 md:h-5 rounded-full overflow-hidden flex items-center justify-center">
-                                  <img
-                                    src={`https://flagcdn.com/w20/${country}.png`}
-                                    alt={country.toUpperCase()}
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                      e.currentTarget.style.display = 'none';
-                                      // Verificar que parentElement no sea null antes de modificar innerHTML
-                                      if (e.currentTarget.parentElement) {
-                                        e.currentTarget.parentElement.innerHTML = `<span class="text-[8px] md:text-[10px] font-bold">${flag}</span>`;
-                                      }
-                                    }}
-                                  />
-                                </span>
-                              );
-                            })}
+                      <div className={`pr-2 md:pl-3`} style={{ textAlign: 'left' }}>
+                            <Image
+                              src="/images/badge.webp"
+                              alt="Métodos de pago disponibles"
+                              width={280}
+                              height={56}
+                              className="h-14 w-auto rounded-xl object-contain"
+                              style={{ display: 'block' }}
+                            />
                           </div>
-                          <p className="text-sm mt-3 md:pl-3" style={{ color: '#6B7280' }}>
-                            Tu transacción es procesada de forma segura en tu divisa local.
-                          </p>
                     </div>
                   </div>
                 </div>
@@ -1584,15 +1540,12 @@ const CheckoutContent = () => {
                                     </>
                                   )}
                                 </div>
-                                <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
-                                  Microtareas ilimitadas
-                                </span>
                               </div>
                             </div>
                           </div>
                           <div className="pt-2 border-t" style={{ borderColor: '#E5E7EB' }}>
                             <p className="text-[10px] text-center md:text-left md:pl-3" style={{ color: '#6B7280' }}>
-                              El precio se muestra en USD y se cobra automáticamente en su moneda local
+                              El precio se muestra en USD y se cobra automáticamente en su divisa local.
                             </p>
                           </div>
                         </div>
@@ -1624,23 +1577,11 @@ const CheckoutContent = () => {
                     )}
                       {isArgentina ? (
                         <div className="w-full">
-                          <div className="flex items-center justify-between mb-4">
-                            <div>
-                              <h3 className="font-medium mb-1" style={{ color: '#111827' }}>Pago en pesos argentinos</h3>
-                              <p className="text-sm" style={{ color: '#6B7280' }}>
-                                <span className="sm:inline block">Desbloquea al instante</span>
-                                <span className="sm:inline block"> de forma rápida y segura.</span>
-                              </p>
-                            </div>
-                            <div>
-                              <Image
-                                src="/images/mercadoppp.svg"
-                                alt="Mercado Pago"
-                                width={32}
-                                height={32}
-                                className="h-8 w-auto"
-                              />
-                            </div>
+                          <div className="mb-4">
+                            <h3 className="font-medium mb-1" style={{ color: '#111827' }}>Desbloquea al instante</h3>
+                            <p className="text-sm" style={{ color: '#6B7280' }}>
+                              Tu transacción es procesada de forma segura en tu divisa local.
+                            </p>
                           </div>
 
                           <div className="flex justify-between items-center mb-3 p-3 rounded-lg" style={{ backgroundColor: '#F3F3F3' }}>
@@ -1648,17 +1589,8 @@ const CheckoutContent = () => {
                               <span className="text-sm" style={{ color: '#111827' }}>Total</span>
                             </div>
                             <div className="flex flex-col items-end">
-                              <div className="flex items-center gap-2">
-                                <div className="font-bold" style={{ color: '#111827' }}>
-                                  {isArgentina ? (
-                                    <span className="text-lg">AR$ 5.900</span>
-                                  ) : (
-                                    <span>$ 5.90 USD</span>
-                                  )}
-                                </div>
-                                <span className="text-[9px] sm:text-xs font-bold bg-green-500 text-white px-2 py-0.5 rounded-3xl whitespace-nowrap">
-                                  Microtareas ilimitadas
-                                </span>
+                              <div className="font-bold" style={{ color: '#111827' }}>
+                                <span className="text-lg">AR$ 5.900</span>
                               </div>
                             </div>
                           </div>
@@ -1685,11 +1617,11 @@ const CheckoutContent = () => {
                               <Input
                                 id="mercadopago-fullname"
                                 type="text"
-                                placeholder=""
+                                placeholder="Tu nombre completo"
                                 value={mercadoPagoFormData.fullName}
                                 onChange={(e) => handleMercadoPagoFormChange('fullName', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('fullName')}
-                                className={`focus:ring-0 transition-colors ${
+                                className={`focus:ring-0 transition-colors placeholder:text-xs ${
                                   mercadoPagoFormTouched.fullName && mercadoPagoFormErrors.fullName ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
                                 style={{ backgroundColor: '#FFFFFF', color: '#111827', border: '1px solid #E5E7EB' }}
@@ -1713,11 +1645,11 @@ const CheckoutContent = () => {
                               <Input
                                 id="mercadopago-email"
                                 type="email"
-                                placeholder=""
+                                placeholder="Tu correo electrónico"
                                 value={mercadoPagoFormData.email}
                                 onChange={(e) => handleMercadoPagoFormChange('email', e.target.value)}
                                 onBlur={() => handleMercadoPagoFormBlur('email')}
-                                className={`focus:ring-0 transition-colors ${
+                                className={`focus:ring-0 transition-colors placeholder:text-xs ${
                                   mercadoPagoFormTouched.email && mercadoPagoFormErrors.email ? 'border-red-500 focus:border-red-500' : ''
                                 }`}
                                 style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', color: '#111827' }}
@@ -2095,17 +2027,54 @@ const CheckoutContent = () => {
                 </div>
               )}
 
-              {/* Mensaje sobre el proceso después del pago */}
-              <div className="mt-6 p-4 rounded-xl border-2 border-dashed relative overflow-hidden" style={{ backgroundColor: '#FFFFFF', borderColor: '#28A745' }}>
-                {/* Decoración de fondo sutil */}
-                <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full bg-[#28A745]/5 blur-xl"></div>
-                <div className="absolute -bottom-2 -left-2 w-12 h-12 rounded-full bg-[#28A745]/5 blur-xl"></div>
+              {/* Mensaje sobre el proceso después del pago - FAQ Colapsable */}
+              <div 
+                className="mt-6 overflow-hidden rounded-2xl"
+                style={{ backgroundColor: '#FFFFFF' }}
+              >
+                <button
+                  className="w-full py-5 px-5 flex items-center justify-between text-left focus:outline-none"
+                  onClick={() => setIsFaqOpen(!isFaqOpen)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: '#28A745' }}
+                    >
+                      <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="font-semibold text-base sm:text-lg" style={{ color: '#111827' }}>
+                      ¿Qué hago después del pago?
+                    </span>
+                  </div>
+                  <div style={{ color: '#6B7280' }}>
+                    {isFaqOpen ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    )}
+                  </div>
+                </button>
 
-                <div className="relative z-10">
-                  <h4 className="font-semibold text-sm mb-3" style={{ color: '#111827' }}>¿Qué hago después del pago?</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: '#111827' }}>
-                    Después de completar tu pago no tendrás que preocuparte por nada: todas tus microtareas se habilitarán automáticamente, otorgándote acceso inmediato e ilimitado a ellas, que se renuevan diariamente para ofrecerte nuevas oportunidades desde tu panel personal.
-                  </p>
+                <div
+                  className={`px-5 pb-5 transition-all duration-300 ${
+                    isFaqOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                  }`}
+                >
+                  <div 
+                    className="pt-3 border-t pl-14"
+                    style={{ borderColor: '#E5E7EB' }}
+                  >
+                    <p className="text-base leading-relaxed" style={{ color: '#6B7280' }}>
+                      La activación es automática. Tras el pago, entrarás directamente a tu panel profesional donde encontrarás todas las tareas de nivel superior desbloqueadas de forma ilimitada que se renuevan diariamente, garantizando que siempre tengas trabajo disponible para generar ingresos.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -2,45 +2,28 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { CardLockConfig } from '../types';
-import { CPALeadOffer } from '@/lib/cpa-lead-api';
+
+interface TaskOffer {
+  id: string;
+  amount: number;
+  category?: string;
+}
 
 export const useCardLockConfig = () => {
   const [config, setConfig] = useState<CardLockConfig>({
-    lockAllCards: true, // Por defecto, bloquear todas las tarjetas para usuarios gratuitos
+    lockAllCards: true,
     lockedOfferTypes: ['high-reward', 'exclusive', 'premium'],
     lockedOfferIds: [],
     premiumOnlyFeatures: ['unlimited-tasks', 'priority-support', 'advanced-analytics']
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Función para determinar si una tarjeta debe estar bloqueada
-  const shouldLockCard = useCallback((offer: CPALeadOffer, isPremium: boolean = false) => {
-    // Si el usuario es premium, no bloquear ninguna tarjeta
-    if (isPremium) {
-      return false;
-    }
-
-    // Si la configuración dice bloquear todas las tarjetas
-    if (config.lockAllCards) {
-      return true;
-    }
-
-    // Verificar si el ID específico de la oferta está bloqueado
-    if (config.lockedOfferIds.includes(offer.id.toString())) {
-      return true;
-    }
-
-    // Verificar si el tipo de oferta está bloqueado
-    if (offer.category && config.lockedOfferTypes.includes(offer.category.toLowerCase())) {
-      return true;
-    }
-
-    // Bloquear ofertas de alta recompensa (ejemplo: más de $5)
-    if (offer.amount && parseFloat(offer.amount) > 5) {
-      return true;
-    }
-
-    // Por defecto, no bloquear
+  const shouldLockCard = useCallback((offer: TaskOffer, isPremium: boolean = false) => {
+    if (isPremium) return false;
+    if (config.lockAllCards) return true;
+    if (config.lockedOfferIds.includes(offer.id.toString())) return true;
+    if (offer.category && config.lockedOfferTypes.includes(offer.category.toLowerCase())) return true;
+    if (offer.amount && offer.amount > 5) return true;
     return false;
   }, [config]);
 

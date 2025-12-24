@@ -4,22 +4,30 @@ import { NextResponse } from 'next/server';
 const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || 'APP_USR-8400251779300797-100517-207f2ff90eec04a47316d5974b5474ce-1068552659';
 const CLIENT_ID = process.env.MERCADOPAGO_CLIENT_ID || '8400251779300797';
 
+// Precios fijos en el servidor (no confiar en el cliente)
+const BASE_PRICE_USD = 10.00;
+const BASE_PRICE_ARS = 14000;
+const USD_TO_ARS_RATE = 1400; // 1 USD = 1400 ARS
+
 export async function POST(request: Request) {
   try {
     // Obtener datos del cuerpo de la solicitud
     const body = await request.json();
-    const { price, title, quantity = 1, currency = 'ARS', unitPrice } = body;
+    const { title, quantity = 1, currency = 'ARS', useBalance, balanceDiscount } = body;
 
-  // Si es moneda ARS y no se envía unitPrice, usar el precio fijo AR$5900
-  const resolvedUnitPrice = (currency === 'ARS' && (unitPrice === undefined || unitPrice === null)) ? 5900 : (unitPrice || (price ? parseFloat(price) : 0));
-
-    // Validar los datos
-    if (!price && !unitPrice) {
-      return NextResponse.json(
-        { error: 'Se requiere price o unitPrice' },
-        { status: 400 }
-      );
+    // Calcular precio final en el servidor de forma segura
+    let finalPrice = BASE_PRICE_ARS;
+    
+    if (useBalance && balanceDiscount > 0) {
+      // Validar que el descuento no sea mayor al precio base en USD
+      const validDiscountUSD = Math.min(parseFloat(balanceDiscount) || 0, BASE_PRICE_USD);
+      // Convertir descuento a ARS
+      const discountARS = validDiscountUSD * USD_TO_ARS_RATE;
+      finalPrice = Math.max(BASE_PRICE_ARS - discountARS, 0);
     }
+    
+    // Redondear a entero para ARS
+    finalPrice = Math.round(finalPrice);
 
     // Crear la preferencia en Mercado Pago
     const preference = {
@@ -31,7 +39,7 @@ export async function POST(request: Request) {
           category_id: 'services',
           quantity: quantity,
           currency_id: currency,
-          unit_price: resolvedUnitPrice,
+          unit_price: finalPrice,
         },
       ],
       back_urls: {
@@ -76,6 +84,7 @@ export async function POST(request: Request) {
       id: data.id,
       init_point: data.init_point,
       sandbox_init_point: data.sandbox_init_point,
+      finalPrice,
     });
   } catch (error) {
     console.error('Error al procesar la solicitud:', error);

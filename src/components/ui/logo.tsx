@@ -18,18 +18,18 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   // Tamaños basados en el prop size - ajustados para logo completo
   const sizes = {
     sm: {
-      logoHeight: 22,
-      logoWidth: 80, // Ancho ajustado para logo completo
+      logoHeight: 28,
+      logoWidth: 100,
       textClass: "text-xl"
     },
     md: {
-      logoHeight: 32,
-      logoWidth: 110, // Ancho ajustado para logo completo - sutilmente más grande
+      logoHeight: 40,
+      logoWidth: 140,
       textClass: "text-2xl"
     },
     lg: {
-      logoHeight: 36,
-      logoWidth: 130, // Ancho ajustado para logo completo
+      logoHeight: 48,
+      logoWidth: 170,
       textClass: "text-3xl"
     }
   };
@@ -42,16 +42,13 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
   const isRegisterPage = pathname === "/register";
   let logoPath: string;
   
-  if (isLoginPage) {
-    logoPath = "/logo/isotipo-web.png";
-  } else if (isRegisterPage) {
+  if (isLoginPage || isRegisterPage) {
     logoPath = "/logo/logo-register.png";
   } else {
     logoPath = "/logo/logo-web.png";
   }
   
-  // Ajustar tamaños para isotipo en login (cuadrado)
-  const finalWidth = isLoginPage ? logoHeight : logoWidth;
+  const finalWidth = logoWidth;
   const finalHeight = logoHeight;
 
   return (
@@ -62,13 +59,14 @@ const Logo = ({ className = "", size = "md", showTextWhenExpanded = true }: Logo
           <Image
             src={logoPath}
             alt="Flasti Logo"
-            width={finalWidth}
-            height={finalHeight}
+            width={finalWidth * 3}
+            height={finalHeight * 3}
             className="object-contain"
+            style={{ width: finalWidth, height: finalHeight }}
             priority
             loading="eager"
-            sizes={isLoginPage ? "(max-width: 640px) 22px, (max-width: 768px) 32px, 36px" : "(max-width: 640px) 80px, (max-width: 768px) 110px, 130px"}
             quality={100}
+            unoptimized
           />
         </div>
       </div>

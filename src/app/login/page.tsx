@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
@@ -73,24 +72,33 @@ export default function LoginPage() {
       if (error) {
         console.error('Error detallado:', error);
         setLoginStep('');
+        setIsLoading(false);
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
         toast.error(getLoginErrorMessage(error));
       } else {
-        setLoginStep('Verificando configuración...');
-        // Redirigir a dashboard para admins
+        // Login exitoso - mantener el estado de loading hasta la redirección
+        setLoginStep('Verificando credenciales...');
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
+        // Redirigir a dashboard para admins (NO resetear isLoading aquí)
         setTimeout(() => router.push('/dashboard'), 500);
         return;
       }
     } catch (error) {
       console.error('Error inesperado:', error);
       setLoginStep('');
-      const message = error instanceof Error ? error.message : 'Error inesperado al iniciar sesión';
-      toast.error(message);
-    } finally {
+      setIsLoading(false);
       if (timeoutId) {
         clearTimeout(timeoutId);
         timeoutId = null;
       }
-      setIsLoading(false);
+      const message = error instanceof Error ? error.message : 'Error inesperado al iniciar sesión';
+      toast.error(message);
     }
   };
 
@@ -109,20 +117,13 @@ export default function LoginPage() {
         {/* Formulario de Login - Estilo gamificado */}
         <div className="w-full max-w-md flex flex-col justify-center">
           {/* Logo centrado */}
-          <div className="flex justify-center mb-6 mt-4">
+          <div className="flex justify-center mb-8 lg:mb-6">
             <Link href="/">
-              <Image 
-                src="/logo/isotipo-web.png" 
-                alt="Flasti" 
-                width={40} 
-                height={40} 
-                className="object-contain"
-              />
+              <Logo size="md" />
             </Link>
           </div>
 
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold mb-2" style={{ color: '#111827' }}>Bienvenido</h1>
+          <div className="text-center mb-8 lg:mb-6">
             <p style={{ color: '#6B7280' }}>Inicia sesión en tu cuenta</p>
           </div>
 

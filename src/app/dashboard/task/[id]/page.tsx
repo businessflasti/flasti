@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { X, Headphones, Check, Shield, Award, ChevronDown, Video } from 'lucide-react';
+import { X, Headphones, Check, Shield, Award, ChevronDown, Video, FileText, MessageSquare, ClipboardList, Star, Gamepad2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import styles from './TaskPage.module.css';
+import dynamic from 'next/dynamic';
+
+const FlappyPlane = dynamic(() => import('@/components/games/FlappyPlane'), { ssr: false });
 
 interface CustomOffer {
   id: string;
@@ -25,6 +28,7 @@ interface CustomOffer {
   objective?: string;
   block_bg_color?: string;
   image_bg_color?: string;
+  instructions?: string;
 }
 
 export default function TaskPage() {
@@ -41,10 +45,16 @@ export default function TaskPage() {
   const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const taskId = params.id as string;
+  const isGameTask = offer?.task_type?.toLowerCase() === 'juego';
   const isVideoTask = offer?.task_type?.toLowerCase() === 'video' || !!offer?.video_url;
+  const isTextTask = offer?.task_type?.toLowerCase() === 'texto' || offer?.task_type?.toLowerCase() === 'encuesta' || offer?.task_type?.toLowerCase() === 'formulario' || offer?.task_type?.toLowerCase() === 'reseña';
+  const isAudioTask = !isVideoTask && !isTextTask && !isGameTask && !!offer?.audio_url;
+  
+  const [gameScore, setGameScore] = useState(0);
+  const [gameCompleted, setGameCompleted] = useState(false);
+  const targetScore = 15; // Meta imposible de alcanzar fácilmente
 
   const getTodayDate = () => {
     const now = new Date();
@@ -81,18 +91,30 @@ export default function TaskPage() {
     }
   }, [taskId, router]);
 
-  // Cleanup timeout on unmount
+  // Resetear estado de claiming cuando el usuario vuelve a la pestaña
   useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isClaiming) {
+        // Si el usuario vuelve y el botón sigue en "procesando" por más de 10s, resetear
+        const checkTimeout = setTimeout(() => {
+          if (isClaiming) {
+            setIsClaiming(false);
+          }
+        }, 2000);
+        return () => clearTimeout(checkTimeout);
       }
     };
-  }, []);
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [isClaiming]);
 
   // Progreso
   useEffect(() => {
-    if (isVideoTask) {
+    if (isGameTask) {
+      const newProgress = Math.min((gameScore / targetScore) * 100, 100);
+      setProgress(newProgress);
+    } else if (isVideoTask) {
       const timePattern = /^\d{1,2}:\d{2}$|^\d{1,2}$/;
       const isValidTime = timePattern.test(errorTime.trim());
       const hasDescription = errorDescription.trim().length >= 5;
@@ -105,72 +127,101 @@ export default function TaskPage() {
       const newProgress = Math.min((words.length / 5) * 100, 100);
       setProgress(newProgress);
     }
-  }, [userInput, errorTime, errorDescription, isVideoTask]);
+  }, [userInput, errorTime, errorDescription, isVideoTask, isGameTask, gameScore]);
 
   const handleClose = () => window.location.href = '/dashboard';
 
   const handleSubmit = async () => {
-    if (isClaiming || !user || !offer) return;
+    if (isClaiming || !offer) return;
+    
+    // Verificar usuario - intentar refrescar sesión si es necesario
+    let currentUserId = user?.id;
+    if (!currentUserId) {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) currentUserId = session.user.id;
+      } catch (e) {
+        console.error('Error getting session:', e);
+      }
+    }
+    if (!currentUserId) {
+      alert('Tu sesión ha expirado. Por favor, recarga la página.');
+      return;
+    }
+    
     setIsClaiming(true);
 
-    timeoutRef.current = setTimeout(() => {
+    // Timeout más corto
+    const submitTimeout = setTimeout(() => {
       setIsClaiming(false);
       alert('La operación está tardando demasiado. Por favor, verifica tu conexión e intenta nuevamente.');
-    }, 30000);
+    }, 15000);
 
     try {
-      const { data: userProfile, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('balance, total_earnings')
-        .eq('user_id', user.id)
-        .single();
-
-      if (profileError) throw new Error('No se pudo obtener el perfil del usuario');
-
-      const newBalance = (userProfile?.balance || 0) + offer.amount;
-      const newTotalEarnings = (userProfile?.total_earnings || 0) + offer.amount;
-
+      // Verificar primero si ya está completada
       const { data: existingCompletion } = await supabase
         .from('custom_offers_completions')
         .select('id')
-        .eq('user_id', user.id)
+        .eq('user_id', currentUserId)
         .eq('offer_id', offer.id)
         .single();
 
       if (existingCompletion) {
+        clearTimeout(submitTimeout);
         setIsClaiming(false);
-        handleClose();
+        toast.success('Esta tarea ya fue completada');
+        setTimeout(() => { window.location.href = '/dashboard'; }, 1500);
         return;
       }
 
+      const { data: userProfile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('balance, total_earnings')
+        .eq('user_id', currentUserId)
+        .single();
+
+      if (profileError) throw new Error('No se pudo obtener el perfil. Recarga la página.');
+
+      const newBalance = (userProfile?.balance || 0) + offer.amount;
+      const newTotalEarnings = (userProfile?.total_earnings || 0) + offer.amount;
+
       const { error: insertError } = await supabase
         .from('custom_offers_completions')
-        .insert({ user_id: user.id, offer_id: offer.id, amount_earned: offer.amount });
+        .insert({ user_id: currentUserId, offer_id: offer.id, amount_earned: offer.amount });
 
-      if (insertError) throw new Error('No se pudo registrar la completación de la tarea');
+      if (insertError) {
+        if (insertError.code === '23505') {
+          clearTimeout(submitTimeout);
+          setIsClaiming(false);
+          toast.success('Esta tarea ya fue completada');
+          setTimeout(() => { window.location.href = '/dashboard'; }, 1500);
+          return;
+        }
+        throw new Error('No se pudo registrar la tarea');
+      }
 
-      const { error: updateError } = await supabase
+      await supabase
         .from('user_profiles')
         .update({ balance: newBalance, total_earnings: newTotalEarnings })
-        .eq('user_id', user.id);
+        .eq('user_id', currentUserId);
 
-      if (updateError) throw new Error('No se pudo actualizar el balance');
-
-      const metadata: any = {
+      const metadata: Record<string, unknown> = {
         offer_name: offer.modal_title,
         description: offer.modal_subtitle,
         campaign_name: offer.modal_title,
         type: 'reward'
       };
 
-      if (isVideoTask) {
+      if (isGameTask) {
+        metadata.user_response = { game_score: gameScore, target_score: targetScore };
+      } else if (isVideoTask) {
         metadata.user_response = { error_time: errorTime.trim(), error_description: errorDescription.trim() };
       } else {
         metadata.user_response = { words: userInput.trim() };
       }
 
       await supabase.from('cpalead_transactions').insert({
-        user_id: user.id,
+        user_id: currentUserId,
         transaction_id: `custom_offer_${offer.id}_${Date.now()}`,
         offer_id: offer.id,
         amount: offer.amount,
@@ -181,22 +232,14 @@ export default function TaskPage() {
         created_at: new Date().toISOString()
       });
 
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-
+      clearTimeout(submitTimeout);
       setIsCompleted(true);
       toast.success(`Saldo acreditado: +$${offer.amount.toFixed(2)} USD`);
       setTimeout(() => {
-        router.push('/dashboard');
-        router.refresh();
+        window.location.href = '/dashboard';
       }, 2000);
     } catch (error) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
+      clearTimeout(submitTimeout);
       alert(error instanceof Error ? error.message : 'Error al procesar la tarea. Por favor, intenta nuevamente.');
       setIsClaiming(false);
     }
@@ -236,10 +279,6 @@ export default function TaskPage() {
     <div className={styles.pageContainer}>
       <div className={`${styles.modalContent} ${styles.modalWide}`}>
         <div className={styles.scrollIndicator}>
-          <div className={styles.scrollIndicatorContent}>
-            <span className={styles.scrollIndicatorText}>Desliza hacia abajo</span>
-            <ChevronDown className={styles.scrollIndicatorIcon} size={16} strokeWidth={2.5} color="#FFFFFF" />
-          </div>
           <button onClick={handleClose} className={styles.closeButtonMobile}>
             <X size={16} strokeWidth={2.5} />
           </button>
@@ -253,7 +292,13 @@ export default function TaskPage() {
                   <img src={offer.image_url} alt={offer.modal_title} className={styles.taskImage} />
                 ) : (
                   <div className={styles.taskImagePlaceholder} style={{ background: offer.image_bg_color || '#255BA5' }}>
-                    {isVideoTask ? <Video className="w-16 h-16 text-white" /> : <Headphones className="w-16 h-16 text-yellow-400" />}
+                    {isGameTask ? <Gamepad2 className="w-16 h-16 text-white" /> :
+                     isVideoTask ? <Video className="w-16 h-16 text-white" /> : 
+                     isTextTask ? (
+                       offer.task_type?.toLowerCase() === 'encuesta' ? <ClipboardList className="w-16 h-16 text-white" /> :
+                       offer.task_type?.toLowerCase() === 'reseña' ? <Star className="w-16 h-16 text-yellow-400" /> :
+                       <FileText className="w-16 h-16 text-white" />
+                     ) : <Headphones className="w-16 h-16 text-yellow-400" />}
                   </div>
                 )}
               </div>
@@ -289,7 +334,13 @@ export default function TaskPage() {
               <div className={styles.statCard}>
                 <div>
                   <div className={styles.statValue} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {isVideoTask ? <Video className="w-4 h-4 text-purple-400" /> : <Headphones className="w-4 h-4 text-purple-400" />}
+                    {isGameTask ? <Gamepad2 className="w-4 h-4 text-purple-400" /> :
+                     isVideoTask ? <Video className="w-4 h-4 text-purple-400" /> : 
+                     isTextTask ? (
+                       offer.task_type?.toLowerCase() === 'encuesta' ? <ClipboardList className="w-4 h-4 text-purple-400" /> :
+                       offer.task_type?.toLowerCase() === 'reseña' ? <Star className="w-4 h-4 text-purple-400" /> :
+                       <FileText className="w-4 h-4 text-purple-400" />
+                     ) : <Headphones className="w-4 h-4 text-purple-400" />}
                     {offer.task_type || 'Audio'}
                   </div>
                   <div className={styles.statLabel}>Categoría</div>
@@ -306,11 +357,29 @@ export default function TaskPage() {
             <div className={styles.instructionsCard}>
               <h3 className={styles.instructionsTitle}>Cómo completar esta tarea</h3>
               <ol className={styles.instructionsList}>
-                {isVideoTask ? (
+                {offer.instructions ? (
+                  offer.instructions.split('|').map((step, idx) => (
+                    <li key={idx}>{step.trim()}</li>
+                  ))
+                ) : isGameTask ? (
+                  <>
+                    <li>Toca la pantalla o presiona ESPACIO para volar</li>
+                    <li>Esquiva los rascacielos sin chocar</li>
+                    <li>Alcanza {targetScore} puntos para completar</li>
+                    <li>¡Buena suerte! La dificultad es EXTREMA</li>
+                  </>
+                ) : isVideoTask ? (
                   <>
                     <li>Reproduce el video completo</li>
                     <li>Observa y encuentra el error</li>
                     <li>Anota el tiempo donde viste el fallo</li>
+                    <li>Presiona "Confirmar" para completar la microtarea</li>
+                  </>
+                ) : isTextTask ? (
+                  <>
+                    <li>Lee el contenido con atención</li>
+                    <li>Analiza la información presentada</li>
+                    <li>Escribe tu respuesta en el campo indicado</li>
                     <li>Presiona "Confirmar" para completar la microtarea</li>
                   </>
                 ) : (
@@ -330,10 +399,84 @@ export default function TaskPage() {
               <h3 className={styles.workAreaTitle}>Área de trabajo</h3>
               
               <div className={styles.audioSection}>
-                {isVideoTask ? (
+                {isGameTask ? (
+                  <div className="flex flex-col items-center">
+                    <FlappyPlane 
+                      onScoreUpdate={(score) => setGameScore(score)}
+                      targetScore={targetScore}
+                      onGameComplete={() => setGameCompleted(true)}
+                    />
+                    {gameCompleted && (
+                      <div className="mt-4 p-4 rounded-xl text-center" style={{ backgroundColor: '#10B981', color: 'white' }}>
+                        <p className="font-bold">¡Increíble! Has completado el desafío</p>
+                        <p className="text-sm">Presiona "Confirmar" para reclamar tu recompensa</p>
+                      </div>
+                    )}
+                  </div>
+                ) : isVideoTask ? (
                   <video ref={videoRef} controls controlsList="nodownload nofullscreen noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} className={styles.videoPlayer}>
                     <source src={offer.video_url || offer.audio_url} type="video/mp4" />
                   </video>
+                ) : isTextTask ? (
+                  <div className="rounded-2xl p-5 space-y-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+                    <div className="flex items-center gap-2 mb-3">
+                      {offer.task_type?.toLowerCase() === 'encuesta' && <ClipboardList className="w-5 h-5" style={{ color: '#0D50A4' }} />}
+                      {offer.task_type?.toLowerCase() === 'reseña' && <Star className="w-5 h-5" style={{ color: '#0D50A4' }} />}
+                      {(offer.task_type?.toLowerCase() === 'texto' || offer.task_type?.toLowerCase() === 'formulario') && <FileText className="w-5 h-5" style={{ color: '#0D50A4' }} />}
+                      <span className="text-sm font-semibold" style={{ color: '#0D50A4' }}>
+                        {offer.modal_title?.includes('Clasifica') ? 'Reseña a evaluar' : 
+                         offer.modal_title?.includes('slogan') ? 'Slogan a evaluar' : 
+                         'Contenido a evaluar'}
+                      </span>
+                    </div>
+                    
+                    {/* Contenido específico para Clasificación de Reseña (Shein) */}
+                    {offer.modal_title?.includes('Clasifica') ? (
+                      <div className="p-5 rounded-xl" style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                        <div className="flex items-start gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#0D50A4' }}>
+                            <span className="text-white font-bold text-sm">C</span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm" style={{ color: '#111827' }}>Cliente verificado</p>
+                            <div className="flex gap-0.5 mt-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        <p className="text-sm leading-relaxed italic" style={{ color: '#374151' }}>
+                          "Compré este producto hace dos semanas y debo decir que superó mis expectativas. La calidad es excelente y el envío llegó antes de lo esperado. El empaque estaba perfecto y el producto es exactamente como se describe. Definitivamente lo recomendaría a mis amigos. El precio me pareció justo considerando la calidad."
+                        </p>
+                        <p className="text-xs mt-4" style={{ color: '#9CA3AF' }}>
+                          Clasifica esta reseña como: POSITIVA, NEGATIVA o NEUTRAL
+                        </p>
+                      </div>
+                    ) : offer.modal_title?.includes('slogan') ? (
+                      /* Contenido específico para Evaluación de Slogan (Creativa) */
+                      <div className="p-5 rounded-xl text-center" style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                        <p className="text-xs mb-4" style={{ color: '#6B7280' }}>
+                          Una marca de bebidas energéticas está considerando el siguiente slogan para su nueva campaña:
+                        </p>
+                        <div className="py-6 px-4 rounded-xl mb-4 animate-pulse" style={{ backgroundColor: '#7B1FA2' }}>
+                          <p className="text-xl md:text-2xl font-black text-white tracking-wide" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                            "ENERGÍA QUE TE IMPULSA A CONQUISTAR TU DÍA"
+                          </p>
+                        </div>
+                        <p className="text-xs" style={{ color: '#9CA3AF' }}>
+                          Califica del 1 al 10 qué tan efectivo te parece este slogan
+                        </p>
+                      </div>
+                    ) : (
+                      /* Contenido genérico para otras tareas de texto */
+                      <div className="p-4 rounded-xl" style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                        <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#374151' }}>
+                          {offer.modal_subtitle}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <div style={{ backgroundColor: '#FFFFFF', borderRadius: '12px', padding: '4px' }}>
                     <audio ref={audioRef} controls controlsList="nodownload noplaybackrate" onContextMenu={(e) => e.preventDefault()} className={styles.audioPlayer} style={{ backgroundColor: '#FFFFFF' }}>
@@ -343,7 +486,17 @@ export default function TaskPage() {
                 )}
               </div>
 
-              {isVideoTask ? (
+              {isGameTask ? (
+                <div className={styles.inputContainer}>
+                  <div className={styles.progressBar}>
+                    <div className={styles.progressFill} style={{ width: `${progress}%`, backgroundColor: gameCompleted ? '#10B981' : '#0D50A4' }}></div>
+                  </div>
+                  <div className={styles.progressRow}>
+                    <p className={styles.progressText}>Puntuación: {gameScore} / {targetScore}</p>
+                    <p className={styles.helpTextInline}>{gameCompleted ? '¡Meta alcanzada!' : 'Alcanza la meta para completar'}</p>
+                  </div>
+                </div>
+              ) : isVideoTask ? (
                 <div className="space-y-3">
                   <div className="rounded-xl p-4 relative" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
                     <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: '#0D50A4' }}>
@@ -376,9 +529,13 @@ export default function TaskPage() {
                 </div>
               )}
 
-              {!isVideoTask && <p className={styles.helpTextMobile}>{offer.help_text}</p>}
+              {!isVideoTask && !isGameTask && <p className={styles.helpTextMobile}>{offer.help_text}</p>}
 
-              <button onClick={handleSubmit} disabled={isVideoTask ? (!errorTime.trim() || !errorDescription.trim() || errorDescription.trim().length < 5 || isClaiming) : (!userInput.trim() || isClaiming)} className={styles.submitButton}>
+              <button onClick={handleSubmit} disabled={
+                isGameTask ? (!gameCompleted || isClaiming) :
+                isVideoTask ? (!errorTime.trim() || !errorDescription.trim() || errorDescription.trim().length < 5 || isClaiming) : 
+                (!userInput.trim() || isClaiming)
+              } className={styles.submitButton}>
                 {isClaiming ? (<><div className={styles.spinner}></div>Procesando...</>) : 'Confirmar'}
               </button>
 

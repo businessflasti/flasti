@@ -7,12 +7,16 @@ export interface CountryPrice {
   price: number;
   currency_code: string;
   currency_symbol: string;
+  usd_exchange_rate: number;
   is_locked?: boolean;
   updated_at: string;
   created_at: string;
 }
 
 export class CountryPriceService {
+  // Precio base en USD
+  static readonly BASE_PRICE_USD = 10.00;
+
   /**
    * Obtiene el precio para un país específico
    * @param countryCode Código de país de dos letras (ISO 3166-1 alpha-2)
@@ -30,6 +34,15 @@ export class CountryPriceService {
     }
 
     return data;
+  }
+
+  /**
+   * Calcula el precio en moneda local basado en el tipo de cambio
+   * @param usdAmount Monto en USD
+   * @param exchangeRate Tipo de cambio (1 USD = X moneda local)
+   */
+  static calculateLocalPrice(usdAmount: number, exchangeRate: number): number {
+    return usdAmount * exchangeRate;
   }
 
   /**
@@ -70,10 +83,10 @@ export class CountryPriceService {
 
   /**
    * Actualiza múltiples precios por país a la vez
-   * @param prices Array de objetos con código de país, precio y estado de bloqueo
+   * @param prices Array de objetos con código de país, precio, tipo de cambio y estado de bloqueo
    */
   static async updateMultipleCountryPrices(
-    prices: Array<{ country_code: string; price: number; is_locked?: boolean }>
+    prices: Array<{ country_code: string; price: number; usd_exchange_rate?: number; is_locked?: boolean }>
   ): Promise<boolean> {
     try {
       // Actualizar precios uno por uno
@@ -81,6 +94,9 @@ export class CountryPriceService {
         const updateData: any = { price: priceData.price };
         if (priceData.is_locked !== undefined) {
           updateData.is_locked = priceData.is_locked;
+        }
+        if (priceData.usd_exchange_rate !== undefined) {
+          updateData.usd_exchange_rate = priceData.usd_exchange_rate;
         }
 
         const { error } = await supabase

@@ -1,332 +1,208 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useEffect, TouchEvent } from "react";
-import { Card } from "@/components/ui/card";
-import { Star, ChevronLeft, ChevronRight, Landmark } from "lucide-react";
-import PayPalIcon from "@/components/icons/PayPalIcon";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import React, { memo, useMemo } from 'react';
+import Image from 'next/image';
 
-const getTestimonials = (t: any) => [
-	{
-		id: 1,
-		name: t("testimonial1Name"),
-		avatar: "/images/testimonials/profi1.jpg",
-		content: t("testimonial1Content"),
-		rating: 5,
-		paymentMethod: "paypal",
-	},
-	{
-		id: 2,
-		name: t("testimonial2Name"),
-		avatar: "/images/testimonials/profi2.jpg",
-		content: t("testimonial2Content"),
-		rating: 5,
-		paymentMethod: "bank",
-	},
-	{
-		id: 3,
-		name: t("testimonial3Name"),
-		avatar: "/images/testimonials/profi3.jpg",
-		content: t("testimonial3Content"),
-		rating: 5,
-		paymentMethod: "paypal",
-	},
-	{
-		id: 4,
-		name: t("testimonial4Name"),
-		avatar: "/images/testimonials/profi4.jpg",
-		content: t("testimonial4Content"),
-		rating: 5,
-	},
+const testimonialsRow1 = [
+  {
+    stars: 5,
+    text: 'Probe mil apps y esta es la única que me cumplió. Acá ando haciendo un buen extra desde el celu mientras viajo en el bus. Una masa.',
+    name: 'Mateo Martínez',
+    avatar: '/images/testimonials/profi6.jpg',
+  },
+  {
+    stars: 5,
+    text: 'Excelente servicio, ya logré mi primer retiro en casi 3 horas!! Me cuesta ocultar la emoción, estoy muy feliz! Fue fácil y rápido registrarse y las tareas son fáciles de completar, muchísimas gracias!',
+    name: 'Juan Rodríguez',
+    avatar: '/images/testimonials/profi1.jpg',
+  },
+  {
+    stars: 5,
+    text: 'No tenes q esperar mil años para cobrar, hago las tareas, sumo y retiro. Vale l pena la inversion, es la q va si necesitas el dinero rapido, pague una vez y ya retire 4 veces con esta!',
+    name: 'Cristian Sánchez',
+    avatar: '/images/testimonials/profi8.png',
+  },
+  {
+    stars: 5,
+    text: 'Es 100% real. Llevo un par de semanas haciendo microtareas y ya cobré varias veces. La verdad estoy muy contenta porque siempre resuelven mis dudas rápido y con mucha amabilidad. Hasta convencí a mi esposo para que lo intente y los resultados han sido mejores de lo que esperábamos. Gracias',
+    name: 'Ana González',
+    avatar: '/images/testimonials/profi2.jpg',
+  },
+  {
+    stars: 5,
+    text: 'Ya hize dos rretiros a mi cuenta y todo de diez.',
+    name: 'Diego Ramírez',
+    avatar: '/images/testimonials/profi9.png',
+  },
 ];
 
-const TestimonialCard = ({
-	testimonial,
-}: {
-	testimonial: {
-		id: number;
-		name: string;
-		avatar: string;
-		content: string;
-		rating: number;
-		paymentMethod?: string;
-	};
-}) => {
-	return (
-		<Card className="bg-[#1a1a1a] p-8 rounded-3xl flex flex-col h-full transition-colors group">
-			<div className="flex items-start gap-4 mb-6">
-				<div className="flex-shrink-0">
-					<div className="w-14 h-14 rounded-3xl overflow-hidden group-hover:scale-110 transition-transform duration-500">
-						<img
-							src={testimonial.avatar}
-							alt={testimonial.name}
-							className="w-full h-full object-cover"
-						/>
-					</div>
-				</div>
-				<div>
-					<h3 className="font-bold text-lg mb-1 text-white">
-						{testimonial.name}
-					</h3>
-					<div className="flex items-center gap-2">
-						{testimonial.paymentMethod === 'paypal' && (
-							<PayPalIcon className="w-4 h-4 text-blue-400" />
-						)}
-						{testimonial.paymentMethod === 'bank' && (
-							<Landmark className="w-4 h-4 text-green-400" />
-						)}
-						<span className="text-xs text-foreground/60">
-							{testimonial.paymentMethod === 'paypal' ? 'PayPal' : testimonial.paymentMethod === 'bank' ? 'Transferencia' : 'Usuario verificado'}
-						</span>
-					</div>
-				</div>
-			</div>
+const testimonialsRow2 = [
+  {
+    stars: 5,
+    text: 'Recien empiezo y ya desbloquie mis tareas, me encanta, pasé meses buscando algo así.',
+    name: 'Santiago Hernández',
+    avatar: '/images/testimonials/profi4.jpg',
+  },
+  {
+    stars: 5,
+    text: 'No pense que esto funcionara tan bien, recupere mi inversion el mismo dia y hasta gane un extra, puedo decir con total honestidad que nunca imagine que haciendo esto podia ganar dinero por internet, es un alivio saber que aun es posible tener un trabajo digno a pesar de la situacion economica dificil que estamos pasando en el pais, la pagina es confiable y segura, la recomiendo totalmente',
+    name: 'Luis López',
+    avatar: '/images/testimonials/profi3.jpg',
+  },
+  {
+    stars: 5,
+    text: 'Es re practicaa! las actividades se hacen volando y aparecen nuevas todos los días.. una joyita la verdad me ayuda con la platita 💎💎 Mándense de una 🙌',
+    name: 'Valentina Flores',
+    avatar: '/images/testimonials/profi10.jpg',
+  },
+  {
+    stars: 5,
+    text: 'Hice un par de microtareas, pedi el retiro y me llego en el dia, sin vueltas, hacia falta algo como esto que de verdad te deje trabajar y retirar',
+    name: 'Ricardo Pérez',
+    avatar: '/images/testimonials/profi5.png',
+  },
+  {
+    stars: 5,
+    text: 'Pude sacar mi primera plata por internet las tareas son re simples y la plata me llego al toque re recomendadooo',
+    name: 'Facundo García',
+    avatar: '/images/testimonials/profi7.png',
+  },
+];
 
-			<div className="flex-grow">
-				<p className="text-foreground/80 text-base leading-relaxed">
-					"{testimonial.content}"
-				</p>
-			</div>
+// Memoizado para evitar re-renders innecesarios
+const TestimonialCard = memo(({ testimonial }: { testimonial: typeof testimonialsRow1[0] }) => (
+  <div 
+    className="flex-shrink-0 w-[320px] sm:w-[380px] p-6 rounded-2xl mx-3"
+    style={{ backgroundColor: '#1A1A1A' }}
+  >
+    {/* Estrellas - siempre 5 */}
+    <div className="flex gap-1 mb-4">
+      {[...Array(5)].map((_, i) => (
+        <span 
+          key={i} 
+          className="text-xl"
+          style={{ color: '#FBBF24' }}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+    
+    {/* Texto */}
+    <p className="text-base sm:text-lg leading-relaxed mb-6 text-white">
+      {testimonial.text}
+    </p>
+    
+    {/* Usuario */}
+    <div className="flex items-center gap-3">
+      <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+        <Image 
+          src={testimonial.avatar}
+          alt={testimonial.name}
+          width={48}
+          height={48}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div>
+        <p className="font-semibold text-white">{testimonial.name}</p>
+      </div>
+    </div>
+  </div>
+));
 
-			<div className="flex items-center gap-1 mt-6 pt-6">
-				{Array.from({ length: testimonial.rating }).map((_, i) => (
-					<Star key={i} className="w-4 h-4 text-[#facc15] fill-[#facc15]" />
-				))}
-			</div>
-		</Card>
-	);
-};
+TestimonialCard.displayName = 'TestimonialCard';
 
-const TestimonialsSection = React.memo(() => {
-	const { language, t } = useLanguage();
-	const [currentIndex, setCurrentIndex] = useState(0);
-	const testimonials = getTestimonials(t);
+function TestimonialsSection() {
+  // Memoizar arrays duplicados para evitar recrearlos en cada render
+  const row1Cards = useMemo(() => 
+    [...testimonialsRow1, ...testimonialsRow1, ...testimonialsRow1], 
+    []
+  );
+  
+  const row2Cards = useMemo(() => 
+    [...testimonialsRow2, ...testimonialsRow2, ...testimonialsRow2], 
+    []
+  );
 
-	// Referencias para el manejo de swipe
-	const touchStartX = useRef(0);
-	const touchEndX = useRef(0);
-	// const isSwiping = useRef(false);
+  return (
+    <div className="w-full py-20 md:py-28 overflow-hidden px-4" style={{ backgroundColor: '#202020' }}>
+      
+      {/* Título Principal */}
+      <h2 className="text-center font-bold leading-[1.1] mb-16 md:mb-20">
+        <span className="block text-[2.5rem] sm:text-5xl md:text-5xl text-white">
+          Resultados de
+        </span>
+        <span className="inline-block text-[2.5rem] sm:text-5xl md:text-5xl mt-2 text-white">
+          nuestra comunidad
+        </span>
+      </h2>
+      
+      {/* Fila 1 - Movimiento hacia la derecha */}
+      <div className="relative mb-6">
+        <div 
+          className="flex animate-scroll-right gpu-layer"
+          style={{ width: 'max-content' }}
+        >
+          {row1Cards.map((testimonial, index) => (
+            <TestimonialCard key={`row1-${index}`} testimonial={testimonial} />
+          ))}
+        </div>
+      </div>
 
-	const nextTestimonial = () => {
-		setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-	};
+      {/* Fila 2 - Movimiento hacia la izquierda */}
+      <div className="relative">
+        <div 
+          className="flex animate-scroll-left gpu-layer"
+          style={{ width: 'max-content' }}
+        >
+          {row2Cards.map((testimonial, index) => (
+            <TestimonialCard key={`row2-${index}`} testimonial={testimonial} />
+          ))}
+        </div>
+      </div>
 
-	const prevTestimonial = () => {
-		setCurrentIndex(
-			(prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
-		);
-	};
+      {/* Estilos de animación optimizados para GPU */}
+      <style jsx>{`
+        .gpu-layer {
+          will-change: transform;
+          backface-visibility: hidden;
+          transform: translateZ(0);
+        }
+        
+        @keyframes scroll-right {
+          0% {
+            transform: translate3d(-33.33%, 0, 0);
+          }
+          100% {
+            transform: translate3d(0%, 0, 0);
+          }
+        }
+        
+        @keyframes scroll-left {
+          0% {
+            transform: translate3d(0%, 0, 0);
+          }
+          100% {
+            transform: translate3d(-33.33%, 0, 0);
+          }
+        }
+        
+        .animate-scroll-right {
+          animation: scroll-right 30s linear infinite;
+        }
+        
+        .animate-scroll-left {
+          animation: scroll-left 30s linear infinite;
+        }
+        
+        .animate-scroll-right:hover,
+        .animate-scroll-left:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </div>
+  );
+}
 
-	// Funciones para manejar eventos táctiles
-	const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-		touchStartX.current = e.touches[0].clientX;
-		// isSwiping.current = true;
-	};
-
-	const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-		// if (!isSwiping.current) return;
-		touchEndX.current = e.touches[0].clientX;
-	};
-
-	const handleTouchEnd = () => {
-		// if (!isSwiping.current) return;
-
-		const swipeDistance = touchEndX.current - touchStartX.current;
-		const minSwipeDistance = 50; // Distancia mínima para considerar un swipe válido
-
-		if (swipeDistance > minSwipeDistance) {
-			// Swipe hacia la derecha - testimonio anterior
-			prevTestimonial();
-		} else if (swipeDistance < -minSwipeDistance) {
-			// Swipe hacia la izquierda - siguiente testimonio
-			nextTestimonial();
-		}
-
-		// Reiniciar valores
-		// isSwiping.current = false;
-	};
-
-	return (
-		<section 
-			className="py-16 relative overflow-hidden"
-			style={{
-				transform: 'translate3d(0, 0, 0)',
-				contain: 'layout style paint',
-				backfaceVisibility: 'hidden'
-			}}
-		>
-			{/* Elementos decorativos eliminados completamente */}
-
-			<div className="container-custom relative z-10">
-				{/* Versión para escritorio */}
-				<div className="hidden md:block">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-						<div>
-							<h2 className="text-3xl font-bold mb-4 text-white dark:text-white light:text-black">
-								{t('testimonialsTitle', language === 'es' ? 'Ahora es posible' : language === 'en' ? 'Now it’s possible' : 'Agora é possível')}
-							</h2>
-							<TextGenerateEffect 
-								words={t("experienciasUsuarios").replace(/Flasti/g, "flasti").replace(/<[^>]*>/g, '')}
-								className="text-foreground/70 mb-6"
-							/>
-							<div className="flex gap-2 mt-4">
-								{/* First 4 full stars */}
-								{Array.from({ length: 4 }).map((_, i) => (
-									<Star
-										key={i}
-										className="h-5 w-5 text-[#facc15] fill-[#facc15]"
-									/>
-								))}
-								{/* Last star with partial fill to represent 4.9 */}
-								<div className="relative overflow-hidden w-5 h-5">
-									<div className="absolute left-0 top-0 w-[62%] overflow-hidden">
-										<Star className="h-5 w-5 text-[#facc15] fill-[#facc15]" />
-									</div>
-									<div className="absolute left-0 top-0 w-full">
-										<Star className="h-5 w-5 text-[#facc15] opacity-30" />
-									</div>
-								</div>
-								<span className="text-foreground/80 ml-2 hidden sm:inline">
-									{t("calificacionPromedio")}
-								</span>
-								<span className="text-foreground/80 ml-2 sm:hidden">
-									{t("calificacion")}
-								</span>
-							</div>
-						</div>
-
-						<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-[1400px] mx-auto px-4">
-							{testimonials.map((testimonial, index) => (
-								<div 
-									key={testimonial.id}
-									className={`transform transition-all duration-500 ${
-										index === currentIndex 
-											? "scale-105 ring-2 ring-white/20"
-											: "opacity-70 hover:opacity-100"
-									}`}
-								>
-									<TestimonialCard testimonial={testimonial} />
-								</div>
-							))}
-						</div>
-
-						<div className="flex justify-center items-center gap-8 mt-12">
-							<button
-								onClick={prevTestimonial}
-								className="w-14 h-14 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-all hover:scale-110"
-								aria-label="Previous testimonial"
-							>
-								<ChevronLeft className="h-6 w-6" />
-							</button>
-
-							<div className="flex justify-center gap-3">
-								{testimonials.map((_, index) => (
-									<button
-										key={index}
-										onClick={() => setCurrentIndex(index)}
-										className={`w-3 h-3 rounded-full transition-all ${
-											index === currentIndex
-												? "bg-white scale-125 w-12"
-												: "bg-[#1a1a1a] hover:bg-white/50"
-										}`}
-										aria-label={`Go to testimonial ${index + 1}`}
-									/>
-								))}
-							</div>
-
-							<button
-								onClick={nextTestimonial}
-								className="w-14 h-14 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-all hover:scale-110"
-								aria-label="Next testimonial"
-							>
-								<ChevronRight className="h-6 w-6" />
-							</button>
-						</div>
-					</div>
-				</div>
-
-				{/* Versión para móvil */}
-				<div className="md:hidden">
-					<div className="text-center mb-10">
-						<h2 className="text-3xl font-bold mb-4 text-white dark:text-white light:text-black">
-							{t('testimonialsTitle', language === 'es' ? 'Ahora es posible' : language === 'en' ? 'Now it’s possible' : 'Agora é possível')}
-						</h2>
-						<TextGenerateEffect 
-							words={t("experienciasUsuariosMobile").replace(/Flasti/g, "flasti").replace(/<[^>]*>/g, '')}
-							className="text-foreground/70 max-w-2xl mx-auto"
-						/>
-						<div className="flex gap-2 mt-4 justify-center">
-							{/* First 4 full stars */}
-							{Array.from({ length: 4 }).map((_, i) => (
-								<Star
-									key={i}
-									className="h-5 w-5 text-[#facc15] fill-[#facc15]"
-								/>
-							))}
-							{/* Last star with partial fill to represent 4.9 */}
-							<div className="relative overflow-hidden w-5 h-5">
-								<div className="absolute left-0 top-0 w-[62%] overflow-hidden">
-									<Star className="h-5 w-5 text-[#facc15] fill-[#facc15]" />
-								</div>
-								<div className="absolute left-0 top-0 w-full">
-									<Star className="h-5 w-5 text-[#facc15] opacity-30" />
-								</div>
-							</div>
-							<span className="text-foreground/80 ml-2 hidden sm:inline">
-								{t("calificacionPromedio")}
-							</span>
-							<span className="text-foreground/80 ml-2 sm:hidden">
-								{t("calificacion")}
-							</span>
-						</div>
-					</div>
-
-					<div className="relative">
-						<div
-							className="min-h-[350px] cursor-pointer"
-							onTouchStart={handleTouchStart}
-							onTouchMove={handleTouchMove}
-							onTouchEnd={handleTouchEnd}
-						>
-							<TestimonialCard testimonial={testimonials[currentIndex]} />
-						</div>
-
-						<div className="flex justify-center mt-4 gap-2">
-							{testimonials.map((_, index) => (
-								<button
-									key={index}
-									onClick={() => setCurrentIndex(index)}
-									className={`w-3 h-3 rounded-full transition-all ${
-										index === currentIndex
-											? "bg-white scale-110"
-											: "bg-[#1a1a1a]"
-									}`}
-									aria-label={`Go to testimonial ${index + 1}`}
-								/>
-							))}
-						</div>
-
-						<button
-							onClick={prevTestimonial}
-							className="absolute top-12 left-20 w-10 h-10 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-colors"
-							aria-label="Previous testimonial"
-						>
-							<ChevronLeft className="h-6 w-6" />
-						</button>
-
-						<button
-							onClick={nextTestimonial}
-							className="absolute top-12 right-20 w-10 h-10 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-white hover:bg-[#101010] transition-colors"
-							aria-label="Next testimonial"
-						>
-							<ChevronRight className="h-6 w-6" />
-						</button>
-					</div>
-				</div>
-			</div>
-		</section>
-	);
-});
-
-export default TestimonialsSection;
+export default memo(TestimonialsSection);
