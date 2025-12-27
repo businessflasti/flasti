@@ -39,11 +39,11 @@ async function testConnection() {
     }
     
     // Test 2: Verificar admin específico
-    console.log('\n📋 Test 2: Verificando admin flasti.finanzas@gmail.com...');
+    console.log('\n📋 Test 2: Verificando admin flasti.business@gmail.com...');
     const { data: adminProfile, error: adminError } = await supabase
       .from('user_profiles')
       .select('user_id, email, is_admin')
-      .eq('email', 'flasti.finanzas@gmail.com')
+      .eq('email', 'flasti.business@gmail.com')
       .single();
     
     if (adminError) {

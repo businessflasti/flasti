@@ -1,15 +1,15 @@
 -- Script completo para configurar admin y políticas de element_visibility
--- Para: flasti.finanzas@gmail.com
+-- Para: flasti.business@gmail.com
 
 -- PASO 1: Asegurar que el usuario admin tenga is_admin = true
 UPDATE user_profiles 
 SET is_admin = true 
-WHERE email = 'flasti.finanzas@gmail.com';
+WHERE email = 'flasti.business@gmail.com';
 
 -- Verificar que se actualizó
 SELECT user_id, email, is_admin 
 FROM user_profiles 
-WHERE email = 'flasti.finanzas@gmail.com';
+WHERE email = 'flasti.business@gmail.com';
 
 -- PASO 2: Eliminar políticas existentes de element_visibility
 DROP POLICY IF EXISTS "Allow read access to all authenticated users" ON element_visibility;
@@ -93,7 +93,7 @@ SELECT
   is_admin,
   created_at
 FROM user_profiles 
-WHERE email = 'flasti.finanzas@gmail.com';
+WHERE email = 'flasti.business@gmail.com';
 
 -- Contar elementos en la tabla
 SELECT COUNT(*) as total_elements FROM element_visibility;

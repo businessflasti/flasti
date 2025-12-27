@@ -51,7 +51,7 @@ CREATE POLICY "Allow admin to update visibility"
     EXISTS (
       SELECT 1 FROM auth.users
       WHERE auth.users.id = auth.uid()
-      AND auth.users.email = 'flasti.finanzas@gmail.com'
+      AND auth.users.email = 'flasti.business@gmail.com'
     )
   );
 
@@ -63,7 +63,7 @@ CREATE POLICY "Allow admin to insert visibility"
     EXISTS (
       SELECT 1 FROM auth.users
       WHERE auth.users.id = auth.uid()
-      AND auth.users.email = 'flasti.finanzas@gmail.com'
+      AND auth.users.email = 'flasti.business@gmail.com'
     )
   );
 

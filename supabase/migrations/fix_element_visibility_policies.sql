@@ -21,10 +21,10 @@ CREATE POLICY "Allow admin to update visibility"
   FOR UPDATE
   TO authenticated
   USING (
-    auth.email() = 'flasti.finanzas@gmail.com'
+    auth.email() = 'flasti.business@gmail.com'
   )
   WITH CHECK (
-    auth.email() = 'flasti.finanzas@gmail.com'
+    auth.email() = 'flasti.business@gmail.com'
   );
 
 -- Política de inserción: Solo admin puede insertar
@@ -33,7 +33,7 @@ CREATE POLICY "Allow admin to insert visibility"
   FOR INSERT
   TO authenticated
   WITH CHECK (
-    auth.email() = 'flasti.finanzas@gmail.com'
+    auth.email() = 'flasti.business@gmail.com'
   );
 
 -- Política de eliminación: Solo admin puede eliminar
@@ -42,7 +42,7 @@ CREATE POLICY "Allow admin to delete visibility"
   FOR DELETE
   TO authenticated
   USING (
-    auth.email() = 'flasti.finanzas@gmail.com'
+    auth.email() = 'flasti.business@gmail.com'
   );
 
 -- Verificar que las políticas se crearon correctamente

@@ -10,7 +10,7 @@ CREATE INDEX IF NOT EXISTS idx_user_profiles_is_admin ON user_profiles(is_admin)
 UPDATE user_profiles 
 SET is_admin = true 
 WHERE user_id = (
-  SELECT id FROM auth.users WHERE email = 'flasti.finanzas@gmail.com'
+  SELECT id FROM auth.users WHERE email = 'flasti.business@gmail.com'
 );
 
 -- Ahora puedes actualizar las políticas de stories para usar is_admin:

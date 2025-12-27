@@ -345,7 +345,9 @@ function PricingSection() {
               <div className="mb-6">
                 <button
                   onClick={handleBalanceToggle}
-                  className="w-full flex items-center gap-3 p-4 rounded-2xl transition-all duration-300"
+                  className={`w-full flex items-center gap-3 p-4 rounded-2xl transition-all duration-300 ${
+                    !useBalance ? 'animate-subtle-pulse' : ''
+                  }`}
                   style={{ 
                     backgroundColor: useBalance ? 'rgba(13, 80, 164, 0.15)' : '#252525'
                   }}
@@ -365,6 +367,20 @@ function PricingSection() {
                     Usar mi saldo disponible <span className="font-bold text-green-400">${formatUSD(userBalance)}</span><span className="text-xs ml-1 text-green-400/60">USD</span>
                   </span>
                 </button>
+                
+                <style jsx>{`
+                  @keyframes subtlePulse {
+                    0%, 100% {
+                      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+                    }
+                    50% {
+                      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+                    }
+                  }
+                  .animate-subtle-pulse {
+                    animation: subtlePulse 2.5s ease-in-out infinite;
+                  }
+                `}</style>
               </div>
             )}
 

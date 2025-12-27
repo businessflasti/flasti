@@ -253,7 +253,7 @@ UPDATE users
 SET 
     balance = 10000,
     role = 'ADMIN'
-WHERE email = 'flasti.finanzas@gmail.com';
+WHERE email = 'flasti.business@gmail.com';
 
 -- ============================================
 -- VERIFICACIÓN FINAL
@@ -294,7 +294,7 @@ SELECT
     balance,
     created_at
 FROM users 
-WHERE email = 'flasti.finanzas@gmail.com';
+WHERE email = 'flasti.business@gmail.com';
 
 -- ============================================
 -- ✅ SCRIPT COMPLETADO
