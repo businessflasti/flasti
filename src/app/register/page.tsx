@@ -9,6 +9,19 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/ui/logo";
 
+// Función para detectar tipo de dispositivo
+const getDeviceType = (): string => {
+  if (typeof window === 'undefined') return 'desktop';
+  
+  const ua = navigator.userAgent.toLowerCase();
+  if (/mobile|android|iphone|ipod|blackberry|iemobile|opera mini/i.test(ua)) {
+    return 'mobile';
+  } else if (/tablet|ipad|playbook|silk/i.test(ua)) {
+    return 'tablet';
+  }
+  return 'desktop';
+};
+
 export default function RegisterPage() {
   const router = useRouter();
   const { signUp, signIn, loading } = useAuth();
@@ -19,11 +32,42 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [countryCode, setCountryCode] = useState<string | null>(null);
+  const [deviceType, setDeviceType] = useState<string>('desktop');
 
   useEffect(() => {
     // Cambia el fondo del body a #F6F3F3
     document.body.style.backgroundColor = '#F6F3F3';
+    
+    // Detectar dispositivo
+    setDeviceType(getDeviceType());
+    
+    // Detectar país
+    const detectCountry = async () => {
+      try {
+        // Primero intentar desde localStorage
+        let country = localStorage.getItem('userCountry') || localStorage.getItem('flastiUserCountry');
+        
+        if (!country) {
+          // Si no está en localStorage, detectar por IP
+          const response = await fetch('https://ipapi.co/json/');
+          const data = await response.json();
+          country = data.country_code;
+          
+          if (country) {
+            localStorage.setItem('userCountry', country);
+            localStorage.setItem('flastiUserCountry', country);
+          }
+        }
+        
+        setCountryCode(country);
+      } catch (error) {
+        console.error('Error detectando país:', error);
+      }
+    };
+    
+    detectCountry();
+    
     return () => {
       document.body.style.backgroundColor = '';
     };
@@ -104,6 +148,22 @@ export default function RegisterPage() {
       // Registro exitoso
       console.log('Registro completado con éxito');
       toast.dismiss(loadingToast);
+
+      // Actualizar perfil con país y dispositivo
+      try {
+        const { supabase } = await import('@/lib/supabase');
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          await supabase.from('user_profiles').update({
+            country: countryCode,
+            device_type: deviceType,
+            last_login: new Date().toISOString()
+          }).eq('user_id', user.id);
+        }
+      } catch (updateError) {
+        console.error('Error actualizando país/dispositivo:', updateError);
+      }
 
       // Redirigir directamente al dashboard en vez de a welcome
       setTimeout(() => {

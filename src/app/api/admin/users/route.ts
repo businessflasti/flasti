@@ -110,15 +110,27 @@ export async function GET(request: NextRequest) {
     
     console.log(`✅ [API /admin/users] ${allUsers.length} usuarios obtenidos en total`)
 
-    // Obtener información de premium, país, dispositivo, nombre, apellido y teléfono de user_profiles
+    // Obtener información de premium, país, dispositivo, nombre, apellido, teléfono y último acceso de user_profiles
     const { data: profiles, error: profilesError } = await supabase
       .from('user_profiles')
-      .select('user_id, is_premium, premium_activated_at, country, device_type, balance, first_name, last_name, phone');
+      .select('*');
     
     console.log(`✅ [API /admin/users] ${profiles?.length || 0} perfiles obtenidos`);
     if (profiles && profiles.length > 0) {
       const withNames = profiles.filter(p => p.first_name || p.last_name).length;
+      const withBalance = profiles.filter(p => p.balance && p.balance > 0).length;
       console.log(`📝 [API /admin/users] ${withNames} perfiles con nombre/apellido`);
+      console.log(`💰 [API /admin/users] ${withBalance} perfiles con balance > 0`);
+      
+      // Log de usuarios con balance para debug
+      profiles.filter(p => p.balance && p.balance > 0).forEach(p => {
+        console.log(`💵 Usuario ${p.user_id}: balance = ${p.balance}`);
+      });
+      
+      // Log de las columnas disponibles en el primer perfil
+      if (profiles[0]) {
+        console.log(`📋 [API /admin/users] Columnas disponibles:`, Object.keys(profiles[0]));
+      }
     }
 
     if (profilesError) {
@@ -160,8 +172,9 @@ export async function GET(request: NextRequest) {
         premium_activated_at: profile?.premium_activated_at,
         country: profile?.country || null,
         device_type: profile?.device_type || null,
+        last_login: profile?.last_login || u.last_sign_in_at || null,
         os: os,
-        balance: profile?.balance || 0
+        balance: parseFloat(String(profile?.balance || 0)) || 0
       };
     });
 

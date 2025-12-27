@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { StatsCardsGridSkeleton } from '@/components/ui/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
@@ -355,7 +356,11 @@ export default function WithdrawalsPage() {
       </div>
 
       {/* Información del saldo */}
-      {!pageLoading && (
+      {pageLoading ? (
+        <div className="mb-6">
+          <StatsCardsGridSkeleton variant="light" columns={3} />
+        </div>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Card className="rounded-3xl border-0 shadow-sm" style={{ background: '#FFFFFF' }}>
             <CardContent className="p-4">

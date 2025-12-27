@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { Shield, Mail, User, Camera, Lock, X, Check } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function PerfilPage() {
   const { user, profile, updateAvatar } = useAuth();
@@ -31,6 +32,7 @@ export default function PerfilPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Cargar datos del usuario
@@ -39,6 +41,7 @@ export default function PerfilPage() {
       if (!user) return;
 
       try {
+        setIsLoadingProfile(true);
         const { data: profileData } = await supabase
           .from('user_profiles')
           .select('*')
@@ -52,6 +55,8 @@ export default function PerfilPage() {
         }
       } catch (error) {
         console.error('Error al cargar datos del usuario:', error);
+      } finally {
+        setIsLoadingProfile(false);
       }
     };
 
@@ -275,73 +280,104 @@ export default function PerfilPage() {
               Información Personal
             </h2>
 
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                {/* Avatar con funcionalidad de subida */}
-                <div className="relative">
-                  <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
-                    {profile?.avatar_url ? (
-                      <img
-                        key={`profile-avatar-${refreshKey}`}
-                        src={`${profile.avatar_url}?t=${new Date().getTime()}-${refreshKey}`}
-                        alt="Foto de perfil"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div 
-                        className="h-full w-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                        style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
-                      >
-                        {getInitials(user?.email, userData?.name)}
-                      </div>
-                    )}
+            {isLoadingProfile ? (
+              <div className="space-y-4">
+                {/* Avatar skeleton */}
+                <div className="flex items-center space-x-3">
+                  <Skeleton className="h-20 w-20 rounded-full" variant="light" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-5 w-32 rounded" variant="light" />
+                    <Skeleton className="h-4 w-16 rounded-full" variant="light" />
                   </div>
-                  <button
-                    className="absolute bottom-0 right-0 text-white p-2 rounded-full shadow-md transition-opacity duration-300"
-                    style={{ background: '#111827' }}
-                    onClick={handleSelectFile}
-                    aria-label="Cambiar foto de perfil"
-                  >
-                    <Camera size={14} />
-                  </button>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold" style={{ color: '#111827' }}>
-                    {userData?.first_name 
-                      ? `${userData.first_name} ${userData.last_name || ''}`.trim()
-                      : (userData?.name || user?.email?.split('@')[0] || '')}
-                  </h3>
-                  <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full inline-block mt-1">
-                    Activo
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Haz clic en la cámara para cambiar tu foto
+                
+                {/* Email skeleton */}
+                <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+                  <div className="flex items-center mb-2 gap-2">
+                    <Skeleton className="h-7 w-7 rounded-lg" variant="light" />
+                    <Skeleton className="h-3 w-24 rounded" variant="light" />
+                  </div>
+                  <Skeleton className="h-5 w-48 rounded" variant="light" />
+                </div>
+                
+                {/* Estado skeleton */}
+                <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+                  <div className="flex items-center mb-2 gap-2">
+                    <Skeleton className="h-7 w-7 rounded-lg" variant="light" />
+                    <Skeleton className="h-3 w-28 rounded" variant="light" />
+                  </div>
+                  <Skeleton className="h-5 w-20 rounded" variant="light" />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  {/* Avatar con funcionalidad de subida */}
+                  <div className="relative">
+                    <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
+                      {profile?.avatar_url ? (
+                        <img
+                          key={`profile-avatar-${refreshKey}`}
+                          src={`${profile.avatar_url}?t=${new Date().getTime()}-${refreshKey}`}
+                          alt="Foto de perfil"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div 
+                          className="h-full w-full rounded-full flex items-center justify-center text-white font-bold text-xl"
+                          style={{ backgroundColor: '#F3F3F3', color: '#111827' }}
+                        >
+                          {getInitials(user?.email, userData?.name)}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      className="absolute bottom-0 right-0 text-white p-2 rounded-full shadow-md transition-opacity duration-300"
+                      style={{ background: '#111827' }}
+                      onClick={handleSelectFile}
+                      aria-label="Cambiar foto de perfil"
+                    >
+                      <Camera size={14} />
+                    </button>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold" style={{ color: '#111827' }}>
+                      {userData?.first_name 
+                        ? `${userData.first_name} ${userData.last_name || ''}`.trim()
+                        : (userData?.name || user?.email?.split('@')[0] || '')}
+                    </h3>
+                    <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full inline-block mt-1">
+                      Activo
+                    </span>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Haz clic en la cámara para cambiar tu foto
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+                  <div className="flex items-center mb-2 gap-2">
+                    <div className="p-1.5 rounded-lg" style={{ background: '#0D50A4' }}>
+                      <Mail className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-sm text-gray-500">Correo Electrónico</span>
+                  </div>
+                  <p className="font-medium" style={{ color: '#111827' }}>
+                    {user?.email || 'No especificado'}
                   </p>
                 </div>
-              </div>
 
-              <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
-                <div className="flex items-center mb-2 gap-2">
-                  <div className="p-1.5 rounded-lg" style={{ background: '#0D50A4' }}>
-                    <Mail className="h-3.5 w-3.5 text-white" />
+                <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
+                  <div className="flex items-center mb-2 gap-2">
+                    <div className="p-1.5 rounded-lg" style={{ background: '#0D50A4' }}>
+                      <Shield className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-sm text-gray-500">Estado de la cuenta</span>
                   </div>
-                  <span className="text-sm text-gray-500">Correo Electrónico</span>
+                  <p className="text-green-600 font-medium">Verificada</p>
                 </div>
-                <p className="font-medium" style={{ color: '#111827' }}>
-                  {user?.email || 'No especificado'}
-                </p>
               </div>
-
-              <div className="p-4 rounded-lg" style={{ background: '#F3F3F3' }}>
-                <div className="flex items-center mb-2 gap-2">
-                  <div className="p-1.5 rounded-lg" style={{ background: '#0D50A4' }}>
-                    <Shield className="h-3.5 w-3.5 text-white" />
-                  </div>
-                  <span className="text-sm text-gray-500">Estado de la cuenta</span>
-                </div>
-                <p className="text-green-600 font-medium">Verificada</p>
-              </div>
-            </div>
+            )}
           </Card>
 
           {/* Cambio de Contraseña */}

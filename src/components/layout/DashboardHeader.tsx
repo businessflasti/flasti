@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useElementVisibility } from '@/hooks/useElementVisibility';
 import { FiUser, FiLogOut, FiSettings, FiDollarSign, FiClock, FiHome, FiAward, FiMessageCircle, FiChevronRight, FiEdit2 } from "react-icons/fi";
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, profile, signOut, updateAvatar } = useAuth();
@@ -182,10 +183,14 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
             ) : isUpgradePage ? (
               <div className="flex items-center ml-2 md:ml-0">
                 <div className="w-px h-5 ml-0 mr-3" style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}></div>
-                <div className="user-balance-amount text-sm sm:text-lg font-bold" style={{ color: '#FFFFFF' }}>
-                  <span>${profile?.balance?.toFixed(2) ?? '0.00'}</span>
-                  <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.6)' }}>USD</span>
-                </div>
+                {profile?.balance === undefined ? (
+                  <Skeleton className="h-5 sm:h-6 w-20 rounded" variant="dark" />
+                ) : (
+                  <div className="user-balance-amount text-sm sm:text-lg font-bold" style={{ color: '#FFFFFF' }}>
+                    <span>${profile?.balance?.toFixed(2) ?? '0.00'}</span>
+                    <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.6)' }}>USD</span>
+                  </div>
+                )}
               </div>
             ) : isCountryPricesPage ? (
               <button 
@@ -218,10 +223,14 @@ export default function DashboardHeader({ onMenuClick }: { onMenuClick?: () => v
             ) : isVisible('balance_display') && !isUpgradePage ? (
               <div className="flex items-center">
                 <div className="w-px h-5 ml-0 mr-3" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}></div>
-                <div className="user-balance-amount text-sm sm:text-lg font-bold text-gray-900">
-                  <span>${profile?.balance?.toFixed(2) ?? '0.00'}</span>
-                  <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>USD</span>
-                </div>
+                {profile?.balance === undefined ? (
+                  <Skeleton className="h-5 sm:h-6 w-20 rounded" variant="light" />
+                ) : (
+                  <div className="user-balance-amount text-sm sm:text-lg font-bold text-gray-900">
+                    <span>${profile?.balance?.toFixed(2) ?? '0.00'}</span>
+                    <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>USD</span>
+                  </div>
+                )}
               </div>
             ) : null}
           </div>

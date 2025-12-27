@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
+import { Skeleton, BalanceSkeleton } from '@/components/ui/Skeleton';
 
 interface UserBalanceDisplayProps {
   initialBalance: number;
@@ -15,6 +16,7 @@ interface UserBalanceDisplayProps {
   currency?: string;
   showControls?: boolean;
   variant?: 'dark' | 'light';
+  isLoading?: boolean;
 }
 
 interface BalanceStats {
@@ -29,7 +31,8 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
   userId, 
   currency = 'USD',
   showControls = true,
-  variant = 'dark'
+  variant = 'dark',
+  isLoading: externalLoading = false
 }) => {
   const isLight = variant === 'light';
   const [balance, setBalance] = useState(initialBalance);
@@ -170,6 +173,11 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
     await fetchBalanceStats();
     toast.success('Saldo actualizado');
   };
+
+  // Si está cargando externamente, mostrar skeleton completo
+  if (externalLoading) {
+    return <BalanceSkeleton variant={variant} />;
+  }
 
   return (
     <TooltipProvider>

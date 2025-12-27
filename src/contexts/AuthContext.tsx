@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { supabaseQueryWithRetry, isConnectionError } from '@/lib/supabase-retry';
 import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import analyticsService from '@/lib/analytics-service';
@@ -10,6 +11,7 @@ type AuthContextType = {
   user: User | null;
   profile: any | null;
   loading: boolean;
+  dataReady: boolean; // Indica si los datos críticos están listos para mostrar
   signUp: (email: string, password: string, firstName?: string, lastName?: string, phone?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
@@ -26,6 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [dataReady, setDataReady] = useState(false); // Nuevo estado para indicar que los datos están listos
   const router = useRouter();
 
   useEffect(() => {
@@ -184,6 +187,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.error('AuthContext: Error general al verificar sesión:', err);
       } finally {
         setLoading(false);
+        // Marcar datos como listos después de un pequeño delay para asegurar que el estado se actualizó
+        setTimeout(() => {
+          setDataReady(true);
+          console.log('AuthContext: Datos listos para mostrar');
+        }, 100);
       }
     };
 
@@ -745,6 +753,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     profile,
     loading,
+    dataReady,
     signUp,
     signIn,
     signInWithGoogle,

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { StatsCardsGridSkeleton } from '@/components/ui/Skeleton';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -151,7 +152,11 @@ export default function WithdrawalsHistoryPage() {
       </div>
 
       {/* Estadísticas de resumen */}
-      {!loading && (
+      {loading ? (
+        <div className="mb-6">
+          <StatsCardsGridSkeleton variant="light" columns={4} />
+        </div>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card className="rounded-3xl border-0" style={{ backgroundColor: '#FFFFFF' }}>
             <CardContent className="p-4">

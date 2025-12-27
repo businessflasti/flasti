@@ -38,9 +38,16 @@ export default function CheckoutSection({
     price: number;
     currencySymbol: string;
     currencyCode: string;
-  }>({ countryCode: '', price: 10.00, currencySymbol: '$', currencyCode: 'USD' });
+    usdExchangeRate: number;
+  }>({ countryCode: '', price: 10.00, currencySymbol: '$', currencyCode: 'USD', usdExchangeRate: 1 });
 
   const usdNativeCountries = ['US', 'PR', 'EC', 'SV', 'VE'];
+
+  // Precio base en USD
+  const basePriceUSD = CountryPriceService.BASE_PRICE_USD;
+  
+  // Calcular precio local basado en el precio final en USD
+  const finalLocalPrice = finalPriceUSD * countryPrice.usdExchangeRate;
 
   const formatPrice = (price: number, countryCode: string) => {
     if (countryCode === 'CO' || countryCode === 'PY') {
@@ -71,7 +78,8 @@ export default function CheckoutSection({
               countryCode: countryPriceData.country_code,
               price: countryPriceData.price,
               currencySymbol: countryPriceData.currency_symbol,
-              currencyCode: countryPriceData.currency_code
+              currencyCode: countryPriceData.currency_code,
+              usdExchangeRate: countryPriceData.usd_exchange_rate || 1
             });
           }
         }
@@ -132,7 +140,7 @@ export default function CheckoutSection({
                     <>
                       <span className="text-gray-400">≈</span>
                       <span className="text-sm text-gray-400">
-                        {countryPrice.currencySymbol}{formatPrice(countryPrice.price, countryPrice.countryCode)} {countryPrice.currencyCode}
+                        {countryPrice.currencySymbol}{formatPrice(finalLocalPrice, countryPrice.countryCode)} {countryPrice.currencyCode}
                       </span>
                     </>
                   )}

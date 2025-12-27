@@ -21,6 +21,7 @@ interface User {
   first_name?: string | null;
   last_name?: string | null;
   phone?: string | null;
+  last_login?: string | null;
 }
 
 const getDeviceIcon = (deviceType: string | null | undefined) => {
@@ -448,6 +449,7 @@ export default function UsersListCompact() {
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Balance</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">País</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Dispositivo</th>
+                  <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Último acceso</th>
                   <th className="text-center py-3 px-4 text-sm font-bold text-gray-400">Estado</th>
                   <th className="text-right py-3 px-4 text-sm font-bold text-gray-400">Acciones</th>
                 </tr>
@@ -497,6 +499,20 @@ export default function UsersListCompact() {
                         {getDeviceIcon(u.device_type)}
                         <span className="text-xs text-gray-400">{getDeviceLabel(u.device_type)}</span>
                       </div>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      {u.last_login ? (
+                        <span className="text-xs text-gray-400">
+                          {new Date(u.last_login).toLocaleDateString('es-ES', { 
+                            day: '2-digit', 
+                            month: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-gray-600">-</span>
+                      )}
                     </td>
                     <td className="py-4 px-4 text-center">
                       {u.is_premium ? (

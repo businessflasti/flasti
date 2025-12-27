@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 export async function POST(request: Request) {
   try {
     // Obtener datos del cuerpo de la solicitud
-    const { email, password, phone, debug } = await request.json();
+    const { email, password, phone, country, deviceType, debug } = await request.json();
 
     console.log('API de registro recibió solicitud para:', email);
 
@@ -89,6 +89,7 @@ export async function POST(request: Request) {
 
     // Si el registro fue exitoso, crear un perfil básico
     if (result.user && result.user.id) {
+      const now = new Date().toISOString();
       const profileData = {
         id: result.user.id,
         email,
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
         level: 1,
         balance: 0,
         avatar_url: null,
-        created_at: new Date().toISOString()
+        created_at: now
       };
 
       // Intentar crear el perfil en la tabla profiles
@@ -106,11 +107,14 @@ export async function POST(request: Request) {
         console.error('Error al crear perfil, pero continuando:', err);
       }
 
-      // Intentar crear el perfil en la tabla user_profiles
+      // Intentar crear el perfil en la tabla user_profiles con país y dispositivo
       try {
         await supabase.from('user_profiles').insert({
           ...profileData,
-          user_id: result.user.id
+          user_id: result.user.id,
+          country: country || null,
+          device_type: deviceType || null,
+          last_login: now
         });
       } catch (err) {
         console.error('Error al crear user_profile, pero continuando:', err);

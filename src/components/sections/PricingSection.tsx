@@ -40,6 +40,9 @@ function PricingSection() {
   
   // Estado para precarga de scripts
   const [scriptsPreloaded, setScriptsPreloaded] = useState(false);
+  
+  // Estado para FAQ colapsable
+  const [isFaqOpen, setIsFaqOpen] = useState(true);
 
   // Precio base en USD
   const basePriceUSD = CountryPriceService.BASE_PRICE_USD;
@@ -447,6 +450,57 @@ function PricingSection() {
             balanceDiscount={balanceDiscount}
             finalPriceUSD={finalPriceUSD}
           />
+        </div>
+        
+        {/* FAQ Colapsable */}
+        <div 
+          className="mt-8 overflow-hidden rounded-2xl"
+          style={{ backgroundColor: '#1A1A1A' }}
+        >
+          <button
+            className="w-full py-5 px-5 flex items-center justify-between text-left focus:outline-none"
+            onClick={() => setIsFaqOpen(!isFaqOpen)}
+          >
+            <div className="flex items-center gap-4">
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: '#28A745' }}
+              >
+                <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span className="font-semibold text-base sm:text-lg text-white">
+                ¿Qué hago después del pago?
+              </span>
+            </div>
+            <div className="text-gray-400">
+              {isFaqOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              )}
+            </div>
+          </button>
+
+          <div
+            className={`px-5 pb-5 transition-all duration-300 ${
+              isFaqOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            }`}
+          >
+            <div 
+              className="pt-3 border-t pl-14"
+              style={{ borderColor: '#333' }}
+            >
+              <p className="text-base leading-relaxed text-gray-400">
+                La activación es automática. Tras el pago, entrarás directamente a tu panel profesional donde encontrarás todas las tareas de nivel superior desbloqueadas de forma ilimitada que se renuevan diariamente, garantizando que siempre tengas trabajo disponible para generar ingresos.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import { TrendingUp, Wallet, Calendar, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useElementVisibility } from '@/hooks/useElementVisibility';
 import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import { BalanceSkeleton, StatSkeleton } from '@/components/ui/Skeleton';
 
 import "./performance.css";
 
@@ -144,7 +145,7 @@ export default function DashboardPage() {
         {/* Balance móvil */}
         {user?.id && isVisible('balance_display') && (
           <div className="md:hidden mb-4" data-tour="balance">
-            <UserBalanceDisplay initialBalance={userStats.balance} userId={user.id} currency="USD" showControls={true} variant="light" />
+            <UserBalanceDisplay initialBalance={userStats.balance} userId={user.id} currency="USD" showControls={true} variant="light" isLoading={isLoadingStats} />
           </div>
         )}
 
@@ -171,7 +172,7 @@ export default function DashboardPage() {
           <div className="hidden md:grid md:grid-cols-[4fr_13fr] gap-4 mb-4 lg:mb-6">
             <div className="flex flex-col gap-4 h-[380px]">
               <div data-tour="balance">
-                <UserBalanceDisplay initialBalance={userStats.balance} userId={user.id} currency="USD" showControls={true} variant="light" />
+                <UserBalanceDisplay initialBalance={userStats.balance} userId={user.id} currency="USD" showControls={true} variant="light" isLoading={isLoadingStats} />
               </div>
               
               {/* Ranking semanal */}
@@ -262,59 +263,75 @@ export default function DashboardPage() {
         {/* Estadísticas */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6" data-tour="stats">
           {isVisible('stat_today') && (
-            <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Hoy</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">${userStats.todayEarnings.toFixed(2)}</p>
-                </div>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
-                  <TrendingUp className="w-6 h-6 text-white" />
+            isLoadingStats ? (
+              <StatSkeleton variant="light" />
+            ) : (
+              <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Hoy</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-gray-900">${userStats.todayEarnings.toFixed(2)}</p>
+                  </div>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           )}
 
           {isVisible('stat_week') && (
-            <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Semana</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">${userStats.weekEarnings.toFixed(2)}</p>
-                </div>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
-                  <Calendar className="w-6 h-6 text-white" />
+            isLoadingStats ? (
+              <StatSkeleton variant="light" />
+            ) : (
+              <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Semana</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-gray-900">${userStats.weekEarnings.toFixed(2)}</p>
+                  </div>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           )}
 
           {isVisible('stat_total') && (
-            <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Total</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">${userStats.totalEarnings.toFixed(2)}</p>
-                </div>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
-                  <Wallet className="w-6 h-6 text-white" />
+            isLoadingStats ? (
+              <StatSkeleton variant="light" />
+            ) : (
+              <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Total</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-gray-900">${userStats.totalEarnings.toFixed(2)}</p>
+                  </div>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
+                    <Wallet className="w-6 h-6 text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           )}
 
           {isVisible('stat_completed') && (
-            <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
-              <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Completas</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">{userStats.totalTransactions}</p>
-                </div>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
-                  <CheckCircle2 className="w-6 h-6 text-white" />
+            isLoadingStats ? (
+              <StatSkeleton variant="light" />
+            ) : (
+              <div className="rounded-3xl p-4 lg:p-6 shadow-sm" style={{ background: '#FFFFFF' }}>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Completas</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-gray-900">{userStats.totalTransactions}</p>
+                  </div>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#0C50A4' }}>
+                    <CheckCircle2 className="w-6 h-6 text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           )}
         </div>
 

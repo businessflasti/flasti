@@ -40,7 +40,23 @@ import PayPalLogo from "@/components/icons/PayPalLogo";
 import PayPalIcon from "@/components/icons/PayPalIcon";
 import WorldIcon from "@/components/icons/WorldIcon";
 
+// Hook para cambiar el fondo del body a oscuro
+const useDarkBackground = () => {
+  useEffect(() => {
+    document.body.style.backgroundColor = '#202020';
+    document.documentElement.style.backgroundColor = '#202020';
+    
+    return () => {
+      document.body.style.backgroundColor = '#F6F3F3';
+      document.documentElement.style.backgroundColor = '';
+    };
+  }, []);
+};
+
 const CheckoutContent = () => {
+  // Aplicar fondo oscuro
+  useDarkBackground();
+  
   const { t } = useLanguage();
   const { user } = useAuth();
   

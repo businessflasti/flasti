@@ -11,7 +11,7 @@ import { Toaster as HotToaster } from "@/components/ui/Toaster";
 import CopyProtection from "@/components/security/CopyProtection";
 import AffiliateClickRecorder from "@/components/affiliate/AffiliateClickRecorder";
 import HydrationFix from "@/components/utils/HydrationFix";
-import PageLoader from "@/components/ui/PageLoader";
+import AppLoader from "@/components/ui/AppLoader";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import ThemeApplier from "@/components/themes/ThemeApplier";
 
@@ -22,9 +22,10 @@ export default function ClientLayout({
 }) {
   return (
     <>
-      <PageLoader />
       <ThemeProvider>
         <AuthProvider>
+          {/* AppLoader dentro de AuthProvider para acceder a dataReady */}
+          <AppLoader />
           <LanguageProvider>
             <BalanceVisibilityProvider>
               <OnboardingProvider>

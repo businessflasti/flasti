@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState, useCallback } from 'react';
 import Image from 'next/image';
 
 const testimonialsRow1 = [
@@ -70,10 +70,16 @@ const testimonialsRow2 = [
 ];
 
 // Memoizado para evitar re-renders innecesarios
-const TestimonialCard = memo(({ testimonial }: { testimonial: typeof testimonialsRow1[0] }) => (
+const TestimonialCard = memo(({ testimonial, onTouchStart, onTouchEnd }: { 
+  testimonial: typeof testimonialsRow1[0];
+  onTouchStart: () => void;
+  onTouchEnd: () => void;
+}) => (
   <div 
     className="flex-shrink-0 w-[320px] sm:w-[380px] p-6 rounded-2xl mx-3"
     style={{ backgroundColor: '#1A1A1A' }}
+    onTouchStart={onTouchStart}
+    onTouchEnd={onTouchEnd}
   >
     {/* Estrellas - siempre 5 */}
     <div className="flex gap-1 mb-4">
@@ -114,6 +120,17 @@ const TestimonialCard = memo(({ testimonial }: { testimonial: typeof testimonial
 TestimonialCard.displayName = 'TestimonialCard';
 
 function TestimonialsSection() {
+  const [isPaused, setIsPaused] = useState(false);
+  
+  // Handlers para touch en mobile
+  const handleTouchStart = useCallback(() => {
+    setIsPaused(true);
+  }, []);
+  
+  const handleTouchEnd = useCallback(() => {
+    setIsPaused(false);
+  }, []);
+  
   // Memoizar arrays duplicados para evitar recrearlos en cada render
   const row1Cards = useMemo(() => 
     [...testimonialsRow1, ...testimonialsRow1, ...testimonialsRow1], 
@@ -141,11 +158,16 @@ function TestimonialsSection() {
       {/* Fila 1 - Movimiento hacia la derecha */}
       <div className="relative mb-6">
         <div 
-          className="flex animate-scroll-right gpu-layer"
+          className={`flex gpu-layer ${isPaused ? 'animation-paused' : 'animate-scroll-right'}`}
           style={{ width: 'max-content' }}
         >
           {row1Cards.map((testimonial, index) => (
-            <TestimonialCard key={`row1-${index}`} testimonial={testimonial} />
+            <TestimonialCard 
+              key={`row1-${index}`} 
+              testimonial={testimonial}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            />
           ))}
         </div>
       </div>
@@ -153,11 +175,16 @@ function TestimonialsSection() {
       {/* Fila 2 - Movimiento hacia la izquierda */}
       <div className="relative">
         <div 
-          className="flex animate-scroll-left gpu-layer"
+          className={`flex gpu-layer ${isPaused ? 'animation-paused' : 'animate-scroll-left'}`}
           style={{ width: 'max-content' }}
         >
           {row2Cards.map((testimonial, index) => (
-            <TestimonialCard key={`row2-${index}`} testimonial={testimonial} />
+            <TestimonialCard 
+              key={`row2-${index}`} 
+              testimonial={testimonial}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            />
           ))}
         </div>
       </div>
@@ -199,6 +226,10 @@ function TestimonialsSection() {
         .animate-scroll-right:hover,
         .animate-scroll-left:hover {
           animation-play-state: paused;
+        }
+        
+        .animation-paused {
+          animation-play-state: paused !important;
         }
       `}</style>
     </div>

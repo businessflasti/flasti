@@ -41,8 +41,18 @@ const MainLayoutComponent = ({ children, disableChat = false }: MainLayoutProps)
   const isContactPage = pathname === '/contacto';
   const isHomePage = pathname === '/';
   const isCheckoutPage = pathname === '/dashboard/checkout';
+  const isUpgradePage = pathname === '/dashboard/upgrade';
   // No mostrar el chat en páginas del dashboard
   const shouldShowChat = !disableChat && !isInternalPage;
+  
+  // Determinar el color de fondo
+  const getBackgroundColor = () => {
+    if (isUpgradePage || isCheckoutPage) return '#202020';
+    if (isInternalPage || isContactPage) return '#F5F3F3';
+    return undefined;
+  };
+  
+  const backgroundColor = getBackgroundColor();
 
   // Refs para medir la altura del header y exponerla como variable CSS
   const headerWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -79,7 +89,7 @@ const MainLayoutComponent = ({ children, disableChat = false }: MainLayoutProps)
       <div
         ref={containerRef}
         className={`min-h-screen flex flex-col relative ${(isInternalPage || isContactPage) ? '' : 'gradient-background'}`}
-        style={(isInternalPage || isContactPage) ? { background: '#F5F3F3' } : {}}
+        style={backgroundColor ? { background: backgroundColor } : {}}
       >
         {/* Encabezado para dashboard */}
         {isInternalPage && (
@@ -92,7 +102,7 @@ const MainLayoutComponent = ({ children, disableChat = false }: MainLayoutProps)
         <main
           className={`flex-grow relative hardware-accelerated overflow-x-hidden mobile-main-scroll`}
           style={isInternalPage ? { 
-            background: '#F5F3F3',
+            background: backgroundColor || '#F5F3F3',
             paddingTop: '0',
             position: 'relative',
             zIndex: 1

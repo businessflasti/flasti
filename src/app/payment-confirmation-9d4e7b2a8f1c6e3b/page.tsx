@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import { CheckCircle, ArrowRight, Shield, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,6 +11,8 @@ import facebookEventDeduplication from '@/lib/facebook-event-deduplication';
 
 export default function GraciasPorTuPagoPage() {
   const [mounted, setMounted] = useState(false);
+  const [isActivating, setIsActivating] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -35,6 +38,33 @@ export default function GraciasPorTuPagoPage() {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Función para activar premium y redirigir al dashboard
+  const handleGoToDashboard = async () => {
+    setIsActivating(true);
+    
+    try {
+      // Obtener sesión actual
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user?.id) {
+        // Actualizar is_premium a true en user_profiles
+        const { error } = await supabase
+          .from('user_profiles')
+          .update({ is_premium: true })
+          .eq('user_id', session.user.id);
+        
+        if (error) {
+          console.error('Error activando premium:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error en activación premium:', error);
+    }
+    
+    // Redirigir al dashboard (incluso si hubo error, el pago ya está hecho)
+    window.location.href = '/dashboard';
+  };
 
   if (!mounted) {
     return null;
@@ -107,15 +137,25 @@ export default function GraciasPorTuPagoPage() {
                   {/* Botón de inicio para móvil */}
                   <div className="pt-6 lg:hidden">
                     <p className="text-white font-medium mb-4 text-lg">
-                      Accede a tu panel personal
+                      Accede a tu panel profesional
                     </p>
                     <Button 
                       size="lg"
                       className="bg-white hover:bg-gray-100 text-[#101010] font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base"
-                      onClick={() => window.location.href = '/dashboard'}
+                      onClick={handleGoToDashboard}
+                      disabled={isActivating}
                     >
-                      <span>Ir a inicio</span>
-                      <ArrowRight className="w-5 h-5 ml-2" />
+                      {isActivating ? (
+                        <>
+                          <span className="animate-spin mr-2">⟳</span>
+                          <span>Desbloqueando microtareas...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Ir a inicio</span>
+                          <ArrowRight className="w-5 h-5 ml-2" />
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -155,15 +195,25 @@ export default function GraciasPorTuPagoPage() {
                   {/* Botón de inicio para desktop */}
                   <div className="hidden lg:block pt-6">
                     <p className="text-white font-medium mb-4 text-lg">
-                      Accede a tu panel personal
+                      Accede a tu panel profesional
                     </p>
                     <Button 
                       size="lg"
                       className="bg-white hover:bg-gray-100 text-[#101010] font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base"
-                      onClick={() => window.location.href = '/dashboard'}
+                      onClick={handleGoToDashboard}
+                      disabled={isActivating}
                     >
-                      <span>Ir a inicio</span>
-                      <ArrowRight className="w-5 h-5 ml-2" />
+                      {isActivating ? (
+                        <>
+                          <span className="animate-spin mr-2">⟳</span>
+                          <span>Desbloqueando microtareas...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Ir a inicio</span>
+                          <ArrowRight className="w-5 h-5 ml-2" />
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
