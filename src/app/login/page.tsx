@@ -97,76 +97,69 @@ export default function LoginPage() {
       return;
     }
 
-    setIsLoading(true);
-    let timeoutId: NodeJS.Timeout | null = null;
+    // Evitar múltiples envíos
+    if (isLoading) return;
     
-    // Timeout más largo y que se cancele correctamente
-    timeoutId = setTimeout(() => {
-      if (isLoading) {
-        setIsLoading(false);
-        toast.error('La conexión está tardando demasiado. Por favor, intenta de nuevo.');
-      }
-    }, 30000); // 30 segundos de timeout
+    setIsLoading(true);
+    setLoginStep('Verificando credenciales...');
+    
+    // Timeout de seguridad
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+      setLoginStep('');
+      toast.error('La conexión está tardando demasiado. Por favor, intenta de nuevo.');
+    }, 20000); // 20 segundos
 
     try {
       console.log('Intentando iniciar sesión:', { email });
-      setLoginStep('Verificando credenciales...');
       
       const { error } = await signIn(email, password);
+      
+      // Limpiar timeout
+      clearTimeout(timeoutId);
 
       if (error) {
         console.error('Error detallado:', error);
         setLoginStep('');
         setIsLoading(false);
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-          timeoutId = null;
-        }
         toast.error(getLoginErrorMessage(error));
-      } else {
-        // Login exitoso - mantener el estado de loading hasta la redirección
-        setLoginStep('Verificando credenciales...');
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-          timeoutId = null;
-        }
-        
-        // Actualizar perfil con país, dispositivo y último acceso
-        try {
-          const { supabase } = await import('@/lib/supabase');
-          const { data: { user } } = await supabase.auth.getUser();
-          
-          if (user) {
-            const updateData: any = {
-              last_login: new Date().toISOString()
-            };
-            
-            // Solo actualizar país y dispositivo si tenemos valores
-            if (countryCode) {
-              updateData.country = countryCode;
-            }
-            if (deviceType) {
-              updateData.device_type = deviceType;
-            }
-            
-            await supabase.from('user_profiles').update(updateData).eq('user_id', user.id);
-          }
-        } catch (updateError) {
-          console.error('Error actualizando perfil en login:', updateError);
-        }
-        
-        // Redirigir a dashboard para admins (NO resetear isLoading aquí)
-        setTimeout(() => router.push('/dashboard'), 500);
         return;
       }
+      
+      // Login exitoso
+      setLoginStep('Redirigiendo...');
+      
+      // Actualizar perfil con país, dispositivo y último acceso
+      try {
+        const { supabase } = await import('@/lib/supabase');
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          const updateData: any = {
+            last_login: new Date().toISOString()
+          };
+          
+          if (countryCode) {
+            updateData.country = countryCode;
+          }
+          if (deviceType) {
+            updateData.device_type = deviceType;
+          }
+          
+          await supabase.from('user_profiles').update(updateData).eq('user_id', user.id);
+        }
+      } catch (updateError) {
+        console.error('Error actualizando perfil en login:', updateError);
+      }
+      
+      // Redirigir usando window.location para evitar problemas de estado
+      window.location.href = '/dashboard';
+      
     } catch (error) {
+      clearTimeout(timeoutId);
       console.error('Error inesperado:', error);
       setLoginStep('');
       setIsLoading(false);
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
       const message = error instanceof Error ? error.message : 'Error inesperado al iniciar sesión';
       toast.error(message);
     }

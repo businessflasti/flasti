@@ -42,11 +42,20 @@ export default function PerfilPage() {
 
       try {
         setIsLoadingProfile(true);
+        
+        // Timeout para evitar loading infinito
+        const timeoutId = setTimeout(() => {
+          console.warn('Timeout al cargar perfil');
+          setIsLoadingProfile(false);
+        }, 10000);
+        
         const { data: profileData } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('user_id', user.id)
           .single();
+        
+        clearTimeout(timeoutId);
 
         if (profileData) {
           setUserData(profileData);

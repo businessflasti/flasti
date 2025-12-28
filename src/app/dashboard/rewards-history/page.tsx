@@ -49,11 +49,19 @@ export default function RewardsHistoryPage() {
 
     try {
       setLoading(true);
+      
+      // Timeout para evitar loading infinito
+      const timeoutId = setTimeout(() => {
+        console.warn('Timeout al cargar historial de recompensas');
+        setLoading(false);
+      }, 10000);
 
       // Obtener token de sesión
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
+        clearTimeout(timeoutId);
         toast.error('Sesión expirada, por favor inicia sesión nuevamente');
+        setLoading(false);
         return;
       }
 
@@ -63,6 +71,8 @@ export default function RewardsHistoryPage() {
           'Content-Type': 'application/json'
         }
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

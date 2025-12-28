@@ -1,9 +1,38 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, createContext, useContext } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import styles from "./PageLoader.module.css";
+
+// Contexto para manejar errores de conexión globalmente
+interface ConnectionErrorContextType {
+  showConnectionError: boolean;
+  setShowConnectionError: (show: boolean) => void;
+  triggerConnectionError: () => void;
+}
+
+const ConnectionErrorContext = createContext<ConnectionErrorContextType | null>(null);
+
+export const useConnectionError = () => {
+  const context = useContext(ConnectionErrorContext);
+  return context;
+};
+
+// Provider para el contexto de error de conexión
+export const ConnectionErrorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [showConnectionError, setShowConnectionError] = useState(false);
+  
+  const triggerConnectionError = () => {
+    setShowConnectionError(true);
+  };
+  
+  return (
+    <ConnectionErrorContext.Provider value={{ showConnectionError, setShowConnectionError, triggerConnectionError }}>
+      {children}
+    </ConnectionErrorContext.Provider>
+  );
+};
 
 /**
  * AppLoader - Loader inteligente que espera a que los datos estén listos
@@ -41,6 +70,9 @@ const AppLoader = () => {
   // Detectar si estamos en el dashboard (necesita más tiempo para cargar stats)
   const isDashboardPage = pathname === '/dashboard' || pathname === '/dashboard/';
   
+  // Detectar si estamos en páginas del dashboard que cargan datos
+  const isDashboardSubpage = pathname?.startsWith('/dashboard/');
+  
   // Detectar si estamos en la página upgrade/checkout para usar tema oscuro
   const isDarkPage = pathname?.includes('/upgrade') || pathname?.includes('/checkout');
 
@@ -70,8 +102,8 @@ const AppLoader = () => {
     if (pageLoaded && dataReady) {
       hideAttempted.current = true;
       
-      // Para el dashboard, dar tiempo extra para que carguen las estadísticas
-      const extraDelay = isDashboardPage ? 800 : 300;
+      // Para el dashboard y subpáginas, dar tiempo extra para que carguen las estadísticas
+      const extraDelay = (isDashboardPage || isDashboardSubpage) ? 800 : 300;
       
       const hideTimer = setTimeout(() => {
         setVisible(false);
@@ -79,7 +111,7 @@ const AppLoader = () => {
       
       return () => clearTimeout(hideTimer);
     }
-  }, [pageLoaded, dataReady, isPublicPage, isDashboardPage]);
+  }, [pageLoaded, dataReady, isPublicPage, isDashboardPage, isDashboardSubpage]);
 
   // Timer para mostrar botón de retry después de 6 segundos
   useEffect(() => {
@@ -92,17 +124,18 @@ const AppLoader = () => {
     return () => clearTimeout(retryTimer);
   }, [visible]);
 
-  // Timer de seguridad: forzar ocultar después de 15 segundos
+  // Timer de seguridad: NO forzar ocultar, mostrar error de conexión
   useEffect(() => {
-    const forceHideTimer = setTimeout(() => {
-      if (visible) {
-        console.warn('AppLoader: Forzando ocultamiento después de 15 segundos');
-        setVisible(false);
+    const connectionErrorTimer = setTimeout(() => {
+      if (visible && !isPublicPage) {
+        console.warn('AppLoader: Timeout de conexión después de 12 segundos');
+        // Mantener visible con mensaje de error
+        setShowRetry(true);
       }
-    }, 15000);
+    }, 12000);
 
-    return () => clearTimeout(forceHideTimer);
-  }, [visible]);
+    return () => clearTimeout(connectionErrorTimer);
+  }, [visible, isPublicPage]);
 
   const handleReload = () => {
     window.location.reload();
@@ -121,13 +154,13 @@ const AppLoader = () => {
         {showRetry && (
           <div className={`${styles.retryContainer} ${isDarkPage ? styles.retryDark : ''}`}>
             <p className={styles.retryText}>
-              La carga está tardando más de lo esperado
+              Tu conexión es inestable, la carga está tardando más de lo habitual
             </p>
             <button 
               onClick={handleReload}
               className={`${styles.retryButton} ${isDarkPage ? styles.retryButtonDark : ''}`}
             >
-              Recargar página
+              Reintentar
             </button>
           </div>
         )}

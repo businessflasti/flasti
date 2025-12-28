@@ -187,11 +187,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.error('AuthContext: Error general al verificar sesión:', err);
       } finally {
         setLoading(false);
-        // Marcar datos como listos después de un pequeño delay para asegurar que el estado se actualizó
-        setTimeout(() => {
-          setDataReady(true);
-          console.log('AuthContext: Datos listos para mostrar');
-        }, 100);
+        // Marcar datos como listos inmediatamente - si hay error, igual mostramos la UI
+        setDataReady(true);
+        console.log('AuthContext: Datos listos para mostrar');
       }
     };
 
@@ -477,6 +475,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Iniciando proceso de login ultra básico para:', email);
 
     try {
+      // Limpiar cualquier sesión anterior corrupta antes de intentar login
+      try {
+        await supabase.auth.signOut();
+      } catch (e) {
+        // Ignorar errores de signOut
+      }
+      
       // Intentar iniciar sesión con el método más básico posible
       const { data, error } = await supabase.auth.signInWithPassword({
         email,

@@ -91,6 +91,15 @@ export default function CountryPricesPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] p-6">
       <div className="max-w-[1800px] mx-auto">
+        {/* Nota informativa */}
+        <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+          <p className="text-xs text-blue-400">
+            <strong>Importante:</strong> Ingresa el tipo de cambio como número entero para monedas con valores altos. 
+            Ejemplo: Si 1 USD = 4,200 COP, ingresa <strong>4200</strong> (no 4.200). 
+            El precio final será: $10 USD × 4200 = $42,000 COP
+          </p>
+        </div>
+        
         <Card className="bg-[#121212] border-0">
           <CardContent className="p-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -144,16 +153,17 @@ export default function CountryPricesPage() {
                     {/* Input tipo de cambio USD (solo si no es USD) */}
                     {!isUSD && (
                       <div className="flex items-center gap-1 ml-auto">
-                        <span className="text-xs text-gray-500">TC:</span>
+                        <span className="text-xs text-gray-500">1 USD =</span>
                         <Input
                           type="number"
                           value={price.usd_exchange_rate || 1}
                           onChange={(e) => handleExchangeRateChange(price.country_code, e.target.value)}
-                          className="bg-[#121212] border-white/10 text-blue-400 font-bold h-8 text-xs w-[70px]"
+                          className="bg-[#121212] border-white/10 text-blue-400 font-bold h-8 text-xs w-[80px]"
                           min="0.01"
-                          step="0.01"
-                          title="Tipo de cambio: 1 USD = X moneda local"
+                          step="any"
+                          title={`Tipo de cambio: 1 USD = ${price.usd_exchange_rate} ${price.currency_code}. Para Colombia/Paraguay usar valores enteros (ej: 4200, no 4.200)`}
                         />
+                        <span className="text-xs text-gray-500">{price.currency_code}</span>
                       </div>
                     )}
                   </div>

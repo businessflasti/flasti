@@ -37,14 +37,31 @@ export default function DashboardPage() {
     totalTransactions: 0
   });
   const [isLoadingStats, setIsLoadingStats] = useState(true);
+  const [showConnectionError, setShowConnectionError] = useState(false);
 
   const fetchUserStats = async () => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      setIsLoadingStats(false);
+      return;
+    }
 
     try {
       setIsLoadingStats(true);
+      setShowConnectionError(false);
+      
+      // Timeout para mostrar mensaje de conexión inestable y terminar loading
+      const timeoutId = setTimeout(() => {
+        console.warn('Dashboard: Timeout al cargar stats, mostrando error de conexión');
+        setShowConnectionError(true);
+        setIsLoadingStats(false); // Terminar loading para evitar skeleton infinito
+      }, 8000); // 8 segundos máximo
+      
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) return;
+      if (!session?.access_token) {
+        clearTimeout(timeoutId);
+        setIsLoadingStats(false);
+        return;
+      }
 
       const response = await fetch('/api/user/profile', {
         headers: {
@@ -53,10 +70,15 @@ export default function DashboardPage() {
         }
       });
       
+      clearTimeout(timeoutId);
+      
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      if (data.error) return;
+      if (data.error) {
+        setIsLoadingStats(false);
+        return;
+      }
 
       const { profile, cpalead_stats } = data;
       setUserStats({
@@ -66,11 +88,17 @@ export default function DashboardPage() {
         weekEarnings: cpalead_stats.week_earnings || 0,
         totalTransactions: cpalead_stats.total_transactions || 0
       });
+      setIsLoadingStats(false);
+      setShowConnectionError(false);
     } catch (error) {
       console.error('Error fetching user stats:', error);
-    } finally {
-      setIsLoadingStats(false);
+      setShowConnectionError(true);
     }
+  };
+
+  const handleRetry = () => {
+    setShowConnectionError(false);
+    fetchUserStats();
   };
 
   useEffect(() => {
@@ -140,6 +168,30 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen overscroll-none relative overflow-x-hidden" style={{ background: '#F5F3F3' }}>
+      {/* Overlay de error de conexión */}
+      {showConnectionError && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(245, 243, 243, 0.95)' }}>
+          <div className="text-center p-8 max-w-md">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: '#FEE2E2' }}>
+              <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Conexión inestable</h3>
+            <p className="text-gray-600 mb-6">
+              Tu conexión es inestable, la carga está tardando más de lo habitual
+            </p>
+            <button
+              onClick={handleRetry}
+              className="px-6 py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90"
+              style={{ background: '#0C50A4' }}
+            >
+              Reintentar
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6 pb-16 md:pb-8 relative z-10">
 
         {/* Balance móvil */}
